@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Interativo de Medicina Intensiva — Módulo 2: Pós-intubação e Confirmação</title>
+  <style>
+    :root{--bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;--primary:#123c69;--primary-soft:#dce9f6;--accent:#0b6b5c;--danger:#b42318;--warning:#b54708;--success:#067647;--border:#d8e0ea;--shadow:0 8px 24px rgba(16,24,40,.08);--radius:16px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}a{color:inherit;text-decoration:none}.app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d2438;color:#fff;padding:24px 18px}.brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}.brand h1{font-size:19px;margin:0 0 8px;line-height:1.25}.brand p{margin:0;font-size:13px;color:rgba(255,255,255,.75)}nav ul{list-style:none;padding:0;margin:0}nav li{margin:5px 0}nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88)}nav a:hover{background:rgba(255,255,255,.10)}main{padding:34px;max-width:1380px;width:100%}.hero{background:linear-gradient(135deg,#123c69,#0b6b5c);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);margin-bottom:28px}.hero h2{font-size:34px;margin:0 0 10px}.hero p{max-width:980px;color:rgba(255,255,255,.9);margin:0}.badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.14);font-size:12px}.toc-note{font-size:12px;color:rgba(255,255,255,.65);margin-top:12px}section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}section h2{margin:0 0 14px;color:var(--primary);font-size:25px}section h3{margin:22px 0 10px;color:#243b53;font-size:19px}.grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:var(--surface-soft);border:1px solid var(--border);border-radius:14px;padding:16px}.card h4{margin:0 0 8px;color:var(--primary)}.card p{margin:0;color:var(--muted)}.metric{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px}.metric strong{display:block;color:var(--primary);font-size:22px}.alert{border-radius:14px;padding:14px 16px;margin:16px 0;border-left:6px solid}.alert-danger{background:#fff1f0;border-color:var(--danger)}.alert-warning{background:#fff7ed;border-color:var(--warning)}.alert-info{background:var(--primary-soft);border-color:var(--primary)}.alert-success{background:#ecfdf3;border-color:var(--success)}table{width:100%;border-collapse:collapse;margin:14px 0;overflow:hidden;border-radius:12px}th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;font-size:14px}th{background:var(--primary);color:#fff}tbody tr:nth-child(even){background:#f8fafc}.svg-box{background:#f8fbff;border:1px solid var(--border);border-radius:16px;padding:14px;margin:14px 0}.svg-box svg{width:100%;height:auto;display:block}.small{font-size:12px;color:var(--muted)}details{border:1px solid var(--border);border-radius:14px;background:#fff;margin:12px 0;overflow:hidden}summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--primary);background:#eef3f8}summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}.pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700;background:#dce9f6;color:#123c69;margin:2px}.pill-danger{background:#fee4e2;color:#912018}.pill-warning{background:#fef0c7;color:#93370d}.pill-success{background:#dcfae6;color:#067647}.timeline{border-left:3px solid var(--primary);padding-left:18px}.timeline .step{position:relative;margin:0 0 16px}.timeline .step:before{content:"";position:absolute;left:-27px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 1px var(--accent)}.ref{font-size:12px;color:#485568;border-top:1px solid var(--border);margin-top:12px;padding-top:10px}.print-note{background:#111827;color:#fff;border-radius:16px;padding:18px;margin:20px 0}.two-col-list{columns:2;column-gap:28px}.checklist li{margin:6px 0}.footer-sign{margin-top:40px;text-align:right;color:#344054}.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#111827;color:#fff;padding:2px 6px;border-radius:6px;font-size:12px}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.flow .card{position:relative}.flow .card:not(:last-child):after{content:"→";position:absolute;right:-14px;top:40%;font-size:24px;color:var(--muted)}@media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}.grid-2,.grid-3,.grid-4,.flow{grid-template-columns:1fr}.flow .card:after{display:none}main{padding:18px}.hero h2{font-size:26px}.two-col-list{columns:1}}@media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}details:not([open]){border-color:#ccc}}
+  </style>
+
+  <style>
+    .brand__row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .brand__content{min-width:0}
+    .nav-toggle{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+    .nav-toggle:hover{background:rgba(255,255,255,.18)}
+    nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
+    .app.nav-collapsed{grid-template-columns:72px 1fr}
+    .app.nav-collapsed aside{padding:18px 10px}
+    .app.nav-collapsed .brand{margin-bottom:14px;padding-bottom:12px;text-align:center}
+    .app.nav-collapsed .brand__row{display:grid;justify-items:center;gap:8px}
+    .app.nav-collapsed .brand__content{display:none}
+    .app.nav-collapsed .nav-toggle{width:100%;padding:8px 4px;font-size:11px}
+    .app.nav-collapsed nav a{align-items:center;display:flex;justify-content:center;min-height:40px;padding:9px 4px;position:relative}
+    .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
+    .app.nav-collapsed nav a::before{content:attr(data-short);font-size:12px;font-weight:800}
+    @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{padding:12px 14px}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}.app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}.app.nav-collapsed .brand__content{display:block}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .toc-note,.app.nav-collapsed .brand .small{display:none}}
+  </style>
+</head>
+<body>
+<div class="app" id="moduleApp">
+  <aside>
+    <div class="brand">
+      <div class="brand__row">
+        <div class="brand__content">
+<h1>Manual Interativo de Medicina Intensiva</h1>
+      <p>Módulo 2 — Pós-intubação e confirmação</p>
+      <div class="toc-note">Versão modular para integração à arquitetura-mestre aprovada.</div>
+        </div>
+        <button class="nav-toggle" id="moduleNavToggle" type="button" aria-controls="moduleNav" aria-expanded="true">Minimizar</button>
+      </div>
+    </div>
+    <nav id="moduleNav" aria-label="Secoes do modulo">
+      <ul>
+        <li><a href="#objetivo">1. Objetivo do módulo</a></li>
+        <li><a href="#primeiros-segundos">2. Primeiros 60 segundos</a></li>
+        <li><a href="#confirmacao-primaria">3. Confirmação primária</a></li>
+        <li><a href="#capnografia">4. Capnografia</a></li>
+        <li><a href="#confirmacao-secundaria">5. Confirmação secundária</a></li>
+        <li><a href="#profundidade">6. Profundidade e fixação</a></li>
+        <li><a href="#ultrassom">7. Ultrassom pós-IOT</a></li>
+        <li><a href="#ventilador">8. Transição para ventilador</a></li>
+        <li><a href="#sedoanalgesia">9. Sedoanalgesia imediata</a></li>
+        <li><a href="#dessaturacao">10. Dessaturação pós-IOT</a></li>
+        <li><a href="#hipotensao">11. Hipotensão pós-IOT</a></li>
+        <li><a href="#checklist">12. Checklist 5–10 min</a></li>
+        <li><a href="#erros">13. Erros frequentes</a></li>
+        <li><a href="#referencias">Referências primárias</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <main>
+    <div class="hero">
+      <h2>Módulo 2 — Pós-intubação e confirmação</h2>
+      <p>Capítulo procedural sobre confirmação do tubo, capnografia, checagem sistemática após intubação, transição para ventilação mecânica, sedoanalgesia inicial e resposta às complicações precoces.</p>
+      <div class="badge-row">
+        <span class="badge">Capnografia obrigatória</span><span class="badge">DOPE/DOPES</span><span class="badge">Auto-PEEP</span><span class="badge">Pós-IOT imediato</span><span class="badge">Checklist operacional</span><span class="badge">Fonte primária</span>
+      </div>
+    </div>
+
+    <section id="objetivo">
+      <h2>1. Objetivo do módulo</h2>
+      <p>Após a passagem do tubo, o procedimento ainda não terminou. A fase pós-intubação concentra eventos críticos: intubação esofágica não reconhecida, intubação seletiva, pneumotórax, hipotensão, ventilação inadequada, ausência de sedoanalgesia e atraso no reconhecimento de deterioração.</p>
+      <div class="grid grid-3">
+        <div class="metric"><strong>Confirmar</strong><span>Localização traqueal com capnografia e métodos complementares.</span></div>
+        <div class="metric"><strong>Fixar</strong><span>Profundidade adequada, cuff, fixação e documentação.</span></div>
+        <div class="metric"><strong>Estabilizar</strong><span>Ventilação, oxigenação, hemodinâmica e sedoanalgesia.</span></div>
+      </div>
+      <div class="alert alert-danger"><strong>Regra central:</strong> ausculta, expansão torácica e condensação no tubo não substituem capnografia com onda para confirmação de intubação traqueal.</div>
+      <div class="ref"><strong>Fontes primárias:</strong> Apfelbaum JL et al. <em>Anesthesiology</em>, 2022. ASA Difficult Airway Guidelines. DOI: 10.1097/ALN.0000000000004002. Frerk C et al. <em>British Journal of Anaesthesia</em>, 2015. DAS Guidelines. DOI: 10.1093/bja/aev371.</div>
+    </section>
+
+    <section id="primeiros-segundos">
+      <h2>2. Primeiros 60 segundos após a passagem do tubo</h2>
+      <p>O primeiro minuto deve seguir uma sequência padronizada. A prioridade é confirmar que o tubo está na traqueia, iniciar ventilação efetiva e impedir que um tubo mal posicionado permaneça sem reconhecimento.</p>
+      <div class="flow">
+        <div class="card"><h4>1. Ver tubo passar</h4><p>Quando possível, confirmar visualmente passagem pelas cordas vocais.</p></div>
+        <div class="card"><h4>2. Insuflar cuff</h4><p>Insuflar cuff, conectar filtro/capnografia e circuito.</p></div>
+        <div class="card"><h4>3. Capnografia</h4><p>Confirmar onda de CO₂ persistente e compatível com ventilação.</p></div>
+        <div class="card"><h4>4. Fixar e estabilizar</h4><p>Fixar tubo, iniciar ventilador, sedoanalgesia e monitorização contínua.</p></div>
+      </div>
+      <details open><summary>Comando verbal sugerido</summary><div class="detail-body"><p><span class="kbd">Tubo passou → cuff insuflado → capno conectado → onda presente? → ausculta bilateral → profundidade → fixar → ventilador → sedação pós-IOT.</span></p><p>O comando verbal reduz perda de etapas em ambiente de alto ruído cognitivo.</p></div></details>
+      <div class="alert alert-warning"><strong>Se não houver onda de CO₂:</strong> não normalize a ausência de capnografia. Reavalie imediatamente conexão, ventilação, perfusão e posição do tubo. Se houver incerteza real sobre localização traqueal, remova o tubo e ventile ou use técnica adicional de confirmação conforme cenário.</div>
+    </section>
+
+    <section id="confirmacao-primaria">
+      <h2>3. Confirmação primária da intubação traqueal</h2>
+      <p>A confirmação deve combinar método direto, capnografia e avaliação clínica. Nenhum sinal isolado, exceto capnografia com onda persistente em contexto adequado, deve ser usado como confirmação definitiva.</p>
+      <table>
+        <thead><tr><th>Método</th><th>Valor prático</th><th>Limitação</th></tr></thead>
+        <tbody>
+          <tr><td>Visualização do tubo atravessando a glote</td><td>Forte evidência procedural imediata.</td><td>Pode ser incerta em sangramento, secreção, visão parcial, VL com ângulo difícil ou passagem às cegas com bougie.</td></tr>
+          <tr><td>Capnografia com onda persistente</td><td>Método principal de confirmação e monitorização contínua.</td><td>Falso baixo/ausente em PCR prolongada, baixo débito extremo, desconexão, obstrução ou falha do equipamento.</td></tr>
+          <tr><td>Ausculta epigástrica e pulmonar</td><td>Ajuda a identificar ventilação unilateral ou sons gástricos.</td><td>Ruído ambiental, obesidade, ventilação manual, transmissão de sons; não confirma sozinha.</td></tr>
+          <tr><td>Expansão torácica</td><td>Sinal clínico complementar.</td><td>Pode ocorrer com intubação esofágica inicial ou ventilação gástrica; assimetria pode sugerir seletiva/pneumotórax.</td></tr>
+          <tr><td>Ultrassom</td><td>Complementar: traqueia vs esôfago, lung sliding bilateral.</td><td>Operador-dependente; não substitui capnografia quando esta está disponível e confiável.</td></tr>
+        </tbody>
+      </table>
+      <div class="ref"><strong>Fonte primária:</strong> ASA 2022 recomenda confirmação da intubação traqueal com capnografia ou monitorização de CO₂ expirado. Quando a posição do tubo é incerta, recomenda determinar se deve remover e ventilar ou usar técnicas adicionais de confirmação.</div>
+    </section>
+
+    <section id="capnografia">
+      <h2>4. Capnografia — leitura e resposta prática</h2>
+      <p>A capnografia com onda mede a pressão parcial ou concentração de dióxido de carbono (CO₂) no gás expirado ao longo do tempo. Após IOT, ela confirma ventilação traqueal quando há onda persistente e também informa ventilação alveolar, perfusão pulmonar e metabolismo.</p>
+
+      <h3>4.1 O que é ETCO₂ e como o valor é obtido?</h3>
+      <p><strong>ETCO₂</strong> significa <strong>dióxido de carbono ao final da expiração</strong> (<em>end-tidal carbon dioxide</em>). O sensor mede CO₂ no fluxo expirado, geralmente por absorção infravermelha; o valor numérico é o ponto final do platô alveolar, imediatamente antes da inspiração seguinte.</p>
+      <div class="grid grid-3">
+        <div class="card"><h4>Produção</h4><p>CO₂ é produzido pelo metabolismo celular e transportado no sangue venoso.</p></div>
+        <div class="card"><h4>Perfusão</h4><p>O débito cardíaco leva CO₂ ao capilar pulmonar. Choque, TEP e PCR reduzem ETCO₂.</p></div>
+        <div class="card"><h4>Ventilação</h4><p>A ventilação alveolar remove CO₂. Hipoventilação aumenta ETCO₂; hiperventilação reduz.</p></div>
+      </div>
+      <details open><summary>Fases da onda capnográfica</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Fase</th><th>Origem do gás</th><th>Interpretação</th></tr></thead>
+          <tbody>
+            <tr><td>Fase I</td><td>Espaço morto anatômico, sem CO₂ significativo.</td><td>Linha de base próxima de zero; se não zera, pensar em reinalação.</td></tr>
+            <tr><td>Fase II</td><td>Mistura de espaço morto com gás alveolar.</td><td>Subida rápida; lentificação sugere obstrução.</td></tr>
+            <tr><td>Fase III</td><td>Platô alveolar.</td><td>O final do platô corresponde ao ETCO₂.</td></tr>
+            <tr><td>Fase 0</td><td>Inspiração.</td><td>Queda para linha de base; falha sugere reinalação, válvula/circuito ou fluxo inadequado.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <h3>4.2 Forma de onda normal</h3>
+      <div class="svg-box">
+        <svg viewBox="0 0 900 330" role="img" aria-label="Capnograma normal">
+          <rect width="900" height="330" rx="18" fill="#f8fbff"/>
+          <line x1="70" y1="260" x2="830" y2="260" stroke="#344054" stroke-width="2"/>
+          <line x1="70" y1="50" x2="70" y2="260" stroke="#344054" stroke-width="2"/>
+          <polyline points="90,260 180,260 205,115 455,115 500,260 620,260 650,115 800,115" fill="none" stroke="#0b6b5c" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+          <text x="98" y="285" font-size="14" fill="#344054">Fase I</text>
+          <text x="185" y="105" font-size="14" fill="#344054">Fase II</text>
+          <text x="300" y="105" font-size="14" fill="#344054">Fase III / platô</text>
+          <text x="470" y="96" font-size="14" fill="#344054">ETCO₂</text>
+          <text x="20" y="58" font-size="15" fill="#344054">CO₂</text>
+          <text x="760" y="285" font-size="15" fill="#344054">Tempo</text>
+          <circle cx="455" cy="115" r="6" fill="#b42318"/>
+        </svg>
+      </div>
+
+      <h3>4.3 Formas de onda anormais</h3>
+      <details open><summary>Menu visual — padrões anormais comuns</summary><div class="detail-body">
+        <div class="grid grid-2">
+          <div class="card"><h4>Broncoespasmo / obstrução expiratória</h4>
+            <div class="svg-box"><svg viewBox="0 0 420 170"><rect width="420" height="170" rx="12" fill="#fff"/><line x1="40" y1="135" x2="380" y2="135" stroke="#98a2b3"/><polyline points="45,135 100,135 135,110 175,80 260,75 300,135 370,135" fill="none" stroke="#b54708" stroke-width="5" stroke-linecap="round"/></svg></div>
+            <p>Subida lenta e platô inclinado em “barbatana de tubarão”. Pensar em asma/DPOC, tubo dobrado, secreção ou obstrução do circuito.</p>
+          </div>
+          <div class="card"><h4>Desconexão/extubação/intubação esofágica</h4>
+            <div class="svg-box"><svg viewBox="0 0 420 170"><rect width="420" height="170" rx="12" fill="#fff"/><line x1="40" y1="135" x2="380" y2="135" stroke="#98a2b3"/><polyline points="45,135 90,135 120,75 210,75 245,135 370,135" fill="none" stroke="#b42318" stroke-width="5"/><text x="255" y="100" fill="#b42318" font-size="13">queda a zero</text></svg></div>
+            <p>Perda súbita da onda ou ausência persistente. Checar paciente, tubo, circuito, sensor e pulso.</p>
+          </div>
+          <div class="card"><h4>Reinalação de CO₂</h4>
+            <div class="svg-box"><svg viewBox="0 0 420 170"><rect width="420" height="170" rx="12" fill="#fff"/><line x1="40" y1="135" x2="380" y2="135" stroke="#98a2b3"/><line x1="40" y1="115" x2="380" y2="115" stroke="#f79009" stroke-dasharray="4"/><polyline points="45,115 100,115 130,65 240,65 280,115 370,115" fill="none" stroke="#0b6b5c" stroke-width="5"/></svg></div>
+            <p>Linha de base não retorna a zero. Avaliar válvula, circuito, fluxo, filtro trocador de calor e umidade (HME) ou filtro HME com função bacteriana/viral (HMEF), exaustão e espaço morto.</p>
+          </div>
+          <div class="card"><h4>Baixo débito / TEP / PCR</h4>
+            <div class="svg-box"><svg viewBox="0 0 420 170"><rect width="420" height="170" rx="12" fill="#fff"/><line x1="40" y1="135" x2="380" y2="135" stroke="#98a2b3"/><polyline points="45,135 90,135 120,105 220,105 250,135 310,135 340,120 370,135" fill="none" stroke="#123c69" stroke-width="5"/></svg></div>
+            <p>Onda baixa com tubo traqueal pode refletir pouca entrega de CO₂ aos pulmões por baixo fluxo.</p>
+          </div>
+        </div>
+      </div></details>
+
+      <table>
+        <thead><tr><th>Achado</th><th>Possíveis causas</th><th>Resposta prática</th></tr></thead>
+        <tbody>
+          <tr><td>Ausência de onda</td><td>Intubação esofágica, desconexão, capnógrafo não conectado, PCR/baixo fluxo extremo, obstrução completa.</td><td>Verificar circuito/equipamento rapidamente. Se posição traqueal incerta, remover tubo e ventilar ou confirmar por método adicional imediato.</td></tr>
+          <tr><td>Onda presente e persistente</td><td>Ventilação traqueal efetiva.</td><td>Prosseguir com checagem bilateral, profundidade, fixação e ventilador.</td></tr>
+          <tr><td>ETCO₂ muito baixo</td><td>Hiperventilação, baixo débito, TEP, vazamento, baixa produção de CO₂.</td><td>Correlacionar com hemodinâmica, ventilação minuto, gasometria e contexto.</td></tr>
+          <tr><td>Elevação progressiva do ETCO₂</td><td>Hipoventilação, febre, aumento de metabolismo, reinalação.</td><td>Checar ventilador, circuito, frequência/volume minuto, temperatura e sedação.</td></tr>
+        </tbody>
+      </table>
+      <div class="ref"><strong>Fontes:</strong> Kerslake & Kelly, BJA Education 2017; ASA Basic Anesthetic Monitoring; AHA Adult Advanced Life Support.</div>
+    </section>
+
+    <section id="confirmacao-secundaria">
+      <h2>5. Confirmação secundária e avaliação de ventilação bilateral</h2>
+      <p>Após confirmação traqueal, a pergunta muda: o tubo está na profundidade correta? Há ventilação bilateral? Há complicação imediata?</p>
+      <div class="grid grid-2">
+        <div class="card"><h4>Ausculta sistemática</h4><p>Epigástrio primeiro; depois ápices e bases bilateralmente. Redução unilateral sugere intubação seletiva, pneumotórax, obstrução ou atelectasia.</p></div>
+        <div class="card"><h4>Expansão torácica</h4><p>Avaliar simetria e complacência. Assimetria persistente exige investigação imediata.</p></div>
+        <div class="card"><h4>Pressão de vias aéreas</h4><p>Pressão elevada após IOT sugere obstrução, broncoespasmo, pneumotórax, seletiva, baixa complacência ou ventilador inadequado.</p></div>
+        <div class="card"><h4>SpO₂ e ETCO₂</h4><p>Tendências são mais úteis que valores isolados. Dessaturação com capnografia preservada aponta para problema de oxigenação/ventilação, não necessariamente esôfago.</p></div>
+      </div>
+      <details><summary>Radiografia pós-IOT — quando e para quê?</summary><div class="detail-body"><p>A radiografia de tórax é útil para confirmar profundidade final, avaliar intubação seletiva, pneumotórax, atelectasia, posição de sondas/dispositivos e alterações pulmonares. Entretanto, não deve atrasar a correção de uma suspeita clínica imediata de tubo mal posicionado.</p><p><strong>Regra prática:</strong> capnografia confirma posição traqueal em tempo real; radiografia avalia posição torácica final e complicações.</p></div></details>
+    </section>
+
+    <section id="profundidade">
+      <h2>6. Profundidade do tubo, cuff e fixação</h2>
+      <p>A profundidade inicial deve ser ajustada pela visualização, marcação no dente/lábio, ausculta bilateral e imagem quando disponível. Fórmulas e marcas são pontos de partida; não substituem confirmação clínica.</p>
+      <table>
+        <thead><tr><th>Item</th><th>Referência prática</th><th>Conduta</th></tr></thead>
+        <tbody>
+          <tr><td>Profundidade inicial</td><td>Adultos: frequentemente 21 cm em mulheres e 23 cm em homens na arcada dentária/lábio, ajustando por altura e confirmação.</td><td>Confirmar ventilação bilateral e posição radiográfica quando indicado.</td></tr>
+          <tr><td>Intubação seletiva direita</td><td>Redução de murmúrio à esquerda, pressão alta, hipoxemia ou assimetria.</td><td>Recuar tubo 1–2 cm, reauscultar, reavaliar capnografia/SpO₂ e radiografia/US se necessário.</td></tr>
+          <tr><td>Cuff</td><td>Pressão alvo usual 20–30 cmH₂O.</td><td>Evitar vazamento significativo e hiperinsuflação; medir com cuffômetro quando disponível.</td></tr>
+          <tr><td>Fixação</td><td>Fixador ou cadarço conforme protocolo.</td><td>Documentar profundidade e reavaliar após transporte, mudança de decúbito ou banho.</td></tr>
+        </tbody>
+      </table>
+      <div class="svg-box">
+        <svg viewBox="0 0 900 300" role="img" aria-label="Profundidade do tubo orotraqueal">
+          <rect width="900" height="300" rx="18" fill="#f8fbff"/>
+          <path d="M440 40 C430 100,430 180,440 260" fill="none" stroke="#94a3b8" stroke-width="70" stroke-linecap="round" opacity=".45"/>
+          <path d="M455 42 C445 105,445 175,455 255" fill="none" stroke="#123c69" stroke-width="22" stroke-linecap="round"/>
+          <line x1="455" y1="90" x2="650" y2="90" stroke="#b42318" stroke-width="3" stroke-dasharray="8 6"/>
+          <text x="660" y="96" font-size="16" fill="#b42318" font-weight="700">Muito alto: risco de extubação</text>
+          <line x1="455" y1="185" x2="650" y2="185" stroke="#067647" stroke-width="3"/>
+          <text x="660" y="190" font-size="16" fill="#067647" font-weight="700">Zona desejada: acima da carina</text>
+          <line x1="455" y1="245" x2="650" y2="245" stroke="#b54708" stroke-width="3" stroke-dasharray="8 6"/>
+          <text x="660" y="250" font-size="16" fill="#b54708" font-weight="700">Muito baixo: seletiva</text>
+          <text x="90" y="55" font-size="18" fill="#123c69" font-weight="700">A profundidade é dinâmica</text>
+          <text x="90" y="85" font-size="14" fill="#5f6b7a">Flexão cervical avança o tubo; extensão pode recuá-lo.</text>
+        </svg>
+      </div>
+      <div class="alert alert-warning"><strong>Atenção:</strong> após transporte, mudança de decúbito, pronação, mobilização ou tração do circuito, reavaliar fixação, profundidade, capnografia e ausculta.</div>
+    </section>
+
+    <section id="ultrassom">
+      <h2>7. Ultrassom pós-IOT — uso complementar</h2>
+      <p>O ultrassom pode complementar a confirmação e investigação de complicações. Neste módulo, o foco é uso imediato pós-IOT; o aprofundamento ficará no Módulo 10 — POCUS.</p>
+      <table>
+        <thead><tr><th>Aplicação</th><th>Achado esperado</th><th>Interpretação</th></tr></thead>
+        <tbody>
+          <tr><td>US cervical transversal</td><td>Tubo na traqueia; ausência de segunda estrutura aérea lateral/posterior.</td><td>Ajuda a diferenciar traqueal vs esofágica, especialmente quando capnografia é inconclusiva.</td></tr>
+          <tr><td>Lung sliding bilateral</td><td>Deslizamento pleural em ambos hemitórax.</td><td>Sugere ventilação pleural bilateral; ausência unilateral pode indicar seletiva, pneumotórax, apneia local ou aderências.</td></tr>
+          <tr><td>Lung point</td><td>Transição entre sliding presente/ausente.</td><td>Achado específico de pneumotórax quando presente, mas nem sempre encontrado.</td></tr>
+          <tr><td>Diafragma</td><td>Excursão bilateral.</td><td>Pode sugerir ventilação bilateral, mas é menos imediato que lung sliding.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info"><strong>Integração correta:</strong> USG não deve atrasar ação quando há ausência de capnografia, instabilidade ou forte suspeita de tubo mal posicionado. Use como ferramenta complementar e dirigida.</div>
+      <div class="ref"><strong>Fontes primárias:</strong> ASA 2022 reconhece ultrassom como técnica adicional de confirmação quando disponível; diretrizes AHA 2015/atualizações discutem ultrassom traqueal como método de confirmação sem depender de fluxo pulmonar de CO₂.</div>
+    </section>
+
+    <section id="ventilador">
+      <h2>8. Transição para ventilação mecânica</h2>
+      <p>Após confirmação, o paciente deve sair rapidamente da ventilação manual para ventilador ajustado. A transição reduz variabilidade de volume, evita hiperventilação inadvertida e permite controle de pressões.</p>
+      <h3>8.1 Ajustes iniciais seguros</h3>
+      <table>
+        <thead><tr><th>Parâmetro</th><th>Ponto de partida</th><th>Racional</th></tr></thead>
+        <tbody>
+          <tr><td>Modo</td><td>VCV ou PCV conforme ventilador/equipe.</td><td>Escolher modo conhecido e seguro para estabilização inicial.</td></tr>
+          <tr><td>Volume corrente</td><td>6 mL/kg de peso predito como referência inicial em estratégia protetora.</td><td>Evita volutrauma; será detalhado no Módulo 3.</td></tr>
+          <tr><td>Frequência respiratória</td><td>12–20 irpm; maior se acidose metabólica, com vigilância de auto-PEEP.</td><td>Controla ventilação minuto e PaCO₂.</td></tr>
+          <tr><td>FiO₂</td><td>Inicialmente 1,0 se instável/hipoxêmico, com desmame após estabilização.</td><td>Evitar hipóxia durante fase crítica, reduzindo hiperóxia depois.</td></tr>
+          <tr><td>PEEP</td><td>5 cmH₂O como ponto de partida; ajustar por hipoxemia, hemodinâmica e doença pulmonar.</td><td>Equilibra recrutamento e impacto hemodinâmico.</td></tr>
+          <tr><td>Alarmes</td><td>Pressão alta, volume minuto, desconexão, apneia.</td><td>Alarmes precisam ser configurados, não apenas silenciados.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-danger"><strong>Acidose metabólica grave:</strong> não iniciar ventilação com volume minuto muito inferior ao esforço compensatório pré-IOT. Reavaliar ETCO₂ e gasometria precocemente.</div>
+
+      <h3>8.2 O que é auto-PEEP?</h3>
+      <p><strong>Auto-PEEP</strong>, também chamada de <strong>PEEP intrínseca</strong>, é a pressão positiva que permanece dentro dos alvéolos ao final da expiração porque o paciente não conseguiu esvaziar completamente os pulmões antes do próximo ciclo ventilatório.</p>
+      <p>Na prática, significa que a próxima inspiração começa sobre um pulmão ainda hiperinsuflado. Isso ocorre por <strong>tempo expiratório insuficiente</strong>, <strong>obstrução ao fluxo expiratório</strong> ou combinação de ambos.</p>
+
+      <div class="grid grid-3">
+        <div class="card"><h4>Mecanismo</h4><p>O ar entra, mas não sai completamente. A pressão alveolar final fica maior que a PEEP programada no ventilador.</p></div>
+        <div class="card"><h4>Cenários clássicos</h4><p>Asma grave, DPOC, broncoespasmo, secreção/obstrução, frequência respiratória alta, tempo expiratório curto ou volume minuto excessivo.</p></div>
+        <div class="card"><h4>Risco principal</h4><p>Hiperinsuflação dinâmica com aumento da pressão intratorácica, redução do retorno venoso, hipotensão e até colapso cardiovascular.</p></div>
+      </div>
+
+      <table>
+        <thead><tr><th>Achado</th><th>O que sugere</th><th>Resposta prática</th></tr></thead>
+        <tbody>
+          <tr><td>Fluxo expiratório não retorna à linha de base antes da próxima inspiração</td><td>Expiração incompleta e aprisionamento aéreo.</td><td>Reduzir frequência respiratória, reduzir volume minuto quando possível e aumentar tempo expiratório.</td></tr>
+          <tr><td>Pressão de pico elevada com broncoespasmo/secreção</td><td>Aumento de resistência de vias aéreas e esvaziamento lento.</td><td>Tratar broncoespasmo, aspirar secreções, checar tubo/circuito e prolongar expiração.</td></tr>
+          <tr><td>Hipotensão após iniciar ventilação mecânica</td><td>Redução do retorno venoso por pressão intratorácica elevada, especialmente em asma/DPOC.</td><td>Suspeitar de auto-PEEP, desconectar brevemente do ventilador se colapso iminente, ventilar manualmente com baixa frequência e corrigir ajustes.</td></tr>
+          <tr><td>Paciente disparando pouco ou com esforço para iniciar ciclos</td><td>Auto-PEEP aumenta o limiar necessário para disparar o ventilador.</td><td>Ajustar sensibilidade, considerar PEEP externa com cautela em DPOC, otimizar sedação/analgesia e reduzir aprisionamento.</td></tr>
+        </tbody>
+      </table>
+
+      <details open><summary>Como reduzir auto-PEEP no pós-IOT</summary><div class="detail-body">
+        <ul class="checklist">
+          <li><strong>Reduzir frequência respiratória</strong> para aumentar o tempo expiratório.</li>
+          <li><strong>Aumentar fluxo inspiratório</strong> no modo volume-controlado quando apropriado, encurtando o tempo inspiratório e ampliando o tempo expiratório.</li>
+          <li><strong>Reduzir volume corrente</strong> se houver hiperinsuflação/pressões excessivas, mantendo estratégia protetora.</li>
+          <li><strong>Tratar obstrução</strong>: broncodilatador, corticoide quando indicado, aspiração de secreções, checagem de dobra/obstrução do tubo.</li>
+          <li><strong>Evitar hiperventilação manual</strong>: bolsa-válvula-máscara rápida e vigorosa pode piorar aprisionamento aéreo.</li>
+          <li><strong>Se colapso hemodinâmico por suspeita de hiperinsuflação dinâmica</strong>: desconectar o circuito por alguns segundos pode permitir esvaziamento pulmonar; reconectar com ajustes mais permissivos.</li>
+        </ul>
+      </div></details>
+
+      <div class="alert alert-warning"><strong>Armadilha:</strong> em asma/DPOC pós-IOT, aumentar muito a frequência respiratória para “baixar CO₂” pode piorar auto-PEEP, hipotensão e barotrauma. Nesses cenários, aceitar hipercapnia permissiva pode ser mais seguro do que tentar normalizar rapidamente o CO₂.</div>
+
+      <div class="ref"><strong>Fontes primárias e fisiologia aplicada:</strong> Higgs A et al. <em>British Journal of Anaesthesia</em>, 2018. Guidelines for tracheal intubation in critically ill adults. DOI: 10.1016/j.bja.2017.10.021. Carteaux G, Spinelli E, Jaber S. <em>Intensive Care Medicine</em>, 2026. Understanding lung physiology through ventilator screen. DOI: 10.1007/s00134-026-08341-5.</div>
+    </section>
+
+    <section id="sedoanalgesia">
+      <h2>9. Sedoanalgesia imediata pós-IOT</h2>
+<details><summary>Apresentações comerciais usuais no Brasil — sedoanalgesia e bloqueio</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Fármaco</th><th>Apresentação comercial — concentração, volume total e conteúdo total</th><th>Uso no módulo</th></tr></thead>
+          <tbody>
+            <tr><td>Fentanil</td><td>50 mcg/mL — ampola de 2 mL = 100 mcg, 5 mL = 250 mcg ou 10 mL = 500 mcg.</td><td>Analgesia contínua.</td></tr>
+            <tr><td>Remifentanil</td><td>Frasco-ampola liofilizado de 1 mg, 2 mg ou 5 mg; concentração final depende da reconstituição/diluição.</td><td>Infusão ultracurta; concentração depende da diluição.</td></tr>
+            <tr><td>Morfina</td><td>10 mg/mL; ampola de 1 mL = 10 mg.</td><td>Opioide alternativo.</td></tr>
+            <tr><td>Sufentanil</td><td>5 mcg/mL ou 50 mcg/mL, com volume total/conteúdo por ampola conforme fabricante.</td><td>Opioide potente.</td></tr>
+            <tr><td>Alfentanil</td><td>500 mcg/mL — ampola/fr. de 10 mL = 5 mg.</td><td>Disponibilidade variável.</td></tr>
+            <tr><td>Hidromorfona</td><td>Apresentação hospitalar variável.</td><td>Conferir serviço/protocolo.</td></tr>
+            <tr><td>Cetamina</td><td>50 mg/mL; 10 mL = 500 mg.</td><td>Adjuvante analgésico/sedativo.</td></tr>
+            <tr><td>Lidocaína</td><td>1% = 10 mg/mL ou 2% = 20 mg/mL; frasco/ampola de 5 mL, 10 mL ou 20 mL, com conteúdo total conforme concentração.</td><td>Adjuvante selecionado.</td></tr>
+            <tr><td>Propofol</td><td>10 mg/mL — frasco/ampola de 20 mL = 200 mg, 50 mL = 500 mg ou 100 mL = 1000 mg.</td><td>Sedativo contínuo.</td></tr>
+            <tr><td>Midazolam</td><td>5 mg/mL em 1, 3 ou 10 mL; 1 mg/mL em 5 mL.</td><td>Benzodiazepínico contínuo.</td></tr>
+            <tr><td>Dexmedetomidina</td><td>100 mcg/mL; ampola de 2 mL = 200 mcg.</td><td>Sedação cooperativa.</td></tr>
+            <tr><td>Cisatracúrio</td><td>2 mg/mL; 5 mL = 10 mg ou 10 mL = 20 mg.</td><td>Bloqueio contínuo.</td></tr>
+            <tr><td>Rocurônio</td><td>10 mg/mL; 5 mL = 50 mg ou 10 mL = 100 mg.</td><td>Bloqueio contínuo alternativo.</td></tr>
+            <tr><td>Atracúrio</td><td>10 mg/mL; 2,5 mL = 25 mg ou 5 mL = 50 mg.</td><td>Bloqueio contínuo alternativo.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+<div class="alert alert-danger">
+        <strong>Regra de segurança:</strong> paciente paralisado não é sinônimo de paciente sedado. Após bloqueador neuromuscular, ausência de movimento pode mascarar dor, desconforto, hipoxemia, assincronia e awareness.
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card"><h4>Analgesia-first</h4><p>Tratar dor antes de escalar hipnótico. Fentanil, remifentanil ou morfina são opções conforme hemodinâmica, função renal, necessidade de despertar e protocolo institucional.</p></div>
+        <div class="card"><h4>Sedação titulada</h4><p>Propofol, midazolam, dexmedetomidina ou cetamina devem ser escolhidos conforme fenótipo: choque, broncoespasmo, TCE/HIC, delirium, necessidade de despertar ou sedação profunda.</p></div>
+        <div class="card"><h4>Meta explícita</h4><p>Definir alvo de RASS, escala de dor e necessidade real de sedação profunda. Evitar RASS -4/-5 sem indicação fisiológica ou neurológica.</p></div>
+      </div>
+
+      <h3>9.1 Estratégia por cenário clínico</h3>
+      <table>
+        <thead><tr><th>Situação</th><th>Estratégia prática</th><th>Armadilha</th></tr></thead>
+        <tbody>
+          <tr><td>Pós-RSI com rocurônio</td><td>Iniciar sedação/analgesia imediatamente após confirmação do tubo.</td><td>Paciente paralisado pode parecer “confortável” sem estar sedado.</td></tr>
+          <tr><td>Choque</td><td>Evitar bolus sedativos agressivos; considerar analgesia titulada, cetamina como adjuvante e reduzir doses de hipnóticos hipotensores.</td><td>Propofol em dose plena pode precipitar colapso hemodinâmico.</td></tr>
+          <tr><td>Broncoespasmo</td><td>Cetamina pode ajudar como adjuvante sedativo/analgésico; tratar obstrução, ajustar ventilador e prolongar tempo expiratório.</td><td>Confundir pressão alta por broncoespasmo com necessidade isolada de reduzir volume corrente.</td></tr>
+          <tr><td>HIC/TCE</td><td>Evitar hipóxia, hipotensão, tosse e assincronia; propofol ou midazolam podem ser úteis conforme pressão arterial e objetivo neurológico.</td><td>Hipotensão por sedativo reduz pressão de perfusão cerebral e piora lesão secundária.</td></tr>
+          <tr><td>Delirium/agitação sem necessidade de sedação profunda</td><td>Considerar dexmedetomidina quando o objetivo for sedação leve, cooperação e menor depressão respiratória.</td><td>Usar benzodiazepínico contínuo sem indicação pode prolongar despertar e delirium.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>9.2 Analgésicos em infusão contínua</h3>
+
+      <details open><summary>Fentanil — opioide µ-agonista sintético</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Mecanismo</th><td>Agonista de receptores opioides µ; promove analgesia, sedação secundária e atenuação da resposta simpática à dor/estresse.</td></tr>
+          <tr><th>Quando usar</th><td>Analgesia pós-IOT, ventilação mecânica, dor intensa, necessidade de opioide titulável em paciente crítico.</td></tr>
+          <tr><th>Ampola comum no Brasil</th><td>50 mcg/mL; ampolas de 2 mL = 100 mcg ou 10 mL = 500 mcg, conforme fabricante.</td></tr>
+          <tr><th>Diluente</th><td>Soro fisiológico 0,9% ou soro glicosado 5%, conforme compatibilidade/protocolo institucional.</td></tr>
+          <tr><th>Diluição prática</th><td>500 mcg em 50 mL → concentração final 10 mcg/mL. Alternativa mais concentrada em restrição hídrica: 1000 mcg em 50 mL → 20 mcg/mL.</td></tr>
+          <tr><th>Dose em infusão contínua</th><td>0,7–10 mcg/kg/h, titulando por dor, sincronia ventilatória, escala comportamental e efeitos adversos. Em muitos pacientes, faixas menores são suficientes.</td></tr>
+          <tr><th>Exemplo 70 kg</th><td>49–700 mcg/h. Se solução 10 mcg/mL → 4,9–70 mL/h. Se solução 20 mcg/mL → 2,45–35 mL/h.</td></tr>
+          <tr><th>Cuidados</th><td>Depressão respiratória, íleo, náuseas, bradicardia, hipotensão em associação, tolerância, abstinência e rigidez torácica com bolus rápido/alta dose.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <details><summary>Remifentanil — opioide µ-agonista ultracurto</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Mecanismo</th><td>Agonista opioide µ de metabolismo ultrarrápido por esterases plasmáticas e teciduais; permite titulação fina e despertar rápido após suspensão.</td></tr>
+          <tr><th>Quando usar</th><td>Situações em que se deseja analgesia titulável com rápida interrupção: despertar neurológico, procedimentos curtos, assincronia/dor com necessidade de avaliação seriada.</td></tr>
+          <tr><th>Ampola/frascos comuns no Brasil</th><td>Frasco-ampola liofilizado de 1 mg, 2 mg ou 5 mg, conforme fabricante.</td></tr>
+          <tr><th>Diluente</th><td>Reconstituição conforme bula; diluição final usual em SF 0,9% ou SG 5% para bomba de infusão.</td></tr>
+          <tr><th>Diluição prática</th><td>2 mg em 40 mL → 50 mcg/mL. Alternativa: 1 mg em 20 mL → 50 mcg/mL.</td></tr>
+          <tr><th>Dose em infusão contínua</th><td>0,02–0,15 mcg/kg/min; ajustar por dor, ventilação, PA/FC e necessidade de despertar.</td></tr>
+          <tr><th>Exemplo 70 kg</th><td>1,4–10,5 mcg/min = 84–630 mcg/h. Se solução 50 mcg/mL → 1,7–12,6 mL/h.</td></tr>
+          <tr><th>Cuidados</th><td>Apneia, bradicardia, hipotensão, hiperalgesia/rebote álgico após suspensão abrupta; exige bomba e monitorização rigorosa.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <details><summary>Morfina — opioide µ-agonista de maior duração</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Mecanismo</th><td>Agonista opioide µ; analgesia sustentada, sedação secundária e redução da resposta simpática à dor.</td></tr>
+          <tr><th>Quando usar</th><td>Analgesia pós-IOT quando não há necessidade de despertar rápido. Menos adequada em instabilidade hemodinâmica relevante ou disfunção renal importante.</td></tr>
+          <tr><th>Ampola comum no Brasil</th><td>10 mg/mL, ampola de 1 mL; podem existir outras apresentações.</td></tr>
+          <tr><th>Diluente</th><td>SF 0,9% ou SG 5%, conforme protocolo institucional.</td></tr>
+          <tr><th>Diluição prática</th><td>50 mg em 50 mL → 1 mg/mL. Para bolus titulado: 10 mg + 9 mL SF 0,9% → 1 mg/mL.</td></tr>
+          <tr><th>Dose em infusão contínua</th><td>0,01–0,1 mg/kg/h ou 1–10 mg/h, titulado por analgesia e efeitos adversos.</td></tr>
+          <tr><th>Exemplo 70 kg</th><td>0,7–7 mg/h. Se solução 1 mg/mL → 0,7–7 mL/h.</td></tr>
+          <tr><th>Cuidados</th><td>Liberação histamínica, hipotensão, depressão respiratória, íleo, náuseas e acúmulo de metabólitos ativos em disfunção renal.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <h3>9.3 Sedativos/hipnóticos em infusão contínua</h3>
+
+      <details open><summary>Propofol — hipnótico GABAérgico</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Mecanismo</th><td>Potencializa transmissão GABA-A; hipnose rápida, redução do metabolismo cerebral e efeito anticonvulsivante. Não fornece analgesia.</td></tr>
+          <tr><th>Quando usar</th><td>Sedação titulável pós-IOT, necessidade de despertar rápido, controle de assincronia, TCE/HIC quando hemodinâmica permite.</td></tr>
+          <tr><th>Ampola/frasco comum no Brasil</th><td>10 mg/mL em emulsão lipídica; frasco/ampola de 20 mL = 200 mg, 50 mL = 500 mg ou 100 mL = 1000 mg, conforme apresentação.</td></tr>
+          <tr><th>Diluente</th><td>Em geral, <strong>não diluir</strong>. Usar puro em bomba de infusão, com técnica asséptica e equipo próprio conforme protocolo.</td></tr>
+          <tr><th>Diluição prática</th><td>Puro: 10 mg/mL. Registrar calorias lipídicas se uso prolongado e monitorar triglicerídeos conforme risco/duração.</td></tr>
+          <tr><th>Dose em infusão contínua</th><td>5–50 mcg/kg/min, equivalente a 0,3–3 mg/kg/h. Em sedação profunda pode exigir mais, mas doses altas/prolongadas aumentam risco de síndrome de infusão do propofol.</td></tr>
+          <tr><th>Exemplo 70 kg</th><td>21–210 mg/h. Solução 10 mg/mL → 2,1–21 mL/h.</td></tr>
+          <tr><th>Cuidados</th><td>Hipotensão, bradicardia, hipertrigliceridemia, acidose metabólica, rabdomiólise e síndrome de infusão do propofol em doses altas/prolongadas.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <details><summary>Midazolam — benzodiazepínico</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Mecanismo</th><td>Modulador alostérico positivo do receptor GABA-A; promove ansiólise, amnésia, hipnose e anticonvulsivação. Não é analgésico.</td></tr>
+          <tr><th>Quando usar</th><td>Sedação quando propofol é mal tolerado hemodinamicamente, necessidade anticonvulsivante, sedação profunda ou indisponibilidade de alternativas.</td></tr>
+          <tr><th>Ampola comum no Brasil</th><td>5 mg/mL, por exemplo ampola de 3 mL = 15 mg; também existem apresentações 1 mg/mL.</td></tr>
+          <tr><th>Diluente</th><td>SF 0,9% ou SG 5%, conforme protocolo institucional.</td></tr>
+          <tr><th>Diluição prática</th><td>50 mg em 50 mL → 1 mg/mL. Alternativa: 100 mg em 100 mL → 1 mg/mL. Para menor volume: 100 mg em 50 mL → 2 mg/mL.</td></tr>
+          <tr><th>Dose em infusão contínua</th><td>0,02–0,1 mg/kg/h; usar a menor dose eficaz e reavaliar diariamente.</td></tr>
+          <tr><th>Exemplo 70 kg</th><td>1,4–7 mg/h. Se solução 1 mg/mL → 1,4–7 mL/h. Se solução 2 mg/mL → 0,7–3,5 mL/h.</td></tr>
+          <tr><th>Cuidados</th><td>Acúmulo em uso prolongado, delirium, depressão respiratória, hipotensão em associação e interferência na avaliação neurológica.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <details><summary>Dexmedetomidina — agonista α2-adrenérgico</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Mecanismo</th><td>Agonista α2 central; reduz liberação noradrenérgica, promove sedação cooperativa e alguma analgesia poupadora de opioide, com pouca depressão respiratória.</td></tr>
+          <tr><th>Quando usar</th><td>Sedação leve, paciente em transição para despertar/desmame, agitação/delirium selecionado, necessidade de manter interação e avaliação neurológica.</td></tr>
+          <tr><th>Ampola comum no Brasil</th><td>100 mcg/mL; ampola/fraco de 2 mL = 200 mcg, conforme fabricante.</td></tr>
+          <tr><th>Diluente</th><td>SF 0,9% ou SG 5%.</td></tr>
+          <tr><th>Diluição prática</th><td>400 mcg em 100 mL → 4 mcg/mL. Alternativa: 200 mcg em 50 mL → 4 mcg/mL.</td></tr>
+          <tr><th>Dose em infusão contínua</th><td>0,2–1,4 mcg/kg/h. Em UTI, evitar dose de ataque na maioria dos pacientes críticos pelo risco de hipotensão/bradicardia.</td></tr>
+          <tr><th>Exemplo 70 kg</th><td>14–98 mcg/h. Se solução 4 mcg/mL → 3,5–24,5 mL/h.</td></tr>
+          <tr><th>Cuidados</th><td>Bradicardia, hipotensão, bloqueios de condução; pode não ser suficiente como sedativo único para sedação profunda ou bloqueio neuromuscular.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <details><summary>Cetamina — antagonista NMDA com analgesia dissociativa</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Mecanismo</th><td>Antagonista do receptor NMDA; promove analgesia, sedação dissociativa, broncodilatação e redução de sensibilização central.</td></tr>
+          <tr><th>Quando usar</th><td>Adjuvante analgésico/sedativo em choque selecionado, broncoespasmo, dor intensa, tolerância a opioides ou necessidade de poupar opioide/propofol.</td></tr>
+          <tr><th>Ampola comum no Brasil</th><td>50 mg/mL, frequentemente frasco/ampola de 10 mL = 500 mg; apresentações podem variar.</td></tr>
+          <tr><th>Diluente</th><td>SF 0,9% ou SG 5%.</td></tr>
+          <tr><th>Diluição prática</th><td>500 mg em 50 mL → 10 mg/mL. Para menor concentração: 500 mg em 100 mL → 5 mg/mL.</td></tr>
+          <tr><th>Dose em infusão contínua</th><td>0,05–1 mg/kg/h, conforme objetivo: analgesia adjuvante em doses baixas; sedação/broncoespasmo em doses maiores.</td></tr>
+          <tr><th>Exemplo 70 kg</th><td>3,5–70 mg/h. Se solução 10 mg/mL → 0,35–7 mL/h. Se solução 5 mg/mL → 0,7–14 mL/h.</td></tr>
+          <tr><th>Cuidados</th><td>Hipertensão/taquicardia, sialorreia, fenômenos emergenciais, possível depressão miocárdica em choque catecolamina-depletado; monitorar função hepática se uso prolongado.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <h3>9.4 Resumo operacional — paciente de 70 kg</h3>
+      <table>
+        <thead><tr><th>Medicação</th><th>Solução prática</th><th>Faixa de dose</th><th>Vazão para 70 kg</th><th>Ponto de segurança</th></tr></thead>
+        <tbody>
+          <tr><td>Fentanil</td><td>500 mcg/50 mL = 10 mcg/mL</td><td>0,7–10 mcg/kg/h</td><td>4,9–70 mL/h</td><td>Sem analgesia, sedação isolada é inadequada; evitar bolus rápido.</td></tr>
+          <tr><td>Remifentanil</td><td>2 mg/40 mL = 50 mcg/mL</td><td>0,02–0,15 mcg/kg/min</td><td>1,7–12,6 mL/h</td><td>Despertar rápido, mas risco de apneia/bradicardia; exige bomba.</td></tr>
+          <tr><td>Morfina</td><td>50 mg/50 mL = 1 mg/mL</td><td>0,01–0,1 mg/kg/h</td><td>0,7–7 mL/h</td><td>Evitar/acautelar em disfunção renal e choque.</td></tr>
+          <tr><td>Propofol</td><td>Puro 10 mg/mL</td><td>5–50 mcg/kg/min</td><td>2,1–21 mL/h</td><td>Hipotensão; não é analgésico; monitorar TG/PRIS se prolongado.</td></tr>
+          <tr><td>Midazolam</td><td>50 mg/50 mL = 1 mg/mL</td><td>0,02–0,1 mg/kg/h</td><td>1,4–7 mL/h</td><td>Acúmulo e delirium; não é analgésico.</td></tr>
+          <tr><td>Dexmedetomidina</td><td>400 mcg/100 mL = 4 mcg/mL</td><td>0,2–1,4 mcg/kg/h</td><td>3,5–24,5 mL/h</td><td>Evitar ataque; bradicardia/hipotensão; sedação leve.</td></tr>
+          <tr><td>Cetamina</td><td>500 mg/50 mL = 10 mg/mL</td><td>0,05–1 mg/kg/h</td><td>0,35–7 mL/h</td><td>Útil como adjuvante; atenção em choque catecolamina-depletado.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="alert alert-warning">
+        <strong>Nota operacional:</strong> as diluições acima são exemplos padronizáveis para cálculo e ensino. A versão final da calculadora deverá permitir concentração customizável, porque hospitais podem usar soluções mais concentradas em restrição hídrica, bombas de seringa ou protocolos próprios.
+      </div>
+
+      <div class="ref"><strong>Fontes primárias e bases operacionais:</strong> Devlin JW et al. <em>Critical Care Medicine</em>, 2018. SCCM PADIS Guidelines. DOI: 10.1097/CCM.0000000000003299. Hughes CG et al. <em>Critical Care Medicine</em>, 2021. 2021 Clinical Practice Guidelines for Adult Critically Ill Patients with Acute Pain. DOI: 10.1097/CCM.0000000000005139. As apresentações/diluições devem ser confirmadas em bula profissional de saúde e protocolo institucional. A obra brasileira <em>Medicina Intensiva — Abordagem Prática</em> reforça a necessidade de conferir informações do fabricante para dose, modo de administração, contraindicações e efeitos adversos antes do uso clínico.</div>
+    </section>
+
+    <section id="dessaturacao">
+      <h2>10. Dessaturação ou deterioração ventilatória pós-IOT — DOPE/DOPES</h2>
+      <p>Após intubação, dessaturação deve ser abordada como evento de risco imediato. O mnemônico DOPE/DOPES organiza causas reversíveis.</p>
+      <div class="svg-box">
+        <svg viewBox="0 0 900 390" role="img" aria-label="Algoritmo DOPE DOPES">
+          <rect width="900" height="390" rx="18" fill="#f8fbff"/>
+          <text x="45" y="45" font-size="24" fill="#123c69" font-weight="700">Dessaturou pós-IOT?</text>
+          <g font-family="Arial" font-size="15">
+            <rect x="45" y="75" width="170" height="90" rx="14" fill="#fff1f0" stroke="#b42318"/><text x="72" y="108" fill="#b42318" font-weight="700">D — Deslocamento</text><text x="65" y="135" fill="#5f6b7a">Extubação, seletiva,</text><text x="65" y="155" fill="#5f6b7a">profundidade errada</text>
+            <rect x="245" y="75" width="170" height="90" rx="14" fill="#fff7ed" stroke="#b54708"/><text x="278" y="108" fill="#b54708" font-weight="700">O — Obstrução</text><text x="265" y="135" fill="#5f6b7a">Secreção, mordida,</text><text x="265" y="155" fill="#5f6b7a">tubo dobrado</text>
+            <rect x="445" y="75" width="170" height="90" rx="14" fill="#eef3f8" stroke="#123c69"/><text x="490" y="108" fill="#123c69" font-weight="700">P — Pneumotórax</text><text x="465" y="135" fill="#5f6b7a">Barotrauma, ausculta</text><text x="465" y="155" fill="#5f6b7a">assimétrica</text>
+            <rect x="645" y="75" width="210" height="90" rx="14" fill="#ecfdf3" stroke="#067647"/><text x="695" y="108" fill="#067647" font-weight="700">E — Equipamento</text><text x="665" y="135" fill="#5f6b7a">Desconexão, ventilador,</text><text x="665" y="155" fill="#5f6b7a">filtro, fonte de O₂</text>
+            <rect x="340" y="220" width="220" height="90" rx="14" fill="#f0f9ff" stroke="#0b6b5c"/><text x="385" y="254" fill="#0b6b5c" font-weight="700">S — Stacking</text><text x="365" y="280" fill="#5f6b7a">Auto-PEEP, hiperinsuflação,</text><text x="365" y="300" fill="#5f6b7a">asma/DPOC</text>
+          </g>
+          <text x="60" y="350" font-size="15" fill="#344054">Ação simultânea: FiO₂ 100%, ventilação manual se necessário, checar capnografia/circuito/tubo, ausculta e pressão de vias aéreas.</text>
+        </svg>
+      </div>
+      <details><summary>Traçados de assincronia ventilatória no monitor/ventilador</summary><div class="detail-body">
+        <div class="grid grid-2">
+          <div class="card"><h4>Auto-disparo</h4>
+            <div class="svg-box"><svg viewBox="0 0 420 160"><rect width="420" height="160" rx="12" fill="#fff"/><line x1="40" y1="80" x2="380" y2="80" stroke="#98a2b3"/><polyline points="45,80 75,30 105,80 135,30 165,80 195,30 225,80 255,30 285,80 315,30 345,80" fill="none" stroke="#b54708" stroke-width="4"/></svg></div>
+            <p>Ciclos frequentes sem esforço real. Suspeitar de vazamento, condensado no circuito, trigger sensível ou oscilação cardíaca.</p>
+          </div>
+          <div class="card"><h4>Duplo disparo</h4>
+            <div class="svg-box"><svg viewBox="0 0 420 160"><rect width="420" height="160" rx="12" fill="#fff"/><line x1="40" y1="120" x2="380" y2="120" stroke="#98a2b3"/><polyline points="45,120 90,35 130,120 145,120 190,35 230,120 300,120 345,35 380,120" fill="none" stroke="#123c69" stroke-width="4"/></svg></div>
+            <p>Dois ciclos quase colados. Pensar em tempo inspiratório neural maior que o tempo do ventilador, volume insuficiente ou drive alto.</p>
+          </div>
+          <div class="card"><h4>Esforço inefetivo</h4>
+            <div class="svg-box"><svg viewBox="0 0 420 160"><rect width="420" height="160" rx="12" fill="#fff"/><line x1="40" y1="80" x2="380" y2="80" stroke="#98a2b3"/><polyline points="45,80 100,30 150,80 210,80 225,95 240,80 300,30 350,80" fill="none" stroke="#0b6b5c" stroke-width="4"/><text x="205" y="115" font-size="12" fill="#b42318">esforço sem ciclo</text></svg></div>
+            <p>Deflexão sem entrega de ciclo. Comum em auto-PEEP, fraqueza, sedação excessiva ou trigger pouco sensível.</p>
+          </div>
+          <div class="card"><h4>Ciclagem inadequada</h4>
+            <div class="svg-box"><svg viewBox="0 0 420 160"><rect width="420" height="160" rx="12" fill="#fff"/><line x1="40" y1="120" x2="380" y2="120" stroke="#98a2b3"/><polyline points="45,120 90,35 210,35 235,120 300,120 345,35 365,120" fill="none" stroke="#b42318" stroke-width="4"/></svg></div>
+            <p>Inspiração mecânica termina tarde ou cedo em relação ao paciente. Ajustar tempo inspiratório, rise time, fluxo/ciclagem e suporte.</p>
+          </div>
+        </div>
+      </div></details>
+
+      <table>
+        <thead><tr><th>Problema</th><th>Como suspeitar</th><th>Resposta imediata</th></tr></thead>
+        <tbody>
+          <tr><td>Deslocamento/extubação</td><td>Capnografia some, escape, fala/tosse, perda de volume.</td><td>Ventilar com BVM, reintubar se necessário, chamar ajuda.</td></tr>
+          <tr><td>Intubação seletiva</td><td>MV reduzido à esquerda, pressão alta, hipoxemia.</td><td>Recuar 1–2 cm, reauscultar, confirmar.</td></tr>
+          <tr><td>Obstrução</td><td>Pressão alta, ETCO₂ alterado, dificuldade de passar ar.</td><td>Aspirar, checar dobra/mordida/filtro, trocar tubo se obstrução crítica.</td></tr>
+          <tr><td>Pneumotórax</td><td>Hipoxemia, hipotensão, assimetria, pressão alta, ausência de sliding.</td><td>Descompressão imediata se instável e suspeita alta.</td></tr>
+          <tr><td>Equipamento</td><td>Alarme, desconexão, vazamento, fonte de O₂.</td><td>Desconectar do ventilador e ventilar manualmente com O₂ 100%; checar circuito.</td></tr>
+          <tr><td>Stacking/auto-PEEP</td><td>Asma/DPOC, expiração incompleta, hipotensão, pressão alta.</td><td>Reduzir frequência, aumentar tempo expiratório, desconectar brevemente se colapso por auto-PEEP.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="hipotensao">
+      <h2>11. Hipotensão pós-intubação</h2>
+      <p>A hipotensão pós-IOT pode resultar de sedativos, vasodilatação, hipovolemia, redução do retorno venoso pela pressão positiva, auto-PEEP, pneumotórax, acidose, hipoxemia ou disfunção ventricular.</p>
+      <div class="grid grid-2">
+        <details open><summary>Resposta imediata</summary><div class="detail-body"><ul class="checklist"><li>Confirmar pulso, PA, ECG e SpO₂.</li><li>FiO₂ 100% e checar ventilação/capnografia.</li><li>Reduzir pressões/PEEP se suspeita de impacto hemodinâmico.</li><li>Iniciar ou aumentar vasopressor se choque/vasoplegia.</li><li>Fluid challenge apenas se houver plausibilidade de responsividade.</li><li>Investigar pneumotórax, seletiva, auto-PEEP, tamponamento/TEP se contexto.</li></ul></div></details>
+        <details open><summary>Prevenção na próxima IOT</summary><div class="detail-body"><ul class="checklist"><li>Reconhecer choque antes da indução.</li><li>Preparar noradrenalina antes da passagem.</li><li>Reduzir doses de hipnóticos hipotensores.</li><li>Evitar apneia prolongada e hipóxia.</li><li>Escolher ventilação inicial com menor agressão hemodinâmica.</li><li>Ter plano para VD vulnerável/auto-PEEP.</li></ul></div></details>
+      </div>
+      <div class="alert alert-danger"><strong>Armadilha:</strong> “PAM caiu porque sedou” pode ocultar pneumotórax, auto-PEEP, seletiva ou choque obstrutivo. Sempre reavaliar tubo, circuito, pulmão e perfusão.</div>
+      <div class="ref"><strong>Fontes primárias:</strong> Higgs A et al. <em>British Journal of Anaesthesia</em>, 2018. DOI: 10.1016/j.bja.2017.10.021. Evans L et al. <em>Intensive Care Medicine</em>, 2021. SSC 2021. DOI: 10.1007/s00134-021-06506-y.</div>
+    </section>
+
+    <section id="checklist">
+      <h2>12. Checklist dos primeiros 5–10 minutos</h2>
+      <div class="grid grid-2">
+        <div class="card"><h4>Via aérea</h4><ul class="checklist"><li>Capnografia com onda persistente.</li><li>Ausculta bilateral e epigástrica.</li><li>Profundidade documentada.</li><li>Cuff insuflado e, se possível, medido.</li><li>Tubo fixado.</li></ul></div>
+        <div class="card"><h4>Ventilação</h4><ul class="checklist"><li>Ventilador conectado.</li><li>Modo, Vt/pressão, FR, PEEP, FiO₂ e alarmes configurados.</li><li>Pressões de vias aéreas avaliadas.</li><li>ETCO₂ e SpO₂ monitorados.</li><li>Gasometria solicitada quando indicada.</li></ul></div>
+        <div class="card"><h4>Hemodinâmica</h4><ul class="checklist"><li>PA reavaliada imediatamente.</li><li>Vasopressor ajustado se necessário.</li><li>Perfusão, TEC, diurese e lactato conforme contexto.</li><li>Reavaliar necessidade de fluido.</li></ul></div>
+        <div class="card"><h4>Sedoanalgesia</h4><ul class="checklist"><li>Analgesia iniciada.</li><li>Sedação iniciada.</li><li>Meta RASS definida.</li><li>Bloqueio residual considerado.</li><li>Prescrição pós-IOT conferida.</li></ul></div>
+      </div>
+      <details open><summary>Documentação mínima</summary><div class="detail-body"><ul class="checklist two-col-list"><li>Indicação da IOT.</li><li>Dispositivo usado.</li><li>Número de tentativas.</li><li>Grau de visão se disponível.</li><li>Tamanho do tubo.</li><li>Profundidade final.</li><li>Método de confirmação.</li><li>Complicações.</li><li>Drogas e doses.</li><li>Plano de sedoanalgesia/VM.</li></ul></div></details>
+    </section>
+
+    <section id="erros">
+      <h2>13. Erros frequentes — problema → prevenção → resposta</h2>
+      <details open><summary>13.1 Confirmar tubo apenas com ausculta</summary><div class="detail-body"><p><strong>Problema:</strong> ausculta pode ser enganosa, especialmente em ambiente ruidoso, obesidade ou ventilação gástrica.</p><p><strong>Prevenção:</strong> capnografia com onda conectada antes da tentativa.</p><p><strong>Resposta:</strong> se não há onda confiável, tratar como posição incerta: checar conexão/equipamento rapidamente e remover/ventilar ou confirmar por técnica adicional se necessário.</p></div></details>
+      <details><summary>13.2 Não iniciar sedação após rocurônio</summary><div class="detail-body"><p><strong>Problema:</strong> paralisia consciente; o paciente não se move, mas pode estar acordado.</p><p><strong>Prevenção:</strong> sedoanalgesia pós-IOT preparada antes da indução.</p><p><strong>Resposta:</strong> iniciar sedação e analgesia imediatamente, reavaliar profundidade sedativa, documentar evento se houver suspeita de awareness.</p></div></details>
+      <details><summary>13.3 Não reconhecer intubação seletiva</summary><div class="detail-body"><p><strong>Problema:</strong> tubo avançado demais, geralmente para brônquio fonte direito.</p><p><strong>Prevenção:</strong> marcar profundidade, auscultar bilateralmente e confirmar imagem quando indicado.</p><p><strong>Resposta:</strong> recuar 1–2 cm, reauscultar, monitorar SpO₂/ETCO₂ e documentar nova profundidade.</p></div></details>
+      <details><summary>13.4 Dessaturação tratada apenas com aumento de FiO₂</summary><div class="detail-body"><p><strong>Problema:</strong> FiO₂ não corrige deslocamento, obstrução, pneumotórax, equipamento ou auto-PEEP.</p><p><strong>Prevenção:</strong> usar DOPE/DOPES toda vez que houver deterioração.</p><p><strong>Resposta:</strong> O₂ 100%, ventilar manualmente se necessário, checar tubo/circuito/pressão/ausculta e tratar causa.</p></div></details>
+      <details><summary>13.5 Hipotensão atribuída automaticamente à sedação</summary><div class="detail-body"><p><strong>Problema:</strong> pode atrasar diagnóstico de pneumotórax, auto-PEEP, seletiva, hipoxemia ou choque obstrutivo.</p><p><strong>Prevenção:</strong> antecipar risco hemodinâmico e monitorar de forma intensiva após IOT.</p><p><strong>Resposta:</strong> vasopressor quando indicado, revisar ventilador/PEEP, procurar complicações mecânicas e usar POCUS se disponível.</p></div></details>
+      <details><summary>13.6 Não reavaliar após transporte/mudança de decúbito</summary><div class="detail-body"><p><strong>Problema:</strong> tubo pode deslocar, cuff pode vazar, circuito pode tracionar.</p><p><strong>Prevenção:</strong> checagem programada após qualquer mobilização.</p><p><strong>Resposta:</strong> reavaliar capnografia, profundidade, fixação, ausculta, pressão de cuff e parâmetros ventilatórios.</p></div></details>
+    </section>
+
+    <section id="referencias">
+      <h2>Referências primárias do Módulo 2</h2>
+      
+      <details class="refs-collapsible">
+        <summary>Mostrar/ocultar referências</summary>
+        <div class="detail-body">
+          <ol>
+        <li>Apfelbaum JL, Hagberg CA, Connis RT, et al. <strong>2022 American Society of Anesthesiologists Practice Guidelines for Management of the Difficult Airway</strong>. <em>Anesthesiology</em>. 2022;136(1):31-81. DOI: 10.1097/ALN.0000000000004002. Diretriz.</li>
+        <li>Frerk C, Mitchell VS, McNarry AF, et al. <strong>Difficult Airway Society 2015 guidelines for management of unanticipated difficult intubation in adults</strong>. <em>British Journal of Anaesthesia</em>. 2015;115(6):827-848. DOI: 10.1093/bja/aev371. Diretriz.</li>
+        <li>Higgs A, McGrath BA, Goddard C, et al. <strong>Guidelines for the management of tracheal intubation in critically ill adults</strong>. <em>British Journal of Anaesthesia</em>. 2018;120(2):323-352. DOI: 10.1016/j.bja.2017.10.021. Diretriz.</li>
+        <li>Link MS, Berkow LC, Kudenchuk PJ, et al. <strong>Part 7: Adult Advanced Cardiovascular Life Support: 2015 American Heart Association Guidelines Update for CPR and ECC</strong>. <em>Circulation</em>. 2015;132:S444-S464. DOI: 10.1161/CIR.0000000000000261. Diretriz.</li>
+        <li>Panchal AR, Bartos JA, Cabañas JG, et al. <strong>Part 3: Adult Basic and Advanced Life Support: 2020 American Heart Association Guidelines for CPR and ECC</strong>. <em>Circulation</em>. 2020;142:S366-S468. DOI: 10.1161/CIR.0000000000000916. Diretriz.</li>
+        <li>Devlin JW, Skrobik Y, Gélinas C, et al. <strong>Clinical Practice Guidelines for the Prevention and Management of Pain, Agitation/Sedation, Delirium, Immobility, and Sleep Disruption in Adult Patients in the ICU</strong>. <em>Critical Care Medicine</em>. 2018;46(9):e825-e873. DOI: 10.1097/CCM.0000000000003299. Diretriz SCCM PADIS.</li>
+        <li>Evans L, Rhodes A, Alhazzani W, et al. <strong>Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021</strong>. <em>Intensive Care Medicine</em>. 2021;47:1181-1247. DOI: 10.1007/s00134-021-06506-y. Diretriz GRADE.</li>
+      </ol>
+      <div class="alert alert-info"><strong>Nota metodológica:</strong> este módulo utiliza diretrizes e documentos primários. Recursos educacionais, revisões narrativas e fontes terciárias podem orientar a didática, mas não são âncoras científicas principais.</div>
+        </div>
+      </details>
+    </section>
+
+    <div class="footer-sign">
+      <p><strong>André M. Sena - Médico (CRM/RN 12533)</strong></p>
+    </div>
+  </main>
+</div>
+<script>
+function initModuleMenu(){
+  const app=document.getElementById("moduleApp");
+  const toggle=document.getElementById("moduleNavToggle");
+  const nav=document.getElementById("moduleNav");
+  if(!app || !toggle || !nav) return;
+  const links=Array.from(nav.querySelectorAll('a[href^="#"]'));
+  function shortLabel(link,index){
+    const text=(link.textContent || "").trim();
+    const number=text.match(/^([0-9]+(?:\.[0-9]+)?)/);
+    if(number) return number[1];
+    if(/refer/i.test(text)) return "Ref";
+    if(/leit/i.test(text)) return "Ler";
+    return String(index+1);
+  }
+  links.forEach((link,index)=>{
+    if(!link.getAttribute("data-short")) link.setAttribute("data-short", shortLabel(link,index));
+    if(!link.querySelector(".nav-label")){
+      const label=document.createElement("span");
+      label.className="nav-label";
+      label.textContent=link.textContent;
+      link.textContent="";
+      link.appendChild(label);
+    }
+  });
+  function setCollapsed(collapsed){
+    app.classList.toggle("nav-collapsed", collapsed);
+    toggle.textContent = collapsed ? "Menu" : "Minimizar";
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+  }
+  function setActive(link){
+    links.forEach(item=>item.classList.remove("module-nav-link--active"));
+    if(link) link.classList.add("module-nav-link--active");
+  }
+  toggle.addEventListener("click", ()=>setCollapsed(!app.classList.contains("nav-collapsed")));
+  links.forEach(link=>{
+    link.addEventListener("click", (event)=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(!target) return;
+      event.preventDefault();
+      target.scrollIntoView({behavior:"smooth", block:"start"});
+      try{ history.replaceState(null, "", link.getAttribute("href")); }catch(e){}
+      setActive(link);
+      if(window.matchMedia("(max-width: 980px)").matches) setCollapsed(true);
+    });
+  });
+  const initial=links.find(link=>link.getAttribute("href")===window.location.hash) || links[0];
+  setActive(initial);
+  if("IntersectionObserver" in window){
+    const observer=new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const active=links.find(link=>link.getAttribute("href")==="#"+entry.target.id);
+          setActive(active);
+        }
+      });
+    }, {root:null, rootMargin:"-20% 0px -65% 0px", threshold:0.01});
+    links.forEach(link=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(target) observer.observe(target);
+    });
+  }
+}
+initModuleMenu();
+</script>
+</body>
+</html>

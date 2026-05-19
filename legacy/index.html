@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual Interativo de Medicina Intensiva - Biblioteca Legada</title>
+<link rel="stylesheet" href="../assets/css/manual.css">
+<meta name="theme-color" content="#123c69">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>Manual Interativo de Medicina Intensiva</h1>
+      <p>Biblioteca legada - módulos 1-6</p>
+    </div>
+    <input id="searchInput" class="search-box" type="search" placeholder="Buscar nos módulos...">
+    <div id="searchResults" class="search-results"></div>
+    <div id="moduleList" class="module-list"></div>
+    <div class="note">
+      <strong>Uso:</strong> fallback estático preservado antes da migração React. O app principal fica em <a href="../index.html">../index.html</a>.
+    </div>
+  </aside>
+  <main class="main">
+    <section class="hero">
+      <h2>Manual Interativo de Medicina Intensiva</h2>
+      <p>Fallback da biblioteca local anterior, mantido para rastreabilidade.</p>
+    </section>
+    <section class="toolbar">
+      <h3 id="currentTitle">Módulo</h3>
+      <div class="actions">
+        <button id="reloadBtn" type="button">Recarregar</button>
+        <button id="topBtn" type="button">Topo</button>
+        <button id="rawBtn" type="button">Abrir HTML modular</button>
+        <a href="../manual_medicina_intensiva_modulos_1_6_consolidado_autonomo.html" target="_blank" rel="noreferrer">Abrir HTML único</a>
+      </div>
+    </section>
+    <section class="viewer">
+      <iframe id="moduleFrame" title="Visualizador do módulo"></iframe>
+    </section>
+    <p class="footer">Manual Interativo de Medicina Intensiva - biblioteca legada.</p>
+  </main>
+</div>
+<script src="../assets/js/manual-library.js"></script>
+</body>
+</html>

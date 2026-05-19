@@ -1,0 +1,24 @@
+{
+  "name": "manual-medicina-intensiva-pwa",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Base estática para PWA do Manual Interativo de Medicina Intensiva.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "dependencies_suggested": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "typescript": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "vite-plugin-pwa": "latest"
+  },
+  "devDependencies_suggested": {
+    "vitest": "latest",
+    "@testing-library/react": "latest"
+  }
+}

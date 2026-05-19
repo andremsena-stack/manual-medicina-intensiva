@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Interativo de Medicina Intensiva — Módulo 5: Drogas Vasoativas</title>
+  <style>
+    :root{
+      --bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;
+      --primary:#123c69;--primary-soft:#dce9f6;--accent:#0b6b5c;--danger:#b42318;
+      --warning:#b54708;--success:#067647;--border:#d8e0ea;--shadow:0 8px 24px rgba(16,24,40,.08);
+      --radius:16px
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+    a{color:inherit;text-decoration:none}
+    .app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+    aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d2438;color:#fff;padding:24px 18px}
+    .brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}
+    .brand h1{font-size:19px;margin:0 0 8px;line-height:1.25}
+    .brand p{margin:0;font-size:13px;color:rgba(255,255,255,.75)}
+    nav ul{list-style:none;padding:0;margin:0}
+    nav li{margin:5px 0}
+    nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88)}
+    nav a:hover{background:rgba(255,255,255,.10)}
+    main{padding:34px;max-width:1380px;width:100%}
+    .hero{background:linear-gradient(135deg,#123c69,#0b6b5c);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);margin-bottom:28px}
+    .hero h2{font-size:34px;margin:0 0 10px}.hero p{max-width:1040px;color:rgba(255,255,255,.9);margin:0}
+    .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.14);font-size:12px}
+    section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}
+    section h2{margin:0 0 14px;color:var(--primary);font-size:25px}
+    section h3{margin:22px 0 10px;color:#243b53;font-size:19px}
+    .grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{background:var(--surface-soft);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .card h4{margin:0 0 8px;color:var(--primary)}.card p{margin:0;color:var(--muted)}
+    .metric{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px}.metric strong{display:block;color:var(--primary);font-size:22px}
+    .alert{border-radius:14px;padding:14px 16px;margin:16px 0;border-left:6px solid}
+    .alert-danger{background:#fff1f0;border-color:var(--danger)}.alert-warning{background:#fff7ed;border-color:var(--warning)}
+    .alert-info{background:var(--primary-soft);border-color:var(--primary)}.alert-success{background:#ecfdf3;border-color:var(--success)}
+    table{width:100%;border-collapse:collapse;margin:14px 0;overflow:hidden;border-radius:12px}
+    th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;font-size:14px}
+    th{background:var(--primary);color:#fff}tbody tr:nth-child(even){background:#f8fafc}
+    details{border:1px solid var(--border);border-radius:14px;background:#fff;margin:12px 0;overflow:hidden}
+    summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--primary);background:#eef3f8}
+    summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}
+    .pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700;background:#dce9f6;color:#123c69;margin:2px}
+    .pill-danger{background:#fee4e2;color:#912018}.pill-warning{background:#fef0c7;color:#93370d}.pill-success{background:#dcfae6;color:#067647}
+    .ref{font-size:12px;color:#485568;border-top:1px solid var(--border);margin-top:12px;padding-top:10px}
+    .small{font-size:12px;color:var(--muted)}
+    .svg-box{background:#f8fbff;border:1px solid var(--border);border-radius:16px;padding:14px;margin:14px 0}.svg-box svg{width:100%;height:auto;display:block}
+    .calc-panel{background:#0d2438;color:#fff;border-radius:18px;padding:18px;margin:18px 0;box-shadow:var(--shadow)}
+    .calc-panel h3{color:#fff;margin-top:0}.calc-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+    .calc-panel label{display:block;font-size:12px;color:#cbd5e1;margin-bottom:5px}
+    .calc-panel input,.calc-panel select{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:#fff;color:#111827}
+    .calc-result{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px;margin-top:12px}
+    .calc-result strong{font-size:20px;color:#fff;display:block}
+    .footer-sign{margin-top:40px;text-align:right;color:#344054}
+    @media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}.grid-2,.grid-3,.grid-4,.calc-grid{grid-template-columns:1fr}main{padding:18px}.hero h2{font-size:26px}}
+    @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}.calc-panel{background:#fff;color:#111;border:1px solid #ccc}.calc-panel h3{color:#111}.calc-result{background:#f8fafc;color:#111}.calc-panel label{color:#111}}
+  </style>
+
+  <style>
+    .brand__row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .brand__content{min-width:0}
+    .nav-toggle{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+    .nav-toggle:hover{background:rgba(255,255,255,.18)}
+    nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
+    .app.nav-collapsed{grid-template-columns:72px 1fr}
+    .app.nav-collapsed aside{padding:18px 10px}
+    .app.nav-collapsed .brand{margin-bottom:14px;padding-bottom:12px;text-align:center}
+    .app.nav-collapsed .brand__row{display:grid;justify-items:center;gap:8px}
+    .app.nav-collapsed .brand__content{display:none}
+    .app.nav-collapsed .nav-toggle{width:100%;padding:8px 4px;font-size:11px}
+    .app.nav-collapsed nav a{align-items:center;display:flex;justify-content:center;min-height:40px;padding:9px 4px;position:relative}
+    .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
+    .app.nav-collapsed nav a::before{content:attr(data-short);font-size:12px;font-weight:800}
+    @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{padding:12px 14px}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}.app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}.app.nav-collapsed .brand__content{display:block}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .toc-note,.app.nav-collapsed .brand .small{display:none}}
+  </style>
+</head>
+<body>
+<div class="app" id="moduleApp">
+  <aside>
+    <div class="brand">
+      <div class="brand__row">
+        <div class="brand__content">
+<h1>Manual Interativo de Medicina Intensiva</h1>
+      <p>Módulo 5 — Drogas vasoativas</p>
+      <div class="small" style="color:rgba(255,255,255,.65);margin-top:12px">Vasopressores, inotrópicos, cronotrópicos e vasodilatadores.</div>
+        </div>
+        <button class="nav-toggle" id="moduleNavToggle" type="button" aria-controls="moduleNav" aria-expanded="true">Minimizar</button>
+      </div>
+    </div>
+    <nav id="moduleNav" aria-label="Secoes do modulo">
+      <ul>
+        <li><a href="#intro">1. Conceito</a></li>
+        <li><a href="#receptores">2. Receptores e fisiologia</a></li>
+        <li><a href="#classes">3. Classes por utilidade</a></li>
+        <li><a href="#monitorizacao">4. Monitorização</a></li>
+        <li><a href="#farmacos">5. Fármacos — preparo e doses</a></li>
+        <li><a href="#choque">6. Cenários de choque</a></li>
+        <li><a href="#metas">7. Metas pressóricas especiais</a></li>
+        <li><a href="#calculadora">8. Mini-calculadora</a></li>
+        <li><a href="#seguranca">9. Segurança e extravasamento</a></li>
+        <li><a href="#erros">10. Erros frequentes</a></li>
+        <li><a href="#checklist">11. Checklist</a></li>
+        <li><a href="#referencias">Referências</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h2>Módulo 5 — Drogas vasoativas em medicina intensiva</h2>
+      <p>Capítulo prático para escolha, preparo, titulação e monitorização de vasopressores, inotrópicos, cronotrópicos e vasodilatadores em cenários de choque, instabilidade hemodinâmica e emergências neurológicas/cardiovasculares.</p>
+      <div class="badge-row">
+        <span class="badge">Vasopressores</span><span class="badge">Inotrópicos</span><span class="badge">Cronotrópicos</span><span class="badge">Vasodilatadores</span><span class="badge">Doses para 70 kg</span>
+      </div>
+    </div>
+
+    <section id="intro">
+      <h2>1. Conceito geral</h2>
+      <p>Drogas vasoativas são fármacos usados para modificar <strong>tônus vascular</strong>, <strong>retorno venoso</strong>, <strong>contratilidade miocárdica</strong>, <strong>frequência cardíaca</strong>, <strong>condução elétrica</strong> e <strong>distribuição regional do fluxo sanguíneo</strong>. Em medicina intensiva, elas não são apenas “remédios para subir ou baixar pressão”: são ferramentas para sustentar circulação efetiva enquanto a causa do choque ou da emergência pressórica é tratada.</p>
+
+      <h3>1.1 O que é pressão arterial média (PAM)</h3>
+      <p>A <strong>pressão arterial média (PAM)</strong> é a pressão média efetiva exercida no sistema arterial durante um ciclo cardíaco completo. Como a diástole ocupa mais tempo que a sístole, a PAM não é uma média aritmética simples entre pressão sistólica e diastólica. Em frequência cardíaca usual, pode ser estimada por:</p>
+      <div class="alert alert-info"><strong>Fórmula prática:</strong> PAM ≈ PAD + 1/3 × (PAS − PAD). Em monitorização invasiva, a PAM é calculada pela área sob a curva arterial ao longo do ciclo cardíaco.</div>
+
+      <table>
+        <thead><tr><th>Componente</th><th>O que representa</th><th>Relação com DVA</th></tr></thead>
+        <tbody>
+          <tr><td>Pressão sistólica (PAS)</td><td>Pico de pressão durante a ejeção ventricular.</td><td>Depende de volume sistólico, contratilidade, complacência arterial e resistência.</td></tr>
+          <tr><td>Pressão diastólica (PAD)</td><td>Pressão residual no sistema arterial durante o relaxamento ventricular.</td><td>Reflete tônus arteriolar, tempo diastólico e recuo elástico arterial; vasopressores α1 tendem a elevá-la.</td></tr>
+          <tr><td>Pressão de pulso</td><td>Diferença PAS − PAD.</td><td>Ajuda a inferir volume sistólico/complacência; pressão de pulso estreita pode sugerir baixo volume sistólico.</td></tr>
+          <tr><td>PAM</td><td>Gradiente arterial médio disponível para perfusão sistêmica.</td><td>É alvo inicial de vasopressores, mas precisa ser interpretada junto com fluxo, débito cardíaco e perfusão tecidual.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>1.2 Do que a PAM depende</h3>
+      <p>De forma simplificada, a PAM resulta da interação entre <strong>débito cardíaco</strong>, <strong>resistência vascular sistêmica</strong> e <strong>pressão venosa central</strong>. Como a pressão venosa central costuma ser muito menor que a PAM, na prática clínica usa-se frequentemente a aproximação:</p>
+      <div class="alert alert-info"><strong>Relação conceitual:</strong> PAM ≈ DC × RVS, onde DC = frequência cardíaca × volume sistólico. Essa fórmula explica por que subir a resistência vascular pode elevar a pressão sem necessariamente melhorar o fluxo.</div>
+
+      <div class="grid grid-4">
+        <div class="metric"><strong>PAM</strong><span>Pressão arterial média disponível para perfusão dos órgãos.</span></div>
+        <div class="metric"><strong>Fluxo</strong><span>Débito cardíaco, volume sistólico e distribuição regional do sangue.</span></div>
+        <div class="metric"><strong>Perfusão</strong><span>Entrega efetiva de oxigênio aos tecidos, avaliada por clínica e marcadores.</span></div>
+        <div class="metric"><strong>Fenótipo</strong><span>Vasoplegia, falência ventricular, hipovolemia ou obstrução.</span></div>
+      </div>
+
+      <div class="alert alert-warning"><strong>Princípio central:</strong> a PAM é necessária para perfusão, mas não é suficiente. Um paciente pode ter PAM “adequada” com baixo débito, vasoconstrição excessiva, microcirculação ruim ou congestão grave. Por isso, toda titulação de DVA deve reavaliar pressão, fluxo, congestão e perfusão periférica.</div>
+    </section>
+
+    <section id="receptores">
+      <h2>2. Receptores e fisiologia aplicada</h2>
+      <table>
+        <thead><tr><th>Receptor/alvo</th><th>Local predominante</th><th>Efeito fisiológico</th><th>Fármacos relevantes</th><th>Risco clínico</th></tr></thead>
+        <tbody>
+          <tr><td>α1</td><td>Vasos arteriais e venosos</td><td>Vasoconstrição, aumento de RVS, aumento de retorno venoso por venoconstrição.</td><td>Noradrenalina, fenilefrina, adrenalina em dose alta.</td><td>Isquemia periférica/esplâncnica, aumento de pós-carga.</td></tr>
+          <tr><td>β1</td><td>Miocárdio e nó sinusal</td><td>Aumento de contratilidade, frequência cardíaca e condução AV.</td><td>Dobutamina, adrenalina, dopamina, isoproterenol.</td><td>Taquiarritmia, aumento de consumo de O₂, isquemia.</td></tr>
+          <tr><td>β2</td><td>Vasos musculares, brônquios, metabolismo</td><td>Vasodilatação, broncodilatação, glicogenólise, lactato por estímulo adrenérgico.</td><td>Adrenalina, dobutamina.</td><td>Hipotensão em dose baixa, hiperlactatemia adrenérgica.</td></tr>
+          <tr><td>V1a</td><td>Músculo liso vascular</td><td>Vasoconstrição não adrenérgica.</td><td>Vasopressina.</td><td>Isquemia cutânea/digital/esplâncnica em excesso.</td></tr>
+          <tr><td>PDE3</td><td>Cardiomiócito e vasos</td><td>Aumento de AMPc: inotropia e vasodilatação.</td><td>Milrinona.</td><td>Hipotensão, arritmia, acúmulo na disfunção renal.</td></tr>
+          <tr><td>NO/GMPc</td><td>Músculo liso vascular</td><td>Vasodilatação arterial/venosa.</td><td>Nitroprussiato, nitroglicerina.</td><td>Hipotensão, roubo coronariano, toxicidade por cianeto/tiocianato no nitroprussiato.</td></tr>
+        </tbody>
+      </table>
+      <div class="svg-box">
+        <svg viewBox="0 0 1000 360" role="img" aria-label="Mapa simplificado de receptores adrenérgicos e efeitos hemodinâmicos">
+          <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#123c69"/></marker></defs>
+          <rect width="1000" height="360" rx="18" fill="#f8fbff" stroke="#d8e0ea"/>
+          <text x="50" y="52" font-family="Arial" font-size="28" font-weight="700" fill="#123c69">Eixos hemodinâmicos das drogas vasoativas</text>
+          <g font-family="Arial">
+            <rect x="65" y="100" width="190" height="90" rx="16" fill="#dce9f6" stroke="#123c69"/>
+            <text x="92" y="134" font-size="20" font-weight="700" fill="#123c69">α1</text>
+            <text x="92" y="158" font-size="14" fill="#344054">vasoconstrição</text>
+            <text x="92" y="178" font-size="14" fill="#344054">↑ RVS / ↑ PAM</text>
+            <line x1="255" y1="145" x2="330" y2="145" stroke="#123c69" stroke-width="4" marker-end="url(#arr)"/>
+
+            <rect x="330" y="100" width="190" height="90" rx="16" fill="#ecfdf3" stroke="#067647"/>
+            <text x="357" y="134" font-size="20" font-weight="700" fill="#067647">β1</text>
+            <text x="357" y="158" font-size="14" fill="#344054">↑ inotropia</text>
+            <text x="357" y="178" font-size="14" fill="#344054">↑ FC / ↑ DC</text>
+            <line x1="520" y1="145" x2="595" y2="145" stroke="#123c69" stroke-width="4" marker-end="url(#arr)"/>
+
+            <rect x="595" y="100" width="190" height="90" rx="16" fill="#fff7ed" stroke="#b54708"/>
+            <text x="622" y="134" font-size="20" font-weight="700" fill="#b54708">β2</text>
+            <text x="622" y="158" font-size="14" fill="#344054">vasodilatação</text>
+            <text x="622" y="178" font-size="14" fill="#344054">lactato adrenérgico</text>
+
+            <rect x="165" y="235" width="250" height="70" rx="16" fill="#fff" stroke="#d8e0ea"/>
+            <text x="190" y="265" font-size="16" font-weight="700" fill="#123c69">V1a: vasopressina</text>
+            <text x="190" y="286" font-size="13" fill="#475467">vasoconstrição não adrenérgica</text>
+
+            <rect x="460" y="235" width="250" height="70" rx="16" fill="#fff" stroke="#d8e0ea"/>
+            <text x="485" y="265" font-size="16" font-weight="700" fill="#123c69">PDE3: milrinona</text>
+            <text x="485" y="286" font-size="13" fill="#475467">inodilatação: ↑ DC + ↓ RVS/RVP</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section id="classes">
+      <h2>3. Classes por categoria/utilidade clínica</h2>
+      <table>
+        <thead><tr><th>Categoria/utilidade</th><th>Fármacos</th><th>Objetivo</th><th>Quando pensar</th><th>Risco predominante</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Vasopressor adrenérgico</strong></td><td>Noradrenalina, adrenalina, fenilefrina, dopamina em dose alta</td><td>Aumentar tônus vascular e PAM.</td><td>Choque distributivo, vasoplegia, hipotensão com RVS baixa.</td><td>Isquemia, arritmia, aumento de pós-carga.</td></tr>
+          <tr><td><strong>Vasopressor não adrenérgico</strong></td><td>Vasopressina, angiotensina II</td><td>Adicionar via não catecolaminérgica para vasoplegia.</td><td>Choque séptico com necessidade crescente de noradrenalina; vasoplegia refratária.</td><td>Isquemia cutânea/esplâncnica; custo/disponibilidade.</td></tr>
+          <tr><td><strong>Inotrópico</strong></td><td>Dobutamina, milrinona, adrenalina</td><td>Aumentar contratilidade e débito cardíaco.</td><td>Choque cardiogênico, baixo débito, ScvO₂ baixa com congestão/hipoperfusão.</td><td>Taquiarritmia, hipotensão por vasodilatação, isquemia.</td></tr>
+          <tr><td><strong>Cronotrópico</strong></td><td>Dopamina, adrenalina, isoproterenol</td><td>Aumentar frequência cardíaca/condução.</td><td>Bradicardia instável enquanto aguarda marcapasso ou intervenção definitiva.</td><td>Arritmia, isquemia, aumento de consumo miocárdico.</td></tr>
+          <tr><td><strong>Vasodilatador venoso/arterial</strong></td><td>Nitroglicerina, nitroprussiato</td><td>Reduzir pré-carga/pós-carga e controlar hipertensão crítica.</td><td>Edema agudo hipertensivo, emergência hipertensiva, dissecção após beta-bloqueio, IC com congestão e PA alta.</td><td>Hipotensão, queda de perfusão, toxicidade específica.</td></tr>
+          <tr><td><strong>Anti-hipertensivos tituláveis</strong></td><td>Nicardipina, clevidipina, labetalol, esmolol</td><td>Controle de PA com titulação.</td><td>AVC, trombólise, HIC, dissecção, pós-operatório, emergência hipertensiva.</td><td>Hipotensão, bradicardia/bloqueio, piora de IC conforme droga.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="monitorizacao">
+      <h2>4. Monitorização hemodinâmica e definição de metas por cenário</h2>
+      <p>Monitorização e meta não devem ser tratadas como decisões separadas. A pergunta clínica é: <strong>qual alvo de perfusão/pressão estou perseguindo e como vou medir se cheguei nele?</strong></p>
+
+      <h3>4.1 Parâmetros gerais de perfusão</h3>
+      <table>
+        <thead><tr><th>Parâmetro</th><th>O que mostra</th><th>Como usar</th><th>Armadilha</th></tr></thead>
+        <tbody>
+          <tr><td>PAM</td><td>Pressão de perfusão sistêmica aproximada.</td><td>Meta inicial frequente ≥65 mmHg em choque séptico, individualizando.</td><td>PAM normal não garante fluxo tecidual.</td></tr>
+          <tr><td>FC e ritmo</td><td>Compensação, arritmia, resposta a catecolamina.</td><td>Interpretar junto com débito, perfusão e causa do choque.</td><td>Tratar número isolado sem entender mecanismo.</td></tr>
+          <tr><td>Diurese</td><td>Perfusão renal e resposta global.</td><td>Meta frequente ≥0,5 mL/kg/h em adultos, individualizando.</td><td>Diurético, DRC e obstrução urinária confundem.</td></tr>
+          <tr><td>Lactato</td><td>Hipoperfusão, metabolismo adrenérgico, disfunção mitocondrial.</td><td>Usar tendência/clearance e contexto clínico.</td><td>Adrenalina, crise convulsiva, beta-agonista e sepse podem elevar sem hipovolemia persistente.</td></tr>
+          <tr><td>Tempo de enchimento capilar/pele</td><td>Microcirculação periférica.</td><td>Reavaliar após fluido/DVA; útil como alvo de ressuscitação.</td><td>Temperatura ambiente, vasculopatia e vasopressor interferem.</td></tr>
+          <tr><td>ScvO₂/SvO₂</td><td>Balanço entre oferta e consumo de O₂.</td><td>Baixa sugere oferta inadequada/alto consumo; alta em sepse pode indicar má extração.</td><td>Valor isolado pode enganar.</td></tr>
+          <tr><td>ΔpCO₂ venoso-arterial</td><td>Indicador indireto de fluxo circulatório.</td><td>Elevado sugere fluxo insuficiente para remover CO₂.</td><td>Depende de ventilação, metabolismo e qualidade das amostras.</td></tr>
+          <tr><td>POCUS/ecocardiografia</td><td>Fenótipo do choque: VE, VD, volemia, congestão, tamponamento.</td><td>Ajuda a escolher vasopressor, inotrópico, fluido ou vasodilatador.</td><td>Não substitui integração clínica e reavaliação seriada.</td></tr>
+        </tbody>
+      </table>
+
+      <details><summary>Como obter cada parâmetro</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Parâmetro</th><th>Como obter</th><th>Cuidados práticos</th></tr></thead>
+          <tbody>
+            <tr><td>PAM invasiva</td><td>Cateter arterial nivelado no eixo flebostático, transdutor zerado e curva adequada.</td><td>Checar damping, bolhas, posição do transdutor e discrepância com clínica.</td></tr>
+            <tr><td>PAM não invasiva</td><td>Esfigmomanômetro automático com manguito adequado ao braço.</td><td>Menos confiável em choque, arritmia, vasoconstrição intensa e movimento.</td></tr>
+            <tr><td>Diurese</td><td>Sonda vesical e balanço horário.</td><td>Confirmar pérvio, sem obstrução; interpretar com DRC/diuréticos.</td></tr>
+            <tr><td>Lactato</td><td>Gasometria arterial/venosa ou amostra laboratorial conforme fluxo institucional.</td><td>Valor seriado é mais útil que valor isolado; correlacionar com perfusão.</td></tr>
+            <tr><td>Tempo de enchimento capilar</td><td>Compressão padronizada da polpa digital/joelho por ~10 s e observação do retorno da cor.</td><td>Ambiente frio e vasopatia reduzem confiabilidade.</td></tr>
+            <tr><td>ScvO₂</td><td>Amostra de cateter venoso central com ponta em veia cava superior/átrio direito.</td><td>Coleta inadequada ou posição errada distorce interpretação.</td></tr>
+            <tr><td>ΔpCO₂</td><td>pCO₂ venosa central menos pCO₂ arterial, idealmente em amostras simultâneas.</td><td>Requer estabilidade ventilatória e boa qualidade de amostra.</td></tr>
+            <tr><td>POCUS</td><td>Janelas cardíacas básicas, VCI quando aplicável, pulmão, congestão venosa e pesquisa de causas obstrutivas.</td><td>Operador-dependente; repetir após intervenções.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details open><summary>Metas por cenário — síntese operacional</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Cenário</th><th>Meta prática inicial</th><th>Como monitorar resposta</th><th>Drogas frequentes</th></tr></thead>
+          <tbody>
+            <tr><td>Sepse/choque séptico</td><td>PAM ≥65 mmHg como ponto de partida.</td><td>TEC, lactato, diurese, pele, consciência, POCUS quando disponível.</td><td>Noradrenalina, vasopressina, adrenalina em refratariedade.</td></tr>
+            <tr><td>Choque cardiogênico</td><td>PAM geralmente ≥65 mmHg, mas foco em fluxo, congestão e perfusão.</td><td>POCUS/eco, lactato, diurese, congestão, extremidades, sinais de baixo débito.</td><td>Noradrenalina, dobutamina, milrinona, suporte mecânico conforme caso.</td></tr>
+            <tr><td>TEP de alto risco</td><td>Sustentar PAM/perfusão coronariana direita e evitar aumento de pós-carga de VD.</td><td>POCUS VD, lactato, PA, hipoxemia, sinais de choque.</td><td>Noradrenalina; inotrópico se VD falente com pressão tolerante.</td></tr>
+            <tr><td>TCE/HIC</td><td>Guiar por PPC = PAM − PIC quando PIC disponível.</td><td>PAM invasiva, PIC, exame neurológico, oxigenação e PaCO₂.</td><td>Noradrenalina para sustentar PAM/PPC.</td></tr>
+            <tr><td>AVC trombólise/trombectomia</td><td>Controlar PA conforme protocolo de reperfusão.</td><td>PA seriada/invasiva se grave, exame neurológico, risco hemorrágico.</td><td>Labetalol, nicardipina/clevidipina quando disponíveis.</td></tr>
+            <tr><td>Dissecção aórtica</td><td>Controle anti-impulso: reduzir FC/dP/dt antes de vasodilatar.</td><td>FC, PA, dor, perfusão de órgãos, sinais de complicação.</td><td>Esmolol/labetalol; vasodilatador após beta-bloqueio se necessário.</td></tr>
+            <tr><td>Anafilaxia refratária</td><td>Restaurar perfusão e tratar broncoespasmo/edema de via aérea.</td><td>PA, SpO₂, ausculta, pele, lactato/K⁺ se infusão de adrenalina.</td><td>Adrenalina IM inicial; infusão IV titulada se refratária monitorizada.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+    </section>
+
+    <section id="farmacos">
+      <h2>5. Fármacos — mecanismo, preparo, faixa terapêutica e exemplo para 70 kg</h2>
+      <div class="alert alert-danger"><strong>Segurança operacional:</strong> apresentações comerciais variam por fabricante e instituição. Antes de calcular, conferir concentração por mL, volume total da ampola/frascos e conteúdo total por unidade. As diluições abaixo são modelos didáticos/práticos e devem ser validadas por farmácia clínica, protocolo local, via disponível e bomba de infusão.</div>
+
+      <details open><summary>5.0 Regra de apresentação medicamentosa</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Termo</th><th>Significado operacional</th><th>Exemplo</th></tr></thead>
+          <tbody>
+            <tr><td>Apresentação comercial</td><td>Como a ampola/frascos existe no serviço: concentração por mL, volume total e conteúdo total por unidade.</td><td>Midazolam 5 mg/mL em ampola de 1 mL = 5 mg; 3 mL = 15 mg; 10 mL = 50 mg.</td></tr>
+            <tr><td>Concentração usada no cálculo</td><td>Concentração selecionada para calcular volume aspirado, dose ou vazão. Pode ser a concentração comercial ou uma solução já diluída/reconstituída.</td><td>Usar 5 mg/mL para calcular volume de midazolam em bolus; usar 1 mg/mL quando a solução final foi preparada nessa concentração.</td></tr>
+            <tr><td>Solução final/preparo</td><td>Resultado do volume aspirado da medicação + diluente até volume final, com concentração final definida.</td><td>Fentanil 500 mcg + diluente até 50 mL = 10 mcg/mL.</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-warning"><strong>Regra prática:</strong> nunca registrar apenas “mg/mL” como apresentação. Sempre que possível, escrever: concentração + volume total da ampola/frascos + conteúdo total por unidade.</div>
+      </div></details>
+
+      <details><summary>Apresentações comerciais usuais no Brasil — DVA e infusões críticas</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Fármaco</th><th>Apresentação comercial — concentração, volume total e conteúdo total</th><th>Observação operacional</th></tr></thead>
+          <tbody>
+            <tr><td>Noradrenalina</td><td>Hemitartarato 8 mg/4 mL — ampola de 4 mL; equivalente aproximado a norepinefrina base 4 mg/4 mL.</td><td>Prescrever/calcular deixando claro sal versus base.</td></tr>
+            <tr><td>Vasopressina</td><td>20 UI/mL — ampola de 1 mL = 20 UI.</td><td>Usual em UI/min.</td></tr>
+            <tr><td>Adrenalina</td><td>1 mg/mL — ampola de 1 mL = 1 mg.</td><td>Diferenciar IM da infusão IV.</td></tr>
+            <tr><td>Dobutamina</td><td>12,5 mg/mL — ampola/fr. de 20 mL = 250 mg.</td><td>Diluição conforme protocolo.</td></tr>
+            <tr><td>Milrinona</td><td>1 mg/mL — ampola/fr. de 10 mL = 10 mg ou 20 mL = 20 mg.</td><td>Monitorar DRC/hipotensão.</td></tr>
+            <tr><td>Dopamina</td><td>Apresentações variáveis; conferir mg/mL e volume total.</td><td>Risco arrítmico.</td></tr>
+            <tr><td>Nitroglicerina</td><td>Apresentações concentradas variáveis.</td><td>Conferir compatibilidade/equipo.</td></tr>
+            <tr><td>Nitroprussiato</td><td>Frasco-ampola 50 mg liofilizado.</td><td>Reconstituir e proteger da luz.</td></tr>
+            <tr><td>Clevidipina</td><td>0,5 mg/mL; emulsão lipídica pronta para uso.</td><td>Não diluir.</td></tr>
+            <tr><td>Esmolol</td><td>Apresentações variáveis: solução pronta ou concentrada.</td><td>Conferir mg/mL e volume total.</td></tr>
+            <tr><td>Furosemida</td><td>10 mg/mL — ampola de 2 mL = 20 mg ou 10 mL = 100 mg.</td><td>Infusão contínua em cenário selecionado.</td></tr>
+            <tr><td>Sulfato de magnésio</td><td>50% = 500 mg/mL — ampola de 10 mL = 5 g; 10% = 100 mg/mL — ampola de 10 mL = 1 g.</td><td>Para broncoespasmo, usualmente 2 g em 20 min.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+
+      <details open><summary>5.1 Mapa farmacológico detalhado por medicação</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Medicação</th><th>Mecanismo de ação</th><th>Efeito clínico/fisiológico</th><th>Cenários de destaque</th><th>Cautelas principais</th></tr></thead>
+          <tbody>
+            <tr><td>Noradrenalina</td><td>Agonismo α1 predominante com algum β1; vasoconstrição arterial e venosa.</td><td>Aumenta RVS, PAM e retorno venoso; pode melhorar pressão de perfusão, mas aumenta pós-carga.</td><td>Choque séptico/vasoplégico, TEP com hipotensão, suporte de PAM/PPC em neurocrítico.</td><td>Isquemia periférica/esplâncnica, arritmia, aumento de pós-carga em baixo débito grave.</td></tr>
+            <tr><td>Vasopressina</td><td>Agonista V1a vascular; vasoconstrição não adrenérgica.</td><td>Eleva tônus vascular por via complementar às catecolaminas; pode reduzir necessidade de noradrenalina.</td><td>Choque vasoplégico com dose crescente de noradrenalina, especialmente sepse.</td><td>Isquemia cutânea, digital, coronariana ou mesentérica; usualmente não é droga de ampla titulação.</td></tr>
+            <tr><td>Adrenalina</td><td>Agonista α e β dose-dependente; β1/β2 mais evidente em doses baixas, α em doses maiores.</td><td>Aumenta contratilidade, frequência, broncodilatação e vasoconstrição conforme dose.</td><td>Anafilaxia refratária, pós-PCR, choque com componente inotrópico, broncoespasmo/anafilaxia.</td><td>Taquiarritmia, isquemia, hiperlactatemia adrenérgica, hipocalemia.</td></tr>
+            <tr><td>Fenilefrina</td><td>Agonista α1 praticamente puro.</td><td>Aumenta RVS/PAM sem inotropismo direto; pode causar bradicardia reflexa.</td><td>Vasoplegia com taquiarritmia selecionada, hipotensão anestésica em contexto específico.</td><td>Pode reduzir débito cardíaco por aumento de pós-carga; evitar se baixo débito/VD falente.</td></tr>
+            <tr><td>Dobutamina</td><td>Predomínio β1 com β2 variável; inotrópico com vasodilatação possível.</td><td>Aumenta contratilidade e débito cardíaco; pode reduzir RVS e pressão.</td><td>Baixo débito com pressão tolerável, choque cardiogênico com hipoperfusão.</td><td>Taquiarritmia, isquemia e hipotensão se vasodilatação predomina.</td></tr>
+            <tr><td>Milrinona</td><td>Inibidor de PDE3; aumenta AMPc em miocárdio e vasos.</td><td>Inotropia e lusitropia com vasodilatação sistêmica/pulmonar.</td><td>Falência de VD, hipertensão pulmonar, uso prévio de beta-bloqueador, baixo débito selecionado.</td><td>Hipotensão, arritmia e acúmulo em disfunção renal.</td></tr>
+            <tr><td>Dopamina</td><td>Dose-dependente: dopaminérgico, β1 e α1 em doses crescentes.</td><td>Cronotropia/inotropia e vasopressão variável.</td><td>Uso restrito: bradicardia com hipotensão e baixo risco arrítmico, quando opções melhores não disponíveis.</td><td>Maior risco de arritmia; evitar como vasopressor padrão em choque.</td></tr>
+            <tr><td>Nitroglicerina</td><td>Doador de NO com predomínio venodilatador em doses usuais.</td><td>Reduz pré-carga, congestão pulmonar e demanda miocárdica; em doses maiores reduz pós-carga.</td><td>Edema agudo hipertensivo, SCA/isquemia com PA elevada.</td><td>Hipotensão, cefaleia, taquifilaxia; cuidado com inibidores de PDE5.</td></tr>
+            <tr><td>Nitroprussiato</td><td>Doador de NO arterial e venoso potente.</td><td>Reduz pré e pós-carga de forma intensa e rápida.</td><td>Emergência hipertensiva selecionada; dissecção apenas após beta-bloqueio adequado.</td><td>Hipotensão abrupta, necessidade de fotoproteção, toxicidade por cianeto/tiocianato.</td></tr>
+            <tr><td>Nicardipina</td><td>Bloqueador de canal de cálcio dihidropiridínico arterial.</td><td>Reduz RVS e PA com titulação contínua.</td><td>AVC, HIC/neuroemergências e emergência hipertensiva quando disponível.</td><td>Hipotensão, taquicardia reflexa, edema; disponibilidade variável.</td></tr>
+            <tr><td>Clevidipina</td><td>Dihidropiridínico arterial ultracurto em emulsão lipídica.</td><td>Controle fino e rapidamente reversível da PA.</td><td>Neuroemergências, perioperatório e emergência hipertensiva com necessidade de titulação fina.</td><td>Não diluir; carga lipídica; cautela com alergia a soja/ovo conforme formulação e distúrbio do metabolismo lipídico.</td></tr>
+            <tr><td>Esmolol</td><td>Beta-1 bloqueador ultracurto.</td><td>Reduz FC, contratilidade e dP/dt; efeito rapidamente titulável.</td><td>Dissecção aórtica, hiperadrenergia, taquiarritmia selecionada.</td><td>Broncoespasmo, bradicardia, BAV, choque cardiogênico descompensado.</td></tr>
+            <tr><td>Labetalol</td><td>Bloqueador β e α1.</td><td>Reduz FC/contratilidade e RVS; útil em bolus ou infusão.</td><td>Emergência hipertensiva, AVC, dissecção quando apropriado, gestação conforme protocolo.</td><td>Broncoespasmo, bradicardia, BAV, insuficiência cardíaca descompensada.</td></tr>
+            <tr><td>Isoproterenol / isoprenalina</td><td>Agonista β1/β2 não seletivo, praticamente sem α.</td><td>Aumenta frequência, condução e contratilidade; pode vasodilatar e reduzir RVS.</td><td>Bradicardia refratária, bloqueios selecionados, ponte para marcapasso, torsades bradi-dependente em protocolo.</td><td>Taquiarritmia, isquemia, hipotensão, hipocalemia e lactato.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+
+      <details open><summary>5.1 Noradrenalina — vasopressor de primeira linha em choque vasoplégico</summary><div class="detail-body">
+        <div class="alert alert-danger"><strong>Atenção crítica — conversão sal/base:</strong> a apresentação brasileira frequentemente vem como <strong>hemitartarato de norepinefrina 8 mg/4 mL</strong>. Para cálculo de dose em bomba, isso corresponde a aproximadamente <strong>norepinefrina base 4 mg/4 mL</strong>. Como a dose clínica em <strong>mcg/kg/min</strong> se refere à norepinefrina base, use a quantidade equivalente em base no cálculo da concentração.</div>
+        <table>
+          <tbody>
+            <tr><th>Classe/mecanismo</th><td>Vasopressor catecolaminérgico; α1 predominante, algum β1. Aumenta RVS, PAM e pode aumentar retorno venoso por venoconstrição.</td></tr>
+            <tr><th>Ampola comum</th><td><strong>Hemitartarato de norepinefrina 8 mg/4 mL</strong> ≈ <strong>norepinefrina base 4 mg/4 mL</strong>. Confirmar sempre o rótulo, a bula e o padrão institucional.</td></tr>
+            <tr><th>Regra operacional</th><td>Para prescrição em <strong>mcg/kg/min</strong>, calcular a concentração usando <strong>norepinefrina base</strong>, não o peso total do sal hemitartarato.</td></tr>
+            <tr><th>Faixa terapêutica</th><td>0,01–1 mcg/kg/min, titulando por PAM/perfusão; doses altas exigem reavaliação de causa, volemia, fenótipo hemodinâmico e terapias adjuntas.</td></tr>
+            <tr><th>Cuidados</th><td>Preferir acesso central; se periférico, veia calibrosa, curta duração, monitorização do sítio e plano para extravasamento. Pode aumentar pós-carga e piorar baixo débito se VE muito deprimido.</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Diluições práticas considerando ampola de hemitartarato 8 mg/4 mL ≈ base 4 mg/4 mL</h4>
+        <table>
+          <thead><tr><th>Preparo em volume final de 250 mL</th><th>Norepinefrina base total</th><th>Concentração final em base</th><th>Uso prático</th></tr></thead>
+          <tbody>
+            <tr><td>1 ampola</td><td>4 mg = 4.000 mcg</td><td>16 mcg/mL</td><td>Baixa dose / fase inicial, se protocolo permitir.</td></tr>
+            <tr><td>2 ampolas</td><td>8 mg = 8.000 mcg</td><td>32 mcg/mL</td><td>Diluição intermediária.</td></tr>
+            <tr><td>4 ampolas</td><td>16 mg = 16.000 mcg</td><td>64 mcg/mL</td><td>Concentração prática frequente em acesso central.</td></tr>
+            <tr><td>8 ampolas</td><td>32 mg = 32.000 mcg</td><td>128 mcg/mL</td><td>Alta dose / restrição de volume, preferencialmente acesso central e protocolo institucional.</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Exemplo corrigido para 70 kg</h4>
+        <table>
+          <thead><tr><th>Dose alvo</th><th>Cálculo</th><th>Vazão com 64 mcg/mL</th><th>Observação</th></tr></thead>
+          <tbody>
+            <tr><td>0,1 mcg/kg/min</td><td>0,1 × 70 = 7 mcg/min → 420 mcg/h</td><td>420 ÷ 64 = <strong>6,6 mL/h</strong></td><td>Para ter 64 mcg/mL em 250 mL com ampola 8 mg/4 mL de hemitartarato, usar <strong>4 ampolas</strong>.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>5.2 Vasopressina — vasopressor não adrenérgico adjunto</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Classe/mecanismo</th><td>Agonista V1a vascular; vasoconstrição não catecolaminérgica. Pode reduzir dose de noradrenalina em vasoplegia.</td></tr>
+            <tr><th>Ampola comum</th><td>20 UI/mL ou apresentações conforme serviço.</td></tr>
+            <tr><th>Diluição prática</th><td>20 UI em SF 0,9% ou SG 5% até 100 mL → 0,2 UI/mL.</td></tr>
+            <tr><th>Faixa terapêutica</th><td>0,03 UI/min usual; alguns cenários usam 0,01–0,04 UI/min. Não titular como noradrenalina de forma ampla sem protocolo.</td></tr>
+            <tr><th>Exemplo</th><td>0,03 UI/min = 1,8 UI/h → 9 mL/h se solução 0,2 UI/mL.</td></tr>
+            <tr><th>Cuidados</th><td>Isquemia digital/cutânea/esplâncnica; cautela em baixo débito grave e doença vascular. Não substitui reavaliação de hipovolemia, infecção e fonte.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>5.3 Adrenalina — vasopressor/inotrópico potente</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Classe/mecanismo</th><td>α1, β1 e β2; aumenta inotropia, cronotropia e vasoconstrição em doses maiores.</td></tr>
+            <tr><th>Ampola comum</th><td>1 mg/mL em 1 mL.</td></tr>
+            <tr><th>Diluição prática</th><td>4 mg em SF 0,9% ou SG 5% até 250 mL → 16 mcg/mL.</td></tr>
+            <tr><th>Faixa terapêutica</th><td>0,01–0,5 mcg/kg/min, conforme choque, anafilaxia, pós-PCR ou necessidade inotrópica/vasopressora.</td></tr>
+            <tr><th>Exemplo 70 kg</th><td>0,05 mcg/kg/min → 3,5 mcg/min = 210 mcg/h → 13,1 mL/h se 16 mcg/mL.</td></tr>
+            <tr><th>Cuidados</th><td>Taquiarritmia, isquemia, hiperglicemia, hiperlactatemia por β2; lactato pode subir por estímulo adrenérgico e não necessariamente por piora de hipoperfusão.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>5.4 Dobutamina — inotrópico β1 com vasodilatação variável</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Classe/mecanismo</th><td>β1 predominante, β2 variável; aumenta contratilidade e débito cardíaco, podendo reduzir RVS.</td></tr>
+            <tr><th>Ampola comum</th><td>250 mg/20 mL ou apresentação equivalente.</td></tr>
+            <tr><th>Diluição prática</th><td>250 mg em SG 5% ou SF 0,9% até 250 mL → 1000 mcg/mL.</td></tr>
+            <tr><th>Faixa terapêutica</th><td>2,5–20 mcg/kg/min.</td></tr>
+            <tr><th>Exemplo 70 kg</th><td>5 mcg/kg/min → 350 mcg/min = 21.000 mcg/h → 21 mL/h se 1000 mcg/mL.</td></tr>
+            <tr><th>Cuidados</th><td>Taquiarritmia, hipotensão por vasodilatação, isquemia. Não usar para “subir pressão”; usar para baixo débito/hipoperfusão com avaliação de volume e PA.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>5.5 Milrinona — inodilatador PDE3</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Classe/mecanismo</th><td>Inibidor PDE3; aumenta AMPc, melhora inotropia e causa vasodilatação sistêmica/pulmonar.</td></tr>
+            <tr><th>Ampola comum</th><td>10 mg/10 mL ou apresentações equivalentes.</td></tr>
+            <tr><th>Diluição prática</th><td>20 mg em SG 5% ou SF 0,9% até 100 mL → 200 mcg/mL.</td></tr>
+            <tr><th>Faixa terapêutica</th><td>0,125–0,75 mcg/kg/min; evitar bolus em instáveis.</td></tr>
+            <tr><th>Exemplo 70 kg</th><td>0,25 mcg/kg/min → 17,5 mcg/min = 1050 mcg/h → 5,25 mL/h se 200 mcg/mL.</td></tr>
+            <tr><th>Cuidados</th><td>Hipotensão, arritmia, acúmulo em disfunção renal. Útil em disfunção VD/hipertensão pulmonar e pacientes em beta-bloqueio, mas exige PA tolerante.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>5.6 Dopamina — uso restrito</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Classe/mecanismo</th><td>Dopaminérgico, β1 e α1 dose-dependente; cronotrópico/inotrópico/vasopressor.</td></tr>
+            <tr><th>Ampola comum</th><td>50 mg/10 mL ou 200 mg/5 mL conforme serviço.</td></tr>
+            <tr><th>Diluição prática</th><td>400 mg em SG 5% ou SF 0,9% até 250 mL → 1600 mcg/mL.</td></tr>
+            <tr><th>Faixa terapêutica</th><td>5–20 mcg/kg/min; evitar “dose renal”.</td></tr>
+            <tr><th>Exemplo 70 kg</th><td>10 mcg/kg/min → 700 mcg/min = 42.000 mcg/h → 26,25 mL/h se 1600 mcg/mL.</td></tr>
+            <tr><th>Cuidados</th><td>Mais arritmogênica que noradrenalina em choque; considerar apenas em bradicardia com baixo risco de arritmia ou cenários específicos.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>5.7 Fenilefrina — α1 puro</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Classe/mecanismo</th><td>Agonista α1 quase puro; aumenta RVS sem efeito β relevante.</td></tr>
+            <tr><th>Apresentação</th><td>Varia bastante por serviço; conferir concentração.</td></tr>
+            <tr><th>Diluição prática</th><td>Exemplo: 10 mg em SF 0,9% até 100 mL → 100 mcg/mL.</td></tr>
+            <tr><th>Faixa terapêutica</th><td>0,1–2 mcg/kg/min ou titulação em mcg/min conforme protocolo.</td></tr>
+            <tr><th>Exemplo 70 kg</th><td>0,5 mcg/kg/min → 35 mcg/min = 2100 mcg/h → 21 mL/h se 100 mcg/mL.</td></tr>
+            <tr><th>Cuidados</th><td>Pode reduzir débito cardíaco por aumento de pós-carga e bradicardia reflexa. Não é primeira escolha em choque séptico típico.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>5.8 Nitroglicerina — vasodilatador venoso predominante</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Classe/mecanismo</th><td>Doador de NO; venodilatação predominante em doses baixas, vasodilatação arterial em doses maiores.</td></tr>
+            <tr><th>Ampola comum</th><td>25 mg/5 mL ou 50 mg/10 mL conforme fabricante.</td></tr>
+            <tr><th>Diluição prática</th><td>50 mg em SG 5% ou SF 0,9% até 250 mL → 200 mcg/mL. Usar equipos compatíveis quando exigido.</td></tr>
+            <tr><th>Faixa terapêutica</th><td>5–200 mcg/min, titulando por PA, congestão, dor isquêmica e tolerância.</td></tr>
+            <tr><th>Exemplo</th><td>20 mcg/min = 1200 mcg/h → 6 mL/h se 200 mcg/mL.</td></tr>
+            <tr><th>Cuidados</th><td>Cefaleia, hipotensão, taquifilaxia, contraindicação com inibidores PDE5; cautela em VD dependente de pré-carga.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>5.9 Nitroprussiato — vasodilatador arterial e venoso potente</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Classe/mecanismo</th><td>Doador de NO; vasodilatação arterial e venosa intensa, redução de pré e pós-carga.</td></tr>
+            <tr><th>Ampola comum</th><td>50 mg liofilizado.</td></tr>
+            <tr><th>Diluição prática</th><td>50 mg em SG 5% até 250 mL → 200 mcg/mL. Proteger da luz.</td></tr>
+            <tr><th>Faixa terapêutica</th><td>0,3–10 mcg/kg/min, preferir menor dose e menor duração.</td></tr>
+            <tr><th>Exemplo 70 kg</th><td>0,5 mcg/kg/min → 35 mcg/min = 2100 mcg/h → 10,5 mL/h se 200 mcg/mL.</td></tr>
+            <tr><th>Cuidados</th><td>Hipotensão abrupta, toxicidade por cianeto/tiocianato, cautela em DRC/hepatopatia e HIC. Exige monitorização intensiva.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>5.10 Nicardipina — anti-hipertensivo titulável</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Classe/mecanismo</th><td>Bloqueador de canal de cálcio dihidropiridínico com vasodilatação arterial predominante.</td></tr>
+          <tr><th>Efeito clínico</th><td>Reduz RVS e PA com titulação contínua, sem efeito direto relevante sobre contratilidade.</td></tr>
+          <tr><th>Faixa terapêutica</th><td>5 mg/h, titular 2,5 mg/h a cada 5–15 min até alvo; máximo usual 15 mg/h.</td></tr>
+          <tr><th>Cenários de destaque</th><td>AVC, HIC/neuroemergências, emergência hipertensiva quando disponível.</td></tr>
+          <tr><th>Cuidados</th><td>Hipotensão, taquicardia reflexa, edema; disponibilidade variável.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <details><summary>5.11 Clevidipina — anti-hipertensivo arterial ultracurto</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Classe/mecanismo</th><td>Bloqueador de canal de cálcio dihidropiridínico ultracurto, metabolizado por esterases sanguíneas/teciduais.</td></tr>
+          <tr><th>Efeito clínico</th><td>Redução rápida e titulável da PA por vasodilatação arterial.</td></tr>
+          <tr><th>Apresentação/preparo</th><td>Emulsão lipídica pronta para uso, usualmente 0,5 mg/mL. Não diluir.</td></tr>
+          <tr><th>Faixa terapêutica</th><td>1–2 mg/h inicial, titular rapidamente conforme protocolo; observar limite de dose, volume e duração institucional.</td></tr>
+          <tr><th>Cenários de destaque</th><td>Emergência hipertensiva, neuroemergências, perioperatório, necessidade de controle fino e rapidamente reversível.</td></tr>
+          <tr><th>Cuidados</th><td>Carga lipídica; cautela/contraindicação conforme bula em alergia a soja/ovo e distúrbios do metabolismo lipídico; risco de hipotensão.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <details><summary>5.12 Esmolol — beta-bloqueador ultracurto</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Classe/mecanismo</th><td>Beta-1 bloqueador de curta duração, rapidamente titulável.</td></tr>
+          <tr><th>Efeito clínico</th><td>Reduz FC, contratilidade, consumo miocárdico de O₂ e dP/dt.</td></tr>
+          <tr><th>Faixa terapêutica</th><td>25–200 mcg/kg/min; bolus conforme protocolo e tolerância.</td></tr>
+          <tr><th>Cenários de destaque</th><td>Dissecção aórtica, controle anti-impulso, hiperadrenergia e taquiarritmia selecionada.</td></tr>
+          <tr><th>Cuidados</th><td>Broncoespasmo, bradicardia, BAV, choque cardiogênico/descompensação de IC.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <details><summary>5.13 Labetalol — beta/alfabloqueador</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Classe/mecanismo</th><td>Bloqueio β com bloqueio α1 associado, reduzindo FC/contratilidade e RVS.</td></tr>
+          <tr><th>Efeito clínico</th><td>Redução pressórica com atenuação de resposta adrenérgica.</td></tr>
+          <tr><th>Faixa terapêutica</th><td>Bolus 10–20 mg IV, repetir/escalar conforme protocolo; infusão 0,5–2 mg/min.</td></tr>
+          <tr><th>Cenários de destaque</th><td>Emergência hipertensiva, AVC, gestação conforme protocolo, dissecção quando apropriado.</td></tr>
+          <tr><th>Cuidados</th><td>Bradicardia, BAV, broncoespasmo, IC descompensada.</td></tr>
+        </tbody></table>
+      </div></details>
+
+      <details><summary>5.14 Isoproterenol / isoprenalina — cronotrópico beta-agonista</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Classe/mecanismo</th><td>Agonista β1/β2 não seletivo, sem ação α clinicamente relevante.</td></tr>
+          <tr><th>Efeito clínico</th><td>Aumenta frequência cardíaca, condução AV e contratilidade; pode reduzir RVS por β2.</td></tr>
+          <tr><th>Diluição prática</th><td>Exemplo: 1 mg em SG 5% até 250 mL → 4 mcg/mL.</td></tr>
+          <tr><th>Faixa terapêutica</th><td>0,5–5 mcg/min usual; 2–10 mcg/min em cenários selecionados conforme protocolo.</td></tr>
+          <tr><th>Cenários de destaque</th><td>Bradicardia refratária, bloqueios selecionados, ponte para marcapasso, torsades bradi-dependente.</td></tr>
+          <tr><th>Cuidados</th><td>Taquiarritmia, isquemia, hipotensão por vasodilatação, hipocalemia e elevação de lactato.</td></tr>
+        </tbody></table>
+      </div></details>
+    </section>
+
+    <section id="choque">
+      <h2>6. Cenários de choque e escolha das drogas</h2>
+      <table>
+        <thead><tr><th>Fenótipo</th><th>Achados prováveis</th><th>DVA inicial típica</th><th>Próximo passo</th></tr></thead>
+        <tbody>
+          <tr><td>Choque séptico/distributivo</td><td>Vasoplegia, RVS baixa, TEC alterado, lactato, infecção suspeita/confirmada.</td><td>Noradrenalina; vasopressina como adjunta se dose crescente.</td><td>Fonte/antibiótico, fluido guiado por responsividade, POCUS, perfusão periférica, lactato contextualizado.</td></tr>
+          <tr><td>Choque cardiogênico por VE</td><td>Congestão, baixo débito, extremidades frias, eco com disfunção VE.</td><td>Noradrenalina se hipotenso; dobutamina/milrinona se baixo débito com PA tolerante.</td><td>Reperfusão/suporte mecânico quando indicado, diurético se congestão, evitar excesso de fluido.</td></tr>
+          <tr><td>Choque por VD / TEP maciço</td><td>VD dilatado, hipotensão, hipoxemia, baixo débito, pressão intratorácica prejudicial.</td><td>Noradrenalina para perfusão coronária direita; considerar inotrópico/inodilatador com cautela.</td><td>Reperfusão no TEP de alto risco, evitar hipoxemia/hipercapnia/acidemia, cuidado com PEEP excessiva.</td></tr>
+          <tr><td>Choque hipovolêmico/hemorrágico</td><td>História de perdas, colapso venoso, resposta a volume/sangue.</td><td>DVA como ponte se hipotensão crítica, mas tratamento é controle de sangramento + reposição.</td><td>Hemocomponentes, controle fonte, aquecimento, cálcio, protocolo de transfusão maciça.</td></tr>
+          <tr><td>Choque obstrutivo</td><td>Tamponamento, pneumotórax hipertensivo, TEP maciço.</td><td>DVA ponte; noradrenalina frequentemente usada.</td><td>Tratamento mecânico definitivo: pericardiocentese, drenagem torácica, reperfusão.</td></tr>
+          <tr><td>Pós-PCR vasoplégico</td><td>Vasoplegia + disfunção miocárdica variável após ROSC.</td><td>Noradrenalina; inotrópico se baixo débito documentado.</td><td>Meta de PAM individualizada, eco seriado, evitar hiperóxia/hipocapnia/hipotensão.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="metas">
+      <h2>7. Aplicação prática das metas — exemplos rápidos</h2>
+      <p>As metas completas e a forma de obtenção dos parâmetros foram concentradas no ponto 4. Esta seção fica apenas como lembrete de aplicação para evitar duplicidade.</p>
+      <table>
+        <thead><tr><th>Situação</th><th>Raciocínio prático</th><th>Erro a evitar</th></tr></thead>
+        <tbody>
+          <tr><td>PAM baixa com pele fria e lactato alto</td><td>Confirmar fenótipo: hipovolemia, baixo débito, vasoplegia ou obstrutivo. POCUS pode mudar a escolha entre fluido, vasopressor e inotrópico.</td><td>Subir noradrenalina sem reavaliar fluxo e causa.</td></tr>
+          <tr><td>PAM adequada, mas hipoperfusão persiste</td><td>Considerar baixo débito, microcirculação, hipoxemia, anemia, febre/demanda elevada, disfunção mitocondrial.</td><td>Assumir que PAM ≥65 resolveu o choque.</td></tr>
+          <tr><td>Dissecção aórtica hipertensiva</td><td>Controlar FC/dP/dt antes de vasodilatar.</td><td>Vasodilatador isolado com taquicardia reflexa.</td></tr>
+          <tr><td>Neurocrítico com hipotensão</td><td>Preservar PAM/PPC, oxigenação e PaCO₂ apropriada.</td><td>Reduzir PA agressivamente e comprometer perfusão cerebral.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="calculadora">
+      <h2>8. Mini-calculadora didática de DVA</h2>
+      <p>Ferramenta simples para converter dose em vazão. A calculadora robusta do manual será construída no módulo específico, com seleção de ampola, diluente, concentração final e conversão reversa vazão ↔ dose.</p>
+      <div class="calc-panel">
+        <h3>Conversor dose → mL/h</h3>
+        <div class="calc-grid">
+          <div><label for="peso">Peso (kg)</label><input id="peso" type="number" value="70" min="20" max="250"></div>
+          <div><label for="droga">Droga</label><select id="droga">
+            <option value="mcgkgmin">mcg/kg/min</option><option value="nora64">Noradrenalina 4 ampolas/250 mL = 64 mcg/mL</option>
+            <option value="mcgmin">mcg/min</option>
+            <option value="uimin">UI/min</option>
+            <option value="mgh">mg/h</option>
+          </select></div>
+          <div><label for="dose">Dose pretendida <span id="doseUnitLabel" class="unit-inline">(mcg/kg/min)</span></label><input id="dose" type="number" value="0.1" step="0.001"></div>
+          <div><label for="conc">Concentração final <span id="concUnitLabel" class="unit-inline">(mcg/mL)</span></label><input id="conc" type="number" value="64" step="0.01"></div>
+          <div><label for="concunit">Unidade concentração</label><select id="concunit"><option value="mcgml">mcg/mL</option><option value="uiml">UI/mL</option><option value="mgml">mg/mL</option></select></div>
+        </div>
+        <div class="small" style="color:#dbeafe;margin-top:8px">Exemplo padrão: noradrenalina hemitartarato 8 mg/4 mL — 4 ampolas em 250 mL = 64 mcg/mL de base. Dose 0,1 mcg/kg/min em 70 kg → ~6,6 mL/h.</div>
+        <div class="calc-result" id="calcOut"><strong>Resultado: —</strong><span>—</span></div>
+      </div>
+    </section>
+
+    <section id="seguranca">
+      <h2>9. Segurança, vias de administração e extravasamento</h2>
+      <table>
+        <thead><tr><th>Tema</th><th>Conduta segura</th><th>Observação</th></tr></thead>
+        <tbody>
+          <tr><td>Acesso central</td><td>Preferir para vasopressores contínuos, altas doses ou uso prolongado.</td><td>Reduz risco de necrose por extravasamento e permite soluções concentradas.</td></tr>
+          <tr><td>Acesso periférico</td><td>Pode ser ponte em emergência: veia calibrosa, idealmente antebraço/fossa, checagem frequente e tempo limitado.</td><td>Evitar mão, punho e acesso duvidoso para altas doses.</td></tr>
+          <tr><td>Linha exclusiva</td><td>Usar bomba dedicada e identificar concentração.</td><td>Evita bolus acidental ao flush e incompatibilidades.</td></tr>
+          <tr><td>Titulação</td><td>Alterações graduais com reavaliação de PAM/perfusão.</td><td>Escalada rápida sem diagnóstico sugere choque refratário ou fenótipo errado.</td></tr>
+          <tr><td>Extravasamento</td><td>Parar infusão, manter cateter para aspiração se possível, elevar membro, acionar protocolo de antídoto.</td><td>Fentolamina local é antídoto clássico para catecolaminas quando disponível; seguir protocolo institucional.</td></tr>
+          <tr><td>Desmame</td><td>Reduzir conforme estabilidade, perfusão e causa controlada.</td><td>Evitar suspender vasopressina abruptamente se noradrenalina ainda alta.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-danger"><strong>Bolus inadvertido de vasopressor pode matar.</strong> Nunca deixe seringa/equipo de DVA sem identificação, nunca lave linha de vasopressor sem plano e nunca conecte medicações intermitentes na mesma via sem avaliação.</div>
+    </section>
+
+    <section id="erros">
+      <h2>10. Erros frequentes e respostas práticas</h2>
+      <details open><summary>Erro 1 — Escalar noradrenalina sem reavaliar volemia e fenótipo</summary><div class="detail-body"><p><strong>Problema:</strong> aumenta PAM, mas pode piorar pós-carga e isquemia. <strong>Resposta:</strong> POCUS, responsividade a fluidos, TEC, lactato, ScvO₂/ΔpCO₂ quando disponíveis.</p></div></details>
+      <details><summary>Erro 2 — Usar dobutamina para “subir pressão”</summary><div class="detail-body"><p><strong>Problema:</strong> dobutamina pode reduzir RVS e piorar hipotensão. <strong>Resposta:</strong> usar quando há baixo débito/hipoperfusão com pressão sustentada ou com vasopressor de suporte.</p></div></details>
+      <details><summary>Erro 3 — Interpretar lactato alto em adrenalina como hipoperfusão obrigatória</summary><div class="detail-body"><p><strong>Problema:</strong> β2 pode aumentar lactato. <strong>Resposta:</strong> integrar com TEC, diurese, ScvO₂, ΔpCO₂, eco e tendência clínica.</p></div></details>
+      <details><summary>Erro 4 — Manter dopamina por hábito</summary><div class="detail-body"><p><strong>Problema:</strong> maior risco de arritmia em muitos cenários de choque. <strong>Resposta:</strong> preferir noradrenalina em choque vasoplégico; reservar dopamina para cenários específicos, como bradicardia selecionada.</p></div></details>
+      <details><summary>Erro 5 — Vasodilatador antes de controlar FC na dissecção</summary><div class="detail-body"><p><strong>Problema:</strong> vasodilatação isolada pode causar taquicardia reflexa e aumentar cisalhamento. <strong>Resposta:</strong> beta-bloqueio primeiro, depois vasodilatador se necessário.</p></div></details>
+      <details><summary>Erro 6 — Ignorar VD no ventilado com choque</summary><div class="detail-body"><p><strong>Problema:</strong> PEEP, hipoxemia, hipercapnia e acidose aumentam pós-carga do VD. <strong>Resposta:</strong> eco, reduzir fatores que elevam RVP, ajustar ventilador e escolher DVA conforme VD/PA.</p></div></details>
+    </section>
+
+    <section id="checklist">
+      <h2>11. Checklist de prescrição e titulação de DVA</h2>
+      <div class="grid grid-2">
+        <div class="card"><h4>Antes de iniciar</h4>
+          <ul>
+            <li>Qual é o fenótipo provável do choque?</li>
+            <li>Há necessidade de fluido, sangue, antibiótico, reperfusão ou procedimento mecânico?</li>
+            <li>Qual a meta de PAM/PAS/PPC e por quê?</li>
+            <li>A droga escolhida corrige o mecanismo ou apenas o número da PA?</li>
+            <li>Acesso venoso é seguro para a droga e concentração?</li>
+          </ul>
+        </div>
+        <div class="card"><h4>Durante a infusão</h4>
+          <ul>
+            <li>Concentração e unidade estão claras na prescrição?</li>
+            <li>Bomba está em mL/h coerente com mcg/kg/min, UI/min ou mcg/min?</li>
+            <li>PAM melhorou junto com TEC, diurese, consciência/lactato?</li>
+            <li>Há arritmia, isquemia, extremidade fria ou extravasamento?</li>
+            <li>É hora de adicionar inotrópico, vasopressina, suporte mecânico ou reduzir droga?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="referencias">
+      <h2>Referências e fontes metodológicas</h2>
+      
+      <details class="refs-collapsible">
+        <summary>Mostrar/ocultar referências</summary>
+        <div class="detail-body">
+          <ol>
+        <li>Prescott HC, Antonelli M, Alhazzani W, et al. <strong>Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2026</strong>. <em>Critical Care Medicine / Intensive Care Medicine</em>. 2026.</li>
+        <li>Monnet X, Messina A, Greco M, et al. <strong>ESICM guidelines on circulatory shock and hemodynamic monitoring 2025</strong>. <em>Intensive Care Medicine</em>. 2025;51:1971–2012.</li>
+        <li>De Backer D, Biston P, Devriendt J, et al. <strong>Comparison of dopamine and norepinephrine in the treatment of shock</strong>. <em>New England Journal of Medicine</em>. 2010;362:779–789.</li>
+        <li>Russell JA, Walley KR, Singer J, et al. <strong>Vasopressin versus norepinephrine infusion in patients with septic shock</strong>. <em>New England Journal of Medicine</em>. 2008;358:877–887.</li>
+        <li>Gordon AC, Mason AJ, Thirunavukkarasu N, et al. <strong>Effect of early vasopressin vs norepinephrine on kidney failure in patients with septic shock: VANISH trial</strong>. <em>JAMA</em>. 2016;316:509–518.</li>
+        <li>Hernández G, Ospina-Tascón GA, Damiani LP, et al. <strong>Effect of a resuscitation strategy targeting peripheral perfusion status vs serum lactate levels on 28-day mortality among patients with septic shock: ANDROMEDA-SHOCK</strong>. <em>JAMA</em>. 2019;321:654–664.</li>
+        <li>Khanna A, English SW, Wang XS, et al. <strong>Angiotensin II for the treatment of vasodilatory shock</strong>. <em>New England Journal of Medicine</em>. 2017;377:419–430.</li>
+        <li>Levy B, Clere-Jehl R, Legras A, et al. <strong>Epinephrine versus norepinephrine for cardiogenic shock after acute myocardial infarction</strong>. <em>Journal of the American College of Cardiology</em>. 2018;72:173–182.</li>
+        <li>Wagstaff H, Ledyard HK. <strong>Blood Pressure Management in Neurologic Emergencies</strong>. <em>Emergency Medicine Clinics of North America</em>. 2026;44:123–141.</li>
+                <li>De Backer D, Biston P, Devriendt J, et al. <strong>SOAP II</strong>: Comparison of dopamine and norepinephrine in the treatment of shock. <em>New England Journal of Medicine</em>. 2010;362:779-789.</li>
+          <li>Evans L, Rhodes A, Alhazzani W, et al. <strong>Surviving Sepsis Campaign Guidelines 2021</strong>. <em>Intensive Care Medicine</em>. 2021;47:1181-1247.</li>
+        </ol>
+      <div class="alert alert-info"><strong>Nota metodológica:</strong> as recomendações foram organizadas por mecanismo fisiológico, diretrizes de choque/sepse, ensaios clínicos primários e uso operacional em UTI. A dose final deve ser validada por protocolo institucional.</div>
+        </div>
+      </details>
+    </section>
+
+    <div class="footer-sign">
+      <p><strong>André M. Sena - Médico (CRM/RN 12533)</strong></p>
+    </div>
+  </main>
+</div>
+
+<script>
+
+function updateDoseAndConcLabels(){
+  const tipo=document.getElementById('droga').value;
+  let doseUnit='mcg/kg/min', concUnit=document.getElementById('concunit').selectedOptions[0].text;
+  if(tipo==='mcgmin'){doseUnit='mcg/min';}
+  if(tipo==='uimin'){doseUnit='UI/min';}
+  if(tipo==='mgh'){doseUnit='mg/h';}
+  if(tipo==='nora64'){doseUnit='mcg/kg/min';}
+  document.getElementById('doseUnitLabel').textContent='(' + doseUnit + ')';
+  document.getElementById('concUnitLabel').textContent='(' + concUnit + ')';
+}
+
+function calcDVA(){
+  updateDoseAndConcLabels();
+  const peso = parseFloat(document.getElementById('peso').value || 0);
+  const tipo = document.getElementById('droga').value;
+  const dose = parseFloat(document.getElementById('dose').value || 0);
+  const conc = parseFloat(document.getElementById('conc').value || 0);
+  const concunit = document.getElementById('concunit').value;
+  if(!peso || !dose || !conc){return;}
+  let amountHour = 0, amountUnit = '', detail = '', expectedConc = '';
+
+  if(tipo === 'nora64'){
+    amountHour = dose * peso * 60;
+    amountUnit = 'mcg/h';
+    expectedConc = 'mcg/mL';
+    detail = dose + ' mcg/kg/min × ' + peso + ' kg × 60 = ' + amountHour.toFixed(1) + ' mcg/h. Preset: 4 ampolas de hemitartarato 8 mg/4 mL em 250 mL = 64 mcg/mL de norepinefrina base.';
+  }
+  if(tipo === 'mcgkgmin'){
+    amountHour = dose * peso * 60;
+    amountUnit = 'mcg/h';
+    expectedConc = 'mcg/mL';
+    detail = dose + ' mcg/kg/min × ' + peso + ' kg × 60 = ' + amountHour.toFixed(1) + ' mcg/h.';
+  }
+  if(tipo === 'mcgmin'){
+    amountHour = dose * 60;
+    amountUnit = 'mcg/h';
+    expectedConc = 'mcg/mL';
+    detail = dose + ' mcg/min × 60 = ' + amountHour.toFixed(1) + ' mcg/h.';
+  }
+  if(tipo === 'uimin'){
+    amountHour = dose * 60;
+    amountUnit = 'UI/h';
+    expectedConc = 'UI/mL';
+    detail = dose + ' UI/min × 60 = ' + amountHour.toFixed(2) + ' UI/h.';
+  }
+  if(tipo === 'mgh'){
+    amountHour = dose;
+    amountUnit = 'mg/h';
+    expectedConc = 'mg/mL';
+    detail = dose + ' mg/h.';
+  }
+
+  const vazao = amountHour / conc;
+  const warning = ((expectedConc === 'mcg/mL' && concunit !== 'mcgml') || (expectedConc === 'UI/mL' && concunit !== 'uiml') || (expectedConc === 'mg/mL' && concunit !== 'mgml')) ? ' Atenção: unidade de concentração selecionada pode não corresponder à unidade da dose.' : '';
+  document.getElementById('calcOut').innerHTML = '<strong>Resultado: ' + amountHour.toFixed(2) + ' ' + amountUnit + '</strong><span>' + detail + ' Vazão estimada: <b>' + vazao.toFixed(2) + ' mL/h</b> para concentração ' + conc + ' ' + document.getElementById('concunit').selectedOptions[0].text + '.' + warning + '</span>';
+}
+['peso','droga','dose','conc','concunit'].forEach(id => document.getElementById(id).addEventListener('input', function(){updateDoseAndConcLabels(); calcDVA();}));
+document.getElementById('droga').addEventListener('change', function(){
+  const tipo=this.value, dose=document.getElementById('dose'), conc=document.getElementById('conc'), unit=document.getElementById('concunit');
+  if(tipo==='mcgkgmin'){dose.value=0.1; conc.value=64; unit.value='mcgml';}
+  if(tipo==='nora64'){dose.value=0.1; conc.value=64; unit.value='mcgml';}
+  if(tipo==='mcgmin'){dose.value=20; conc.value=200; unit.value='mcgml';}
+  if(tipo==='uimin'){dose.value=0.03; conc.value=0.2; unit.value='uiml';}
+  if(tipo==='mgh'){dose.value=10; conc.value=1; unit.value='mgml';}
+  updateDoseAndConcLabels();
+  calcDVA();
+});
+updateDoseAndConcLabels();
+calcDVA();
+</script>
+<script>
+function initModuleMenu(){
+  const app=document.getElementById("moduleApp");
+  const toggle=document.getElementById("moduleNavToggle");
+  const nav=document.getElementById("moduleNav");
+  if(!app || !toggle || !nav) return;
+  const links=Array.from(nav.querySelectorAll('a[href^="#"]'));
+  function shortLabel(link,index){
+    const text=(link.textContent || "").trim();
+    const number=text.match(/^([0-9]+(?:\.[0-9]+)?)/);
+    if(number) return number[1];
+    if(/refer/i.test(text)) return "Ref";
+    if(/leit/i.test(text)) return "Ler";
+    return String(index+1);
+  }
+  links.forEach((link,index)=>{
+    if(!link.getAttribute("data-short")) link.setAttribute("data-short", shortLabel(link,index));
+    if(!link.querySelector(".nav-label")){
+      const label=document.createElement("span");
+      label.className="nav-label";
+      label.textContent=link.textContent;
+      link.textContent="";
+      link.appendChild(label);
+    }
+  });
+  function setCollapsed(collapsed){
+    app.classList.toggle("nav-collapsed", collapsed);
+    toggle.textContent = collapsed ? "Menu" : "Minimizar";
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+  }
+  function setActive(link){
+    links.forEach(item=>item.classList.remove("module-nav-link--active"));
+    if(link) link.classList.add("module-nav-link--active");
+  }
+  toggle.addEventListener("click", ()=>setCollapsed(!app.classList.contains("nav-collapsed")));
+  links.forEach(link=>{
+    link.addEventListener("click", (event)=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(!target) return;
+      event.preventDefault();
+      target.scrollIntoView({behavior:"smooth", block:"start"});
+      try{ history.replaceState(null, "", link.getAttribute("href")); }catch(e){}
+      setActive(link);
+      if(window.matchMedia("(max-width: 980px)").matches) setCollapsed(true);
+    });
+  });
+  const initial=links.find(link=>link.getAttribute("href")===window.location.hash) || links[0];
+  setActive(initial);
+  if("IntersectionObserver" in window){
+    const observer=new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const active=links.find(link=>link.getAttribute("href")==="#"+entry.target.id);
+          setActive(active);
+        }
+      });
+    }, {root:null, rootMargin:"-20% 0px -65% 0px", threshold:0.01});
+    links.forEach(link=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(target) observer.observe(target);
+    });
+  }
+}
+initModuleMenu();
+</script>
+</body>
+</html>

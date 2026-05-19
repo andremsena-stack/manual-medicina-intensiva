@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Interativo de Medicina Intensiva — Módulo 4: Manutenção de Sedoanalgesia</title>
+  <style>
+    :root{
+      --bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;
+      --primary:#123c69;--primary-soft:#dce9f6;--accent:#0b6b5c;--danger:#b42318;
+      --warning:#b54708;--success:#067647;--border:#d8e0ea;--shadow:0 8px 24px rgba(16,24,40,.08);
+      --radius:16px
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+    a{color:inherit;text-decoration:none}
+    .app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+    aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d2438;color:#fff;padding:24px 18px}
+    .brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}
+    .brand h1{font-size:19px;margin:0 0 8px;line-height:1.25}
+    .brand p{margin:0;font-size:13px;color:rgba(255,255,255,.75)}
+    nav ul{list-style:none;padding:0;margin:0}
+    nav li{margin:5px 0}
+    nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88)}
+    nav a:hover{background:rgba(255,255,255,.10)}
+    main{padding:34px;max-width:1380px;width:100%}
+    .hero{background:linear-gradient(135deg,#123c69,#0b6b5c);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);margin-bottom:28px}
+    .hero h2{font-size:34px;margin:0 0 10px}.hero p{max-width:1040px;color:rgba(255,255,255,.9);margin:0}
+    .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.14);font-size:12px}
+    section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}
+    section h2{margin:0 0 14px;color:var(--primary);font-size:25px}
+    section h3{margin:22px 0 10px;color:#243b53;font-size:19px}
+    .grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{background:var(--surface-soft);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .card h4{margin:0 0 8px;color:var(--primary)}.card p{margin:0;color:var(--muted)}
+    .metric{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px}.metric strong{display:block;color:var(--primary);font-size:22px}
+    .alert{border-radius:14px;padding:14px 16px;margin:16px 0;border-left:6px solid}
+    .alert-danger{background:#fff1f0;border-color:var(--danger)}.alert-warning{background:#fff7ed;border-color:var(--warning)}
+    .alert-info{background:var(--primary-soft);border-color:var(--primary)}.alert-success{background:#ecfdf3;border-color:var(--success)}
+    table{width:100%;border-collapse:collapse;margin:14px 0;overflow:hidden;border-radius:12px}
+    th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;font-size:14px}
+    th{background:var(--primary);color:#fff}tbody tr:nth-child(even){background:#f8fafc}
+    details{border:1px solid var(--border);border-radius:14px;background:#fff;margin:12px 0;overflow:hidden}
+    summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--primary);background:#eef3f8}
+    summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}
+    .pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700;background:#dce9f6;color:#123c69;margin:2px}
+    .pill-danger{background:#fee4e2;color:#912018}.pill-warning{background:#fef0c7;color:#93370d}.pill-success{background:#dcfae6;color:#067647}
+    .ref{font-size:12px;color:#485568;border-top:1px solid var(--border);margin-top:12px;padding-top:10px}
+    .small{font-size:12px;color:var(--muted)}
+    .svg-box{background:#f8fbff;border:1px solid var(--border);border-radius:16px;padding:14px;margin:14px 0}.svg-box svg{width:100%;height:auto;display:block}
+    .calc-panel{background:#0d2438;color:#fff;border-radius:18px;padding:18px;margin:18px 0;box-shadow:var(--shadow)}
+    .calc-panel h3{color:#fff;margin-top:0}.calc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .calc-panel label{display:block;font-size:12px;color:#cbd5e1;margin-bottom:5px}
+    .calc-panel input,.calc-panel select{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:#fff;color:#111827}
+    .calc-result{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px;margin-top:12px}
+    .calc-result strong{font-size:20px;color:#fff;display:block}
+    .footer-sign{margin-top:40px;text-align:right;color:#344054}
+    @media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}.grid-2,.grid-3,.grid-4,.calc-grid{grid-template-columns:1fr}main{padding:18px}.hero h2{font-size:26px}}
+    @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}.calc-panel{background:#fff;color:#111;border:1px solid #ccc}.calc-panel h3{color:#111}.calc-result{background:#f8fafc;color:#111}.calc-panel label{color:#111}}
+  </style>
+
+  <style>
+    .brand__row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .brand__content{min-width:0}
+    .nav-toggle{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+    .nav-toggle:hover{background:rgba(255,255,255,.18)}
+    nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
+    .app.nav-collapsed{grid-template-columns:72px 1fr}
+    .app.nav-collapsed aside{padding:18px 10px}
+    .app.nav-collapsed .brand{margin-bottom:14px;padding-bottom:12px;text-align:center}
+    .app.nav-collapsed .brand__row{display:grid;justify-items:center;gap:8px}
+    .app.nav-collapsed .brand__content{display:none}
+    .app.nav-collapsed .nav-toggle{width:100%;padding:8px 4px;font-size:11px}
+    .app.nav-collapsed nav a{align-items:center;display:flex;justify-content:center;min-height:40px;padding:9px 4px;position:relative}
+    .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
+    .app.nav-collapsed nav a::before{content:attr(data-short);font-size:12px;font-weight:800}
+    @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{padding:12px 14px}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}.app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}.app.nav-collapsed .brand__content{display:block}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .toc-note,.app.nav-collapsed .brand .small{display:none}}
+  </style>
+</head>
+<body>
+<div class="app" id="moduleApp">
+  <aside>
+    <div class="brand">
+      <div class="brand__row">
+        <div class="brand__content">
+<h1>Manual Interativo de Medicina Intensiva</h1>
+      <p>Módulo 4 — Manutenção de sedoanalgesia</p>
+      <div class="small" style="color:rgba(255,255,255,.65);margin-top:12px">Versão modular para integração posterior em HTML autônomo consolidado.</div>
+        </div>
+        <button class="nav-toggle" id="moduleNavToggle" type="button" aria-controls="moduleNav" aria-expanded="true">Minimizar</button>
+      </div>
+    </div>
+    <nav id="moduleNav" aria-label="Secoes do modulo">
+      <ul>
+        <li><a href="#intro">1. Conceito</a></li>
+        <li><a href="#objetivos">2. Objetivos e metas</a></li>
+        <li><a href="#escalas">3. RASS, CPOT e BPS</a></li>
+        <li><a href="#estrategia">4. Estratégia analgosedativa</a></li>
+        <li><a href="#classes">5. Classes de medicamentos</a></li>
+        <li><a href="#farmacos">6. Fármacos — preparo e doses</a></li>
+        <li><a href="#calculadora">7. Mini-calculadora didática</a></li>
+        <li><a href="#cenarios">8. Cenários clínicos</a></li>
+        <li><a href="#bloqueio">9. Bloqueio neuromuscular</a></li>
+        <li><a href="#despertar">10. Despertar, desmame e delirium</a></li>
+        <li><a href="#erros">11. Erros frequentes</a></li>
+        <li><a href="#checklist">12. Checklist</a></li>
+        <li><a href="#referencias">Referências</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h2>Módulo 4 — Manutenção de sedoanalgesia em UTI</h2>
+      <p>Capítulo operacional para manutenção de analgesia, sedação, controle de agitação, prevenção de oversedation e preparo prático de soluções contínuas em pacientes críticos, especialmente em ventilação mecânica invasiva.</p>
+      <div class="badge-row">
+        <span class="badge">Analgosedação</span><span class="badge">RASS / CPOT / BPS</span><span class="badge">Doses para 70 kg</span><span class="badge">Diluições práticas</span><span class="badge">Segurança</span>
+      </div>
+    </div>
+
+    <section id="intro">
+      <h2>1. Conceito geral</h2>
+      <p>Sedoanalgesia é a estratégia de controle de dor, ansiedade, agitação, desconforto ventilatório e sofrimento psíquico no paciente crítico. Em UTI moderna, a abordagem deve ser <strong>orientada por metas</strong>, frequentemente com prioridade para controle de dor antes de aumentar sedativos.</p>
+      <div class="grid grid-4">
+        <div class="metric"><strong>Dor</strong><span>avaliar e tratar primeiro sempre que possível.</span></div>
+        <div class="metric"><strong>RASS</strong><span>meta usual: 0 a −2, salvo exceções.</span></div>
+        <div class="metric"><strong>Sincronia</strong><span>corrigir ventilador antes de aprofundar sedação.</span></div>
+        <div class="metric"><strong>Delirium</strong><span>prevenir oversedation e benzodiazepínico desnecessário.</span></div>
+      </div>
+      <div class="alert alert-warning"><strong>Regra prática:</strong> paciente intubado, taquicárdico, hipertenso e “brigando” com o ventilador não deve receber sedativo automaticamente. Primeiro procure dor, hipoxemia, hipercapnia, auto-PEEP, secreção, tubo mal posicionado, desconforto e assincronia.</div>
+      <div class="ref"><strong>Âncora metodológica:</strong> as diretrizes PADIS 2018 atualizaram a abordagem de dor, agitação/sedação, delirium, imobilidade e sono em adultos críticos; a atualização SCCM 2025 acrescentou recomendações focadas em ansiedade, sedação, delirium, mobilização e sono.</div>
+    </section>
+
+    <section id="objetivos">
+      <h2>2. Objetivos e metas da sedoanalgesia</h2>
+      <table>
+        <thead><tr><th>Objetivo</th><th>Meta prática</th><th>Como monitorar</th><th>Risco se mal conduzido</th></tr></thead>
+        <tbody>
+          <tr><td>Controle de dor</td><td>CPOT &lt;3 ou BPS &lt;5; relato do paciente quando possível.</td><td>Escala verbal, CPOT, BPS, sinais fisiológicos.</td><td>Agitação, assincronia, catecolaminas, sofrimento.</td></tr>
+          <tr><td>Sedação alvo</td><td>RASS 0 a −2 em maior parte dos pacientes; −3 a −5 em indicações específicas.</td><td>RASS seriado, CAM-ICU quando aplicável.</td><td>Delirium, maior tempo de VM, hipotensão, imobilidade.</td></tr>
+          <tr><td>Sincronia ventilatória</td><td>Paciente confortável, sem drive injurioso nem luta contra o ventilador.</td><td>Curvas do ventilador, ETCO₂, gasometria, exame clínico.</td><td>Lesão pulmonar, auto-PEEP, hipoxemia, necessidade excessiva de sedativos.</td></tr>
+          <tr><td>Segurança hemodinâmica</td><td>Evitar hipotensão por sedativos e opioides.</td><td>PAM, lactato, TEC, diurese, dose de vasopressor.</td><td>Choque iatrogênico, pior perfusão cerebral/coronária/renal.</td></tr>
+          <tr><td>Despertar e mobilidade</td><td>Menor profundidade de sedação compatível com segurança.</td><td>Interrupção ou redução diária quando apropriada.</td><td>Fraqueza adquirida na UTI, delirium, prolongamento de internação.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info"><strong>Alvo padrão:</strong> RASS 0 a −2. Sedação profunda deve ter indicação explícita: SDRA grave com bloqueio neuromuscular, hipertensão intracraniana, status epilepticus, assincronia grave não corrigível, hipotermia/controle de temperatura, pronamento com risco de extubação ou situação procedural.</div>
+    </section>
+
+    <section id="escalas">
+      <h2>3. Escalas: RASS, CPOT e BPS</h2>
+      <p>As escalas devem ser usadas de forma seriada e integrada. A lógica é: <strong>mensurar dor → definir profundidade de sedação → rastrear delirium → ajustar fármacos e ventilador</strong>. Não é adequado “olhar o paciente” de forma subjetiva e apenas registrar “sedado” ou “agitado”.</p>
+
+      <h3>3.1 Richmond Agitation-Sedation Scale (RASS)</h3>
+      <table>
+        <thead><tr><th>RASS</th><th>Descrição</th><th>Leitura clínica</th></tr></thead>
+        <tbody>
+          <tr><td>+4</td><td>Combativo, violento, risco imediato.</td><td>Agitação grave; avaliar dor, hipóxia, delirium, abstinência, tubo/circuito.</td></tr>
+          <tr><td>+3</td><td>Muito agitado; remove tubos/cateteres.</td><td>Risco de autoextubação.</td></tr>
+          <tr><td>+2</td><td>Agitado; movimentos frequentes, luta contra ventilador.</td><td>Procure causa reversível antes de sedar mais.</td></tr>
+          <tr><td>+1</td><td>Inquieto, ansioso, mas sem agressividade.</td><td>Pode exigir analgesia, orientação, ajuste ambiental.</td></tr>
+          <tr><td>0</td><td>Alerta e calmo.</td><td>Meta ideal em muitos pacientes.</td></tr>
+          <tr><td>−1</td><td>Sonolento, desperta ao chamado, contato >10 s.</td><td>Sedação leve.</td></tr>
+          <tr><td>−2</td><td>Desperta brevemente ao chamado, contato &lt;10 s.</td><td>Meta comum em ventilação mecânica.</td></tr>
+          <tr><td>−3</td><td>Movimento/abertura ocular ao chamado, sem contato visual sustentado.</td><td>Sedação moderada; justificar.</td></tr>
+          <tr><td>−4</td><td>Resposta apenas à estimulação física.</td><td>Sedação profunda.</td></tr>
+          <tr><td>−5</td><td>Sem resposta.</td><td>Sedação muito profunda; indicada apenas em cenários específicos.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>3.2 CPOT — Critical-Care Pain Observation Tool</h3>
+      <p>O CPOT é uma escala observacional de dor para pacientes críticos incapazes de relatar dor de forma confiável, incluindo pacientes intubados. Ela avalia quatro domínios, cada um pontuado de 0 a 2. A pontuação total varia de <strong>0 a 8</strong>.</p>
+      <table>
+        <thead><tr><th>Domínio</th><th>0 ponto</th><th>1 ponto</th><th>2 pontos</th></tr></thead>
+        <tbody>
+          <tr><td>Expressão facial</td><td>Relaxada, neutra.</td><td>Tensa, franzimento leve, sobrancelhas contraídas.</td><td>Careta, contração facial intensa, expressão de dor.</td></tr>
+          <tr><td>Movimentos corporais</td><td>Ausência de movimentos ou posição normal.</td><td>Movimentos lentos, cautelosos, proteção de área dolorosa.</td><td>Agitação, retirada, tentativa de puxar tubos, movimentos intensos.</td></tr>
+          <tr><td>Tensão muscular</td><td>Relaxado à mobilização passiva.</td><td>Tenso, resistência leve à mobilização.</td><td>Muito tenso, rígido, resistência forte à mobilização.</td></tr>
+          <tr><td>Adaptação ao ventilador ou vocalização</td><td>Sincronizado com ventilador ou fala em tom normal.</td><td>Tosse, mas tolera ventilação; gemido/suspiro.</td><td>Luta contra ventilador; choro, verbalização de dor, gritos.</td></tr>
+        </tbody>
+      </table>
+      <div class="grid grid-3">
+        <div class="card"><h4>Interpretação</h4><p>CPOT 0–2 sugere dor ausente ou controlada. CPOT ≥3 sugere dor clinicamente relevante e deve gerar intervenção analgésica ou investigação da causa.</p></div>
+        <div class="card"><h4>Quando aplicar</h4><p>Aplicar em repouso e durante estímulos potencialmente dolorosos: aspiração, mudança de decúbito, curativo, mobilização e fisioterapia.</p></div>
+        <div class="card"><h4>Limitações</h4><p>Bloqueio neuromuscular, paralisia, coma profundo e déficit motor reduzem aplicabilidade. Sinais fisiológicos isolados não substituem a escala.</p></div>
+      </div>
+
+      <h3>3.3 BPS — Behavioral Pain Scale</h3>
+      <p>A BPS é outra escala observacional de dor em paciente crítico intubado. Avalia três domínios, cada um pontuado de 1 a 4. A pontuação total varia de <strong>3 a 12</strong>.</p>
+      <table>
+        <thead><tr><th>Domínio</th><th>1 ponto</th><th>2 pontos</th><th>3 pontos</th><th>4 pontos</th></tr></thead>
+        <tbody>
+          <tr><td>Expressão facial</td><td>Relaxada.</td><td>Parcialmente contraída.</td><td>Totalmente contraída.</td><td>Careta intensa.</td></tr>
+          <tr><td>Membros superiores</td><td>Sem movimento.</td><td>Parcialmente flexionados.</td><td>Totalmente flexionados com flexão dos dedos.</td><td>Retração permanente ou resistência intensa.</td></tr>
+          <tr><td>Adaptação à ventilação mecânica</td><td>Tolera movimentos.</td><td>Tosse, mas tolera ventilação a maior parte do tempo.</td><td>Luta contra o ventilador.</td><td>Impossível ventilar adequadamente.</td></tr>
+        </tbody>
+      </table>
+      <div class="grid grid-3">
+        <div class="card"><h4>Interpretação</h4><p>BPS 3 indica ausência de sinais comportamentais de dor. BPS ≥5 sugere dor e deve motivar analgesia, reavaliação de dispositivos e busca de causas.</p></div>
+        <div class="card"><h4>Uso prático</h4><p>Útil em pacientes intubados, sedados, sem comunicação verbal. Deve ser registrada antes e depois de intervenções analgésicas.</p></div>
+        <div class="card"><h4>Limitações</h4><p>Assim como o CPOT, perde validade em bloqueio neuromuscular, coma profundo e alterações motoras graves.</p></div>
+      </div>
+
+      <h3>3.4 Como integrar as escalas</h3>
+      <table>
+        <thead><tr><th>Situação</th><th>Interpretação</th><th>Resposta prática</th></tr></thead>
+        <tbody>
+          <tr><td>CPOT ≥3 ou BPS ≥5 com RASS positivo</td><td>Agitação pode ser dor não tratada.</td><td>Tratar analgesia antes de aumentar hipnótico.</td></tr>
+          <tr><td>CPOT baixo/BPS baixo, RASS +2 ou +3</td><td>Agitação não parece dor primária.</td><td>Investigar delirium, hipoxemia, hipercapnia, abstinência, tubo, bexigoma, assincronia.</td></tr>
+          <tr><td>RASS −4/−5 sem indicação</td><td>Sedação excessiva provável.</td><td>Reduzir sedativos, avaliar despertar diário, revisar metas.</td></tr>
+          <tr><td>Bloqueio neuromuscular</td><td>CPOT/BPS não são confiáveis.</td><td>Garantir analgesia e hipnose por prescrição, contexto clínico e monitorização disponível.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-success"><strong>Sequência prática:</strong> dor controlada? → RASS dentro da meta? → ventilador sincronizado? → delirium rastreado? → sedação pode ser reduzida?</div>
+    </section>
+
+    <section id="estrategia">
+      <h2>4. Estratégia analgosedativa</h2>
+      <p>A estratégia contemporânea favorece <strong>analgesia primeiro</strong>, sedação leve quando possível, escolha de fármaco por fenótipo clínico e reavaliação diária da necessidade de sedativos.</p>
+      <div class="svg-box">
+        <svg viewBox="0 0 1000 360" role="img" aria-label="Fluxo de analgosedação em UTI">
+          <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#123c69"/></marker></defs>
+          <rect width="1000" height="360" rx="18" fill="#f8fbff" stroke="#d8e0ea"/>
+          <text x="48" y="55" font-family="Arial" font-size="28" font-weight="700" fill="#123c69">Raciocínio prático da sedoanalgesia</text>
+          <g font-family="Arial" font-size="15">
+            <rect x="55" y="105" width="190" height="76" rx="16" fill="#dce9f6" stroke="#123c69"/>
+            <text x="78" y="136" font-weight="700" fill="#123c69">1. Dor?</text>
+            <text x="78" y="158" fill="#344054">CPOT/BPS/relato</text>
+            <line x1="245" y1="143" x2="315" y2="143" stroke="#123c69" stroke-width="4" marker-end="url(#arrow)"/>
+
+            <rect x="315" y="105" width="190" height="76" rx="16" fill="#ecfdf3" stroke="#067647"/>
+            <text x="338" y="136" font-weight="700" fill="#067647">2. Analgesia</text>
+            <text x="338" y="158" fill="#344054">opioide / cetamina</text>
+            <line x1="505" y1="143" x2="575" y2="143" stroke="#123c69" stroke-width="4" marker-end="url(#arrow)"/>
+
+            <rect x="575" y="105" width="190" height="76" rx="16" fill="#fff7ed" stroke="#b54708"/>
+            <text x="598" y="136" font-weight="700" fill="#b54708">3. RASS?</text>
+            <text x="598" y="158" fill="#344054">meta definida</text>
+            <line x1="765" y1="143" x2="835" y2="143" stroke="#123c69" stroke-width="4" marker-end="url(#arrow)"/>
+
+            <rect x="835" y="105" width="120" height="76" rx="16" fill="#fff1f0" stroke="#b42318"/>
+            <text x="855" y="136" font-weight="700" fill="#b42318">4. Sedativo</text>
+            <text x="855" y="158" fill="#344054">se necessário</text>
+
+            <rect x="180" y="230" width="235" height="70" rx="16" fill="#ffffff" stroke="#d8e0ea"/>
+            <text x="202" y="260" font-weight="700" fill="#123c69">Reavaliar ventilador</text>
+            <text x="202" y="282" fill="#475467">trigger, fluxo, auto-PEEP, secreção</text>
+
+            <rect x="445" y="230" width="235" height="70" rx="16" fill="#ffffff" stroke="#d8e0ea"/>
+            <text x="467" y="260" font-weight="700" fill="#123c69">Reavaliar hemodinâmica</text>
+            <text x="467" y="282" fill="#475467">PAM, vasopressor, perfusão</text>
+
+            <rect x="710" y="230" width="235" height="70" rx="16" fill="#ffffff" stroke="#d8e0ea"/>
+            <text x="732" y="260" font-weight="700" fill="#123c69">Reduzir diariamente?</text>
+            <text x="732" y="282" fill="#475467">despertar, mobilizar, extubar</text>
+          </g>
+        </svg>
+      </div>
+      <div class="alert alert-warning"><strong>Não confundir:</strong> sedação não é analgesia. Propofol, midazolam e dexmedetomidina não substituem analgesia quando há dor, tubo, drenos, trauma, cirurgia, pancreatite, queimadura ou ventilação desconfortável.</div>
+    </section>
+
+    <section id="classes">
+      <h2>5. Classes de medicamentos por utilidade clínica</h2>
+      <p>Para prescrição segura, o primeiro agrupamento deve ser por <strong>utilidade clínica</strong>: analgésico, sedativo/hipnótico, misto, adjuvante ou bloqueador neuromuscular. Depois se define mecanismo, dose, diluição e alvo de monitorização.</p>
+      <table>
+        <thead><tr><th>Categoria/utilidade</th><th>Fármacos</th><th>Mecanismo</th><th>Efeito clínico/fisiológico</th><th>Metabolização/eliminação</th><th>Principais riscos</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Analgésicos opioides</strong></td><td>Fentanil, remifentanil, morfina</td><td>Agonismo μ-opioide; modulação nociceptiva central e periférica.</td><td>Analgesia, redução de resposta simpática à dor, melhora da tolerância ao tubo e à ventilação.</td><td>Fentanil: metabolismo hepático; remifentanil: esterases plasmáticas/teciduais; morfina: metabolismo hepático e metabólitos renais.</td><td>Depressão respiratória, íleo, náusea, retenção urinária, rigidez torácica em bolus rápido de fentanil, acúmulo em infusões prolongadas.</td></tr>
+          <tr><td><strong>Sedativos/hipnóticos</strong></td><td>Propofol, midazolam</td><td>Potencialização GABA-A.</td><td>Hipnose, ansiólise, amnésia; propofol tem início/fim rápidos; midazolam tem maior risco de acúmulo.</td><td>Propofol: metabolismo hepático e extra-hepático; midazolam: CYP3A4 hepático, metabólitos ativos com eliminação renal.</td><td>Hipotensão, depressão miocárdica, delirium/tempo de VM com benzodiazepínicos, síndrome de infusão do propofol em dose alta/prolongada.</td></tr>
+          <tr><td><strong>Misto: sedativo cooperativo/ansiolítico</strong></td><td>Dexmedetomidina</td><td>Agonismo α2 central, reduzindo liberação simpática.</td><td>Sedação cooperativa, ansiólise, menor depressão respiratória, útil em despertar e extubação selecionada.</td><td>Metabolismo hepático; eliminação urinária/fecal de metabólitos.</td><td>Bradicardia, hipotensão, sedação insuficiente quando necessidade de RASS muito profundo.</td></tr>
+          <tr><td><strong>Misto: analgésico-sedativo dissociativo</strong></td><td>Cetamina</td><td>Antagonismo NMDA; efeitos simpaticomiméticos indiretos.</td><td>Analgesia, sedação dissociativa, broncodilatação, redução de hiperalgesia/tolerância a opioide.</td><td>Metabolismo hepático, principalmente CYP; metabólito norketamina.</td><td>Hipertensão/taquicardia, salivação, fenômenos emergentes; cautela em catecolaminas exauridas.</td></tr>
+          <tr><td><strong>Adjuvantes para delirium/agitação</strong></td><td>Haloperidol, quetiapina</td><td>Bloqueio dopaminérgico/serotoninérgico variável.</td><td>Controle comportamental de delirium hiperativo selecionado; não são analgésicos nem sedativos principais de VM.</td><td>Predomínio hepático; atenção a interações.</td><td>QT longo, sintomas extrapiramidais, sedação, hipotensão; não tratar “dor” ou assincronia com antipsicótico.</td></tr>
+          <tr><td><strong>Bloqueadores neuromusculares</strong></td><td>Cisatracúrio, rocurônio</td><td>Bloqueio nicotínico na junção neuromuscular.</td><td>Paralisia, sincronia forçada, facilitação de ventilação protetora em cenários específicos.</td><td>Cisatracúrio: eliminação de Hofmann/esterases; rocurônio: eliminação hepatobiliar e renal variável.</td><td>Awareness se sedação inadequada, fraqueza adquirida, impossibilidade de exame neurológico, mascaramento de convulsões/movimento.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info"><strong>Leitura rápida:</strong> fentanil/remifentanil/morfina = analgesia; propofol/midazolam = hipnose/sedação; dexmedetomidina = sedação cooperativa/ansiolítica; cetamina = misto analgésico-sedativo; antipsicóticos = controle de delirium/agitação selecionada; bloqueadores = paralisia sem analgesia ou sedação.</div>
+    </section>
+
+    <section id="farmacos">
+      <h2>6. Fármacos — preparo, doses e exemplo para 70 kg</h2>
+      <div class="alert alert-danger"><strong>Segurança operacional:</strong> conferir apresentação comercial real, volume total da ampola/frascos, conteúdo total por unidade, compatibilidade, estabilidade, protocolo institucional e dupla checagem. As diluições abaixo são modelos práticos para estudo e padronização.</div>
+
+      <details open><summary>6.0 Regra de apresentação medicamentosa</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Termo</th><th>Significado operacional</th><th>Exemplo</th></tr></thead>
+          <tbody>
+            <tr><td>Apresentação comercial</td><td>Como a ampola/frascos existe no serviço: concentração por mL, volume total e conteúdo total por unidade.</td><td>Midazolam 5 mg/mL em ampola de 1 mL = 5 mg; 3 mL = 15 mg; 10 mL = 50 mg.</td></tr>
+            <tr><td>Concentração usada no cálculo</td><td>Concentração selecionada para calcular volume aspirado, dose ou vazão. Pode ser a concentração comercial ou uma solução já diluída/reconstituída.</td><td>Usar 5 mg/mL para calcular volume de midazolam em bolus; usar 1 mg/mL quando a solução final foi preparada nessa concentração.</td></tr>
+            <tr><td>Solução final/preparo</td><td>Resultado do volume aspirado da medicação + diluente até volume final, com concentração final definida.</td><td>Fentanil 500 mcg + diluente até 50 mL = 10 mcg/mL.</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-warning"><strong>Regra prática:</strong> nunca registrar apenas “mg/mL” como apresentação. Sempre que possível, escrever: concentração + volume total da ampola/frascos + conteúdo total por unidade.</div>
+      </div></details>
+
+      <details><summary>Apresentações comerciais usuais no Brasil — sedoanalgesia e bloqueio</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Fármaco</th><th>Apresentação comercial — concentração, volume total e conteúdo total</th><th>Uso no módulo</th></tr></thead>
+          <tbody>
+            <tr><td>Fentanil</td><td>50 mcg/mL — ampola de 2 mL = 100 mcg, 5 mL = 250 mcg ou 10 mL = 500 mcg.</td><td>Analgesia contínua.</td></tr>
+            <tr><td>Remifentanil</td><td>Frasco-ampola liofilizado de 1 mg, 2 mg ou 5 mg; concentração final depende da reconstituição/diluição.</td><td>Infusão ultracurta; concentração depende da diluição.</td></tr>
+            <tr><td>Morfina</td><td>10 mg/mL; ampola de 1 mL = 10 mg.</td><td>Opioide alternativo.</td></tr>
+            <tr><td>Sufentanil</td><td>5 mcg/mL ou 50 mcg/mL, com volume total/conteúdo por ampola conforme fabricante.</td><td>Opioide potente.</td></tr>
+            <tr><td>Alfentanil</td><td>500 mcg/mL — ampola/fr. de 10 mL = 5 mg.</td><td>Disponibilidade variável.</td></tr>
+            <tr><td>Hidromorfona</td><td>Apresentação hospitalar variável.</td><td>Conferir serviço/protocolo.</td></tr>
+            <tr><td>Cetamina</td><td>50 mg/mL; 10 mL = 500 mg.</td><td>Adjuvante analgésico/sedativo.</td></tr>
+            <tr><td>Lidocaína</td><td>1% = 10 mg/mL ou 2% = 20 mg/mL; frasco/ampola de 5 mL, 10 mL ou 20 mL, com conteúdo total conforme concentração.</td><td>Adjuvante selecionado.</td></tr>
+            <tr><td>Propofol</td><td>10 mg/mL — frasco/ampola de 20 mL = 200 mg, 50 mL = 500 mg ou 100 mL = 1000 mg.</td><td>Sedativo contínuo.</td></tr>
+            <tr><td>Midazolam</td><td>5 mg/mL em 1, 3 ou 10 mL; 1 mg/mL em 5 mL.</td><td>Benzodiazepínico contínuo.</td></tr>
+            <tr><td>Dexmedetomidina</td><td>100 mcg/mL; ampola de 2 mL = 200 mcg.</td><td>Sedação cooperativa.</td></tr>
+            <tr><td>Cisatracúrio</td><td>2 mg/mL; 5 mL = 10 mg ou 10 mL = 20 mg.</td><td>Bloqueio contínuo.</td></tr>
+            <tr><td>Rocurônio</td><td>10 mg/mL; 5 mL = 50 mg ou 10 mL = 100 mg.</td><td>Bloqueio contínuo alternativo.</td></tr>
+            <tr><td>Atracúrio</td><td>10 mg/mL; 2,5 mL = 25 mg ou 5 mL = 50 mg.</td><td>Bloqueio contínuo alternativo.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+
+      <h3>6.1 Analgésicos opioides</h3>
+      <table>
+        <thead><tr><th>Fármaco</th><th>Dose em infusão</th><th>Solução final / preparo exemplo</th><th>Exemplo 70 kg</th><th>Cenários de destaque</th><th>Cuidados</th></tr></thead>
+        <tbody>
+          <tr><td>Fentanil</td><td>0,5–2 mcg/kg/h</td><td>500 mcg em 50 mL = 10 mcg/mL</td><td>35–140 mcg/h → 3,5–14 mL/h</td><td>Analgesia padrão em ventilação mecânica, dor procedimental, sedação profunda associada.</td><td>Acúmulo, íleo, rigidez em bolus rápido, depressão respiratória no desmame.</td></tr>
+          <tr><td>Remifentanil</td><td>0,03–0,15 mcg/kg/min</td><td>2 mg em 50 mL = 40 mcg/mL</td><td>2,1–10,5 mcg/min → 3,2–15,8 mL/h</td><td>Despertar rápido, necessidade de titulação fina, disfunção renal/hepática quando se deseja pouca acumulação.</td><td>Hiperalgesia/rebote se suspenso sem transição analgésica.</td></tr>
+          <tr><td>Morfina</td><td>1–5 mg/h</td><td>50 mg em 50 mL = 1 mg/mL</td><td>1–5 mL/h</td><td>Analgesia contínua quando perfil hemodinâmico e renal permitem.</td><td>Metabólitos ativos; cautela em DRC, hipotensão e íleo.</td></tr>
+          <tr><td>Sufentanil</td><td>0,1–0,5 mcg/kg/h</td><td>250 mcg em 50 mL = 5 mcg/mL</td><td>7–35 mcg/h → 1,4–7 mL/h</td><td>Opioide potente quando disponível; sedoanalgesia com necessidade de baixa vazão.</td><td>Alta potência; risco de erro de concentração.</td></tr>
+          <tr><td>Alfentanil</td><td>0,25–1 mcg/kg/min</td><td>5 mg em 50 mL = 100 mcg/mL</td><td>17,5–70 mcg/min → 10,5–42 mL/h</td><td>Titulação rápida quando disponível.</td><td>Depressão respiratória, rigidez, disponibilidade variável.</td></tr>
+          <tr><td>Hidromorfona</td><td>0,2–1 mg/h</td><td>10 mg em 50 mL = 0,2 mg/mL</td><td>1–5 mL/h</td><td>Alternativa à morfina/fentanil em protocolos específicos.</td><td>Disponibilidade variável no Brasil; usar com protocolo institucional.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6.2 Analgésicos/adjuvantes não opioides</h3>
+      <table>
+        <thead><tr><th>Fármaco</th><th>Dose em infusão</th><th>Solução final / preparo exemplo</th><th>Exemplo 70 kg</th><th>Cenários de destaque</th><th>Cuidados</th></tr></thead>
+        <tbody>
+          <tr><td>Cetamina analgésica</td><td>0,05–0,3 mg/kg/h</td><td>500 mg em 50 mL = 10 mg/mL</td><td>3,5–21 mg/h → 0,35–2,1 mL/h</td><td>Dor refratária, hiperalgesia, broncoespasmo, estratégia poupadora de opioide.</td><td>PA/FC, salivação, fenômenos emergentes, cautela em isquemia/taquiarritmia.</td></tr>
+          <tr><td>Lidocaína IV</td><td>0,5–1,5 mg/kg/h</td><td>1000 mg em 100 mL = 10 mg/mL</td><td>35–105 mg/h → 3,5–10,5 mL/h</td><td>Adjuvante selecionado em dor refratária/perioperatória conforme protocolo.</td><td>Evitar em BAV, arritmias relevantes, epilepsia não controlada, hepatopatia grave; monitorar toxicidade neurológica/cardiovascular.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6.3 Sedativos/hipnóticos</h3>
+      <table>
+        <thead><tr><th>Fármaco</th><th>Dose em infusão</th><th>Solução final / preparo exemplo</th><th>Exemplo 70 kg</th><th>Cenários de destaque</th><th>Cuidados</th></tr></thead>
+        <tbody>
+          <tr><td>Propofol</td><td>5–50 mcg/kg/min</td><td>Uso puro 10 mg/mL</td><td>350–3500 mcg/min = 21–210 mg/h → 2,1–21 mL/h</td><td>Sedação titulável, neurocrítico se PA tolera, despertar rápido.</td><td>Hipotensão, hipertrigliceridemia, síndrome de infusão, carga lipídica.</td></tr>
+          <tr><td>Midazolam</td><td>0,02–0,1 mg/kg/h</td><td>50 mg em 50 mL = 1 mg/mL</td><td>1,4–7 mg/h → 1,4–7 mL/h</td><td>Sedação profunda quando propofol não é adequado, custo/disponibilidade, instabilidade selecionada.</td><td>Acúmulo, delirium, despertar prolongado.</td></tr>
+          <tr><td>Dexmedetomidina</td><td>0,2–0,7 mcg/kg/h</td><td>200 mcg em 50 mL = 4 mcg/mL</td><td>14–49 mcg/h → 3,5–12,25 mL/h</td><td>Sedação cooperativa, ponte para extubação, agitação leve/moderada.</td><td>Bradicardia, hipotensão, não é sedativo profundo isolado para paralisia.</td></tr>
+          <tr><td>Cetamina sedativa</td><td>0,05–0,3 mg/kg/h em uso adjuvante</td><td>500 mg em 50 mL = 10 mg/mL</td><td>3,5–21 mg/h → 0,35–2,1 mL/h</td><td>Broncoespasmo, dor refratária, necessidade de poupar opioide/GABAérgico.</td><td>PA/FC, secreções, fenômenos emergentes.</td></tr>
+          <tr><td>Tiopental</td><td>3–5 mg/kg/h conforme protocolo especializado</td><td>1000 mg em 250 mL = 4 mg/mL</td><td>210–350 mg/h → 52,5–87,5 mL/h</td><td>Hipertensão intracraniana refratária ou status epilepticus refratário.</td><td>Hipotensão, acúmulo, imunossupressão, íleo, necessidade de monitorização intensiva.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6.4 Bloqueadores neuromusculares</h3>
+      <table>
+        <thead><tr><th>Fármaco</th><th>Dose em infusão</th><th>Solução final / preparo exemplo</th><th>Exemplo 70 kg</th><th>Cenários de destaque</th><th>Cuidados</th></tr></thead>
+        <tbody>
+          <tr><td>Cisatracúrio</td><td>1–3 mcg/kg/min</td><td>100 mg em 50 mL = 2 mg/mL</td><td>70–210 mcg/min → 2,1–6,3 mL/h</td><td>SDRA grave, prona, assincronia refratária, disfunção renal/hepática.</td><td>Garantir hipnose/analgesia; monitorar TOF quando disponível.</td></tr>
+          <tr><td>Rocurônio</td><td>5–12 mcg/kg/min</td><td>100 mg em 50 mL = 2 mg/mL</td><td>350–840 mcg/min → 10,5–25,2 mL/h</td><td>Bloqueio quando já usado na IOT ou conforme protocolo.</td><td>Acúmulo variável; não esquecer sedação profunda.</td></tr>
+          <tr><td>Atracúrio</td><td>5–10 mcg/kg/min</td><td>100 mg em 50 mL = 2 mg/mL</td><td>350–700 mcg/min → 10,5–21 mL/h</td><td>Alternativa ao cisatracúrio quando disponível.</td><td>Liberação de histamina, hipotensão e broncoespasmo.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-danger"><strong>Regra de segurança:</strong> bloqueio neuromuscular contínuo nunca deve ser usado sem analgesia e hipnose adequadas. A paralisia impede a expressão motora de dor, desconforto, crise convulsiva e awareness.</div>
+    </section>
+
+    <section id="calculadora">
+      <h2>7. Mini-calculadora didática de infusão</h2>
+      <p>Ferramenta simples para conferir exemplos de vazão. A calculadora robusta e completa será centralizada no módulo próprio de calculadoras.</p>
+      <div class="calc-panel">
+        <h3>Conversor dose → vazão</h3>
+        <div class="calc-grid">
+          <div><label for="peso">Peso (kg)</label><input id="peso" type="number" value="70" min="20" max="250"></div>
+          <div><label for="droga">Droga</label><select id="droga">
+            <option value="fentanil">Fentanil — mcg/kg/h</option>
+            <option value="remifentanil">Remifentanil — mcg/kg/min</option>
+            <option value="propofol">Propofol — mcg/kg/min</option>
+            <option value="midazolam">Midazolam — mg/kg/h</option>
+            <option value="dexmedetomidina">Dexmedetomidina — mcg/kg/h</option>
+            <option value="cetamina">Cetamina — mg/kg/h</option>
+          </select></div>
+          <div><label for="dose">Dose pretendida <span id="doseUnitLabel" class="unit-inline">(mcg/kg/h)</span></label><input id="dose" type="number" value="1" step="0.01"></div>
+          <div><label for="conc">Concentração final <span id="concUnitLabel" class="unit-inline">(mcg/mL)</span></label><input id="conc" type="number" value="10" step="0.01"></div>
+        </div>
+        <div class="small" style="color:#dbeafe;margin-top:8px">Unidade da concentração: fentanil/remifentanil/dexmedetomidina em mcg/mL; propofol/midazolam/cetamina em mg/mL.</div>
+        <div class="calc-result" id="calcOut"><strong>Resultado: —</strong><span>—</span></div>
+      </div>
+    </section>
+
+    <section id="cenarios">
+      <h2>8. Cenários clínicos e escolha racional</h2>
+      <table>
+        <thead><tr><th>Cenário</th><th>Estratégia preferencial</th><th>Evitar/cautela</th><th>Comentário prático</th></tr></thead>
+        <tbody>
+          <tr><td>Choque/vasopressor alto</td><td>Analgesia titulada; considerar fentanil/remifentanil; sedativo em menor dose; cetamina pode ser útil em casos selecionados.</td><td>Propofol em dose alta; midazolam acumulativo sem plano.</td><td>Preparar vasopressor e reduzir carga sedativa. Sedação profunda pode precipitar hipotensão.</td></tr>
+          <tr><td>Despertar para extubação</td><td>Dexmedetomidina, analgesia leve, redução de sedativos GABAérgicos.</td><td>Midazolam contínuo prolongado.</td><td>Objetivo: paciente acordável, cooperativo, com drive respiratório preservado.</td></tr>
+          <tr><td>SDRA grave/prona/bloqueio</td><td>Propofol ± opioide; midazolam se instabilidade/custo/contraindicação; analgesia garantida.</td><td>Paralisar sem sedação profunda.</td><td>Bloqueio neuromuscular exige sedação profunda e analgesia contínua.</td></tr>
+          <tr><td>TCE/HIC</td><td>Propofol ou midazolam conforme hemodinâmica; analgesia; controle estrito de CO₂.</td><td>Hipotensão por propofol; despertar inadequado quando contraindicado.</td><td>Meta é preservar PPC: sedativo não pode derrubar PAM.</td></tr>
+          <tr><td>Broncoespasmo/asma ventilada</td><td>Cetamina como adjuvante; sedação que reduza drive e assincronia; broncodilatadores.</td><td>Hiperventilação agressiva; sedação insuficiente com auto-PEEP.</td><td>O alvo é permitir tempo expiratório e reduzir hiperinsuflação dinâmica.</td></tr>
+          <tr><td>Disfunção renal</td><td>Fentanil/remifentanil preferíveis à morfina; dexmedetomidina/propofol conforme cenário.</td><td>Morfina contínua prolongada.</td><td>Evitar acúmulo de metabólitos ativos.</td></tr>
+          <tr><td>Delirium hiperativo</td><td>Corrigir causas, reduzir benzodiazepínicos, tratar dor, sono/ambiente; dexmedetomidina pode ajudar em agitação que impede extubação.</td><td>Escalar antipsicótico sem investigar causa.</td><td>Antipsicótico controla comportamento, não trata etiologia do delirium.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="bloqueio">
+      <h2>9. Bloqueio neuromuscular na manutenção</h2>
+      <p>Bloqueador neuromuscular não seda, não analgésia e não trata sofrimento. Ele apenas impede movimento. Por isso, quando usado em manutenção, exige sedação e analgesia adequadas antes e durante toda a infusão.</p>
+      <table>
+        <thead><tr><th>Fármaco</th><th>Uso típico</th><th>Preparo prático</th><th>Dose de infusão</th><th>Exemplo para 70 kg</th><th>Comentários</th></tr></thead>
+        <tbody>
+          <tr><td>Cisatracúrio</td><td>SDRA grave, assincronia grave, prona, hipertensão intracraniana selecionada.</td><td>Cisatracúrio: usar apresentações disponíveis até total 100 mg + SF 0,9% q.s.p. 50 mL → 2 mg/mL.</td><td>1–3 mcg/kg/min, titulando por TOF e objetivo clínico.</td><td>70–210 mcg/min = 4,2–12,6 mg/h → 2,1–6,3 mL/h se 2 mg/mL.</td><td>Metabolismo por Hofmann; útil quando há disfunção renal/hepática.</td></tr>
+          <tr><td>Rocurônio</td><td>Alternativa quando cisatracúrio indisponível; pode ser usado em SDRA grave/assincronia refratária conforme protocolo.</td><td>Rocurônio: 10 mg/mL — 10 mL = 100 mg; usar 1 frasco/ampola + SF 0,9% q.s.p. 50 mL → 2 mg/mL.</td><td>5–12 mcg/kg/min, titulando pelo menor bloqueio efetivo e TOF quando disponível.</td><td>350–840 mcg/min = 21–50,4 mg/h → 10,5–25,2 mL/h se 2 mg/mL.</td><td>Duração/acúmulo podem aumentar em disfunção hepática/renal; garantir sedação profunda e analgesia.</td></tr>
+          <tr><td>Atracúrio</td><td>Alternativa ao cisatracúrio, especialmente quando se deseja metabolismo por Hofmann/esterases, mas com maior risco de histamina.</td><td>Atracúrio: 10 mg/mL — 5 mL = 50 mg; usar 2 ampolas + SF 0,9% q.s.p. 50 mL → 2 mg/mL.</td><td>5–10 mcg/kg/min, titulando por TOF e objetivo clínico.</td><td>350–700 mcg/min = 21–42 mg/h → 10,5–21 mL/h se 2 mg/mL.</td><td>Pode liberar histamina, causando hipotensão e broncoespasmo; usar com cautela em ASMA/DPOC grave.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-danger"><strong>Awareness em paciente paralisado é evento crítico.</strong> Antes de iniciar bloqueador contínuo: analgesia confirmada, sedação profunda documentada, plano de monitorização, alarme de bomba e prescrição clara.</div>
+    </section>
+
+    <section id="despertar">
+      <h2>10. Despertar, desmame e delirium</h2>
+      <p>O despertar diário e a redução planejada de sedação devem ser entendidos como uma intervenção terapêutica. O objetivo é verificar se o paciente tolera menor sedação, permite exame neurológico, interage, mobiliza, protege via aérea e pode avançar para teste de respiração espontânea.</p>
+
+      <h3>10.1 Quando considerar redução ou despertar diário</h3>
+      <table>
+        <thead><tr><th>Critério favorável</th><th>O que observar</th><th>Conduta</th></tr></thead>
+        <tbody>
+          <tr><td>Hemodinâmica aceitável</td><td>Sem escalada rápida de vasopressor, sem arritmia instável, perfusão minimamente adequada.</td><td>Reduzir sedativos gradualmente ou interromper conforme protocolo.</td></tr>
+          <tr><td>Oxigenação/ventilação estáveis</td><td>SpO₂ adequada, sem assincronia grave, sem hipoxemia crítica, sem acidose ventilatória descompensada.</td><td>Reduzir sedação e observar drive, conforto e sincronia.</td></tr>
+          <tr><td>Sem indicação atual de sedação profunda</td><td>Sem bloqueio neuromuscular, HIC descompensada, status epilepticus, prona instável ou SDRA grave com necessidade de RASS −4/−5.</td><td>Revisar meta de RASS para 0 a −2.</td></tr>
+          <tr><td>Dor controlável</td><td>CPOT &lt;3 ou BPS &lt;5, ou dor verbal manejável.</td><td>Manter analgesia e reduzir hipnótico antes de reduzir analgésico.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>10.2 Quando não fazer despertar ou adiar</h3>
+      <div class="grid grid-3">
+        <div class="card"><h4>Neurológico</h4><p>Hipertensão intracraniana não controlada, status epilepticus, necessidade de controle estrito de CO₂ ou sedação terapêutica profunda.</p></div>
+        <div class="card"><h4>Respiratório</h4><p>SDRA grave com hipoxemia crítica, bloqueio neuromuscular, pronação instável, assincronia grave ainda não corrigida.</p></div>
+        <div class="card"><h4>Hemodinâmico/procedural</h4><p>Choque em escalada, arritmia instável, sangramento ativo, procedimento iminente ou risco alto de autoextubação não controlável.</p></div>
+      </div>
+
+      <h3>10.3 Como fazer o despertar diário na prática</h3>
+      <table>
+        <thead><tr><th>Etapa</th><th>Ação</th><th>Critério de sucesso/falha</th></tr></thead>
+        <tbody>
+          <tr><td>1. Preparar</td><td>Definir meta de RASS, checar analgesia, explicar ao paciente quando possível, alinhar equipe e deixar plano de resgate.</td><td>Equipe sabe qual sedativo reduzir, em que velocidade e quando interromper tentativa.</td></tr>
+          <tr><td>2. Reduzir hipnótico</td><td>Reduzir propofol/midazolam primeiro, mantendo analgesia se houver dor ou tubo desconfortável.</td><td>Paciente desperta sem dor intensa, pânico, hipoxemia ou assincronia importante.</td></tr>
+          <tr><td>3. Reavaliar em série</td><td>RASS a cada 5–15 min inicialmente; avaliar CPOT/BPS, FR, SpO₂, ETCO₂, PA, FC e ventilador.</td><td>RASS aproxima-se de 0 a −2 com estabilidade.</td></tr>
+          <tr><td>4. Testar comandos</td><td>Abrir olhos, apertar mão, protruir língua, olhar para examinador, responder sim/não.</td><td>Permite avaliação neurológica e cooperação mínima.</td></tr>
+          <tr><td>5. Integrar ao desmame</td><td>Se acordado, confortável e estável, avaliar teste de respiração espontânea conforme protocolo ventilatório.</td><td>Falha se agitação grave, dor intratável, dessaturação, instabilidade, assincronia ou risco de autoextubação.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>10.4 Desmame de sedação e ventilação: ligação prática</h3>
+      <p>O desmame ventilatório raramente progride com sedação profunda desnecessária. A sequência operacional é: reduzir hipnótico, preservar analgesia, buscar RASS 0 a −1/−2, confirmar estabilidade ventilatória e então considerar teste de respiração espontânea.</p>
+      <div class="alert alert-info"><strong>Regra prática:</strong> se o paciente falha no despertar por dor, trate dor. Se falha por ansiedade/delirium, trate causa e ajuste ambiente/fármacos. Se falha por assincronia, corrija ventilador. Não transforme toda falha em “precisa sedar mais”.</div>
+
+      <h3>10.5 CAM-ICU — Confusion Assessment Method for the ICU</h3>
+      <p>O CAM-ICU é uma ferramenta para rastrear delirium em pacientes críticos, inclusive intubados. Ele deve ser aplicado quando o paciente tem nível de consciência suficiente para avaliação. Na prática, se o paciente está em RASS −4 ou −5, não é avaliável para CAM-ICU naquele momento.</p>
+      <table>
+        <thead><tr><th>Passo</th><th>O que avalia</th><th>Como aplicar de forma prática</th><th>Critério</th></tr></thead>
+        <tbody>
+          <tr><td>Pré-requisito</td><td>Nível de consciência</td><td>Verificar RASS. Se RASS −4/−5, registrar “não avaliável”. Se RASS ≥−3, prosseguir.</td><td>Aplicável quando há resposta mínima a estímulo verbal.</td></tr>
+          <tr><td>Feature 1</td><td>Início agudo ou curso flutuante</td><td>Comparar com basal, evolução nas últimas 24 h, relatos da equipe/família.</td><td>Alteração aguda ou flutuação presente.</td></tr>
+          <tr><td>Feature 2</td><td>Desatenção</td><td>Teste de letras: pedir para apertar a mão quando ouvir a letra “A” em sequência padronizada; ou teste visual por figuras quando disponível.</td><td>Erros acima do limite indicam desatenção.</td></tr>
+          <tr><td>Feature 3</td><td>Nível de consciência alterado</td><td>Usar RASS diferente de 0 como alteração do nível de consciência.</td><td>RASS diferente de 0.</td></tr>
+          <tr><td>Feature 4</td><td>Pensamento desorganizado</td><td>Perguntas simples de sim/não e comando motor simples. Ex.: “pedra flutua na água?”, “há peixes no mar?”, “aperte minha mão”.</td><td>Erros sugerem pensamento desorganizado.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-success"><strong>CAM-ICU positivo:</strong> Feature 1 + Feature 2 + (Feature 3 ou Feature 4). Ou seja: alteração aguda/flutuante + desatenção + nível de consciência alterado ou pensamento desorganizado.</div>
+
+      <h3>10.6 Aplicabilidade e limitações do CAM-ICU</h3>
+      <table>
+        <thead><tr><th>Aplicabilidade</th><th>Limitações</th><th>Resposta prática</th></tr></thead>
+        <tbody>
+          <tr><td>Paciente intubado, acordável, sem fala verbal.</td><td>Barreira auditiva/visual, afasia, sedação profunda, demência avançada, baixo nível educacional podem interferir.</td><td>Adaptar método, usar comunicação não verbal, envolver família e correlacionar com avaliação clínica.</td></tr>
+          <tr><td>Rastreamento seriado de delirium hipoativo e hiperativo.</td><td>Não define etiologia do delirium.</td><td>Após CAM-ICU positivo, procurar causas: infecção, hipóxia, dor, abstinência, retenção urinária, constipação, drogas, distúrbios metabólicos.</td></tr>
+          <tr><td>Apoio para reduzir sedação e orientar pacote ABCDEF.</td><td>Não substitui exame neurológico completo.</td><td>Documentar junto com RASS, dor, sono, mobilidade e fármacos em uso.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>10.7 Medidas não farmacológicas para delirium e despertar seguro</h3>
+      <div class="grid grid-3">
+        <div class="card"><h4>Reorientação</h4><p>Explicar local, data, motivo da internação, presença do tubo e plano do dia. Usar óculos/aparelho auditivo quando necessário.</p></div>
+        <div class="card"><h4>Sono e ambiente</h4><p>Reduzir ruído/luz à noite, agrupar cuidados, evitar interrupções desnecessárias e promover ciclo claro-escuro.</p></div>
+        <div class="card"><h4>Mobilização</h4><p>Sentar, ortostatismo, fisioterapia e mobilização progressiva conforme segurança respiratória e hemodinâmica.</p></div>
+      </div>
+      <div class="alert alert-info"><strong>Estratégia ABCDEF:</strong> dor, despertar, respiração espontânea, escolha racional de sedativos, delirium, mobilidade e família formam uma abordagem integrada para reduzir complicações da UTI.</div>
+    </section>
+
+    <section id="erros">
+      <h2>11. Erros frequentes e respostas práticas</h2>
+      <details open><summary>Erro 1 — Tratar dor com sedativo</summary><div class="detail-body"><p><strong>Problema:</strong> propofol/midazolam reduzem consciência, não nocicepção. <strong>Resposta:</strong> aplicar CPOT/BPS, iniciar/titular analgesia e só depois ajustar sedação.</p></div></details>
+      <details><summary>Erro 2 — Aprofundar sedação para corrigir assincronia ventilatória</summary><div class="detail-body"><p><strong>Problema:</strong> a causa pode ser trigger, fluxo, auto-PEEP, secreção, acidose ou hipoxemia. <strong>Resposta:</strong> checar ventilador e fisiologia antes de escalar sedativos.</p></div></details>
+      <details><summary>Erro 3 — Usar midazolam contínuo sem plano de interrupção</summary><div class="detail-body"><p><strong>Problema:</strong> acúmulo, delirium, atraso de extubação. <strong>Resposta:</strong> definir meta RASS, reavaliar diariamente e migrar para estratégia mais leve quando possível.</p></div></details>
+      <details><summary>Erro 4 — Propofol em dose alta por tempo prolongado sem monitorar triglicerídeos</summary><div class="detail-body"><p><strong>Problema:</strong> hipertrigliceridemia e risco de síndrome de infusão. <strong>Resposta:</strong> monitorar dose, tempo, lactato, CK, acidose, triglicerídeos e considerar sedativo alternativo.</p></div></details>
+      <details><summary>Erro 5 — Paralisar sem sedação profunda</summary><div class="detail-body"><p><strong>Problema:</strong> awareness e sofrimento extremo. <strong>Resposta:</strong> analgesia + hipnose adequadas, documentação de RASS/objetivo e monitorização contínua.</p></div></details>
+      <details><summary>Erro 6 — Não planejar analgesia após suspender remifentanil</summary><div class="detail-body"><p><strong>Problema:</strong> retorno abrupto da dor e descarga simpática. <strong>Resposta:</strong> programar analgesia de transição antes de reduzir/suspender.</p></div></details>
+    </section>
+
+    <section id="checklist">
+      <h2>12. Checklist diário da sedoanalgesia</h2>
+      <div class="grid grid-2">
+        <div class="card"><h4>Prescrição e metas</h4>
+          <ul>
+            <li>Há meta de RASS explícita?</li>
+            <li>Há escala de dor documentada?</li>
+            <li>O fármaco escolhido combina com o cenário hemodinâmico?</li>
+            <li>A diluição e concentração estão claras?</li>
+            <li>A bomba mostra vazão coerente com dose/peso?</li>
+          </ul>
+        </div>
+        <div class="card"><h4>Reavaliação clínica</h4>
+          <ul>
+            <li>Paciente pode ser despertado/reduzido hoje?</li>
+            <li>Há delirium, constipação, retenção urinária ou hiperalgesia?</li>
+            <li>Triglicerídeos/lactato/CK foram avaliados se propofol em dose alta?</li>
+            <li>Há plano de extubação/desmame?</li>
+            <li>Se bloqueado: há sedação profunda garantida?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="referencias">
+      <h2>Referências e fontes metodológicas</h2>
+      
+      <details class="refs-collapsible">
+        <summary>Mostrar/ocultar referências</summary>
+        <div class="detail-body">
+          <ol>
+        <li>Devlin JW, Skrobik Y, Gélinas C, et al. <strong>Clinical Practice Guidelines for the Prevention and Management of Pain, Agitation/Sedation, Delirium, Immobility, and Sleep Disruption in Adult Patients in the ICU</strong>. <em>Critical Care Medicine</em>. 2018;46:e825-e873.</li>
+        <li>Lewis K, Balas MC, Stollings JL, et al. <strong>A focused update to the PADIS guideline</strong>. <em>Critical Care Medicine</em>. 2025;53:e711-e727.</li>
+        <li>Pandharipande PP, Pun BT, Herr DL, et al. <strong>Effect of sedation with dexmedetomidine vs lorazepam on acute brain dysfunction in mechanically ventilated patients: the MENDS randomized controlled trial</strong>. <em>JAMA</em>. 2007;298:2644-2653.</li>
+        <li>Jakob SM, Ruokonen E, Grounds RM, et al. <strong>Dexmedetomidine vs midazolam or propofol for sedation during prolonged mechanical ventilation: MIDEX and PRODEX randomized trials</strong>. <em>JAMA</em>. 2012;307:1151-1160.</li>
+        <li>Shehabi Y, Howe BD, Bellomo R, et al. <strong>Early sedation with dexmedetomidine in critically ill patients</strong>. <em>New England Journal of Medicine</em>. 2019;380:2506-2517.</li>
+        <li>De Sloovere V, Kotfis K, Meyfroidt G. <strong>Sedatives in neurocritical care: the old, the new, the future</strong>. <em>Intensive Care Medicine</em>. 2025.</li>
+      </ol>
+      <div class="alert alert-info"><strong>Nota metodológica:</strong> as diluições são operacionais e devem ser validadas por farmácia clínica, bula, compatibilidade físico-química e concentração comercial disponível no serviço.</div>
+        </div>
+      </details>
+    </section>
+
+    <div class="footer-sign">
+      <p><strong>André M. Sena - Médico (CRM/RN 12533)</strong></p>
+    </div>
+  </main>
+</div>
+
+<script>
+
+function updateDoseAndConcLabels(){
+  const d=document.getElementById('droga').value;
+  let doseUnit='mcg/kg/h', concUnit='mcg/mL';
+  if(d==='remifentanil' || d==='propofol'){doseUnit='mcg/kg/min';}
+  if(d==='midazolam' || d==='cetamina'){doseUnit='mg/kg/h';}
+  if(d==='propofol' || d==='midazolam' || d==='cetamina'){concUnit='mg/mL';}
+  document.getElementById('doseUnitLabel').textContent='(' + doseUnit + ')';
+  document.getElementById('concUnitLabel').textContent='(' + concUnit + ')';
+}
+
+function calcInfusao(){
+  updateDoseAndConcLabels();
+  const peso = parseFloat(document.getElementById('peso').value || 0);
+  const droga = document.getElementById('droga').value;
+  const dose = parseFloat(document.getElementById('dose').value || 0);
+  const conc = parseFloat(document.getElementById('conc').value || 0);
+  if(!peso || !dose || !conc){return;}
+  let amountPerHour, unit, detail;
+  if(droga === 'remifentanil' || droga === 'propofol'){
+    // mcg/kg/min
+    const mcgmin = dose * peso;
+    const mcgh = mcgmin * 60;
+    if(droga === 'propofol'){
+      const mgh = mcgh / 1000;
+      amountPerHour = mgh;
+      unit = 'mg/h';
+      detail = dose + ' mcg/kg/min × ' + peso + ' kg = ' + mcgmin.toFixed(1) + ' mcg/min = ' + mgh.toFixed(2) + ' mg/h.';
+    } else {
+      amountPerHour = mcgh;
+      unit = 'mcg/h';
+      detail = dose + ' mcg/kg/min × ' + peso + ' kg = ' + mcgmin.toFixed(1) + ' mcg/min = ' + mcgh.toFixed(1) + ' mcg/h.';
+    }
+  } else if(droga === 'midazolam' || droga === 'cetamina'){
+    // mg/kg/h
+    amountPerHour = dose * peso;
+    unit = 'mg/h';
+    detail = dose + ' mg/kg/h × ' + peso + ' kg = ' + amountPerHour.toFixed(2) + ' mg/h.';
+  } else {
+    // mcg/kg/h
+    amountPerHour = dose * peso;
+    unit = 'mcg/h';
+    detail = dose + ' mcg/kg/h × ' + peso + ' kg = ' + amountPerHour.toFixed(2) + ' mcg/h.';
+  }
+  const vazao = amountPerHour / conc;
+  document.getElementById('calcOut').innerHTML = '<strong>Resultado: ' + amountPerHour.toFixed(2) + ' ' + unit + '</strong><span>' + detail + ' Vazão estimada: <b>' + vazao.toFixed(2) + ' mL/h</b> para concentração ' + conc + ' ' + ((unit==='mg/h')?'mg/mL':'mcg/mL') + '.</span>';
+}
+['peso','droga','dose','conc'].forEach(id => document.getElementById(id).addEventListener('input', calcInfusao));
+document.getElementById('droga').addEventListener('change', function(){
+  const d=this.value;
+  const conc=document.getElementById('conc');
+  const dose=document.getElementById('dose');
+  if(d==='fentanil'){conc.value=10; dose.value=1;}
+  if(d==='remifentanil'){conc.value=40; dose.value=0.05;}
+  if(d==='propofol'){conc.value=10; dose.value=20;}
+  if(d==='midazolam'){conc.value=1; dose.value=0.05;}
+  if(d==='dexmedetomidina'){conc.value=4; dose.value=0.5;}
+  if(d==='cetamina'){conc.value=10; dose.value=0.1;}
+  updateDoseAndConcLabels();
+  calcInfusao();
+});
+updateDoseAndConcLabels();
+calcInfusao();
+</script>
+<script>
+function initModuleMenu(){
+  const app=document.getElementById("moduleApp");
+  const toggle=document.getElementById("moduleNavToggle");
+  const nav=document.getElementById("moduleNav");
+  if(!app || !toggle || !nav) return;
+  const links=Array.from(nav.querySelectorAll('a[href^="#"]'));
+  function shortLabel(link,index){
+    const text=(link.textContent || "").trim();
+    const number=text.match(/^([0-9]+(?:\.[0-9]+)?)/);
+    if(number) return number[1];
+    if(/refer/i.test(text)) return "Ref";
+    if(/leit/i.test(text)) return "Ler";
+    return String(index+1);
+  }
+  links.forEach((link,index)=>{
+    if(!link.getAttribute("data-short")) link.setAttribute("data-short", shortLabel(link,index));
+    if(!link.querySelector(".nav-label")){
+      const label=document.createElement("span");
+      label.className="nav-label";
+      label.textContent=link.textContent;
+      link.textContent="";
+      link.appendChild(label);
+    }
+  });
+  function setCollapsed(collapsed){
+    app.classList.toggle("nav-collapsed", collapsed);
+    toggle.textContent = collapsed ? "Menu" : "Minimizar";
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+  }
+  function setActive(link){
+    links.forEach(item=>item.classList.remove("module-nav-link--active"));
+    if(link) link.classList.add("module-nav-link--active");
+  }
+  toggle.addEventListener("click", ()=>setCollapsed(!app.classList.contains("nav-collapsed")));
+  links.forEach(link=>{
+    link.addEventListener("click", (event)=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(!target) return;
+      event.preventDefault();
+      target.scrollIntoView({behavior:"smooth", block:"start"});
+      try{ history.replaceState(null, "", link.getAttribute("href")); }catch(e){}
+      setActive(link);
+      if(window.matchMedia("(max-width: 980px)").matches) setCollapsed(true);
+    });
+  });
+  const initial=links.find(link=>link.getAttribute("href")===window.location.hash) || links[0];
+  setActive(initial);
+  if("IntersectionObserver" in window){
+    const observer=new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const active=links.find(link=>link.getAttribute("href")==="#"+entry.target.id);
+          setActive(active);
+        }
+      });
+    }, {root:null, rootMargin:"-20% 0px -65% 0px", threshold:0.01});
+    links.forEach(link=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(target) observer.observe(target);
+    });
+  }
+}
+initModuleMenu();
+</script>
+</body>
+</html>

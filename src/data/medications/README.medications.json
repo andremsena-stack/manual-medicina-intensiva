@@ -1,0 +1,12 @@
+{
+  "status": "scaffold",
+  "note": "Extrair dados definitivos do Módulo 6 antes de usar em produção.",
+  "categories": [
+    "IOT bolus",
+    "DVA",
+    "continuous sedation/analgesia",
+    "neuromuscular blockade",
+    "critical infusions"
+  ],
+  "coreSafetyRule": "Validar concentração, apresentação, diluente, unidade e protocolo institucional antes do uso clínico."
+}

@@ -1,0 +1,2223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Interativo de Medicina Intensiva — Módulo 6: Calculadoras Interativas</title>
+  <style>
+    :root{
+      --bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;
+      --primary:#123c69;--primary-soft:#dce9f6;--accent:#0b6b5c;--danger:#b42318;
+      --warning:#b54708;--success:#067647;--border:#d8e0ea;--shadow:0 8px 24px rgba(16,24,40,.08);
+      --radius:16px
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+    a{color:inherit;text-decoration:none}
+    .app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+    aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d2438;color:#fff;padding:24px 18px}
+    .brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}
+    .brand h1{font-size:19px;margin:0 0 8px;line-height:1.25}
+    .brand p{margin:0;font-size:13px;color:rgba(255,255,255,.75)}
+    .brand__row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .brand__content{min-width:0}
+    .nav-toggle{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+    .nav-toggle:hover{background:rgba(255,255,255,.18)}
+    nav ul{list-style:none;padding:0;margin:0}
+    nav li{margin:5px 0}
+    nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88)}
+    nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
+    .app.nav-collapsed{grid-template-columns:72px 1fr}
+    .app.nav-collapsed aside{padding:18px 10px}
+    .app.nav-collapsed .brand{margin-bottom:14px;padding-bottom:12px;text-align:center}
+    .app.nav-collapsed .brand__row{display:grid;justify-items:center;gap:8px}
+    .app.nav-collapsed .brand__content{display:none}
+    .app.nav-collapsed .nav-toggle{width:100%;padding:8px 4px;font-size:11px}
+    .app.nav-collapsed nav a{align-items:center;display:flex;justify-content:center;min-height:40px;padding:9px 4px;position:relative}
+    .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
+    .app.nav-collapsed nav a::before{content:attr(data-short);font-size:12px;font-weight:800}
+    main{padding:34px;max-width:1380px;width:100%}
+    .hero{background:linear-gradient(135deg,#123c69,#0b6b5c);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);margin-bottom:28px}
+    .hero h2{font-size:34px;margin:0 0 10px}.hero p{max-width:1080px;color:rgba(255,255,255,.9);margin:0}
+    .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.14);font-size:12px}
+    section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}
+    section h2{margin:0 0 14px;color:var(--primary);font-size:25px}
+    section h3{margin:22px 0 10px;color:#243b53;font-size:19px}
+    .grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{background:var(--surface-soft);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .card h4{margin:0 0 8px;color:var(--primary)}.card p{margin:0;color:var(--muted)}
+    .alert{border-radius:14px;padding:14px 16px;margin:16px 0;border-left:6px solid}
+    .alert-danger{background:#fff1f0;border-color:var(--danger)}.alert-warning{background:#fff7ed;border-color:var(--warning)}
+    .alert-info{background:var(--primary-soft);border-color:var(--primary)}.alert-success{background:#ecfdf3;border-color:var(--success)}
+    table{width:100%;border-collapse:collapse;margin:14px 0;overflow:hidden;border-radius:12px}
+    th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;font-size:14px}
+    th{background:var(--primary);color:#fff}tbody tr:nth-child(even){background:#f8fafc}
+    .calc-panel{background:#0d2438;color:#fff;border-radius:18px;padding:18px;margin:18px 0;box-shadow:var(--shadow)}
+    .calc-panel h3{color:#fff;margin-top:0}.calc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .calc-panel label{display:block;font-size:12px;color:#cbd5e1;margin-bottom:5px}
+    .calc-panel input,.calc-panel select,.calc-panel textarea{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:#fff;color:#111827}
+    .calc-panel textarea{min-height:72px}
+    .calc-result{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px;margin-top:10px}
+    .calc-result strong{font-size:17px;color:#fff;display:block;line-height:1.25}
+    .calc-result span{font-size:12px;line-height:1.35}
+    .result-lines{font-size:12px;line-height:1.35;margin-top:6px}
+    .result-lines div{margin:3px 0}
+    .result-lines b{color:#fff}
+    .med-result{display:grid;gap:10px}
+    .med-result__headline{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:10px 12px}
+    .med-result__headline strong{color:#fff;display:block;font-size:17px;line-height:1.25}
+    .med-result__headline span{color:#dbeafe;display:block;font-size:12px;line-height:1.35;margin-top:3px}
+    .med-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+    .med-card{background:#fff;border:1px solid #d8e0ea;border-left:5px solid #94a3b8;border-radius:12px;color:#172033;padding:10px}
+    .med-card__title{color:#123c69;font-size:11px;font-weight:800;letter-spacing:.02em;margin-bottom:6px;text-transform:uppercase}
+    .med-kv{font-size:12px;line-height:1.35;margin:4px 0}
+    .med-card b{color:#123c69;display:inline;font-size:inherit}
+    .med-card--primary{border-left-color:#0b6b5c;background:#f0fdfa}
+    .med-card--pk{border-left-color:#2563eb;background:#eff6ff}
+    .med-card--safety{border-left-color:#b42318;background:#fff7ed}
+    .med-card--scenario-good{border-left-color:#067647;background:#ecfdf3}
+    .med-card--scenario-caution{border-left-color:#b54708;background:#fffbeb}
+    .med-card--scenario-neutral{border-left-color:#123c69;background:#eef3f8}
+    .compact-note{font-size:11px;line-height:1.3;opacity:.92}
+    .strategy-box{background:#fff;border:1px solid #d8e0ea;border-left:5px solid #123c69;border-radius:12px;padding:10px;margin:10px 0;color:#172033}
+    .strategy-box strong{color:#123c69}
+    .strategy-box div{font-size:12px;line-height:1.35;margin:3px 0}
+    .strategy-title{display:inline-flex;background:#eef3f8;border:1px solid #d8e0ea;border-radius:999px;color:#123c69;font-size:12px;font-weight:800;margin-bottom:8px;padding:5px 10px;text-transform:uppercase}
+    .strategy-grid{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+    .strategy-card{background:#f8fafc;border:1px solid #d8e0ea;border-left:5px solid #64748b;border-radius:12px;padding:10px}
+    .strategy-card__title{color:#123c69;font-size:11px;font-weight:800;letter-spacing:.02em;margin-bottom:6px;text-transform:uppercase}
+    .strategy-card div{font-size:12px;line-height:1.35;margin:4px 0}
+    .strategy-card--context{background:#eff6ff;border-left-color:#2563eb}
+    .strategy-card--plan{background:#f0fdfa;border-color:#99f6e4;border-left-color:#0b6b5c}
+    .strategy-card--caution{background:#fff7ed;border-color:#fed7aa;border-left-color:#b54708}
+    .strategy-card--caution .strategy-card__title{color:#9a3412}
+    .refs-collapsible{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
+    .refs-collapsible summary{font-size:15px;padding:12px 14px}
+    .refs-collapsible ol{font-size:12px;line-height:1.35;margin:12px 18px 18px 28px;padding:0}
+    .calc-result table{color:#172033;background:#fff}
+    .calc-result th{background:#dce9f6;color:#123c69}
+    .summary-table th,.summary-table td{font-size:11px;line-height:1.25;padding:7px 8px}
+    .prep-command{font-size:12px;line-height:1.35;background:#f8fafc;border:1px solid #d8e0ea;border-radius:10px;padding:8px;margin:7px 0;color:#172033}
+    .prep-command b{color:#123c69}
+    .prep-structured{font-size:12px;line-height:1.4;background:#ffffff;border:1px solid #d8e0ea;border-left:5px solid #123c69;border-radius:12px;color:#172033;display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin:8px 0;padding:10px}
+    .prep-structured .prep-title{background:#eef3f8;border:1px solid #d8e0ea;border-radius:10px;color:#123c69;font-weight:800;grid-column:1/-1;margin:0;padding:8px 10px}
+    .prep-structured .prep-line{background:#f8fafc;border:1px solid #d8e0ea;border-left:5px solid #64748b;border-radius:10px;margin:0;padding:8px 10px}
+    .prep-structured .prep-line b{color:#123c69;display:block;font-size:11px;letter-spacing:.02em;text-transform:uppercase}
+    .prep-structured .prep-line.prep-presentation{background:#f8fafc;border-left-color:#64748b}
+    .prep-structured .prep-line.prep-final{background:#ecfdf3;border-color:#bbf7d0;border-left-color:#067647}
+    .prep-structured .prep-line.prep-final b{color:#067647}
+    .prep-structured .prep-line.prep-dose{background:#f5f3ff;border-color:#ddd6fe;border-left-color:#7c3aed}
+    .prep-structured .prep-line.prep-dose b{color:#5b21b6}
+    .prep-structured .prep-line.prep-rate{background:#f0fdfa;border-color:#99f6e4;border-left-color:#0b6b5c}
+    .prep-structured .prep-line.prep-rate b{color:#0b6b5c}
+    .prep-structured .prep-line.prep-need{background:#fffbeb;border-color:#fde68a;border-left-color:#b54708}
+    .prep-structured .prep-line.prep-need b{color:#92400e}
+    .prep-structured .prep-line.prep-result{background:#eff6ff;border-color:#bfdbfe;border-left-color:#2563eb}
+    .prep-structured .prep-line.prep-result b{color:#1d4ed8}
+    .prep-structured .prep-line.prep-practical{
+      margin-top:8px;
+      padding:8px 10px;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      border-left:5px solid #b54708;
+      border-radius:10px;
+    }
+    .prep-structured .prep-line.prep-practical b{color:#9a3412}
+    .prep-structured .prep-line.prep-volume{
+      padding:7px 10px;
+      background:#eef6ff;
+      border:1px solid #bfdbfe;
+      border-left:5px solid #123c69;
+      border-radius:10px;
+    }
+    .prep-structured .prep-line.prep-volume b{color:#123c69}
+    .prep-structured .prep-note{background:#fff7ed;border:1px solid #fed7aa;border-left:5px solid #b42318;border-radius:10px;color:#5f6b7a;font-size:11px;grid-column:1/-1;margin:0;padding:8px 10px}
+    .planning-line{
+      font-size:11.5px;
+      line-height:1.38;
+      color:#0f172a;
+      margin-top:8px;
+      background:#f8fafc;
+      border:1px solid #d8e0ea;
+      border-left:5px solid #0b6b5c;
+      border-radius:14px;
+      padding:10px;
+    }
+    .planning-line > strong{background:#e7f8f4;border:1px solid #99f6e4;border-radius:999px;color:#0b6b5c;display:inline-flex;font-size:11px;font-weight:800;margin-bottom:8px;padding:4px 9px;text-transform:uppercase}
+    .summary-counter{align-items:center;background:#ecfdf3;border:1px solid #bbf7d0;border-left:5px solid #067647;border-radius:12px;color:#065f46;display:inline-flex;font-size:12px;font-weight:800;min-height:38px;padding:8px 10px}
+    .summary-counter--active{background:#eef6ff;border-color:#bfdbfe;border-left-color:#123c69;color:#123c69}
+    .summary-counter--pulse{animation:summaryPulse .55s ease-out}
+    @keyframes summaryPulse{0%{transform:scale(.98);box-shadow:0 0 0 0 rgba(18,60,105,.28)}70%{transform:scale(1.02);box-shadow:0 0 0 6px rgba(18,60,105,0)}100%{transform:scale(1);box-shadow:none}}
+    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    button.action{border:1px solid rgba(255,255,255,.28);background:#e7eef8;color:#123c69;border-radius:12px;padding:10px 12px;font-weight:700;cursor:pointer}
+    button.action:hover{background:#fff}
+    .pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700;background:#dce9f6;color:#123c69;margin:2px}
+    .pill-danger{background:#fee4e2;color:#912018}.pill-warning{background:#fef0c7;color:#93370d}.pill-success{background:#dcfae6;color:#067647}
+    .small{font-size:12px;color:var(--muted)}
+    .formula-compact{font-size:11px;line-height:1.25;color:#dbeafe;margin-top:6px}
+    .formula-compact code{background:rgba(255,255,255,.12);padding:2px 5px;border-radius:6px;color:#fff}
+    .ref{font-size:12px;color:#485568;border-top:1px solid var(--border);margin-top:12px;padding-top:10px}
+    details{border:1px solid var(--border);border-radius:14px;background:#fff;margin:12px 0;overflow:hidden}
+    summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--primary);background:#eef3f8}
+    summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}
+    .footer-sign{margin-top:40px;text-align:right;color:#344054}
+    @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{padding:12px 14px}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}.app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}.app.nav-collapsed .brand__content{display:block}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .small{display:none}.grid-2,.grid-3,.grid-4,.calc-grid{grid-template-columns:1fr}main{padding:18px}.hero h2{font-size:26px}}
+    .compact-details{background:#f8fafc;border-color:#d8e0ea;border-radius:12px;margin-top:8px!important}
+    .compact-details summary{align-items:center;background:#eef3f8;display:flex;font-size:13px;justify-content:space-between;padding:8px 10px}
+    .compact-details summary::after{background:#dce9f6;border-radius:999px;color:#123c69;content:"Editar";font-size:10px;font-weight:800;padding:3px 8px;text-transform:uppercase}
+    .compact-details[open] summary::after{content:"Recolher"}
+    .compact-details .detail-body{padding:8px 10px 10px}
+    .compact-details .calc-grid{gap:8px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+    .compact-details label{font-size:10.5px;margin-bottom:3px}
+    .compact-details input,.compact-details select{border-radius:8px;font-size:13px;min-height:34px;padding:7px 8px}
+    .compact-details input[readonly]{background:#f8fafc;color:#123c69;font-weight:800}
+    @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}.calc-panel{background:#fff;color:#111;border:1px solid #ccc}.calc-panel h3{color:#111}.calc-result{background:#f8fafc;color:#111}.calc-panel label{color:#111}.btnrow{display:none}}
+  </style>
+</head>
+<body>
+<div class="app" id="moduleApp">
+  <aside>
+    <div class="brand">
+      <div class="brand__row">
+        <div class="brand__content">
+      <h1>Manual Interativo de Medicina Intensiva</h1>
+      <p>Módulo 6 — Calculadoras interativas</p>
+      <div class="small" style="color:rgba(255,255,255,.65);margin-top:12px">IOT, sedoanalgesia, bloqueadores e drogas vasoativas.</div>
+        </div>
+        <button class="nav-toggle" id="moduleNavToggle" type="button" aria-controls="moduleNav" aria-expanded="true">Minimizar</button>
+      </div>
+    </div>
+    <nav id="moduleNav" aria-label="Seções do módulo">
+      <ul>
+        <li><a href="#intro" data-short="1"><span class="nav-label">1. Conceito</span></a></li>
+        <li><a href="#paciente" data-short="2"><span class="nav-label">2. Dados do paciente</span></a></li>
+        <li><a href="#iot" data-short="3"><span class="nav-label">3. Calculadora de IOT</span></a></li>
+        <li><a href="#dva" data-short="4"><span class="nav-label">4. Calculadora de DVA</span></a></li>
+        <li><a href="#continua" data-short="5"><span class="nav-label">5. Infusão contínua integrada</span></a></li>
+        <li><a href="#resumo" data-short="6"><span class="nav-label">6. Cenário-resumo</span></a></li>
+        <li><a href="#referencias" data-short="Ref"><span class="nav-label">Referências</span></a></li>
+        <li><a href="#leituras" data-short="Ler"><span class="nav-label">Sugestão de leitura</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h2>Módulo 6 — Calculadoras interativas</h2>
+      <p>Ferramentas práticas para cálculo de bólus em intubação orotraqueal, drogas vasoativas e infusões contínuas. O objetivo é padronizar unidades, reduzir erro de conversão e fornecer um cenário-resumo com dose, concentração e vazão.</p>
+      <div class="badge-row">
+        <span class="badge">IOT</span><span class="badge">Sedoanalgesia</span><span class="badge">Bloqueadores</span><span class="badge">Drogas vasoativas</span><span class="badge">Resumo operacional</span>
+      </div>
+    </div>
+
+    <section id="intro">
+      <h2>1. Dados e segurança</h2>
+      <p>As regras metodológicas ficam recolhidas para não competir com o fluxo de prescrição. Abra apenas quando quiser revisar os critérios de segurança e padronização usados pela calculadora.</p>
+      <details class="refs-collapsible">
+        <summary>Mostrar/ocultar regras de segurança e padronização</summary>
+        <div class="detail-body">
+          <p>As calculadoras deste módulo foram desenhadas para apoio operacional à beira-leito. Elas não substituem julgamento clínico, conferência de bula, protocolo institucional, dupla checagem de enfermagem/farmácia, monitorização contínua e reavaliação da resposta clínica.</p>
+          <div class="alert alert-danger"><strong>Obrigatório:</strong> conferir concentração real da ampola, unidade da prescrição, diluente, concentração final, via de administração, bomba de infusão e compatibilidade antes de administrar.</div>
+          <table>
+            <thead><tr><th>Regra</th><th>Aplicação prática</th></tr></thead>
+            <tbody>
+              <tr><td>Unidade padronizada</td><td>mcg/kg/min para catecolaminas/inotrópicos, UI/min para vasopressina, mcg/kg/h ou mg/kg/h para sedativos conforme fármaco, mg/kg para bólus.</td></tr>
+              <tr><td>Apresentação comercial</td><td>Descrever como a ampola/frascos se apresenta no Brasil: concentração por mL, volume total e conteúdo total por unidade. Ex.: Midazolam 5 mg/mL em ampola de 1 mL, 3 mL ou 10 mL.</td></tr>
+              <tr><td>Concentração usada no cálculo</td><td>É a concentração efetivamente selecionada para calcular volume aspirado ou vazão. Pode ser igual à concentração comercial ou uma concentração após diluição/reconstituição.</td></tr>
+              <tr><td>Preparo explícito</td><td>A calculadora deve separar: apresentação comercial disponível, volume aspirado da droga, volume de diluente, volume final da solução e concentração final.</td></tr>
+              <tr><td>Noradrenalina</td><td>Hemitartarato 8 mg/4 mL ≈ norepinefrina base 4 mg/4 mL. A dose em mcg/kg/min deve ser calculada com base.</td></tr>
+              <tr><td>Cenário clínico</td><td>O mesmo fármaco pode ser adequado ou inadequado conforme sepse, cardiogênico, emergência hipertensiva, trombólise ou hipertensão intracraniana.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section id="paciente">
+      <h2>2. Dados globais do paciente</h2>
+      <p>Os dados abaixo alimentam todas as calculadoras do módulo.</p>
+      <div class="calc-panel">
+        <h3>Paciente</h3>
+        <div class="calc-grid">
+          <div><label for="peso">Peso real (kg)</label><input id="peso" type="number" value="70" min="20" max="250"></div>
+          <div><label for="altura">Altura (cm)</label><input id="altura" type="number" value="170" min="120" max="230"></div>
+          <div><label for="sexo">Sexo para PBW</label><select id="sexo"><option value="masculino">Masculino</option><option value="feminino">Feminino</option></select></div>
+          <div><label for="cenario">Cenário clínico</label><select id="cenario">
+            <option value="geral">Geral / sem cenário específico</option>
+            <option value="sepse">Sepse / choque séptico</option>
+            <option value="cardiogenico">Choque cardiogênico</option>
+            <option value="has_emergencia">Emergência hipertensiva</option>
+            <option value="trombolise">AVC isquêmico candidato à trombólise/trombectomia</option>
+            <option value="hic">TCE / hipertensão intracraniana</option>
+            <option value="disseccao">Dissecção aórtica</option>
+            <option value="tep">TEP de alto risco / choque obstrutivo</option>
+            <option value="broncoespasmo">Broncoespasmo grave — ASMA/DPOC</option>
+          </select></div>
+        </div>
+        <div class="calc-result" id="patientOut"><strong>Paciente: —</strong><span>—</span></div>
+        <div class="calc-result" id="pbwTip"><strong>Tip de aprendizado — PBW</strong><span>—</span></div>
+      </div>
+      <div class="alert alert-info"><strong>Peso predito:</strong> mantido para integração futura com ventilação mecânica. Bólus de IOT e DVA costumam usar peso real, mas sedativos em obesidade exigem individualização farmacocinética.</div>
+    </section>
+
+    <section id="iot">
+      <h2>3. Estratégia de intubação e bólus farmacológico</h2>
+      <div class="calc-panel">
+        <h3>Estratégia de intubação</h3>
+        <div class="calc-grid">
+          <div><label for="iotType">Técnica de intubação</label><select id="iotType">
+            <option value="rsi">Sequência rápida clássica (RSI)</option>
+            <option value="modificada">Sequência modificada</option>
+            <option value="dsi">Sequência atrasada / DSI</option>
+            <option value="acordada">Intubação acordada</option>
+            <option value="crash">Crash airway / peri-PCR</option>
+          </select></div>
+          <div><label>Contexto clínico</label><input id="iotContextMirror" type="text" value="Definido em dados do paciente" readonly></div>
+          <div><label>Objetivo</label><input id="iotTypeShort" type="text" value="Selecione a técnica" readonly></div>
+          <div><label>Estratégia</label><input id="iotTypePrefer" type="text" value="—" readonly></div>
+        </div>
+        <div id="iotStrategyOut" class="strategy-box"><strong>Estratégia de intubação</strong><div>—</div></div>
+      </div>
+
+      <div class="calc-panel">
+        <h3>Bólus farmacológico para IOT</h3>
+        <div class="calc-grid">
+          <div><label for="iotCat">Categoria</label><select id="iotCat"></select></div>
+          <div><label for="iotDrug">Medicação</label><select id="iotDrug"></select></div>
+          <div><label for="iotDose">Dose escolhida <span id="iotDoseUnitLabel" class="unit-inline"></span></label><input id="iotDose" type="number" step="0.01"></div>
+          <div><label for="iotDoseUnitSelect">Unidade da dose</label><select id="iotDoseUnitSelect"></select></div>
+          <div><label for="iotAmpPresentation">Apresentação comercial disponível</label><select id="iotAmpPresentation"></select></div>
+        </div>
+        <details class="refs-collapsible" style="margin-top:10px">
+          <summary>Ajustes avançados de concentração</summary>
+          <div class="detail-body">
+            <div class="calc-grid">
+              <div><label for="iotPresentation">Concentração usada no cálculo</label><select id="iotPresentation"></select></div>
+              <div><label for="iotUseCustom">Usar concentração manual?</label><select id="iotUseCustom"><option value="nao">Não</option><option value="sim">Sim</option></select></div>
+              <div><label for="iotCustomConc">Concentração manual</label><input id="iotCustomConc" type="number" step="0.01" placeholder="opcional"></div>
+              <div><label for="iotCustomUnit">Unidade</label><select id="iotCustomUnit"><option value="mgml">mg/mL</option><option value="mcgml">mcg/mL</option><option value="uiml">UI/mL</option></select></div>
+            </div>
+            <div class="compact-note">Use apenas quando a concentração administrada for diferente da apresentação comercial selecionada, por reconstituição ou diluição local.</div>
+          </div>
+        </details>
+        <input id="iotAddLabel" type="hidden" value="">
+        <div class="btnrow">
+          <button class="action" onclick="calcIOT()">Calcular bólus</button>
+          <button class="action" onclick="addIOTToSummary()">Adicionar ao cenário-resumo</button>
+          <span class="summary-counter" aria-live="polite">Itens adicionados: 0</span>
+        </div>
+        <div class="calc-result" id="iotOut"><strong>Resultado: —</strong><span>—</span></div>
+      </div>
+    </section>
+
+    <section id="dva">
+      <h2>4. Calculadora de droga vasoativa</h2>
+      <div class="calc-panel">
+        <h3>DVA — dose ↔ bomba</h3>
+        <input id="dvaAutoMode" type="hidden" value="">
+        <div class="calc-grid">
+          <div><label for="dvaCat">Categoria</label><select id="dvaCat"></select></div>
+          <div><label for="dvaDrug">Medicação</label><select id="dvaDrug"></select></div>
+          <div><label for="dvaPrep">Solução final/diluição sugerida</label><select id="dvaPrep"></select></div>
+          <div><label for="dvaDose">Dose desejada <span id="dvaDoseUnitLabel" class="unit-inline"></span></label><input id="dvaDose" type="number" step="0.001" value="0.1" placeholder="preencher valor numérico"></div>
+        </div>
+        <div class="calc-grid" style="margin-top:12px">
+          <div><label for="dvaRate">Vazão da bomba (mL/h)</label><input id="dvaRate" type="number" step="0.01" placeholder="preencher mL/h se desejar calcular dose"></div>
+        </div>
+        <details class="refs-collapsible" style="margin-top:10px">
+          <summary>Ajustes avançados da solução final</summary>
+          <div class="detail-body">
+            <div class="calc-grid">
+              <div><label for="dvaConc">Concentração final</label><input id="dvaConc" type="number" step="0.01"></div>
+              <div><label for="dvaConcUnit">Unidade</label><select id="dvaConcUnit"><option value="mcgml">mcg/mL</option><option value="uiml">UI/mL</option><option value="mgml">mg/mL</option></select></div>
+            </div>
+            <div class="compact-note">Use apenas quando a solução final preparada for diferente da opção selecionada.</div>
+          </div>
+        </details>
+        <div class="btnrow">
+          <button class="action" onclick="calcDVA()">Calcular DVA</button>
+          <button class="action" onclick="addDVAToSummary()">Adicionar ao cenário-resumo</button>
+          <span class="summary-counter" aria-live="polite">Itens adicionados: 0</span>
+        </div>
+        <div class="calc-result" id="dvaOut"><strong>Resultado: —</strong><span>—</span></div>
+      </div>
+
+      <div class="calc-panel">
+        <h3>Bólus / push-dose</h3>
+        <div class="calc-grid">
+          <div><label for="dvaBolusCat">Categoria</label><select id="dvaBolusCat"></select></div>
+          <div><label for="dvaBolusDrug">Medicação</label><select id="dvaBolusDrug"></select></div>
+          <div><label for="dvaBolusAmpPresentation">Apresentação comercial disponível</label><select id="dvaBolusAmpPresentation"></select></div>
+          <div><label for="dvaBolusDose">Dose desejada <span id="dvaBolusDoseUnitLabel" class="unit-inline"></span></label><input id="dvaBolusDose" type="number" step="0.01"></div>
+          <div><label for="dvaBolusDoseUnitSelect">Unidade da dose</label><select id="dvaBolusDoseUnitSelect"></select></div>
+        </div>
+        <div class="calc-grid" style="margin-top:12px">
+          <div><label for="dvaBolusPresentation">Concentração usada no cálculo</label><select id="dvaBolusPresentation"></select></div>
+        </div>
+        <details class="refs-collapsible" style="margin-top:10px">
+          <summary>Ajustes avançados de concentração</summary>
+          <div class="detail-body">
+            <div class="calc-grid">
+              <div><label for="dvaBolusCustomConc">Concentração manual</label><input id="dvaBolusCustomConc" type="number" step="0.01" placeholder="opcional"></div>
+              <div><label for="dvaBolusCustomUnit">Unidade</label><select id="dvaBolusCustomUnit"><option value="mcgml">mcg/mL</option><option value="mgml">mg/mL</option><option value="uiml">UI/mL</option></select></div>
+              <div><label for="dvaBolusUseCustom">Usar concentração manual?</label><select id="dvaBolusUseCustom"><option value="nao">Não</option><option value="sim">Sim</option></select></div>
+            </div>
+          </div>
+        </details>
+        <div class="btnrow">
+          <button class="action" onclick="calcDVABolus()">Calcular bólus</button>
+          <button class="action" onclick="addDVABolusToSummary()">Adicionar ao cenário-resumo</button>
+          <span class="summary-counter" aria-live="polite">Itens adicionados: 0</span>
+        </div>
+        <div class="calc-result" id="dvaBolusOut"><strong>Resultado: —</strong><span>—</span></div>
+      </div>
+    </section>
+
+    <section id="continua">
+      <h2>5. Infusão contínua integrada — sedoanalgesia, bloqueador e DVA</h2>
+      <div class="calc-panel">
+        <h3>Infusão contínua</h3>
+        <input id="infAutoMode" type="hidden" value="">
+        <div class="calc-grid">
+          <div><label for="infCat">Categoria</label><select id="infCat"></select></div>
+          <div><label for="infDrug">Medicação</label><select id="infDrug"></select></div>
+          <div><label for="infPrep">Solução final sugerida</label><select id="infPrep"></select></div>
+          <div><label for="infDose">Dose desejada <span id="infDoseUnitLabel" class="unit-inline"></span></label><input id="infDose" type="number" step="0.001" placeholder="preencher valor numérico"></div>
+        </div>
+        <div class="calc-grid" style="margin-top:12px">
+          <div><label for="infRate">Vazão da bomba (mL/h)</label><input id="infRate" type="number" step="0.01" placeholder="preencher mL/h se desejar calcular dose"></div>
+          <div><label for="infTargetHours">Planejar para</label><select id="infTargetHours"><option value="24" selected>24 horas</option><option value="12">12 horas</option><option value="6">6 horas</option><option value="48">48 horas</option></select></div>
+          <div><label for="infBagVolume">Frasco/bolsa final</label><select id="infBagVolume"><option value="100">100 mL</option><option value="250" selected>250 mL</option><option value="500">500 mL</option><option value="1000">1000 mL</option></select></div>
+          <div><label for="infDiluent">Diluente</label><select id="infDiluent"><option value="SF 0,9%">SF 0,9%</option><option value="SG 5%">SG 5%</option><option value="conforme protocolo">Conforme protocolo</option></select></div>
+        </div>
+        <details class="refs-collapsible compact-details" open>
+          <summary>Ampola/fr. disponível</summary>
+          <div class="detail-body">
+            <div class="calc-grid">
+              <div><label for="infAmpConc">Concentração da ampola/fr.</label><input id="infAmpConc" type="number" step="0.001" placeholder="ex.: 50"></div>
+              <div><label for="infAmpConcUnit">Unidade</label><select id="infAmpConcUnit"><option value="mcgml">mcg/mL</option><option value="mgml">mg/mL</option><option value="uiml">UI/mL</option></select></div>
+              <div><label for="infAmpVolume">Volume total (mL)</label><input id="infAmpVolume" type="number" step="0.1" placeholder="ex.: 10"></div>
+              <div><label>Conteúdo total</label><input id="infAmpContentPreview" type="text" value="—" readonly></div>
+            </div>
+          </div>
+        </details>
+        <details class="refs-collapsible" style="margin-top:10px">
+          <summary>Ajustes avançados da solução final</summary>
+          <div class="detail-body">
+            <div class="calc-grid">
+              <div><label for="infConc">Concentração final da solução</label><input id="infConc" type="number" step="0.01"></div>
+              <div><label for="infConcUnit">Unidade</label><select id="infConcUnit"><option value="mcgml">mcg/mL</option><option value="mgml">mg/mL</option><option value="uiml">UI/mL</option></select></div>
+            </div>
+            <div class="compact-note">Use apenas quando a solução final preparada for diferente da opção selecionada.</div>
+          </div>
+        </details>
+        <div class="btnrow">
+          <button class="action" onclick="calcInfusion()">Calcular infusão</button>
+          <button class="action" onclick="addInfusionToSummary()">Adicionar ao cenário-resumo</button>
+          <span class="summary-counter" aria-live="polite">Itens adicionados: 0</span>
+        </div>
+        <div class="calc-result" id="infOut"><strong>Resultado: —</strong><span>—</span></div>
+      </div>
+    </section>
+
+    <section id="resumo">
+      <h2>6. Cenário-resumo</h2>
+      <p>O resumo organiza as drogas calculadas no atendimento, com dose, volume/vazão e solução preparada.</p>
+      <div class="calc-panel">
+        <h3>Resumo operacional</h3>
+        <div class="btnrow">
+          <button class="action" onclick="renderSummary()">Atualizar resumo</button>
+          <button class="action" onclick="clearSummary()">Limpar resumo</button>
+          <button class="action" onclick="generateChartNote()">Gerar texto para prontuário</button>
+          <button class="action" onclick="copyChartNote()">Copiar texto</button>
+          <span class="summary-counter" aria-live="polite">Itens adicionados: 0</span>
+        </div>
+        <div class="calc-result" id="summaryOut"><strong>Nenhum item adicionado.</strong><span>Use as calculadoras acima e clique em “Adicionar ao cenário-resumo”.</span></div>
+        <textarea id="chartNoteOut" style="width:100%;min-height:260px;margin-top:12px;border:1px solid #d8e0ea;border-radius:12px;padding:12px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.45" placeholder="Clique em “Gerar texto para prontuário” após adicionar as drogas ao cenário-resumo."></textarea>
+      </div>
+    </section>
+
+    <section id="referencias">
+      <h2>Referências e fontes metodológicas</h2>
+      <details class="refs-collapsible">
+        <summary>Mostrar/ocultar referências</summary>
+        <div class="detail-body">
+          <ol>
+        <li>ARDS Network. <strong>Ventilation with lower tidal volumes as compared with traditional tidal volumes for acute lung injury and the acute respiratory distress syndrome</strong>. <em>New England Journal of Medicine</em>. 2000;342:1301-1308. Estudo/protocolo que popularizou o uso de volume corrente calculado por peso predito em ventilação protetora.</li>
+        <li>Brown CA, Sakles JC, Mick NW, editors. <strong>The Walls Manual of Emergency Airway Management</strong>. Ler seções sobre RSI, delayed sequence intubation, awake intubation e crash airway.</li>
+        <li>Devlin JW, Skrobik Y, Gélinas C, et al. <strong>Clinical Practice Guidelines for the Prevention and Management of Pain, Agitation/Sedation, Delirium, Immobility, and Sleep Disruption in Adult Patients in the ICU</strong>. <em>Critical Care Medicine</em>. 2018;46:e825-e873. Base para analgesia orientada por metas, uso de opioides e adjuvantes no paciente crítico.</li>
+        <li>Lewis K, Balas MC, Stollings JL, et al. <strong>A focused update to the PADIS guideline</strong>. <em>Critical Care Medicine</em>. 2025.</li>
+        <li>Prescott HC, Antonelli M, Alhazzani W, et al. <strong>Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2026</strong>. <em>Critical Care Medicine / Intensive Care Medicine</em>. 2026.</li>
+        <li>Monnet X, Messina A, Greco M, et al. <strong>ESICM guidelines on circulatory shock and hemodynamic monitoring 2025</strong>. <em>Intensive Care Medicine</em>. 2025;51:1971–2012.</li>
+        <li>De Backer D, Biston P, Devriendt J, et al. <strong>Comparison of dopamine and norepinephrine in the treatment of shock</strong>. <em>New England Journal of Medicine</em>. 2010;362:779–789.</li>
+        <li>Hernández G, Ospina-Tascón GA, Damiani LP, et al. <strong>ANDROMEDA-SHOCK</strong>. <em>JAMA</em>. 2019;321:654–664.</li>
+        <li>Felker GM, Lee KL, Bull DA, et al. <strong>Diuretic strategies in patients with acute decompensated heart failure</strong>. <em>New England Journal of Medicine</em>. 2011;364:797-805. Ensaio DOSE: bolus versus infusão contínua e dose alta versus baixa de furosemida.</li>
+        <li>GINA. <strong>Global Strategy for Asthma Management and Prevention</strong>. Seção de exacerbação grave: sulfato de magnésio IV como adjuvante em resposta inadequada ao tratamento inicial intensivo.</li>
+        <li>World Allergy Organization / diretrizes de anafilaxia. Seções de anafilaxia refratária: adrenalina IM como primeira linha e infusão IV titulada em ambiente monitorizado quando refratária.</li>
+        <li>Clevidipine prescribing information / Cleviprex dosing resources: início 1–2 mg/h, titulação rápida e cautela com carga lipídica/duração prolongada.</li>
+        <li>Referências de farmacologia crítica para isoproterenol/isoprenalina: uso como cronotrópico temporário em bradicardia refratária, titulado por frequência, PA e perfusão.</li>
+        <li>Protocolos de neurointensivismo/status epilepticus: tiopental contínuo como terapia especializada para hipertensão intracraniana/status refratário com monitorização intensiva.</li>
+        <li>Farmacologia de bloqueadores neuromusculares: atracúrio como alternativa com metabolismo por Hofmann/esterases e risco de liberação de histamina.</li>
+        <li>Creager MA, Barnes GD, Giri J, et al. <strong>2026 AHA/ACC/ACCP/ACEP/CHEST/SCAI/SHM/SIR/SVM/SVN Guideline for the Evaluation and Management of Acute Pulmonary Embolism in Adults</strong>. <em>JACC/Circulation</em>. 2026.</li>
+        <li>Diretrizes ACC/AHA para doenças da aorta e recomendações contemporâneas de emergência hipertensiva foram usadas para estruturar o cenário de dissecção aórtica: controle inicial de FC/dP/dt antes de vasodilatação.</li>
+      </ol>
+          <div class="alert alert-info"><strong>Nota metodológica:</strong> os intervalos de dose foram organizados para uso didático-operacional. Em aplicação clínica real, validar com farmácia, bula, protocolo institucional, estabilidade físico-química após preparo, proteção da luz quando aplicável e monitorização do paciente.</div>
+        </div>
+      </details>
+    </section>
+
+    <section id="leituras">
+      <h2>Sugestão de leitura por cenário</h2>
+      <div class="calc-panel">
+        <h3>Leitura orientada</h3>
+        <div class="calc-result" id="readingOut"><strong>Selecione um cenário</strong><span>—</span></div>
+      </div>
+    </section>
+
+    <div class="footer-sign">
+      <p><strong>André M. Sena - Médico (CRM/RN 12533)</strong></p>
+    </div>
+  </main>
+</div>
+
+<script>
+const state = { summary: [] };
+
+function updateSummaryFeedback(message=""){
+  const count = state.summary.length;
+  const label = message ? `${message} · Itens adicionados: ${count}` : `Itens adicionados: ${count}`;
+  document.querySelectorAll(".summary-counter").forEach(counter=>{
+    counter.textContent = label;
+    counter.classList.toggle("summary-counter--active", Boolean(message));
+    counter.classList.remove("summary-counter--pulse");
+    void counter.offsetWidth;
+    counter.classList.add("summary-counter--pulse");
+  });
+}
+function confirmSummaryAdd(name){
+  updateSummaryFeedback(`Adicionado: ${name}`);
+}
+
+function initModuleMenu(){
+  const app=document.getElementById("moduleApp");
+  const toggle=document.getElementById("moduleNavToggle");
+  const nav=document.getElementById("moduleNav");
+  if(!app || !toggle || !nav) return;
+  const links=Array.from(nav.querySelectorAll('a[href^="#"]'));
+  function setCollapsed(collapsed){
+    app.classList.toggle("nav-collapsed", collapsed);
+    toggle.textContent = collapsed ? "Menu" : "Minimizar";
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+  }
+  function setActive(link){
+    links.forEach(item=>item.classList.remove("module-nav-link--active"));
+    if(link) link.classList.add("module-nav-link--active");
+  }
+  toggle.addEventListener("click", ()=>setCollapsed(!app.classList.contains("nav-collapsed")));
+  links.forEach(link=>{
+    link.addEventListener("click", (event)=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(!target) return;
+      event.preventDefault();
+      target.scrollIntoView({behavior:"smooth", block:"start"});
+      try{ history.replaceState(null, "", link.getAttribute("href")); }catch(e){}
+      setActive(link);
+      if(window.matchMedia("(max-width: 980px)").matches) setCollapsed(true);
+    });
+  });
+  const initial=links.find(link=>link.getAttribute("href")===window.location.hash) || links[0];
+  setActive(initial);
+  if("IntersectionObserver" in window){
+    const observer=new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const active=links.find(link=>link.getAttribute("href")==="#"+entry.target.id);
+          setActive(active);
+        }
+      });
+    }, {root:null, rootMargin:"-20% 0px -65% 0px", threshold:0.01});
+    links.forEach(link=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(target) observer.observe(target);
+    });
+  }
+}
+
+const scenarioNotes = {
+  geral: {
+    iot: "Sem cenário específico: escolher fármacos conforme hemodinâmica, via aérea, risco de aspiração e necessidade de analgesia.",
+    dva: "Meta hemodinâmica deve ser definida pela etiologia e perfusão, não apenas por PAM isolada.",
+    sugestao: "Sugestão geral: analgesia adequada, hipnótico titulado ao risco hemodinâmico e bloqueador com duração compatível com o plano pós-IOT."
+  },
+  sepse: {
+    iot: "Sepse/choque séptico: evitar grandes quedas de PAM; etomidato ou cetamina em dose reduzida são escolhas usuais. Preparar noradrenalina antes da indução se hipotenso.",
+    dva: "Choque séptico: PAM inicial frequentemente ≥65 mmHg; noradrenalina primeira linha; considerar vasopressina se dose crescente. Reavaliar TEC, lactato, diurese, ScvO₂/ΔpCO₂ quando disponíveis.",
+    sugestao: "Melhores opções usuais: etomidato ou cetamina para indução; rocurônio/succinilcolina conforme contraindicações; noradrenalina como vasopressor inicial; vasopressina como adjuvante em vasoplegia com dose crescente."
+  },
+  cardiogenico: {
+    iot: "Choque cardiogênico: evitar depressão miocárdica e vasodilatação excessiva. Etomidato costuma ser hemodinamicamente neutro; cetamina pode aumentar FC/consumo de O₂ e deve ser individualizada.",
+    dva: "Choque cardiogênico: noradrenalina se hipotenso; inotrópico se baixo débito com perfusão ruim. Cuidado com dobutamina/milrinona se PAM não sustentada.",
+    sugestao: "Melhores opções usuais: etomidato para indução se instável; fentanil em pequenas doses para resposta simpática; noradrenalina se hipotenso; dobutamina/milrinona apenas quando baixo débito e pressão tolerante."
+  },
+  has_emergencia: {
+    iot: "Emergência hipertensiva: controlar resposta simpática à laringoscopia com analgesia/opioide e evitar hipertensão/taquicardia marcantes. Evitar hipotensão abrupta.",
+    dva: "Emergência hipertensiva: redução controlada, em geral sem queda excessiva na primeira hora; escolha depende do órgão-alvo. Dissecção exige controle de FC/dP/dt antes de vasodilatar.",
+    sugestao: "Melhores opções dependem do órgão-alvo: nicardipina/clevidipina/labetalol em neuroemergências quando disponíveis; nitroglicerina em edema agudo hipertensivo/isquemia; evitar quedas abruptas."
+  },
+  trombolise: {
+    iot: "AVC candidato à reperfusão: evitar hipóxia, hipercapnia, hipotensão e picos hipertensivos. Fentanil pode atenuar resposta à laringoscopia; titular hipnótico com cuidado.",
+    dva: "Trombólise/trombectomia: PA deve estar abaixo dos limites do protocolo antes de reperfusão e controlada após. Usar anti-hipertensivos tituláveis quando disponíveis.",
+    sugestao: "Melhores opções: labetalol em bolus/infusão ou nicardipina/clevidipina quando disponíveis; evitar hipotensão, hipoxemia e hipercapnia durante IOT."
+  },
+  hic: {
+    iot: "HIC/TCE: evitar hipóxia, hipercapnia, hipotensão e hipertensão extrema. Opioide para resposta à laringoscopia; etomidato/propofol conforme PAM; manter PPC.",
+    dva: "HIC/TCE: meta guiada por PPC = PAM − PIC. Noradrenalina frequentemente usada para sustentar PAM/PPC; evitar hipotensão.",
+    sugestao: "Melhores opções: fentanil para resposta à laringoscopia, etomidato se risco hemodinâmico, propofol se PA permitir e necessidade de reduzir metabolismo cerebral; noradrenalina para sustentar PAM/PPC."
+  },
+  disseccao: {
+    iot: "Dissecção aórtica: evitar taquicardia, hipertensão e descarga simpática da laringoscopia. Analgesia/opioide pode atenuar resposta adrenérgica; hipnótico deve evitar hipotensão profunda. Prioridade: controle de FC e dP/dt.",
+    dva: "Dissecção aórtica: alvo clássico é reduzir FC primeiro, geralmente com beta-bloqueador titulável como esmolol/labetalol, antes de vasodilatador. Após controle de FC, considerar vasodilatação para PAS ~100–120 mmHg se perfusão tolerar. Evitar vasodilatador isolado antes do bloqueio beta.",
+    sugestao: "Melhores opções: opioide para analgesia/resposta simpática, etomidato se instável, esmolol ou labetalol para FC/dP/dt; vasodilatador apenas após controle beta se PAS persistir elevada."
+  },
+  tep: {
+    iot: "TEP de alto risco/choque obstrutivo: intubação pode precipitar colapso por redução do retorno venoso e piora do VD. Evitar hipoxemia, hipercapnia, acidose e PEEP excessiva; considerar preparo hemodinâmico com vasopressor antes da indução.",
+    dva: "TEP de alto risco/choque obstrutivo: noradrenalina costuma ser usada para sustentar PAM e perfusão coronariana direita. Considerar inotrópico se baixo débito por falência de VD com pressão tolerante. Tratamento definitivo é reperfusão/anticoagulação conforme risco; DVA é ponte.",
+    sugestao: "Melhores opções: preparar noradrenalina antes da IOT, indução hemodinamicamente cuidadosa, evitar PEEP excessiva; considerar dobutamina/milrinona apenas se falência de VD com pressão tolerante."
+  },
+  broncoespasmo: {
+    iot: "Broncoespasmo grave em ASMA/DPOC: evitar hipoxemia, hiperinsuflação dinâmica e auto-PEEP. Cetamina é opção favorável pela broncodilatação; evitar sedação insuficiente que aumente drive e aprisionamento aéreo. Ajustar ventilação com tempo expiratório prolongado.",
+    dva: "ASMA/DPOC com instabilidade: tratar broncoespasmo e auto-PEEP como causa mecânica. Se hipotenso, avaliar hiperinsuflação dinâmica, pneumotórax e hipovolemia relativa antes de escalar DVA. Noradrenalina pode ser ponte; adrenalina pode ser considerada em broncoespasmo/anafilaxia selecionados.",
+    sugestao: "Melhores opções: cetamina como hipnótico/analgésico favorável; fentanil com cautela para resposta simpática; rocurônio/succinilcolina conforme contraindicações; evitar beta-bloqueadores não seletivos; priorizar broncodilatadores, magnésio e ventilação com expiração prolongada."
+  }
+};
+
+const iotDrugs = {
+  hipnotico: {
+    label: "Hipnótico/sedativo",
+    drugs: {
+      etomidato: { name:"Etomidato", unit:"mg/kg", min:0.2, max:0.3, defaultDose:0.3, role:"Hipnótico hemodinamicamente estável", presentations:[{label:"2 mg/mL", conc:2, unit:"mgml"}], notes:"Pode causar mioclonia; discussão sobre supressão adrenal em sepse, mas segue usado em IOT pela estabilidade hemodinâmica.", onset:"30–60 s", duration:"3–5 min" },
+      cetamina: { name:"Cetamina", unit:"mg/kg", min:0.5, max:2, defaultDose:1.5, role:"Hipnótico dissociativo/analgésico", presentations:[{label:"50 mg/mL", conc:50, unit:"mgml"},{label:"10 mg/mL diluída", conc:10, unit:"mgml"}], notes:"Útil em broncoespasmo e instabilidade; cautela em catecolaminas exauridas, taquiarritmia/isquemia e hipertensão grave.", onset:"30–60 s IV", duration:"5–10 min" },
+      propofol: { name:"Propofol", unit:"mg/kg", min:0.5, max:2, defaultDose:1, role:"Hipnótico GABAérgico", presentations:[{label:"10 mg/mL (1%)", conc:10, unit:"mgml"}], notes:"Evitar dose plena em choque/hipovolemia; risco de hipotensão por vasodilatação e depressão miocárdica.", onset:"15–45 s", duration:"5–10 min" },
+      midazolam: { name:"Midazolam", unit:"mg/kg", min:0.05, max:0.1, defaultDose:0.05, role:"Benzodiazepínico", presentations:[{label:"5 mg/mL", conc:5, unit:"mgml"},{label:"1 mg/mL", conc:1, unit:"mgml"}], notes:"Início menos previsível para IOT isolada; pode causar hipotensão e prolongar sedação.", onset:"1–3 min IV", duration:"15–30+ min" },
+      tiopental: { name:"Tiopental", unit:"mg/kg", min:3, max:5, defaultDose:3, role:"Barbitúrico hipnótico", presentations:[{label:"25 mg/mL reconstituído", conc:25, unit:"mgml"}], notes:"Pode reduzir pressão intracraniana, mas causa hipotensão e depressão miocárdica; disponibilidade variável.", onset:"30–60 s", duration:"5–10 min" }
+    }
+  },
+  analgesico: {
+    label: "Analgésico",
+    drugs: {
+      fentanil: { name:"Fentanil", unit:"mcg/kg", min:1, max:3, defaultDose:2, role:"Opioide para analgesia e atenuação simpática", presentations:[{label:"50 mcg/mL", conc:50, unit:"mcgml"}], notes:"Administrar lentamente; bolus rápido/alto pode causar rigidez torácica. Cautela em hipotensão.", onset:"1–2 min", duration:"30–60 min" },
+      alfentanil: { name:"Alfentanil", unit:"mcg/kg", min:10, max:20, defaultDose:15, role:"Opioide de início rápido", presentations:[{label:"500 mcg/mL", conc:500, unit:"mcgml"}], notes:"Útil para resposta à laringoscopia quando disponível; maior risco de depressão respiratória/rigidez em doses altas.", onset:"≤1 min", duration:"10–20 min" },
+      remifentanil: { name:"Remifentanil", unit:"mcg/kg", min:1, max:2, defaultDose:1, role:"Opioide ultracurto em bolus selecionado", presentations:[{label:"40 mcg/mL diluído", conc:40, unit:"mcgml"}], notes:"Uso em bolus para IOT depende de protocolo; suspensão abrupta exige analgesia de transição.", onset:"≤1 min", duration:"3–10 min" },
+      sufentanil: { name:"Sufentanil", unit:"mcg/kg", min:0.1, max:0.3, defaultDose:0.2, role:"Opioide potente para atenuação simpática em ambiente anestésico/UTI", presentations:[{label:"50 mcg/mL", conc:50, unit:"mcgml"},{label:"5 mcg/mL diluído", conc:5, unit:"mcgml"}], notes:"Muito potente; risco de depressão respiratória e rigidez torácica se bolus rápido/alto.", onset:"1–3 min", duration:"30–60+ min" },
+      lidocaina_iv: { name:"Lidocaína IV", unit:"mg/kg", min:1, max:1.5, defaultDose:1.5, role:"Adjuvante para atenuação reflexa à laringoscopia; não é analgésico primário", presentations:[{label:"20 mg/mL (2%)", conc:20, unit:"mgml"},{label:"10 mg/mL (1%)", conc:10, unit:"mgml"}], notes:"Uso controverso/selecionado; cautela em BAV, arritmias, hepatopatia grave e epilepsia não controlada.", onset:"45–90 s", duration:"10–20 min" }
+    }
+  },
+  bloqueador: {
+    label: "Bloqueador neuromuscular",
+    drugs: {
+      succinilcolina: { name:"Succinilcolina", unit:"mg/kg", min:1, max:1.5, defaultDose:1.5, role:"Bloqueador despolarizante para RSI", presentations:[{label:"20 mg/mL", conc:20, unit:"mgml"},{label:"100 mg/2 mL = 50 mg/mL", conc:50, unit:"mgml"}], notes:"Contraindicações: hipercalemia, queimadura/trauma/desnervação após janela de risco, miopatias, hipertermia maligna, história de reação grave.", onset:"30–60 s", duration:"5–10 min" },
+      rocuronio: { name:"Rocurônio", unit:"mg/kg", min:1, max:1.2, defaultDose:1.2, role:"Bloqueador não despolarizante para RSI", presentations:[{label:"10 mg/mL", conc:10, unit:"mgml"}], notes:"Duração mais prolongada que succinilcolina; exige sedação/analgesia pós-IOT e plano de ventilação.", onset:"45–90 s em dose RSI", duration:"30–60+ min" },
+      cisatracurio: { name:"Cisatracúrio", unit:"mg/kg", min:0.15, max:0.2, defaultDose:0.2, role:"Bloqueador não despolarizante; não é primeira escolha para RSI rápida", presentations:[{label:"2 mg/mL", conc:2, unit:"mgml"}], notes:"Mais usado em manutenção de bloqueio; metabolismo por Hofmann.", onset:"2–3 min", duration:"30–60 min" },
+      atracurio: { name:"Atracúrio", unit:"mg/kg", min:0.4, max:0.5, defaultDose:0.5, role:"Bloqueador não despolarizante alternativo; não é primeira escolha para RSI rápida", presentations:[{label:"10 mg/mL", conc:10, unit:"mgml"}], notes:"Alternativa quando disponível; metabolismo por Hofmann/esterases. Pode liberar histamina e causar hipotensão/broncoespasmo, especialmente com administração rápida.", onset:"2–3 min", duration:"20–35 min" }
+    }
+  },
+  reversor: {
+    label: "Reversor",
+    drugs: {
+      sugammadex: { name:"Sugamadex", unit:"mg/kg", min:2, max:16, defaultDose:16, role:"Reversor de rocurônio/vecurônio", presentations:[{label:"100 mg/mL", conc:100, unit:"mgml"}], notes:"16 mg/kg é dose de resgate para reversão imediata após rocurônio em cenário específico; 2–4 mg/kg conforme profundidade de bloqueio." },
+      neostigmina: { name:"Neostigmina", unit:"mcg/kg", min:30, max:70, defaultDose:50, role:"Anticolinesterásico para reversão de bloqueio não despolarizante", presentations:[{label:"0,5 mg/mL = 500 mcg/mL", conc:500, unit:"mcgml"}], notes:"Usar com antimuscarínico conforme protocolo; não reverte bloqueio profundo de forma imediata." }
+    }
+  }
+};
+
+const dvaDrugs = {
+  vasopressor: {
+    label:"Vasopressor",
+    drugs:{
+      noradrenalina:{name:"Noradrenalina", doseUnit:"mcg/kg/min", defaultDose:0.1, range:"0,01–1 mcg/kg/min", preps:[
+        {label:"4 ampolas hemitartarato 8 mg/4 mL em 250 mL = base 64 mcg/mL", conc:64, unit:"mcgml", prep:"Noradrenalina base 16 mg = 4 ampolas de hemitartarato 8 mg/4 mL (volume aspirado 16 mL) + diluente 234 mL = solução final 250 mL → concentração 64 mcg/mL de norepinefrina base"},
+        {label:"2 ampolas hemitartarato 8 mg/4 mL em 250 mL = base 32 mcg/mL", conc:32, unit:"mcgml", prep:"Noradrenalina base 8 mg = 2 ampolas de hemitartarato 8 mg/4 mL (volume aspirado 8 mL) + diluente 242 mL = solução final 250 mL → concentração 32 mcg/mL de norepinefrina base"},
+        {label:"8 ampolas hemitartarato 8 mg/4 mL em 250 mL = base 128 mcg/mL", conc:128, unit:"mcgml", prep:"Noradrenalina base 32 mg = 8 ampolas de hemitartarato 8 mg/4 mL (volume aspirado 32 mL) + diluente 218 mL = solução final 250 mL → concentração 128 mcg/mL de norepinefrina base"}
+      ], notes:"Primeira linha em choque vasoplégico; atenção à conversão sal/base."},
+      vasopressina:{name:"Vasopressina", doseUnit:"UI/min", defaultDose:0.03, range:"0,01–0,04 UI/min; usual 0,03 UI/min", preps:[{label:"1 ampola vasopressina 20 UI/1 mL em 100 mL = 0,2 UI/mL", conc:0.2, unit:"uiml", prep:"Vasopressina 20 UI = 1 ampola 20 UI/1 mL (volume aspirado 1 mL; concentração da ampola 20 UI/mL) + diluente 99 mL = solução final 100 mL → concentração 0,2 UI/mL"}], notes:"Adjunta em choque vasoplégico; não titular amplamente como noradrenalina sem protocolo."},
+      adrenalina:{name:"Adrenalina", doseUnit:"mcg/kg/min", defaultDose:0.05, range:"0,01–0,5 mcg/kg/min", preps:[{label:"4 ampolas adrenalina 1 mg/1 mL em 250 mL = 16 mcg/mL", conc:16, unit:"mcgml", prep:"Adrenalina 4 mg = 4 ampolas de 1 mg/1 mL (volume aspirado 4 mL; concentração da ampola 1 mg/mL = 1000 mcg/mL) + diluente 246 mL = solução final 250 mL → concentração 16 mcg/mL"}], notes:"Vasopressor/inotrópico; pode elevar lactato por estímulo beta-2."},
+      fenilefrina:{name:"Fenilefrina", doseUnit:"mcg/kg/min", defaultDose:0.5, range:"0,1–2 mcg/kg/min", preps:[{label:"Fenilefrina 10 mg em 100 mL = 100 mcg/mL (conferir ampola disponível)", conc:100, unit:"mcgml", prep:"Fenilefrina 10 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por ampola/fr.) + diluente q.s.p. 100 mL = solução final 100 mL → concentração 100 mcg/mL"}], notes:"α1 quase puro; pode reduzir débito por aumento de pós-carga."}
+    }
+  },
+  inotropico: {
+    label:"Inotrópico/inodilatador",
+    drugs:{
+      dobutamina:{name:"Dobutamina", doseUnit:"mcg/kg/min", defaultDose:5, range:"2,5–20 mcg/kg/min", preps:[{label:"1 ampola dobutamina 250 mg/20 mL em 250 mL = 1000 mcg/mL", conc:1000, unit:"mcgml", prep:"Dobutamina 250 mg = 1 ampola 250 mg/20 mL (volume aspirado 20 mL; concentração da ampola 12,5 mg/mL) + diluente 230 mL = solução final 250 mL → concentração 1000 mcg/mL"}], notes:"Baixo débito; pode causar hipotensão por vasodilatação."},
+      milrinona:{name:"Milrinona", doseUnit:"mcg/kg/min", defaultDose:0.25, range:"0,125–0,75 mcg/kg/min", preps:[{label:"2 ampolas milrinona 10 mg/10 mL em 100 mL = 200 mcg/mL", conc:200, unit:"mcgml", prep:"Milrinona 20 mg = 2 ampolas 10 mg/10 mL (volume aspirado 20 mL; concentração da ampola 1 mg/mL) + diluente 80 mL = solução final 100 mL → concentração 200 mcg/mL"}], notes:"Inodilatador; cautela em hipotensão e disfunção renal."},
+      dopamina:{name:"Dopamina", doseUnit:"mcg/kg/min", defaultDose:10, range:"5–20 mcg/kg/min", preps:[{label:"Dopamina 400 mg em 250 mL = 1600 mcg/mL (conferir ampola disponível)", conc:1600, unit:"mcgml", prep:"Dopamina 400 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por ampola/fr.) + diluente q.s.p. 250 mL = solução final 250 mL → concentração 1600 mcg/mL"}], notes:"Uso restrito; maior risco de arritmia."}
+    }
+  },
+  vasodilatador: {
+    label:"Vasodilatador/anti-hipertensivo titulável",
+    drugs:{
+      nitroglicerina:{name:"Nitroglicerina", doseUnit:"mcg/min", defaultDose:20, range:"5–200 mcg/min", preps:[{label:"Nitroglicerina 50 mg em 250 mL = 200 mcg/mL (conferir frasco/ampola disponível)", conc:200, unit:"mcgml", prep:"Nitroglicerina 50 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por ampola/fr.) + diluente q.s.p. 250 mL = solução final 250 mL → concentração 200 mcg/mL"}], notes:"Predomínio venoso; útil em EAP hipertensivo/isquemia."},
+      nitroprussiato:{name:"Nitroprussiato", doseUnit:"mcg/kg/min", defaultDose:0.5, range:"0,3–10 mcg/kg/min", preps:[{label:"1 frasco-ampola nitroprussiato 50 mg em 250 mL = 200 mcg/mL", conc:200, unit:"mcgml", prep:"Nitroprussiato 50 mg = 1 frasco-ampola 50 mg liofilizado, reconstituído conforme bula (volume após reconstituição conforme fabricante) + SG 5% q.s.p. 250 mL = solução final 250 mL → concentração 200 mcg/mL; proteger da luz"}], notes:"Vasodilatador arterial/venoso potente; toxicidade cianeto/tiocianato."},
+      nicardipina:{name:"Nicardipina", doseUnit:"mg/h", defaultDose:5, range:"5–15 mg/h", preps:[{label:"Nicardipina 25 mg em 250 mL = 0,1 mg/mL (conferir ampola disponível)", conc:0.1, unit:"mgml", prep:"Nicardipina 25 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por ampola/fr.) + diluente q.s.p. 250 mL = solução final 250 mL → concentração 0,1 mg/mL"}], notes:"Controle pressórico em neuroemergências quando disponível."},
+      clevidipina:{name:"Clevidipina", doseUnit:"mg/h", defaultDose:2, range:"1–2 mg/h inicial; titular rapidamente; maioria ≤16 mg/h; limitar carga lipídica e duração conforme bula/protocolo", preps:[{label:"Clevidipina 0,5 mg/mL — emulsão pronta para uso", conc:0.5, unit:"mgml", prep:"Clevidipina 0,5 mg/mL = emulsão lipídica pronta para uso (volume total do frasco conforme fabricante). Não diluir. Usar equipo compatível e trocar conforme protocolo institucional"}], notes:"Bloqueador de canal de cálcio arterial ultracurto; útil em emergência hipertensiva/neuroemergências quando disponível. Contraindicada em alergia a soja/ovo conforme formulação e distúrbios do metabolismo lipídico."},
+      esmolol:{name:"Esmolol", doseUnit:"mcg/kg/min", defaultDose:50, range:"25–200 mcg/kg/min", preps:[{label:"Esmolol 2500 mg em 250 mL = 10 mg/mL (conferir apresentação disponível)", conc:10, unit:"mgml", prep:"Esmolol 2500 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por frasco/ampola) + diluente q.s.p. 250 mL = solução final 250 mL → concentração 10 mg/mL"}], notes:"Controle de FC/dPdt; atenção à unidade mg/mL."},
+      labetalol:{name:"Labetalol", doseUnit:"mg/h", defaultDose:60, range:"Infusão 0,5–2 mg/min (30–120 mg/h) ou bolus conforme protocolo", preps:[{label:"Labetalol 100 mg em 100 mL = 1 mg/mL (conferir ampola disponível)", conc:1, unit:"mgml", prep:"Labetalol 100 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por ampola/fr.) + diluente q.s.p. 100 mL = solução final 100 mL → concentração 1 mg/mL"}], notes:"Beta/alfabloqueador útil em emergências hipertensivas selecionadas; cautela em asma grave, BAV, bradicardia e IC descompensada."}
+    }
+  },
+  cronotropico: {
+    label:"Cronotrópico",
+    drugs:{
+      isoproterenol:{name:"Isoproterenol / Isoprenalina", doseUnit:"mcg/min", defaultDose:2, range:"0,5–5 mcg/min usual; 2–10 mcg/min em torsades bradi-dependente conforme protocolo", preps:[{label:"Isoproterenol 1 mg em 250 mL = 4 mcg/mL (conferir apresentação disponível)", conc:4, unit:"mcgml", prep:"Isoproterenol 1 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por ampola/fr.) + SG 5% q.s.p. 250 mL = solução final 250 mL → concentração 4 mcg/mL"}], notes:"Beta-agonista com efeito cronotrópico/inotrópico e vasodilatação; ponte para marcapasso em bradicardia selecionada. Monitorar arritmia, isquemia, hipotensão, K e lactato."}
+    }
+  }
+};
+
+
+const dvaBolusDrugs = {
+  vasopressor_push: {
+    label:"Vasopressor / push-dose",
+    drugs:{
+      adrenalina_push:{
+        name:"Adrenalina push-dose",
+        doseUnit:"mcg",
+        defaultDose:10,
+        range:"5–20 mcg IV por bolus, conforme protocolo e monitorização",
+        presentations:[
+          {label:"Solução diluída 10 mcg/mL — preparo usual para push-dose", conc:10, unit:"mcgml", prep:"Adrenalina 1 mg/1 mL + diluente 99 mL = solução final 100 mL → concentração 10 mcg/mL"},
+          {label:"Solução diluída 100 mcg/mL — uso restrito/protocolo", conc:100, unit:"mcgml", prep:"Adrenalina 1 mg/1 mL + diluente 9 mL = solução final 10 mL → concentração 100 mcg/mL"}
+        ],
+        commercialPresentations:[
+          {label:"Adrenalina 1 mg/mL — ampola 1 mL = 1 mg", conc:1, unit:"mgml", volume:1, content:1, contentUnit:"mg"}
+        ],
+        ampoule:"Adrenalina 1 mg/mL — ampola de 1 mL = 1 mg.",
+        notes:"Uso como ponte em hipotensão peri-IOT/refratária, sempre com monitorização. Não confundir com dose de PCR."
+      },
+      fenilefrina_push:{
+        name:"Fenilefrina push-dose",
+        doseUnit:"mcg",
+        defaultDose:100,
+        range:"50–200 mcg IV por bolus, conforme protocolo",
+        presentations:[
+          {label:"Solução diluída 100 mcg/mL", conc:100, unit:"mcgml", prep:"Fenilefrina 10 mg + diluente q.s.p. 100 mL = solução final 100 mL → concentração 100 mcg/mL"}
+        ],
+        commercialPresentations:[
+          {label:"Fenilefrina — apresentação comercial variável", conc:null, unit:"", volume:null, content:null, contentUnit:""}
+        ],
+        ampoule:"Fenilefrina: apresentação comercial variável; conferir concentração, volume total e conteúdo por ampola/fr.",
+        notes:"Considerar em hipotensão com taquicardia selecionada; cautela em baixo débito e falência de VD."
+      }
+    }
+  },
+  bradicardia: {
+    label:"Bradicardia",
+    drugs:{
+      atropina:{
+        name:"Atropina",
+        doseUnit:"mg",
+        defaultDose:1,
+        range:"1 mg IV; repetir a cada 3–5 min se necessário; máximo usual 3 mg",
+        presentations:[
+          {label:"Atropina 0,25 mg/mL — ampola 1 mL = 0,25 mg", conc:0.25, unit:"mgml", prep:"Atropina 0,25 mg/mL em ampola de 1 mL"},
+          {label:"Atropina 0,5 mg/mL — ampola 1 mL = 0,5 mg", conc:0.5, unit:"mgml", prep:"Atropina 0,5 mg/mL em ampola de 1 mL"},
+          {label:"Atropina 1 mg/mL — ampola 1 mL = 1 mg", conc:1, unit:"mgml", prep:"Atropina 1 mg/mL em ampola de 1 mL"}
+        ],
+        commercialPresentations:[
+          {label:"Atropina 0,25 mg/mL — ampola 1 mL = 0,25 mg", conc:0.25, unit:"mgml", volume:1, content:0.25, contentUnit:"mg"},
+          {label:"Atropina 0,5 mg/mL — ampola 1 mL = 0,5 mg", conc:0.5, unit:"mgml", volume:1, content:0.5, contentUnit:"mg"},
+          {label:"Atropina 1 mg/mL — ampola 1 mL = 1 mg", conc:1, unit:"mgml", volume:1, content:1, contentUnit:"mg"}
+        ],
+        ampoule:"Atropina: apresentações de 0,25 mg/mL, 0,5 mg/mL ou 1 mg/mL podem existir conforme fabricante/serviço.",
+        notes:"Indicada em bradicardia sintomática; baixa eficácia em bloqueios infranodais avançados."
+      }
+    }
+  },
+  vasodilatador_bolus: {
+    label:"Vasodilatador em bólus",
+    drugs:{
+      nitroglicerina_bolus:{
+        name:"Nitroglicerina bólus",
+        doseUnit:"mcg",
+        defaultDose:400,
+        range:"100–800 mcg IV em bolus lento/titulado conforme protocolo e PA",
+        presentations:[
+          {label:"Solução diluída 100 mcg/mL", conc:100, unit:"mcgml", prep:"Nitroglicerina 50 mg + diluente q.s.p. 500 mL = solução final 500 mL → concentração 100 mcg/mL"},
+          {label:"Solução diluída 200 mcg/mL", conc:200, unit:"mcgml", prep:"Nitroglicerina 50 mg + diluente q.s.p. 250 mL = solução final 250 mL → concentração 200 mcg/mL"}
+        ],
+        commercialPresentations:[
+          {label:"Nitroglicerina — apresentação comercial concentrada variável", conc:null, unit:"", volume:null, content:null, contentUnit:""}
+        ],
+        ampoule:"Nitroglicerina: apresentação comercial concentrada variável; conferir mg/mL, volume total e compatibilidade.",
+        notes:"Uso selecionado em EAP hipertensivo/hipertensão grave conforme protocolo. Evitar em hipotensão, uso recente de inibidor de PDE5 e suspeita de infarto de VD."
+      }
+    }
+  }
+};
+
+const infusionData = {
+  analgesico: { label:"Analgésico", drugs:{
+    fentanil:{name:"Fentanil", doseUnit:"mcg/kg/h", defaultDose:1, range:"0,5–2 mcg/kg/h", preps:[{label:"500 mcg em 50 mL = 10 mcg/mL", conc:10, unit:"mcgml", prep:"Fentanil 500 mcg = 10 mL se apresentação 50 mcg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mcg/mL"}], notes:"Opioide padrão em UTI; atenção a acúmulo, íleo e rigidez torácica em bolus rápido."},
+    remifentanil:{name:"Remifentanil", doseUnit:"mcg/kg/min", defaultDose:0.05, range:"0,03–0,15 mcg/kg/min", preps:[{label:"2 mg em 50 mL = 40 mcg/mL", conc:40, unit:"mcgml", prep:"Remifentanil 2 mg = reconstituir frasco-ampola conforme bula + diluente q.s.p. 50 mL = solução final 50 mL → concentração 40 mcg/mL"}], notes:"Opioide ultracurto; planejar analgesia de transição antes de suspender."},
+    morfina:{name:"Morfina", doseUnit:"mg/h", defaultDose:2, range:"1–5 mg/h", preps:[{label:"50 mg em 50 mL = 1 mg/mL", conc:1, unit:"mgml", prep:"Morfina 50 mg = 5 mL se apresentação 10 mg/mL + diluente 45 mL = solução final 50 mL → concentração 1 mg/mL"}], notes:"Cautela em disfunção renal por metabólitos ativos."},
+    sufentanil:{name:"Sufentanil", doseUnit:"mcg/kg/h", defaultDose:0.2, range:"0,1–0,5 mcg/kg/h", preps:[{label:"250 mcg em 50 mL = 5 mcg/mL", conc:5, unit:"mcgml", prep:"Sufentanil 250 mcg = 5 mL se apresentação 50 mcg/mL + diluente 45 mL = solução final 50 mL → concentração 5 mcg/mL"}], notes:"Opioide muito potente; exige atenção extrema à concentração e dupla checagem."},
+    alfentanil:{name:"Alfentanil", doseUnit:"mcg/kg/min", defaultDose:0.5, range:"0,25–1 mcg/kg/min", preps:[{label:"5 mg em 50 mL = 100 mcg/mL", conc:100, unit:"mcgml", prep:"Alfentanil 5 mg = 10 mL se apresentação 500 mcg/mL + diluente 40 mL = solução final 50 mL → concentração 100 mcg/mL"}], notes:"Opioide de início rápido; disponibilidade e faixas variam por protocolo institucional."},
+    hidromorfona:{name:"Hidromorfona", doseUnit:"mg/h", defaultDose:0.4, range:"0,2–1 mg/h", preps:[{label:"10 mg em 50 mL = 0,2 mg/mL", conc:0.2, unit:"mgml", prep:"Hidromorfona 10 mg = volume conforme apresentação disponível + diluente q.s.p. 50 mL = solução final 50 mL → concentração 0,2 mg/mL"}], notes:"Disponibilidade hospitalar variável no Brasil; usar apenas com protocolo institucional."},
+    cetamina_analgesia:{name:"Cetamina — analgesia adjuvante", doseUnit:"mg/kg/h", defaultDose:0.1, range:"0,05–0,3 mg/kg/h", preps:[{label:"500 mg em 50 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Cetamina 500 mg = 10 mL se apresentação 50 mg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mg/mL"}], notes:"Adjuvante poupador de opioide; útil em hiperalgesia/dor refratária/broncoespasmo; monitorar efeitos simpaticomiméticos."},
+    lidocaina:{name:"Lidocaína IV — adjuvante selecionado", doseUnit:"mg/kg/h", defaultDose:1, range:"0,5–1,5 mg/kg/h", preps:[{label:"1000 mg em 100 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Lidocaína 1000 mg = 50 mL se apresentação 20 mg/mL (2%) + diluente 50 mL = solução final 100 mL → concentração 10 mg/mL"}], notes:"Uso selecionado; evitar em BAV importante, arritmias relevantes, toxicidade por anestésico local, epilepsia não controlada e hepatopatia grave."}
+  }},
+  sedativo: { label:"Sedativo/hipnótico", drugs:{
+    propofol:{name:"Propofol", doseUnit:"mcg/kg/min", defaultDose:20, range:"5–50 mcg/kg/min", preps:[{label:"10 mg/mL puro", conc:10, unit:"mgml", prep:"Propofol 10 mg/mL: uso usual puro, sem diluição. Ex.: frasco 50 mL contém 500 mg; concentração final 10 mg/mL"}]},
+    midazolam:{name:"Midazolam", doseUnit:"mg/kg/h", defaultDose:0.05, range:"0,02–0,1 mg/kg/h", preps:[{label:"50 mg em 50 mL = 1 mg/mL", conc:1, unit:"mgml", prep:"Morfina 50 mg = 5 mL se apresentação 10 mg/mL + diluente 45 mL = solução final 50 mL → concentração 1 mg/mL"}]},
+    dexmedetomidina:{name:"Dexmedetomidina", doseUnit:"mcg/kg/h", defaultDose:0.5, range:"0,2–0,7 mcg/kg/h", preps:[{label:"200 mcg em 50 mL = 4 mcg/mL", conc:4, unit:"mcgml", prep:"Dexmedetomidina 200 mcg = 2 mL se apresentação 100 mcg/mL + diluente 48 mL = solução final 50 mL → concentração 4 mcg/mL"}]},
+    cetamina:{name:"Cetamina", doseUnit:"mg/kg/h", defaultDose:0.1, range:"0,05–0,3 mg/kg/h", preps:[{label:"500 mg em 50 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Cetamina 500 mg = 10 mL se apresentação 50 mg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mg/mL"}], notes:"Sedação dissociativa/adjuvante; monitorar PA, FC, salivação e fenômenos emergentes."},
+    tiopental_infusao:{name:"Tiopental — sedação neurocrítica/status", doseUnit:"mg/kg/h", defaultDose:3, range:"3–5 mg/kg/h; doses maiores apenas em protocolo especializado com EEG/BIS/hemodinâmica", preps:[{label:"1000 mg em 250 mL = 4 mg/mL", conc:4, unit:"mgml", prep:"Tiopental 1000 mg = reconstituir conforme bula + diluente q.s.p. 250 mL = solução final 250 mL → concentração 4 mg/mL"}], notes:"Uso especializado em hipertensão intracraniana refratária ou status epilepticus refratário. Alto risco de hipotensão, imunossupressão, íleo, acúmulo e necessidade de ventilação/vasopressor/monitorização contínua."}
+  }},
+  bloqueador: { label:"Bloqueador neuromuscular", drugs:{
+    cisatracurio:{name:"Cisatracúrio", doseUnit:"mcg/kg/min", defaultDose:2, range:"1–3 mcg/kg/min", preps:[{label:"100 mg em 50 mL = 2 mg/mL", conc:2, unit:"mgml", prep:"Cisatracúrio 100 mg = 50 mL se apresentação 2 mg/mL; pode ser usado puro se volume final 50 mL → concentração 2 mg/mL"}]},
+    rocuronio:{name:"Rocurônio", doseUnit:"mcg/kg/min", defaultDose:10, range:"5–12 mcg/kg/min", preps:[{label:"100 mg em 50 mL = 2 mg/mL", conc:2, unit:"mgml", prep:"Rocurônio 100 mg = 10 mL se apresentação 10 mg/mL + diluente 40 mL = solução final 50 mL → concentração 2 mg/mL"}], notes:"Bloqueador não despolarizante; monitorar TOF quando disponível e garantir hipnose/analgesia."},
+    atracurio:{name:"Atracúrio", doseUnit:"mcg/kg/min", defaultDose:5, range:"5–10 mcg/kg/min", preps:[{label:"100 mg em 50 mL = 2 mg/mL", conc:2, unit:"mgml", prep:"Atracúrio 100 mg = 10 mL se apresentação 10 mg/mL + diluente 40 mL = solução final 50 mL → concentração 2 mg/mL"}], notes:"Alternativa ao cisatracúrio; metabolismo por Hofmann/esterases; risco de histamina, hipotensão e broncoespasmo."}
+  }},
+  vasoativa: { label:"Droga vasoativa", drugs:{}},
+  diuretico: { label:"Diurético em infusão contínua", drugs:{
+    furosemida:{name:"Furosemida", doseUnit:"mg/h", defaultDose:10, range:"5–20 mg/h; doses maiores apenas com protocolo e monitorização", preps:[
+      {label:"250 mg em 250 mL = 1 mg/mL", conc:1, unit:"mgml", prep:"Furosemida 250 mg = 25 mL se apresentação 10 mg/mL + diluente 225 mL = solução final 250 mL → concentração 1 mg/mL"},
+      {label:"500 mg em 250 mL = 2 mg/mL", conc:2, unit:"mgml", prep:"Furosemida 500 mg = 50 mL se apresentação 10 mg/mL + diluente 200 mL = solução final 250 mL → concentração 2 mg/mL"}
+    ], notes:"Útil em congestão refratária/resistência diurética; não há superioridade universal sobre bolus. Monitorar diurese, PA, K, Mg, Na, creatinina, alcalose e ototoxicidade."}
+  }},
+  broncoespasmo: { label:"Broncoespasmo grave — ASMA/DPOC", drugs:{
+    magnesioIV:{name:"Sulfato de magnésio IV — broncoespasmo", doseUnit:"mg/h", defaultDose:6000, range:"2 g IV em 20 min em asma grave/refratária; calculadora usa 6000 mg/h para infundir 2 g em 20 min", preps:[
+      {label:"2 g em 100 mL usando MgSO₄ 50% = 20 mg/mL", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 4 mL se apresentação 50% (500 mg/mL) + diluente 96 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 20 min"},
+      {label:"2 g em 100 mL usando MgSO₄ 10% = 20 mg/mL", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 20 mL se apresentação 10% (100 mg/mL) + diluente 80 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 20 min"}
+    ], notes:"Adjuvante em broncoespasmo grave/refratário. Monitorar PA, reflexos, FR e risco de depressão respiratória/hipotensão, especialmente em insuficiência renal. Não é infusão contínua de 24h."},
+    salbutamolIV:{name:"Salbutamol IV", doseUnit:"mcg/min", defaultDose:5, range:"5–20 mcg/min conforme protocolo em broncoespasmo crítico", preps:[
+      {label:"5 mg em 50 mL = 100 mcg/mL", conc:100, unit:"mcgml", prep:"Salbutamol 5 mg = volume conforme apresentação disponível + diluente q.s.p. 50 mL = solução final 50 mL → concentração 100 mcg/mL"}
+    ], notes:"Uso selecionado em asma crítica refratária; monitorar FC, arritmia, K, lactato, tremor e isquemia."}
+  }},
+  anafilaxia: { label:"Anafilaxia grave/refratária", drugs:{
+    adrenalinaAnafilaxia:{name:"Adrenalina — infusão contínua na anafilaxia", doseUnit:"mcg/kg/min", defaultDose:0.05, range:"0,05–0,5 mcg/kg/min em anafilaxia refratária, titulada em ambiente monitorizado", preps:[
+      {label:"1 mg em 100 mL = 10 mcg/mL", conc:10, unit:"mcgml", prep:"Adrenalina 1 mg = 1 mL se apresentação 1 mg/mL + diluente 99 mL = solução final 100 mL → concentração 10 mcg/mL"},
+      {label:"4 mg em 250 mL = 16 mcg/mL", conc:16, unit:"mcgml", prep:"Adrenalina 4 mg = 4 mL se apresentação 1 mg/mL + diluente 246 mL = solução final 250 mL → concentração 16 mcg/mL"}
+    ], notes:"Adrenalina IM é a primeira linha inicial. Infusão contínua é para anafilaxia grave/refratária com hipotensão/broncoespasmo persistente, em monitorização cardíaca e pressórica contínua."}
+  }}
+};
+infusionData.vasoativa.drugs = {...dvaDrugs.vasopressor.drugs, ...dvaDrugs.inotropico.drugs, ...dvaDrugs.vasodilatador.drugs, ...dvaDrugs.cronotropico.drugs};
+
+function getPeso(){ return parseFloat(document.getElementById('peso').value || 0); }
+function getAltura(){ return parseFloat(document.getElementById('altura').value || 0); }
+function getCenario(){ return document.getElementById('cenario').value; }
+function pbw(){
+  const h = getAltura();
+  const sexo = document.getElementById('sexo').value;
+  if(!h) return 0;
+  return sexo === "masculino" ? 50 + 0.91*(h-152.4) : 45.5 + 0.91*(h-152.4);
+}
+function fmt(x, d=2){
+  if(!Number.isFinite(x)) return "—";
+  const s = x.toFixed(d);
+  return s.replace(/\.0+$/,"").replace(/(\.\d*?)0+$/,"$1");
+}
+function amountShort(text){
+  if(!text) return "—";
+  let m = text.match(/^(.*?)(?:\s*→|;|\|)/);
+  return (m ? m[1] : text).trim();
+}
+function prepCommand(item){
+  if(item.commandHtml) return item.commandHtml;
+  const type = item.type || "Preparo";
+  const prep = item.prep || "preparo conforme protocolo";
+  const dose = item.dose || "dose calculada";
+  const result = item.shortResult || item.result || "";
+  return `<div class="prep-structured">
+    <div class="prep-title">${type} — ${item.name}</div>
+    <div class="prep-line prep-presentation"><b>Apresentação/preparo</b> ${prep}</div>
+    <div class="prep-line prep-dose"><b>Dose</b> ${dose}</div>
+    ${item.mass ? `<div class="prep-line prep-result"><b>Massa/tempo</b> ${item.mass}</div>` : ""}
+    ${item.volume ? `<div class="prep-line prep-volume"><b>Volume/vazão</b> ${item.volume}</div>` : ""}
+    ${result ? `<div class="prep-line prep-practical"><b>Cálculo operacional</b> ${result}</div>` : ""}
+    ${item.range ? `<div class="prep-line prep-need"><b>Faixa terapêutica</b> ${item.range}</div>` : ""}
+  </div>`;
+}
+function unitLabel(unit){
+  if(unit === "mcgml") return "mcg/mL";
+  if(unit === "mgml") return "mg/mL";
+  if(unit === "uiml") return "UI/mL";
+  return unit || "";
+}
+function massUnitFromConcUnit(unit){
+  if(unit === "mcgml") return "mcg";
+  if(unit === "mgml") return "mg";
+  if(unit === "uiml") return "UI";
+  return "";
+}
+function getInfAmpOverride(){
+  const conc=parseFloat(document.getElementById("infAmpConc")?.value);
+  const vol=parseFloat(document.getElementById("infAmpVolume")?.value);
+  const concUnit=document.getElementById("infAmpConcUnit")?.value || "";
+  const unit=massUnitFromConcUnit(concUnit);
+  if(!Number.isFinite(conc) || conc<=0 || !Number.isFinite(vol) || vol<=0 || !unit) return null;
+  return {
+    unit,
+    content: conc*vol,
+    volume: vol,
+    conc,
+    concUnit,
+    label:`ampola/fr. ${fmt(vol,1)} mL; concentração ${fmt(conc,3)} ${unitLabel(concUnit)}`
+  };
+}
+function updateAmpContentPreview(){
+  const amp=getInfAmpOverride();
+  const out=document.getElementById("infAmpContentPreview");
+  if(out) out.value = amp ? `${fmt(amp.content,2)} ${amp.unit} por ampola/fr.` : "—";
+}
+
+function brazilAmpouleOptions(name){
+  const n=(name||"").toLowerCase();
+  const options = {
+    etomidato: "Etomidato 2 mg/mL: ampola de 10 mL = 20 mg.",
+    cetamina: "Cetamina 50 mg/mL: frasco-ampola de 10 mL = 500 mg; algumas instituições também trabalham com solução/diluição 10 mg/mL para titulação.",
+    propofol: "Propofol 10 mg/mL (1%): frasco/ampola de 20 mL = 200 mg, 50 mL = 500 mg ou 100 mL = 1000 mg, conforme fabricante/serviço.",
+    midazolam: "Midazolam 5 mg/mL: ampola de 1 mL = 5 mg, 3 mL = 15 mg ou 10 mL = 50 mg; Midazolam 1 mg/mL: ampola de 5 mL = 5 mg, conforme fabricante.",
+    tiopental: "Tiopental: frasco-ampola liofilizado, frequentemente 1 g; reconstituir conforme bula/protocolo.",
+    fentanil: "Fentanil 50 mcg/mL: ampola de 2 mL = 100 mcg, 5 mL = 250 mcg ou 10 mL = 500 mcg, conforme fabricante/serviço.",
+    alfentanil: "Alfentanil 500 mcg/mL: frasco/ampola de 10 mL = 5 mg, conforme disponibilidade.",
+    remifentanil: "Remifentanil: frasco-ampola liofilizado de 1 mg, 2 mg ou 5 mg; reconstituir/diluir conforme bula.",
+    sufentanil: "Sufentanil: apresentações variam por fabricante, com soluções como 5 mcg/mL ou 50 mcg/mL; conferir ampola disponível no serviço.",
+    morfina: "Morfina 10 mg/mL: ampola de 1 mL = 10 mg; outras concentrações podem existir conforme fabricante.",
+    lidocaina: "Lidocaína sem vasoconstrictor: 1% = 10 mg/mL ou 2% = 20 mg/mL; frascos/ampolas de 5, 10 ou 20 mL conforme fabricante.",
+    succinilcolina: "Succinilcolina/suxametônio: pode estar disponível como 100 mg/2 mL = 50 mg/mL ou apresentações liofilizadas; conferir padronização local.",
+    rocuronio: "Rocurônio 10 mg/mL: frasco/ampola de 5 mL = 50 mg ou 10 mL = 100 mg, conforme fabricante.",
+    cisatracurio: "Cisatracúrio 2 mg/mL: ampola de 5 mL = 10 mg ou 10 mL = 20 mg, conforme fabricante.",
+    atracurio: "Atracúrio 10 mg/mL: ampola de 2,5 mL = 25 mg ou 5 mL = 50 mg, conforme fabricante.",
+    sugamadex: "Sugamadex 100 mg/mL: frasco/ampola de 2 mL = 200 mg ou 5 mL = 500 mg, conforme fabricante.",
+    neostigmina: "Neostigmina: apresentações variam, frequentemente 0,5 mg/mL ou 1 mg/mL; conferir ampola disponível e necessidade de antimuscarínico associado.",
+    noradrenalina: "Noradrenalina hemitartarato 8 mg/4 mL: ampola de volume total 4 mL; equivale aproximadamente a norepinefrina base 4 mg/4 mL.",
+    vasopressina: "Vasopressina 20 UI/mL: ampola de 1 mL = 20 UI, conforme fabricante.",
+    adrenalina: "Adrenalina 1 mg/mL: ampola de 1 mL = 1 mg.",
+    fenilefrina: "Fenilefrina: apresentações variam por serviço; conferir concentração e volume total antes de diluir.",
+    dobutamina: "Dobutamina 12,5 mg/mL: ampola/fr. de 20 mL = 250 mg, conforme fabricante.",
+    milrinona: "Milrinona 1 mg/mL: ampola/fr. de 10 mL = 10 mg ou 20 mL = 20 mg, conforme fabricante.",
+    dopamina: "Dopamina: apresentações variam; há ampolas com concentrações como 5 mg/mL ou formulações concentradas. Conferir conteúdo total e volume antes do preparo.",
+    nitroglicerina: "Nitroglicerina: apresentações concentradas variam por fabricante; conferir mg/mL e volume total antes de preparar.",
+    nitroprussiato: "Nitroprussiato de sódio: frasco-ampola 50 mg liofilizado; reconstituir e proteger da luz conforme bula.",
+    nicardipina: "Nicardipina: disponibilidade/apresentação variável; conferir padronização institucional.",
+    clevidipina: "Clevidipina 0,5 mg/mL: emulsão lipídica pronta para uso; não diluir.",
+    esmolol: "Esmolol: apresentações variam; pode haver solução pronta ou frasco concentrado para diluição. Conferir mg/mL e volume total.",
+    labetalol: "Labetalol: apresentações variam por disponibilidade; conferir concentração e volume total.",
+    isoproterenol: "Isoproterenol/isoprenalina: apresentações variam; conferir conteúdo total, concentração e diluente recomendado.",
+    furosemida: "Furosemida 10 mg/mL: ampola de 2 mL = 20 mg ou 10 mL = 100 mg, conforme fabricante.",
+    magnesio: "Sulfato de magnésio: 50% = 500 mg/mL, ampola de 10 mL = 5 g; 10% = 100 mg/mL, ampola de 10 mL = 1 g.",
+    salbutamol: "Salbutamol IV: apresentação varia por disponibilidade e protocolo; conferir concentração, volume total e via adequada.",
+    hidromorfona: "Hidromorfona: apresentação hospitalar variável; conferir concentração e volume total."
+  };
+  if(n.includes("midazolam")) return options.midazolam;
+  if(n.includes("etomidato")) return options.etomidato;
+  if(n.includes("cetamina")) return options.cetamina;
+  if(n.includes("propofol")) return options.propofol;
+  if(n.includes("tiopental")) return options.tiopental;
+  if(n.includes("fentanil")) return options.fentanil;
+  if(n.includes("alfentanil")) return options.alfentanil;
+  if(n.includes("remifentanil")) return options.remifentanil;
+  if(n.includes("sufentanil")) return options.sufentanil;
+  if(n.includes("morfina")) return options.morfina;
+  if(n.includes("lidocaína") || n.includes("lidocaina")) return options.lidocaina;
+  if(n.includes("succinilcolina") || n.includes("suxametônio") || n.includes("suxametonio")) return options.succinilcolina;
+  if(n.includes("rocurônio") || n.includes("rocuronio")) return options.rocuronio;
+  if(n.includes("cisatracúrio") || n.includes("cisatracurio")) return options.cisatracurio;
+  if(n.includes("atracúrio") || n.includes("atracurio")) return options.atracurio;
+  if(n.includes("sugamadex")) return options.sugamadex;
+  if(n.includes("neostigmina")) return options.neostigmina;
+  if(n.includes("noradrenalina")) return options.noradrenalina;
+  if(n.includes("vasopressina")) return options.vasopressina;
+  if(n.includes("adrenalina")) return options.adrenalina;
+  if(n.includes("fenilefrina")) return options.fenilefrina;
+  if(n.includes("dobutamina")) return options.dobutamina;
+  if(n.includes("milrinona")) return options.milrinona;
+  if(n.includes("dopamina")) return options.dopamina;
+  if(n.includes("nitroglicerina")) return options.nitroglicerina;
+  if(n.includes("nitroprussiato")) return options.nitroprussiato;
+  if(n.includes("nicardipina")) return options.nicardipina;
+  if(n.includes("clevidipina")) return options.clevidipina;
+  if(n.includes("esmolol")) return options.esmolol;
+  if(n.includes("labetalol")) return options.labetalol;
+  if(n.includes("isoproterenol") || n.includes("isoprenalina")) return options.isoproterenol;
+  if(n.includes("furosemida")) return options.furosemida;
+  if(n.includes("magnésio") || n.includes("magnesio")) return options.magnesio;
+  if(n.includes("salbutamol")) return options.salbutamol;
+  if(n.includes("hidromorfona")) return options.hidromorfona;
+  return "Conferir concentração, conteúdo total e volume da ampola/fr. disponível no serviço.";
+}
+function ampoulePresentationLine(name, presentation=null){
+  return brazilAmpouleOptions(name);
+}
+
+function informedAmpouleLine(){
+  const amp = getInfAmpOverride();
+  if(!amp) return "";
+  return `Apresentação informada: ampola/fr. de volume total ${fmt(amp.volume,1)} mL, concentração ${fmt(amp.conc,3)} ${unitLabel(amp.concUnit)}, conteúdo total ${fmt(amp.content,2)} ${amp.unit}.`;
+}
+
+function formatPrepStructured(prepText, conc, concUnit){
+  const unit = unitLabel(concUnit);
+  let preparo = prepText || "Conferir preparo institucional.";
+  let diluicao = "";
+  let concentracao = `${fmt(conc,3)} ${unit}`;
+  const m = preparo.match(/^(.*?)(?:\\s*\\((volume aspirado .*?)\\))?\\s*\\+\\s*(?:diluente\\s*)?([^=]+?)\\s*=\\s*solução final\\s*([^→]+?)(?:\\s*→\\s*concentração\\s*(.*))?$/i);
+  if(m){
+    preparo = m[1].trim();
+    const aspirado = (m[2] || "").replace("volume aspirado","volume aspirado").trim();
+    const dil = (m[3] || "").trim();
+    const finalVol = (m[4] || "").trim();
+    const concTxt = (m[5] || "").trim();
+    diluicao = `${aspirado ? aspirado + " + " : ""}${dil} = solução final ${finalVol}.`;
+    if(concTxt) concentracao = concTxt.replace(/\\.$/,"");
+  }
+  return {preparo, diluicao, concentracao};
+}
+
+
+function doseAmountPerHour(dose, unit, peso){
+  if(unit === "mcg/kg/min") return {amount: dose*peso*60, unit:"mcg/h", concUnit:"mcgml"};
+  if(unit === "mcg/kg/h") return {amount: dose*peso, unit:"mcg/h", concUnit:"mcgml"};
+  if(unit === "mcg/min") return {amount: dose*60, unit:"mcg/h", concUnit:"mcgml"};
+  if(unit === "UI/min") return {amount: dose*60, unit:"UI/h", concUnit:"uiml"};
+  if(unit === "mg/h") return {amount: dose, unit:"mg/h", concUnit:"mgml"};
+  if(unit === "mg/kg/h") return {amount: dose*peso, unit:"mg/h", concUnit:"mgml"};
+  if(unit === "mg/kg") return {amount: dose*peso, unit:"mg", concUnit:"mgml"};
+  if(unit === "mcg/kg") return {amount: dose*peso, unit:"mcg", concUnit:"mcgml"};
+  return {amount: dose, unit:unit, concUnit:""};
+}
+
+function ampouleInfoByName(name){
+  const n = (name || "").toLowerCase();
+  if(n.includes("etomidato")) return {unit:"mg", content:20, volume:10, label:"ampola 20 mg/10 mL (volume total 10 mL; 2 mg/mL)"};
+  if(n.includes("succinilcolina") || n.includes("suxametônio") || n.includes("suxametonio")) return {unit:"mg", content:100, volume:2, label:"ampola 100 mg/2 mL (volume total 2 mL; 50 mg/mL)"};
+  if(n.includes("sugamadex")) return {unit:"mg", content:200, volume:2, label:"frasco/ampola 200 mg/2 mL (volume total 2 mL; 100 mg/mL)"};
+  if(n.includes("neostigmina")) return {unit:"mg", content:0.5, volume:1, label:"ampola 0,5 mg/1 mL (volume total 1 mL; 0,5 mg/mL)"};
+  if(n.includes("fentanil")) return {unit:"mcg", content:500, volume:10, label:"ampola 500 mcg/10 mL (volume total 10 mL; 50 mcg/mL)"};
+  if(n.includes("remifentanil")) return {unit:"mcg", content:2000, volume:null, label:"frasco-ampola 2 mg; reconstituir conforme bula"};
+  if(n.includes("morfina")) return {unit:"mg", content:10, volume:1, label:"ampola 10 mg/1 mL (volume total 1 mL; 10 mg/mL)"};
+  if(n.includes("sufentanil")) return {unit:"mcg", content:250, volume:5, label:"ampola 250 mcg/5 mL (volume total 5 mL; 50 mcg/mL)"};
+  if(n.includes("alfentanil")) return {unit:"mcg", content:5000, volume:10, label:"frasco/ampola 5 mg/10 mL (volume total 10 mL; 500 mcg/mL)"};
+  if(n.includes("hidromorfona")) return {unit:"mg", content:2, volume:1, label:"ampola 2 mg/1 mL (ajustar à apresentação disponível)"};
+  if(n.includes("cetamina")) return {unit:"mg", content:500, volume:10, label:"frasco 500 mg/10 mL (volume total 10 mL; 50 mg/mL)"};
+  if(n.includes("lidocaína") || n.includes("lidocaina")) return {unit:"mg", content:400, volume:20, label:"frasco 400 mg/20 mL (volume total 20 mL; lidocaína 2% = 20 mg/mL)"};
+  if(n.includes("propofol")) return {unit:"mg", content:500, volume:50, label:"frasco 500 mg/50 mL (volume total 50 mL; 10 mg/mL)"};
+  if(n.includes("midazolam")) return {unit:"mg", content:50, volume:10, label:"ampola 50 mg/10 mL (volume total 10 mL; 5 mg/mL)"};
+  if(n.includes("dexmedetomidina")) return {unit:"mcg", content:200, volume:2, label:"ampola 200 mcg/2 mL (volume total 2 mL; 100 mcg/mL)"};
+  if(n.includes("cisatracúrio") || n.includes("cisatracurio")) return {unit:"mg", content:20, volume:10, label:"ampola 20 mg/10 mL (volume total 10 mL; 2 mg/mL)"};
+  if(n.includes("atracúrio") || n.includes("atracurio")) return {unit:"mg", content:50, volume:5, label:"ampola 50 mg/5 mL (volume total 5 mL; 10 mg/mL)"};
+  if(n.includes("rocurônio") || n.includes("rocuronio")) return {unit:"mg", content:50, volume:5, label:"ampola 50 mg/5 mL (volume total 5 mL; 10 mg/mL)"};
+  if(n.includes("noradrenalina")) return {unit:"mcg", content:4000, volume:4, label:"ampola hemitartarato 8 mg/4 mL (volume total 4 mL) ≈ norepinefrina base 4 mg/4 mL"};
+  if(n.includes("vasopressina")) return {unit:"UI", content:20, volume:1, label:"ampola 20 UI/1 mL (volume total 1 mL; 20 UI/mL)"};
+  if(n.includes("adrenalina")) return {unit:"mcg", content:1000, volume:1, label:"ampola 1 mg/1 mL (volume total 1 mL; 1000 mcg/mL)"};
+  if(n.includes("dobutamina")) return {unit:"mcg", content:250000, volume:20, label:"ampola 250 mg/20 mL (volume total 20 mL; 12,5 mg/mL)"};
+  if(n.includes("milrinona")) return {unit:"mcg", content:10000, volume:10, label:"ampola 10 mg/10 mL"};
+  if(n.includes("dopamina")) return {unit:"mcg", content:200000, volume:5, label:"ampola 200 mg/5 mL"};
+  if(n.includes("nitroglicerina")) return {unit:"mcg", content:50000, volume:10, label:"ampola 50 mg/10 mL"};
+  if(n.includes("nitroprussiato")) return {unit:"mcg", content:50000, volume:null, label:"frasco-ampola 50 mg; reconstituir conforme bula"};
+  if(n.includes("nicardipina")) return {unit:"mg", content:25, volume:null, label:"25 mg conforme apresentação disponível"};
+  if(n.includes("esmolol")) return {unit:"mg", content:2500, volume:null, label:"2500 mg conforme apresentação disponível"};
+  if(n.includes("labetalol")) return {unit:"mg", content:100, volume:null, label:"100 mg conforme apresentação disponível"};
+  if(n.includes("clevidipina")) return {unit:"mg", content:25, volume:50, label:"frasco/seringa 25 mg/50 mL (0,5 mg/mL), pronto para uso"};
+  if(n.includes("isoproterenol") || n.includes("isoprenalina")) return {unit:"mcg", content:1000, volume:null, label:"ampola/fraco 1 mg conforme apresentação disponível"};
+  if(n.includes("tiopental")) return {unit:"mg", content:1000, volume:null, label:"frasco 1 g; reconstituir conforme bula"};
+  if(n.includes("furosemida")) return {unit:"mg", content:20, volume:2, label:"ampola 20 mg/2 mL (10 mg/mL)"};
+  if(n.includes("sulfato de magnésio") || n.includes("sulfato de magnesio")) return {unit:"mg", content:2000, volume:null, label:"dose alvo 2 g; apresentação 50% ou 10% conforme selecionada"};
+  if(n.includes("salbutamol")) return {unit:"mcg", content:5000, volume:null, label:"salbutamol 5 mg conforme apresentação disponível"};
+  return null;
+}
+function convertMassToAmpUnit(amount, amountUnit, ampUnit){
+  // amountUnit can be mcg/h, mg/h, UI/h; returns amount per hour in ampUnit.
+  if(amountUnit === "mcg/h" && ampUnit === "mcg") return amount;
+  if(amountUnit === "mcg/h" && ampUnit === "mg") return amount/1000;
+  if(amountUnit === "mg/h" && ampUnit === "mg") return amount;
+  if(amountUnit === "mg/h" && ampUnit === "mcg") return amount*1000;
+  if(amountUnit === "UI/h" && ampUnit === "UI") return amount;
+  return NaN;
+}
+function ampouleCountText(count){
+  if(!Number.isFinite(count)) return "quantidade nao estimada";
+  const rounded = Math.round(count * 10) / 10;
+  const unit = Math.abs(rounded - 1) < 0.05 ? "ampola/frasco" : "ampolas/frascos";
+  return `${fmt(rounded,1)} ${unit}`;
+}
+function integerAmpouleRequest(count){
+  if(!Number.isFinite(count)) return "quantidade inteira a conferir";
+  const whole = Math.max(Math.ceil(count), 1);
+  return `${whole} ${whole===1?"ampola/frasco":"ampolas/frascos"}`;
+}
+function planning24h(name, dose, doseUnit, conc, concUnit, rate, hours, bagVolume, diluent, ampOverride=null){
+  const lowerName = (name || "").toLowerCase();
+  if(lowerName.includes("sulfato de magnésio") || lowerName.includes("sulfato de magnesio")){
+    return `<div class="prep-structured">
+      <div class="prep-title">Infusão curta — ${name}</div>
+      <div class="prep-line prep-final"><b>Preparo:</b> 2 g em 100 mL e infundir em 20 min.</div>
+      <div class="prep-line prep-volume"><b>Se MgSO₄ 50%:</b> aspirar 4 mL + 96 mL de diluente.</div>
+      <div class="prep-line prep-volume"><b>Se MgSO₄ 10%:</b> aspirar 20 mL + 80 mL de diluente.</div>
+      <div class="prep-note">Monitorar PA, reflexos, frequência respiratória e função renal.</div>
+    </div>`;
+  }
+  if(lowerName.includes("clevidipina")){
+    return `<div class="prep-structured">
+      <div class="prep-title">Infusão contínua — ${name}</div>
+      <div class="prep-line prep-presentation"><b>Apresentação:</b> emulsão lipídica pronta para uso, geralmente 0,5 mg/mL.</div>
+      <div class="prep-line prep-final"><b>Preparo:</b> não diluir; usar conforme bula e protocolo institucional.</div>
+      <div class="prep-line prep-rate"><b>Planejamento:</b> titular por vazão e carga lipídica; evitar exceder limites de volume/duração do protocolo.</div>
+    </div>`;
+  }
+  const amp = ampOverride || ampouleInfoByName(name);
+  if(!amp || !Number.isFinite(rate) || rate <= 0) return `<div class="prep-structured"><div class="prep-title">Infusão contínua — ${name}</div><div class="prep-line">Planejamento de preparo não disponível para esta medicação/apresentação.</div></div>`;
+  const amount = doseAmountPerHour(dose, doseUnit, getPeso());
+  const perHourInAmpUnit = convertMassToAmpUnit(amount.amount, amount.unit, amp.unit);
+  if(!Number.isFinite(perHourInAmpUnit)) return `<div class="prep-structured"><div class="prep-title">Infusão contínua — ${name}</div><div class="prep-line">Unidade incompatível para estimar ampolas. Conferir protocolo institucional.</div></div>`;
+  const need = perHourInAmpUnit * hours;
+  const exactAmpCount = need / amp.content;
+  const ampCount = Math.ceil(exactAmpCount);
+  const totalDrug = ampCount * amp.content;
+  const aspirated = amp.volume ? ampCount * amp.volume : null;
+  const diluentVol = aspirated !== null ? Math.max(bagVolume - aspirated, 0) : null;
+  const finalConc = totalDrug / bagVolume;
+  const duration = totalDrug / perHourInAmpUnit;
+  const volumeNeeded = rate * hours;
+  const doseText = Number.isFinite(dose) ? `${fmt(dose,4)} ${doseUnit}` : "dose calculada";
+  const ampVolumeText = amp.volume ? `volume total ${fmt(amp.volume,1)} mL` : "volume conforme reconstitui\u00e7\u00e3o";
+  const ampConcText = amp.conc ? `concentra\u00e7\u00e3o ${fmt(amp.conc,3)} ${unitLabel(amp.concUnit)}` : `conte\u00fado total ${fmt(amp.content,2)} ${amp.unit}`;
+  const calculatedAmpoules = ampouleCountText(exactAmpCount);
+  const plannedAmpoules = ampouleCountText(ampCount);
+  const requestedAmpoules = integerAmpouleRequest(exactAmpCount);
+  const volumeSolutionLine = aspirated !== null
+    ? `<div class="prep-line prep-volume"><b>Volume aspirado e solu\u00e7\u00e3o final:</b> Necessidade calculada: ${calculatedAmpoules}. Modo pr\u00e1tico: solicitar ${requestedAmpoules} \u00e0 farm\u00e1cia. Aspirar ${fmt(aspirated,1)} mL (${fmt(totalDrug,2)} ${amp.unit}; ${plannedAmpoules}) + ${fmt(diluentVol,1)} mL de ${diluent}. Solu\u00e7\u00e3o final: ${fmt(totalDrug,2)} ${amp.unit}/${fmt(bagVolume,1)} mL \u2192 concentra\u00e7\u00e3o final ${fmt(finalConc,3)} ${amp.unit}/mL.</div>`
+    : `<div class="prep-line prep-volume"><b>Reconstitui\u00e7\u00e3o e solu\u00e7\u00e3o final:</b> Necessidade calculada: ${calculatedAmpoules}. Modo pr\u00e1tico: solicitar ${requestedAmpoules} \u00e0 farm\u00e1cia. Reconstituir conforme bula, usar total ${fmt(totalDrug,2)} ${amp.unit} (${plannedAmpoules}) + ${diluent} q.s.p. ${fmt(bagVolume,1)} mL. Solu\u00e7\u00e3o final: ${fmt(totalDrug,2)} ${amp.unit}/${fmt(bagVolume,1)} mL \u2192 concentra\u00e7\u00e3o final ${fmt(finalConc,3)} ${amp.unit}/mL.</div>`;
+  return `<div class="prep-structured">
+    <div class="prep-title">Infus\u00e3o cont\u00ednua \u2014 ${name}</div>
+    <div class="prep-line prep-presentation"><b>Apresenta\u00e7\u00e3o considerada:</b> ${ampVolumeText}; ${ampConcText}; conte\u00fado total por unidade ${fmt(amp.content,2)} ${amp.unit}.</div>
+    ${volumeSolutionLine}
+    <div class="prep-line prep-dose"><b>Dose inicial e vaz\u00e3o calculada:</b> dose escolhida ${doseText} \u2192 vaz\u00e3o ${fmt(rate,2)} mL/h para ofertar esta dose. Dura\u00e7\u00e3o estimada da solu\u00e7\u00e3o: ~${fmt(duration,1)} h.</div>
+    <div class="prep-line prep-need"><b>Consumo e necessidade em ${hours}h:</b> volume consumido: ${fmt(volumeNeeded,1)} mL; necessidade calculada: \u2248 ${fmt(need,2)} ${amp.unit} (${calculatedAmpoules}). Solicita\u00e7\u00e3o pr\u00e1tica: ${requestedAmpoules}.</div>
+    <div class="prep-line prep-result"><b>Resultado em unidade por hora:</b> ${name}: ${fmt(amount.amount,2)} ${amount.unit}.</div>
+  </div>`;
+}
+
+function rateFromAmount(amount, amountUnit, conc, concUnit){
+  if(amountUnit === "mcg/h" && concUnit === "mcgml") return amount / conc;
+  if(amountUnit === "UI/h" && concUnit === "uiml") return amount / conc;
+  if(amountUnit === "mg/h" && concUnit === "mgml") return amount / conc;
+  if(amountUnit === "mg" && concUnit === "mgml") return amount / conc;
+  if(amountUnit === "mcg" && concUnit === "mcgml") return amount / conc;
+  if(amountUnit === "mcg/h" && concUnit === "mgml") return (amount/1000) / conc;
+  if(amountUnit === "mg/h" && concUnit === "mcgml") return (amount*1000) / conc;
+  return NaN;
+}
+function doseFromRate(rate, doseUnit, conc, concUnit, peso){
+  let amountHour;
+  if(concUnit === "mcgml") amountHour = rate * conc; // mcg/h
+  if(concUnit === "uiml") amountHour = rate * conc; // UI/h
+  if(concUnit === "mgml") amountHour = rate * conc; // mg/h
+
+  if(doseUnit === "mcg/kg/min"){
+    if(concUnit === "mgml") return (amountHour*1000)/(peso*60);
+    return amountHour/(peso*60);
+  }
+  if(doseUnit === "mcg/kg/h"){
+    if(concUnit === "mgml") return (amountHour*1000)/peso;
+    return amountHour/peso;
+  }
+  if(doseUnit === "mcg/min"){
+    if(concUnit === "mgml") return (amountHour*1000)/60;
+    return amountHour/60;
+  }
+  if(doseUnit === "UI/min") return amountHour/60;
+  if(doseUnit === "mg/h"){
+    if(concUnit === "mcgml") return amountHour/1000;
+    return amountHour;
+  }
+  if(doseUnit === "mg/kg/h"){
+    if(concUnit === "mcgml") return (amountHour/1000)/peso;
+    return amountHour/peso;
+  }
+  return NaN;
+}
+
+function renderPatient(){
+  const peso=getPeso(), p=pbw(), c=getCenario();
+  const h=getAltura();
+  const sexo=document.getElementById("sexo").value;
+  const base = sexo === "masculino" ? 50 : 45.5;
+  const calcText = `Altura ${fmt(h,0)} cm (${sexo}): ${base} + 0,91 × (${fmt(h,0)} − 152,4) = ${fmt(p,1)} kg.`;
+  document.getElementById("patientOut").innerHTML = `<strong>Peso real ${fmt(peso,1)} kg · PBW ${fmt(p,1)} kg</strong>
+    <div class="result-lines">
+      <div>${scenarioNotes[c].iot}</div>
+      <div>${scenarioNotes[c].dva}</div>
+      <div><b>Sugestão:</b> ${scenarioNotes[c].sugestao}</div>
+    </div>`;
+  document.getElementById("pbwTip").innerHTML = `<strong>Tip PBW — não é peso real</strong>
+    <div class="result-lines">
+      <div>${calcText}</div>
+      <div><b>Fonte:</b> ARDSNet/ARMA; tamanho pulmonar se correlaciona melhor com altura/sexo do que com peso total.</div>
+    </div>
+    <div class="formula-compact">
+      <div><code>Masculino:</code> PBW = 50 + 0,91 × (altura cm − 152,4)</div>
+      <div><code>Feminino:</code> PBW = 45,5 + 0,91 × (altura cm − 152,4)</div>
+    </div>`;
+  const r=document.getElementById("readingOut");
+  if(r){ r.innerHTML = `<strong>Sugestão de leitura — ${document.getElementById("cenario").selectedOptions[0].text}</strong><span>${readingSuggestion(c)}</span>`; }
+}
+
+function populateSelect(select, data, labelKey="label"){
+  select.innerHTML = "";
+  Object.entries(data).forEach(([key,obj])=>{
+    const opt=document.createElement("option");
+    opt.value=key; opt.textContent=obj[labelKey] || obj.name || key;
+    select.appendChild(opt);
+  });
+}
+
+
+function setDoseUnitLabel(id, unit){
+  const el=document.getElementById(id);
+  if(el) el.textContent = unit ? `(${unit})` : "";
+}
+
+function baseMassUnitFromDoseUnit(unit){
+  if(!unit) return "";
+  if(unit.includes("mcg")) return "mcg";
+  if(unit.includes("mg")) return "mg";
+  if(unit.includes("UI")) return "UI";
+  return unit;
+}
+function doseUnitOptionsFor(unit){
+  const base = baseMassUnitFromDoseUnit(unit);
+  if(base === "mcg" || base === "mg") return ["mcg","mg"];
+  if(base === "UI") return ["UI"];
+  return [unit || ""].filter(Boolean);
+}
+function populateDoseUnitSelect(selectId, defaultUnit){
+  const sel=document.getElementById(selectId);
+  if(!sel) return;
+  const opts=doseUnitOptionsFor(defaultUnit);
+  sel.innerHTML="";
+  opts.forEach(u=>{
+    const opt=document.createElement("option");
+    opt.value=u;
+    opt.textContent=u;
+    if(u === defaultUnit || u === baseMassUnitFromDoseUnit(defaultUnit)) opt.selected=true;
+    sel.appendChild(opt);
+  });
+}
+function convertMassDose(value, fromUnit, toUnit){
+  if(!Number.isFinite(value)) return NaN;
+  if(fromUnit === toUnit) return value;
+  if(fromUnit === "mg" && toUnit === "mcg") return value*1000;
+  if(fromUnit === "mcg" && toUnit === "mg") return value/1000;
+  return value;
+}
+function convertWeightBasedDose(value, fromMassUnit, targetDoseUnit){
+  const targetMass=baseMassUnitFromDoseUnit(targetDoseUnit);
+  const converted=convertMassDose(value, fromMassUnit, targetMass);
+  return converted;
+}
+function doseUnitLabel(unit){
+  return unit ? `(${unit})` : "";
+}
+
+function medKv(label, value){
+  if(value === null || value === undefined || value === "") return "";
+  return `<div class="med-kv"><b>${label}:</b> ${value}</div>`;
+}
+function medCard(title, lines, modifier=""){
+  const body = Array.isArray(lines) ? lines.filter(Boolean).join("") : (lines || "");
+  if(!body) return "";
+  return `<div class="med-card ${modifier}"><div class="med-card__title">${title}</div>${body}</div>`;
+}
+function compactAmpouleLine(name, amp, fallback){
+  if(amp && Number.isFinite(amp.content) && Number.isFinite(amp.volume) && amp.volume > 0){
+    const massUnit = amp.contentUnit || massUnitFromConcUnit(amp.unit || amp.concUnit) || amp.unit || "";
+    const conc = Number.isFinite(amp.conc) ? amp.conc : amp.content / amp.volume;
+    const concUnit = amp.concUnit ? unitLabel(amp.concUnit) : (massUnit ? `${massUnit}/mL` : "concentração/mL");
+    return `${name}: ${fmt(amp.content,2)} ${massUnit}/${fmt(amp.volume,1)} mL (${fmt(conc,3)} ${concUnit}).`;
+  }
+  return fallback || "Conferir concentração, volume total e conteúdo por ampola/fr.";
+}
+function normalizeClinicalText(text){
+  return (text || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+}
+function drugTerms(name){
+  const n = normalizeClinicalText(name);
+  const terms = [];
+  ["etomidato","cetamina","propofol","midazolam","tiopental","fentanil","alfentanil","remifentanil","sufentanil","lidocaina","succinilcolina","suxametonio","rocuronio","cisatracurio","atracurio","sugamadex","neostigmina","noradrenalina","norepinefrina","vasopressina","adrenalina","epinefrina","fenilefrina","dobutamina","dopamina","milrinona","nitroglicerina","nitroprussiato","nicardipina","clevidipina","esmolol","labetalol","isoproterenol","isoprenalina","atropina"].forEach(term=>{
+    if(n.includes(term)) terms.push(term);
+  });
+  if(!terms.length && n) terms.push(n.split(/[\s/—-]+/)[0]);
+  return terms;
+}
+function textMentionsDrug(text, name){
+  const t = normalizeClinicalText(text);
+  return drugTerms(name).some(term=>t.includes(term));
+}
+function textMentionsKnownDrug(text){
+  const t = normalizeClinicalText(text);
+  return ["etomidato","cetamina","propofol","midazolam","tiopental","fentanil","rocuronio","succinilcolina","noradrenalina","norepinefrina","vasopressina","adrenalina","fenilefrina","dobutamina","dopamina","milrinona","nitroglicerina","nitroprussiato","nicardipina","clevidipina","esmolol","labetalol","atropina"].some(term=>t.includes(term));
+}
+function drugMentionHasCaution(text, name){
+  const cautionWords = ["cautela","evitar","menos favoravel","risco","limitar","contraindic"];
+  const terms = drugTerms(name);
+  return normalizeClinicalText(text).split(/[.;]/).some(sentence=>terms.some(term=>sentence.includes(term)) && cautionWords.some(word=>sentence.includes(word)));
+}
+function scenarioStatusFromText(text){
+  const t = normalizeClinicalText(text);
+  if(["cautela","menos favoravel","evitar","risco","limitar"].some(word=>t.includes(word))) return "caution";
+  if(t.includes("interpretar conforme fenotipo")) return "neutral";
+  if(["adequacao","primeira linha","opcao forte","opcao util","util","sustenta","adjuvante"].some(word=>t.includes(word))) return "good";
+  return "neutral";
+}
+function iotScenarioFit(name, scenario){
+  const notes = scenarioNotes[scenario] || scenarioNotes.geral;
+  const combined = `${notes.iot} ${notes.sugestao}`;
+  if(scenario === "geral"){
+    return {status:"neutral", title:"Cenário", text:notes.iot, suggestion:notes.sugestao};
+  }
+  if(textMentionsDrug(combined, name) && !drugMentionHasCaution(combined, name)){
+    return {status:"good", title:"Cenário - adequado", text:notes.iot, suggestion:notes.sugestao};
+  }
+  if(textMentionsDrug(combined, name) && drugMentionHasCaution(combined, name)){
+    return {status:"caution", title:"Cenário - atenção", text:notes.iot, suggestion:notes.sugestao};
+  }
+  if(textMentionsKnownDrug(combined)){
+    return {status:"caution", title:"Cenário - avaliar substituto", text:notes.iot, suggestion:notes.sugestao};
+  }
+  return {status:"neutral", title:"Cenário", text:notes.iot, suggestion:notes.sugestao};
+}
+function dvaScenarioMeta(name, scenario){
+  const notes = scenarioNotes[scenario] || scenarioNotes.geral;
+  const fitText = dvaScenarioFit(name, scenario);
+  return {
+    status: scenarioStatusFromText(fitText),
+    title: scenarioStatusFromText(fitText) === "good" ? "Cenário - adequado" : (scenarioStatusFromText(fitText) === "caution" ? "Cenário - atenção" : "Cenário"),
+    text: notes.dva,
+    fit: fitText,
+    suggestion: notes.sugestao
+  };
+}
+function infusionScenarioMeta(name, cat, scenario){
+  if(cat === "vasoativa") return dvaScenarioMeta(name, scenario);
+  const notes = scenarioNotes[scenario] || scenarioNotes.geral;
+  return {status:"neutral", title:"Cenário", text:notes.iot, suggestion:notes.sugestao};
+}
+function scenarioCard(meta){
+  const cls = meta.status === "good" ? "med-card--scenario-good" : (meta.status === "caution" ? "med-card--scenario-caution" : "med-card--scenario-neutral");
+  return medCard(meta.title, [
+    medKv("Cenário", meta.text),
+    meta.fit ? medKv("Adequação ao cenário", meta.fit) : "",
+    meta.status === "caution" ? medKv("Sugestão/substituto", meta.suggestion) : medKv("Sugestão", meta.suggestion)
+  ], cls);
+}
+
+function initIOT(){
+  populateSelect(document.getElementById("iotCat"), iotDrugs);
+  document.getElementById("iotType").addEventListener("change", function(){ updateIOTStrategy(); calcIOT(); });
+  document.getElementById("iotCat").addEventListener("change", updateIOTDrugs);
+  document.getElementById("iotDrug").addEventListener("change", updateIOTDrugDefaults);
+  document.getElementById("iotPresentation").addEventListener("change", calcIOT);
+  document.getElementById("iotDoseUnitSelect").addEventListener("change", function(){ setDoseUnitLabel("iotDoseUnitLabel", this.value); calcIOT(); });
+  document.getElementById("iotAmpPresentation").addEventListener("change", function(){ updateIOTAmpPreview(); calcIOT(); });
+  ["iotDose","iotCustomConc","iotCustomUnit","iotUseCustom","peso","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", calcIOT));
+  updateIOTStrategy();
+  updateIOTDrugs();
+}
+
+function brazilAmpouleChoices(name){
+  const n=(name||"").toLowerCase();
+  const mk=(label, conc, concUnit, volume, unit=null)=>({
+    label, conc, concUnit, volume,
+    unit: unit || massUnitFromConcUnit(concUnit),
+    content: Number.isFinite(conc) && Number.isFinite(volume) ? conc*volume : null
+  });
+  if(n.includes("etomidato")) return [mk("Etomidato 2 mg/mL — ampola 10 mL = 20 mg",2,"mgml",10)];
+  if(n.includes("cetamina")) return [mk("Cetamina 50 mg/mL — frasco-ampola 10 mL = 500 mg",50,"mgml",10)];
+  if(n.includes("propofol")) return [
+    mk("Propofol 10 mg/mL — frasco/ampola 20 mL = 200 mg",10,"mgml",20),
+    mk("Propofol 10 mg/mL — frasco/ampola 50 mL = 500 mg",10,"mgml",50),
+    mk("Propofol 10 mg/mL — frasco/ampola 100 mL = 1000 mg",10,"mgml",100)
+  ];
+  if(n.includes("midazolam")) return [
+    mk("Midazolam 5 mg/mL — ampola 1 mL = 5 mg",5,"mgml",1),
+    mk("Midazolam 5 mg/mL — ampola 3 mL = 15 mg",5,"mgml",3),
+    mk("Midazolam 5 mg/mL — ampola 10 mL = 50 mg",5,"mgml",10),
+    mk("Midazolam 1 mg/mL — ampola 5 mL = 5 mg",1,"mgml",5)
+  ];
+  if(n.includes("tiopental")) return [{label:"Tiopental — frasco-ampola liofilizado, frequentemente 1 g; reconstituir conforme bula", conc:null, concUnit:"", volume:null, unit:"mg", content:1000}];
+  if(n.includes("fentanil")) return [
+    mk("Fentanil 50 mcg/mL — ampola 2 mL = 100 mcg",50,"mcgml",2),
+    mk("Fentanil 50 mcg/mL — ampola 5 mL = 250 mcg",50,"mcgml",5),
+    mk("Fentanil 50 mcg/mL — ampola 10 mL = 500 mcg",50,"mcgml",10)
+  ];
+  if(n.includes("alfentanil")) return [mk("Alfentanil 500 mcg/mL — ampola/fr. 10 mL = 5 mg",500,"mcgml",10)];
+  if(n.includes("remifentanil")) return [
+    {label:"Remifentanil — frasco-ampola liofilizado 1 mg; concentração depende da reconstituição", conc:null, concUnit:"", volume:null, unit:"mcg", content:1000},
+    {label:"Remifentanil — frasco-ampola liofilizado 2 mg; concentração depende da reconstituição", conc:null, concUnit:"", volume:null, unit:"mcg", content:2000},
+    {label:"Remifentanil — frasco-ampola liofilizado 5 mg; concentração depende da reconstituição", conc:null, concUnit:"", volume:null, unit:"mcg", content:5000}
+  ];
+  if(n.includes("sufentanil")) return [
+    mk("Sufentanil 5 mcg/mL — ampola 2 mL = 10 mcg",5,"mcgml",2),
+    mk("Sufentanil 5 mcg/mL — ampola 10 mL = 50 mcg",5,"mcgml",10),
+    mk("Sufentanil 50 mcg/mL — ampola 1 mL = 50 mcg",50,"mcgml",1),
+    mk("Sufentanil 50 mcg/mL — ampola 5 mL = 250 mcg",50,"mcgml",5)
+  ];
+  if(n.includes("lidocaína") || n.includes("lidocaina")) return [
+    mk("Lidocaína 1% sem vasoconstrictor — 10 mg/mL, frasco/ampola 5 mL = 50 mg",10,"mgml",5),
+    mk("Lidocaína 1% sem vasoconstrictor — 10 mg/mL, frasco/ampola 20 mL = 200 mg",10,"mgml",20),
+    mk("Lidocaína 2% sem vasoconstrictor — 20 mg/mL, frasco/ampola 5 mL = 100 mg",20,"mgml",5),
+    mk("Lidocaína 2% sem vasoconstrictor — 20 mg/mL, frasco/ampola 20 mL = 400 mg",20,"mgml",20)
+  ];
+  if(n.includes("succinilcolina") || n.includes("suxametônio") || n.includes("suxametonio")) return [
+    mk("Succinilcolina 50 mg/mL — ampola 2 mL = 100 mg",50,"mgml",2),
+    {label:"Succinilcolina — apresentação liofilizada; reconstituir conforme bula", conc:null, concUnit:"", volume:null, unit:"mg", content:null}
+  ];
+  if(n.includes("rocurônio") || n.includes("rocuronio")) return [
+    mk("Rocurônio 10 mg/mL — frasco/ampola 5 mL = 50 mg",10,"mgml",5),
+    mk("Rocurônio 10 mg/mL — frasco/ampola 10 mL = 100 mg",10,"mgml",10)
+  ];
+  if(n.includes("cisatracúrio") || n.includes("cisatracurio")) return [
+    mk("Cisatracúrio 2 mg/mL — ampola 5 mL = 10 mg",2,"mgml",5),
+    mk("Cisatracúrio 2 mg/mL — ampola 10 mL = 20 mg",2,"mgml",10)
+  ];
+  if(n.includes("atracúrio") || n.includes("atracurio")) return [
+    mk("Atracúrio 10 mg/mL — ampola 2,5 mL = 25 mg",10,"mgml",2.5),
+    mk("Atracúrio 10 mg/mL — ampola 5 mL = 50 mg",10,"mgml",5)
+  ];
+  if(n.includes("sugamadex")) return [
+    mk("Sugamadex 100 mg/mL — frasco/ampola 2 mL = 200 mg",100,"mgml",2),
+    mk("Sugamadex 100 mg/mL — frasco/ampola 5 mL = 500 mg",100,"mgml",5)
+  ];
+  if(n.includes("neostigmina")) return [
+    mk("Neostigmina 0,5 mg/mL — ampola 1 mL = 0,5 mg",0.5,"mgml",1),
+    mk("Neostigmina 1 mg/mL — ampola 1 mL = 1 mg",1,"mgml",1)
+  ];
+  const amp=ampouleInfoByName(name);
+  if(amp && amp.volume && amp.content){
+    const conc=amp.content/amp.volume;
+    const concUnit=amp.unit==="mcg" ? "mcgml" : (amp.unit==="mg" ? "mgml" : "uiml");
+    return [mk(amp.label, conc, concUnit, amp.volume, amp.unit)];
+  }
+  return [{label:"Conferir apresentação comercial disponível no serviço", conc:null, concUnit:"", volume:null, unit:"", content:null}];
+}
+function selectedIOTAmpoule(){
+  const d=currentIOTDrugOnly();
+  const opts=brazilAmpouleChoices(d.name);
+  const idx=parseInt(document.getElementById("iotAmpPresentation")?.value || 0);
+  return opts[idx] || opts[0];
+}
+function currentIOTDrugOnly(){
+  const cat=document.getElementById("iotCat").value, drug=document.getElementById("iotDrug").value;
+  return iotDrugs[cat].drugs[drug];
+}
+function updateIOTAmpPresentation(){
+  const d=currentIOTDrugOnly();
+  const sel=document.getElementById("iotAmpPresentation");
+  if(!sel) return;
+  const opts=brazilAmpouleChoices(d.name);
+  sel.innerHTML="";
+  opts.forEach((p,i)=>{
+    const opt=document.createElement("option");
+    opt.value=i;
+    opt.textContent=p.label;
+    sel.appendChild(opt);
+  });
+  updateIOTAmpPreview();
+}
+function updateIOTAmpPreview(){
+  // Mantida por compatibilidade: a apresentação comercial já traz concentração, volume e conteúdo total no próprio seletor.
+  return;
+}
+function iotAmpouleLine(){
+  const amp=selectedIOTAmpoule();
+  const concTxt = amp.conc ? `${fmt(amp.conc,3)} ${unitLabel(amp.concUnit)}` : "concentração conforme reconstituição/bula";
+  const volTxt = amp.volume ? `volume total ${fmt(amp.volume,1)} mL` : "volume total conforme reconstituição/bula";
+  const unit = amp.unit || massUnitFromConcUnit(amp.concUnit) || "unidade";
+  const contentTxt = amp.content ? `conteúdo total ${fmt(amp.content,2)} ${unit}` : "conteúdo total a conferir";
+  return `${amp.label}. ${volTxt}; ${concTxt}; ${contentTxt}.`;
+}
+
+function updateIOTDrugs(){
+  const cat=document.getElementById("iotCat").value;
+  populateSelect(document.getElementById("iotDrug"), iotDrugs[cat].drugs, "name");
+  updateIOTDrugDefaults();
+}
+function updateIOTDrugDefaults(){
+  const cat=document.getElementById("iotCat").value, drug=document.getElementById("iotDrug").value;
+  const d=iotDrugs[cat].drugs[drug];
+  document.getElementById("iotDose").value=d.defaultDose;
+  populateDoseUnitSelect("iotDoseUnitSelect", baseMassUnitFromDoseUnit(d.unit));
+  setDoseUnitLabel("iotDoseUnitLabel", document.getElementById("iotDoseUnitSelect")?.value || baseMassUnitFromDoseUnit(d.unit));
+  const pres=document.getElementById("iotPresentation");
+  pres.innerHTML="";
+  d.presentations.forEach((p,i)=>{
+    const opt=document.createElement("option");
+    opt.value=i; opt.textContent=p.label; pres.appendChild(opt);
+  });
+  updateIOTAmpPresentation();
+  calcIOT();
+}
+function currentIOT(){
+  const cat=document.getElementById("iotCat").value, drug=document.getElementById("iotDrug").value;
+  const d=iotDrugs[cat].drugs[drug];
+  const rawDose=parseFloat(document.getElementById("iotDose").value || d.defaultDose);
+  const selectedDoseUnit=document.getElementById("iotDoseUnitSelect")?.value || baseMassUnitFromDoseUnit(d.unit);
+  setDoseUnitLabel("iotDoseUnitLabel", selectedDoseUnit);
+  const dose=convertWeightBasedDose(rawDose, selectedDoseUnit, d.unit);
+  const useCustom=document.getElementById("iotUseCustom").value === "sim";
+  const presentation=d.presentations[parseInt(document.getElementById("iotPresentation").value || 0)];
+  const conc=useCustom ? parseFloat(document.getElementById("iotCustomConc").value || presentation.conc) : presentation.conc;
+  const concUnit=useCustom ? document.getElementById("iotCustomUnit").value : presentation.unit;
+  const calc=doseAmountPerHour(dose, d.unit, getPeso());
+  const volume=rateFromAmount(calc.amount, calc.unit, conc, concUnit);
+  const ampoule=selectedIOTAmpoule();
+  return {cat, drug, d, dose, rawDose, selectedDoseUnit, conc, concUnit, calc, volume, presentation, ampoule};
+}
+
+
+const iotTypeNotes = {
+  rsi: {
+    short:"Hipnose + bloqueio em sequência rápida",
+    prefer:"Hipnótico + bloqueador neuromuscular",
+    avoid:"Atraso entre hipnose, bloqueio e laringoscopia",
+    detail:"RSI clássica: pré-oxigenação, hipnótico e bloqueador em rápida sequência, laringoscopia após latência adequada. Usar quando há necessidade de controle rápido da via aérea e risco de aspiração."
+  },
+  modificada: {
+    short:"RSI adaptada ao risco fisiológico",
+    prefer:"Pré-oxigenação + ventilação suave se necessário",
+    avoid:"Pressão alta em máscara e apneia prolongada",
+    detail:"Sequência modificada: adapta a RSI ao paciente que não tolera apneia ou precisa de ventilação assistida com baixa pressão. Útil em hipoxemia, obesidade, acidose ou baixa reserva."
+  },
+  dsi: {
+    short:"Dissociação antes da pré-oxigenação",
+    prefer:"Cetamina + ventilação espontânea",
+    avoid:"Paralisar antes de conseguir pré-oxigenar",
+    detail:"DSI: usar dissociação, geralmente com cetamina, para permitir VNI/HFNC/pré-oxigenação em paciente agitado ou hipoxêmico. Depois de melhorar reserva, realizar bloqueio e laringoscopia."
+  },
+  acordada: {
+    short:"Preservar ventilação espontânea",
+    prefer:"Anestesia tópica + sedação mínima",
+    avoid:"Bloqueador antes de confirmar acesso traqueal",
+    detail:"Intubação acordada: indicada quando há via aérea difícil prevista, risco de não ventilar/não intubar, intolerância à apneia ou via aérea cirúrgica difícil. Priorizar anestesia tópica e técnica cooperativa."
+  },
+  crash: {
+    short:"Via aérea imediata/peri-PCR",
+    prefer:"Oxigenação e passagem rápida do tubo",
+    avoid:"Atrasar via aérea por sedação desnecessária",
+    detail:"Crash airway: em inconsciência profunda/ausência de reflexos, pode não haver necessidade de hipnótico. Se houver tônus ou consciência, usar dose reduzida e suporte hemodinâmico."
+  }
+};
+function updateIOTStrategy(){
+  const type=document.getElementById("iotType")?.value || "rsi";
+  const s=iotTypeNotes[type] || iotTypeNotes.rsi;
+  const short=document.getElementById("iotTypeShort");
+  const prefer=document.getElementById("iotTypePrefer");
+  const context=document.getElementById("iotContextMirror");
+  const typeText=document.getElementById("iotType").selectedOptions[0].text;
+  const scenarioText=document.getElementById("cenario").selectedOptions[0].text;
+  if(short) short.value=s.short;
+  if(prefer) prefer.value=s.prefer;
+  if(context) context.value=scenarioText;
+  const out=document.getElementById("iotStrategyOut");
+  if(out) out.innerHTML=`<strong class="strategy-title">Estratégia de intubação</strong>
+    <div class="strategy-grid">
+      <div class="strategy-card strategy-card--context">
+        <div class="strategy-card__title">Técnica e contexto</div>
+        <div><b>Técnica:</b> ${typeText}</div>
+        <div><b>Contexto fisiológico:</b> ${scenarioText}</div>
+      </div>
+      <div class="strategy-card strategy-card--plan">
+        <div class="strategy-card__title">Objetivo e sequência</div>
+        <div><b>Objetivo:</b> ${s.short}</div>
+        <div><b>Preferir:</b> ${s.prefer}</div>
+        <div><b>Sequência:</b> ${s.detail}</div>
+        <div><b>Ajuste pelo cenário:</b> ${scenarioNotes[getCenario()].sugestao}</div>
+      </div>
+      <div class="strategy-card strategy-card--caution">
+        <div class="strategy-card__title">Evitar/cautela</div>
+        <div>${s.avoid}</div>
+      </div>
+    </div>`;
+}
+
+function iotSafetyInfo(name){
+  const n=(name||"").toLowerCase();
+  if(n.includes("etomidato")) return {
+    contra:"Contraindicação relativa: insuficiência adrenal conhecida, sepse com preocupação específica para supressão adrenal; hipersensibilidade.",
+    adverse:"Mioclonia, náusea/vômito, dor à injeção; supressão adrenal transitória.",
+    photo:"Não exige equipo fotoprotetor."
+  };
+  if(n.includes("cetamina")) return {
+    contra:"Contraindicação relativa: hipertensão grave não controlada, taquiarritmia/isquemia ativa, psicose grave; cautela em catecolaminas exauridas.",
+    adverse:"Hipertensão, taquicardia, salivação, fenômenos emergentes; pode haver depressão miocárdica em choque catecolamina-depletado.",
+    photo:"Não exige equipo fotoprotetor."
+  };
+  if(n.includes("propofol")) return {
+    contra:"Contraindicação relativa: choque/hipovolemia, hipotensão grave, alergia a componentes da formulação conforme bula.",
+    adverse:"Hipotensão, depressão miocárdica, apneia; em infusão prolongada, hipertrigliceridemia e síndrome de infusão.",
+    photo:"Não exige equipo fotoprotetor; requer técnica asséptica rigorosa por formulação lipídica."
+  };
+  if(n.includes("midazolam")) return {
+    contra:"Contraindicação relativa: hipotensão/choque, risco de sedação prolongada, hepatopatia importante.",
+    adverse:"Hipotensão, depressão respiratória, delirium/acúmulo em infusão prolongada.",
+    photo:"Não exige equipo fotoprotetor."
+  };
+  if(n.includes("fentanil") || n.includes("alfentanil") || n.includes("remifentanil") || n.includes("sufentanil")) return {
+    contra:"Contraindicação relativa: hipotensão grave sem suporte, depressão respiratória sem via aérea protegida; cautela em rigidez torácica com bolus rápido/altas doses.",
+    adverse:"Bradicardia, hipotensão, depressão respiratória, rigidez torácica, náusea/íleo.",
+    photo:"Não exige equipo fotoprotetor."
+  };
+  if(n.includes("succinilcolina")) return {
+    contra:"Contraindicações importantes: hipercalemia, queimadura/trauma/desnervação após janela de risco, miopatias, hipertermia maligna, história de reação grave.",
+    adverse:"Hipercalemia, bradicardia, fasciculações, mialgia, aumento transitório de pressões, hipertermia maligna.",
+    photo:"Não exige equipo fotoprotetor."
+  };
+  if(n.includes("rocurônio") || n.includes("rocuronio")) return {
+    contra:"Contraindicação relativa: impossibilidade de ventilar/intubar sem plano de resgate; hepatopatia pode prolongar efeito.",
+    adverse:"Bloqueio prolongado, awareness se sedação inadequada após IOT.",
+    photo:"Não exige equipo fotoprotetor."
+  };
+  if(n.includes("cisatrac")) return {
+    contra:"Contraindicação relativa: necessidade de RSI ultrarrápida; hipersensibilidade.",
+    adverse:"Bloqueio neuromuscular prolongado; awareness se sedação inadequada.",
+    photo:"Não exige equipo fotoprotetor."
+  };
+  if(n.includes("lidocaína") || n.includes("lidocaina")) return {
+    contra:"Contraindicação relativa: BAV avançado, arritmias relevantes, toxicidade por anestésico local, epilepsia não controlada, hepatopatia grave.",
+    adverse:"Tontura, parestesia, alteração neurológica, convulsão, bradiarritmia, depressão miocárdica em toxicidade.",
+    photo:"Não exige equipo fotoprotetor."
+  };
+  if(n.includes("tiopental")) return {
+    contra:"Contraindicação relativa: choque/hipotensão, porfiria, depressão miocárdica importante.",
+    adverse:"Hipotensão, depressão respiratória, depressão miocárdica, broncoespasmo raro.",
+    photo:"Não exige equipo fotoprotetor."
+  };
+  if(n.includes("sugamadex")) return {
+    contra:"Contraindicação relativa: hipersensibilidade; cautela em DRC avançada conforme bula/protocolo.",
+    adverse:"Bradicardia, náusea, reação de hipersensibilidade; pode interferir com contraceptivos hormonais.",
+    photo:"Não exige equipo fotoprotetor."
+  };
+  return {contra:"Conferir contraindicações específicas em bula/protocolo.", adverse:"Conferir efeitos adversos específicos.", photo:"Conferir necessidade de fotoproteção conforme bula."};
+}
+
+function dvaScenarioFit(name, scenario){
+  const n=(name||"").toLowerCase();
+  let lines=[];
+  if(scenario==="sepse"){
+    if(n.includes("noradrenalina")) lines.push("Adequação: primeira linha usual em choque séptico/vasoplégico.");
+    if(n.includes("vasopressina")) lines.push("Adequação: adjuvante para reduzir dose de noradrenalina em vasoplegia; usual 0,03 UI/min.");
+    if(n.includes("dopamina")) lines.push("Menos favorável: maior risco de arritmias; reservar para cenários selecionados.");
+  }
+  if(scenario==="cardiogenico"){
+    if(n.includes("noradrenalina")) lines.push("Adequação: útil se hipotensão em choque cardiogênico; sustenta pressão de perfusão.");
+    if(n.includes("dobutamina")) lines.push("Adequação: inotrópico para baixo débito; usar com PAM sustentada ou vasopressor associado.");
+    if(n.includes("milrinona")) lines.push("Adequação: inodilatador útil em VD/hipertensão pulmonar ou beta-bloqueio; limitar se hipotensão/DRC.");
+  }
+  if(scenario==="disseccao"){
+    if(n.includes("esmolol")) lines.push("Adequação: opção forte para controle rápido de FC/dP/dt; meia-vida curta facilita titulação.");
+    if(n.includes("labetalol")) lines.push("Adequação: opção útil quando se deseja beta/alfabloqueio; atenção a bradicardia/broncoespasmo.");
+    if(n.includes("nitroprussiato") || n.includes("nitroglicerina") || n.includes("nicardipina")) lines.push("Cautela: vasodilatador deve vir após controle beta para evitar taquicardia reflexa/cisalhamento.");
+  }
+  if(scenario==="trombolise" || scenario==="hic"){
+    if(n.includes("labetalol") || n.includes("nicardipina") || n.includes("clevidipina")) lines.push("Adequação: usado em controle pressórico de neuroemergências conforme disponibilidade/protocolo.");
+    if(n.includes("nitroprussiato")) lines.push("Cautela: pode aumentar PIC/causar queda abrupta; evitar em muitas neuroemergências salvo indicação específica.");
+  }
+  if(scenario==="tep"){
+    if(n.includes("noradrenalina")) lines.push("Adequação: sustenta PAM e perfusão coronariana direita no VD sobrecarregado.");
+    if(n.includes("dobutamina") || n.includes("milrinona")) lines.push("Uso selecionado: considerar se baixo débito por falência de VD com pressão tolerante; risco de hipotensão.");
+  }
+  if(scenario==="broncoespasmo"){
+    if(n.includes("adrenalina")) lines.push("Uso selecionado: pode ajudar em broncoespasmo/anafilaxia; monitorar taquiarritmia/lactato.");
+    if(n.includes("esmolol") || n.includes("labetalol")) lines.push("Cautela: beta-bloqueio pode piorar broncoespasmo, sobretudo não seletivo; usar apenas com indicação forte e monitorização.");
+    if(n.includes("noradrenalina")) lines.push("Ponte se hipotensão, mas investigar auto-PEEP, pneumotórax e hipovolemia relativa.");
+  }
+  if(n.includes("isoproterenol") || n.includes("isoprenalina")) lines.push("Indicação: cronotrópico temporário em bradicardia refratária/bloqueios selecionados como ponte para marcapasso; monitorar arritmia/isquemia.");
+  if(n.includes("clevidipina")) lines.push("Tempo/segurança: emulsão lipídica pronta para uso; titular rapidamente, evitar uso prolongado/alto volume conforme bula e carga lipídica.");
+  if(n.includes("nitroprussiato")) lines.push("Tempo/segurança: usar menor dose e menor duração; proteger da luz; monitorar toxicidade por cianeto/tiocianato.");
+  if(n.includes("nitroglicerina")) lines.push("Tempo/segurança: pode haver taquifilaxia; usar equipo compatível conforme protocolo.");
+  if(n.includes("propofol")) lines.push("Tempo/segurança: para infusão prolongada, monitorar triglicerídeos, lactato, CK e dose cumulativa.");
+  return lines.length ? lines.join(" ") : "Adequação: interpretar conforme fenótipo hemodinâmico, meta pressórica e resposta clínica.";
+}
+
+function readingSuggestion(scenario){
+  const map={
+    geral:"Leitura orientada: SCCM PADIS 2018 para sedoanalgesia, analgesia e delirium; The Walls Manual of Emergency Airway Management para IOT; Surviving Sepsis Campaign 2021 para vasopressores e choque.",
+    sepse:"Leitura orientada: Surviving Sepsis Campaign 2021 — vasopressors and inotropes; SOAP II para dopamina versus noradrenalina; VANISH/VASST para vasopressina como adjuvante.",
+    cardiogenico:"Leitura orientada: diretrizes ESC/ACC de insuficiência cardíaca e revisões de choque cardiogênico sobre noradrenalina, dobutamina, milrinona e suporte circulatório mecânico.",
+    has_emergencia:"Leitura orientada: diretrizes AHA/ACC e revisões de emergência hipertensiva sobre nicardipina, clevidipina, nitroglicerina, nitroprussiato, esmolol e labetalol.",
+    trombolise:"Leitura orientada: AHA/ASA Acute Ischemic Stroke Guidelines — manejo pressórico antes e após alteplase/trombectomia; protocolos institucionais de labetalol, nicardipina e clevidipina.",
+    hic:"Leitura orientada: Brain Trauma Foundation Guidelines e Neurocritical Care Society — pressão de perfusão cerebral, sedação, hiperosmolares e metas ventilatórias/hemodinâmicas.",
+    disseccao:"Leitura orientada: 2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease — terapia anti-impulso, beta-bloqueio e vasodilatação após controle de FC.",
+    tep:"Leitura orientada: ESC Guidelines for Acute Pulmonary Embolism — TEP de alto risco, falência de ventrículo direito, reperfusão e suporte vasopressor/inotrópico.",
+    broncoespasmo:"Leitura orientada: GINA Strategy Report — exacerbação grave e sulfato de magnésio IV; GOLD Report — exacerbação grave de DPOC; revisões de ventilação em asma crítica, auto-PEEP e hiperinsuflação dinâmica."
+  };
+  return map[scenario] || map.geral;
+}
+
+function calcIOT(){
+  const x=currentIOT(), c=getCenario();
+  const range=`${x.d.min}–${x.d.max} ${x.d.unit}`;
+  const safety=iotSafetyInfo(x.d.name);
+  const scenario=iotScenarioFit(x.d.name, c);
+  document.getElementById("iotOut").innerHTML =
+    `<div class="med-result">
+      <div class="med-result__headline">
+        <strong>${x.d.name}: ${fmt(x.calc.amount,2)} ${x.calc.unit} → ${fmt(x.volume,2)} mL</strong>
+        <span>${iotDrugs[x.cat].label} · dose ${fmt(x.rawDose,4)} ${x.selectedDoseUnit}/kg${x.selectedDoseUnit !== baseMassUnitFromDoseUnit(x.d.unit) ? ` (= ${fmt(x.dose,4)} ${x.d.unit})` : ""} · faixa ${range}</span>
+      </div>
+      <div class="med-grid">
+        ${medCard("Operacional", [
+          medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, iotAmpouleLine())),
+          medKv("Cálculo operacional", `Aspirar ${fmt(x.volume,2)} mL para obter ${fmt(x.calc.amount,2)} ${x.calc.unit} (${fmt(x.conc,3)} ${x.concUnit==="mgml"?"mg/mL":(x.concUnit==="uiml"?"UI/mL":"mcg/mL")}).`)
+        ], "med-card--primary")}
+        ${medCard("Farmacocinética", [
+          medKv("Papel", x.d.role),
+          medKv("Início de ação", x.d.onset || "consultar bula/protocolo"),
+          medKv("Duração clínica", x.d.duration || "variável conforme dose/contexto"),
+          medKv("Técnica de IOT", iotTypeNotes[document.getElementById("iotType").value]?.short || "—")
+        ], "med-card--pk")}
+        ${scenarioCard(scenario)}
+        ${medCard("Cuidados e segurança", [
+          medKv("Cuidados", x.d.notes),
+          medKv("Contraindicações relativas", safety.contra),
+          medKv("Efeitos adversos relevantes", safety.adverse),
+          medKv("Fotoproteção/equipo", safety.photo)
+        ], "med-card--safety")}
+      </div>
+    </div>`;
+}
+function addIOTToSummary(){
+  const x=currentIOT();
+  state.summary.push({
+    type:"IOT bólus",
+    name:x.d.name,
+    dose:`${fmt(x.rawDose,4)} ${x.selectedDoseUnit}/kg${x.selectedDoseUnit !== baseMassUnitFromDoseUnit(x.d.unit) ? " (= "+fmt(x.dose,4)+" "+x.d.unit+")" : ""}`,
+    mass:`${fmt(x.calc.amount,2)} ${x.calc.unit}`,
+    volume:`${fmt(x.volume,2)} mL`,
+    range:`${x.d.min}–${x.d.max} ${x.d.unit}`,
+    result:`${fmt(x.calc.amount,2)} ${x.calc.unit}; volume ${fmt(x.volume,2)} mL`,
+    shortResult:`massa ${fmt(x.calc.amount,2)} ${x.calc.unit}; volume ${fmt(x.volume,2)} mL`,
+    prep:`${iotAmpouleLine()} Aspirar ${fmt(x.volume,2)} mL para obter ${fmt(x.calc.amount,2)} ${x.calc.unit}.`,
+    notes:x.d.notes,
+    chartKind:"bolus",
+    chartDose:`${fmt(x.rawDose,4)} ${x.selectedDoseUnit}/kg${x.selectedDoseUnit !== baseMassUnitFromDoseUnit(x.d.unit) ? " (= "+fmt(x.dose,4)+" "+x.d.unit+")" : ""}`,
+    chartMass:`${fmt(x.calc.amount,2)} ${x.calc.unit}`,
+    chartVolume:`${fmt(x.volume,2)} mL`
+  });
+  renderSummary();
+  confirmSummaryAdd(x.d.name);
+}
+
+
+function bolusAmpouleLine(amp){
+  if(!amp) return "Conferir apresentação comercial disponível.";
+  const concTxt = amp.conc ? `${fmt(amp.conc,3)} ${unitLabel(amp.unit)}` : "concentração a conferir";
+  const volTxt = amp.volume ? `volume total ${fmt(amp.volume,1)} mL` : "volume total a conferir";
+  const contentTxt = amp.content ? `conteúdo total ${fmt(amp.content,3)} ${amp.contentUnit || massUnitFromConcUnit(amp.unit)}` : "conteúdo total a conferir";
+  return `${amp.label}. ${concTxt}; ${volTxt}; ${contentTxt}.`;
+}
+function initDVABolus(){
+  populateSelect(document.getElementById("dvaBolusCat"), dvaBolusDrugs);
+  document.getElementById("dvaBolusCat").addEventListener("change", updateDVABolusDrugs);
+  document.getElementById("dvaBolusDrug").addEventListener("change", updateDVABolusDefaults);
+  document.getElementById("dvaBolusAmpPresentation").addEventListener("change", calcDVABolus);
+  document.getElementById("dvaBolusPresentation").addEventListener("change", calcDVABolus);
+  document.getElementById("dvaBolusDoseUnitSelect").addEventListener("change", function(){ setDoseUnitLabel("dvaBolusDoseUnitLabel", this.value); calcDVABolus(); });
+  ["dvaBolusDose","dvaBolusCustomConc","dvaBolusCustomUnit","dvaBolusUseCustom","peso","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", calcDVABolus));
+  updateDVABolusDrugs();
+}
+function updateDVABolusDrugs(){
+  const cat=document.getElementById("dvaBolusCat").value;
+  populateSelect(document.getElementById("dvaBolusDrug"), dvaBolusDrugs[cat].drugs, "name");
+  updateDVABolusDefaults();
+}
+function updateDVABolusDefaults(){
+  const cat=document.getElementById("dvaBolusCat").value, drug=document.getElementById("dvaBolusDrug").value;
+  const d=dvaBolusDrugs[cat].drugs[drug];
+  document.getElementById("dvaBolusDose").value=d.defaultDose;
+  populateDoseUnitSelect("dvaBolusDoseUnitSelect", d.doseUnit);
+  setDoseUnitLabel("dvaBolusDoseUnitLabel", document.getElementById("dvaBolusDoseUnitSelect")?.value || d.doseUnit);
+  const ampSel=document.getElementById("dvaBolusAmpPresentation");
+  ampSel.innerHTML="";
+  (d.commercialPresentations || [{label:d.ampoule || "Conferir apresentação comercial"}]).forEach((p,i)=>{
+    const opt=document.createElement("option");
+    opt.value=i; opt.textContent=p.label; ampSel.appendChild(opt);
+  });
+  const pres=document.getElementById("dvaBolusPresentation");
+  pres.innerHTML="";
+  d.presentations.forEach((p,i)=>{
+    const opt=document.createElement("option");
+    opt.value=i; opt.textContent=p.label; pres.appendChild(opt);
+  });
+  calcDVABolus();
+}
+function currentDVABolus(){
+  const cat=document.getElementById("dvaBolusCat").value, drug=document.getElementById("dvaBolusDrug").value;
+  const d=dvaBolusDrugs[cat].drugs[drug];
+  const rawDose=parseFloat(document.getElementById("dvaBolusDose").value || d.defaultDose);
+  const selectedDoseUnit=document.getElementById("dvaBolusDoseUnitSelect")?.value || d.doseUnit;
+  setDoseUnitLabel("dvaBolusDoseUnitLabel", selectedDoseUnit);
+  const dose=convertMassDose(rawDose, selectedDoseUnit, d.doseUnit);
+  const useCustom=document.getElementById("dvaBolusUseCustom").value === "sim";
+  const ampoule=(d.commercialPresentations || [])[parseInt(document.getElementById("dvaBolusAmpPresentation").value || 0)] || null;
+  const presentation=d.presentations[parseInt(document.getElementById("dvaBolusPresentation").value || 0)];
+  const conc=useCustom ? parseFloat(document.getElementById("dvaBolusCustomConc").value || presentation.conc) : presentation.conc;
+  const concUnit=useCustom ? document.getElementById("dvaBolusCustomUnit").value : presentation.unit;
+  const amount={amount:dose, unit:d.doseUnit, concUnit: d.doseUnit==="mcg" ? "mcgml" : (d.doseUnit==="mg" ? "mgml" : "uiml")};
+  const volume=rateFromAmount(amount.amount, amount.unit, conc, concUnit);
+  return {cat, drug, d, dose, rawDose, selectedDoseUnit, conc, concUnit, amount, volume, presentation, ampoule};
+}
+function calcDVABolus(){
+  const x=currentDVABolus();
+  const scenario=dvaScenarioMeta(x.d.name, getCenario());
+  document.getElementById("dvaBolusOut").innerHTML =
+    `<div class="med-result">
+      <div class="med-result__headline">
+        <strong>${x.d.name}: ${fmt(x.amount.amount,2)} ${x.amount.unit} → ${fmt(x.volume,2)} mL</strong>
+        <span>${dvaBolusDrugs[x.cat].label} · dose ${fmt(x.rawDose,4)} ${x.selectedDoseUnit}${x.selectedDoseUnit !== x.d.doseUnit ? ` (= ${fmt(x.dose,4)} ${x.d.doseUnit})` : ""} · faixa ${x.d.range}</span>
+      </div>
+      <div class="med-grid">
+        ${medCard("Operacional", [
+          medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
+          medKv("Cálculo operacional", `Aspirar/administrar ${fmt(x.volume,2)} mL para obter ${fmt(x.amount.amount,2)} ${x.amount.unit}.`),
+          medKv("Concentração usada", `${fmt(x.conc,3)} ${unitLabel(x.concUnit)}`),
+          medKv("Preparo da solução", x.presentation.prep)
+        ], "med-card--primary")}
+        ${medCard("Dose", [
+          medKv("Categoria", dvaBolusDrugs[x.cat].label),
+          medKv("Massa total usada no cálculo", `${fmt(x.amount.amount,2)} ${x.amount.unit}`),
+          medKv("Faixa", x.d.range)
+        ], "med-card--pk")}
+        ${scenarioCard(scenario)}
+        ${medCard("Cuidados e segurança", [
+          medKv("Cuidados", x.d.notes)
+        ], "med-card--safety")}
+      </div>
+    </div>`;
+}
+function addDVABolusToSummary(){
+  const x=currentDVABolus();
+  state.summary.push({
+    type:"DVA bólus",
+    name:x.d.name,
+    dose:`${fmt(x.rawDose,4)} ${x.selectedDoseUnit}${x.selectedDoseUnit !== x.d.doseUnit ? " (= "+fmt(x.dose,4)+" "+x.d.doseUnit+")" : ""}`,
+    mass:`${fmt(x.amount.amount,2)} ${x.amount.unit}`,
+    volume:`${fmt(x.volume,2)} mL`,
+    range:x.d.range,
+    result:`${fmt(x.amount.amount,2)} ${x.amount.unit}; volume ${fmt(x.volume,2)} mL`,
+    shortResult:`massa ${fmt(x.amount.amount,2)} ${x.amount.unit}; volume ${fmt(x.volume,2)} mL`,
+    prep:`${bolusAmpouleLine(x.ampoule)} ${x.presentation.prep}. Administrar ${fmt(x.volume,2)} mL para ${fmt(x.amount.amount,2)} ${x.amount.unit}.`,
+    notes:x.d.notes,
+    chartKind:"bolus",
+    chartDose:`${fmt(x.rawDose,4)} ${x.selectedDoseUnit}${x.selectedDoseUnit !== x.d.doseUnit ? " (= "+fmt(x.dose,4)+" "+x.d.doseUnit+")" : ""}`,
+    chartMass:`${fmt(x.amount.amount,2)} ${x.amount.unit}`,
+    chartVolume:`${fmt(x.volume,2)} mL`
+  });
+  renderSummary();
+  confirmSummaryAdd(x.d.name);
+}
+
+function initDVA(){
+  populateSelect(document.getElementById("dvaCat"), dvaDrugs);
+  document.getElementById("dvaCat").addEventListener("change", updateDVADrugs);
+  document.getElementById("dvaDrug").addEventListener("change", updateDVADefaults);
+  document.getElementById("dvaPrep").addEventListener("change", updateDVAPrep);
+  ["dvaDose","dvaRate","dvaConc","dvaConcUnit","peso","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", calcDVA));
+  document.getElementById("dvaDose").addEventListener("input", function(){ if(this.value !== "") document.getElementById("dvaRate").value = ""; calcDVA(); });
+  document.getElementById("dvaRate").addEventListener("input", function(){ if(this.value !== "") document.getElementById("dvaDose").value = ""; calcDVA(); });
+  updateDVADrugs();
+}
+function updateDVADrugs(){
+  const cat=document.getElementById("dvaCat").value;
+  populateSelect(document.getElementById("dvaDrug"), dvaDrugs[cat].drugs, "name");
+  updateDVADefaults();
+}
+function updateDVADefaults(){
+  const cat=document.getElementById("dvaCat").value, drug=document.getElementById("dvaDrug").value;
+  const d=dvaDrugs[cat].drugs[drug];
+  document.getElementById("dvaDose").value=d.defaultDose;
+  setDoseUnitLabel("dvaDoseUnitLabel", d.doseUnit);
+  document.getElementById("dvaRate").value="";
+  const prep=document.getElementById("dvaPrep"); prep.innerHTML="";
+  d.preps.forEach((p,i)=>{const opt=document.createElement("option"); opt.value=i; opt.textContent=p.label; prep.appendChild(opt);});
+  updateDVAPrep();
+}
+function updateDVAPrep(){
+  const d=currentDVA().d, p=currentDVA().prep;
+  document.getElementById("dvaConc").value=p.conc;
+  document.getElementById("dvaConcUnit").value=p.unit;
+  calcDVA();
+}
+function currentDVA(){
+  const cat=document.getElementById("dvaCat").value, drug=document.getElementById("dvaDrug").value;
+  const d=dvaDrugs[cat].drugs[drug];
+  const prep=d.preps[parseInt(document.getElementById("dvaPrep").value || 0)];
+  return {cat, drug, d, prep};
+}
+function getAutoMode(doseId, rateId){
+  const doseVal = document.getElementById(doseId).value;
+  const rateVal = document.getElementById(rateId).value;
+  if(doseVal !== "" && rateVal === "") return "doseToRate";
+  if(rateVal !== "" && doseVal === "") return "rateToDose";
+  if(doseVal !== "" && rateVal !== "") return "conflict";
+  return "empty";
+}
+function calcDVA(){
+  const {cat,d,prep}=currentDVA();
+  const mode=getAutoMode("dvaDose","dvaRate");
+  const dose=parseFloat(document.getElementById("dvaDose").value);
+  const rate=parseFloat(document.getElementById("dvaRate").value);
+  const conc=parseFloat(document.getElementById("dvaConc").value || prep.conc), concUnit=document.getElementById("dvaConcUnit").value;
+  let result, doseUsed="—", rateUsed="—", modeLabel;
+  if(mode==="doseToRate"){
+    const amount=doseAmountPerHour(dose, d.doseUnit, getPeso());
+    const vazao=rateFromAmount(amount.amount, amount.unit, conc, concUnit);
+    result=`${fmt(amount.amount,2)} ${amount.unit} → ${fmt(vazao,2)} mL/h`;
+    doseUsed=`${fmt(dose,4)} ${d.doseUnit}`;
+    rateUsed=`${fmt(vazao,2)} mL/h`;
+    modeLabel="Automático: dose → vazão";
+  } else if(mode==="rateToDose"){
+    const calcDose=doseFromRate(rate, d.doseUnit, conc, concUnit, getPeso());
+    result=`${fmt(rate,2)} mL/h → ${fmt(calcDose,4)} ${d.doseUnit}`;
+    doseUsed=`${fmt(calcDose,4)} ${d.doseUnit}`;
+    rateUsed=`${fmt(rate,2)} mL/h`;
+    modeLabel="Automático: vazão → dose";
+  } else if(mode==="conflict"){
+    result="preencha apenas dose OU vazão";
+    doseUsed="—"; rateUsed="—";
+    modeLabel="Conflito: dois campos preenchidos";
+  } else {
+    result="aguardando dose ou vazão";
+    doseUsed="—"; rateUsed="—";
+    modeLabel="Automático: aguardando entrada";
+  }
+  const prepObj = formatPrepStructured(prep.prep, conc, concUnit);
+  const scenario=dvaScenarioMeta(d.name, getCenario());
+  document.getElementById("dvaAutoMode").value = modeLabel;
+  document.getElementById("dvaOut").innerHTML =
+    `<div class="med-result">
+      <div class="med-result__headline">
+        <strong>${d.name}: ${result}</strong>
+        <span>${modeLabel} · faixa ${d.range}</span>
+      </div>
+      <div class="med-grid">
+        ${medCard("Operacional", [
+          medKv("Apresentação", ampoulePresentationLine(d.name)),
+          medKv("Dose utilizada", doseUsed),
+          medKv("Vazão em bomba", rateUsed),
+          medKv("Preparo de solução", prepObj.preparo),
+          prepObj.diluicao ? medKv("Diluição", prepObj.diluicao) : "",
+          medKv("Concentração final", prepObj.concentracao)
+        ], "med-card--primary")}
+        ${medCard("Faixa e cálculo", [
+          medKv("Faixa terapêutica", d.range),
+          medKv("Cálculo operacional", result)
+        ], "med-card--pk")}
+        ${scenarioCard(scenario)}
+        ${medCard("Cuidados e segurança", [
+          medKv("Observação", d.notes)
+        ], "med-card--safety")}
+      </div>
+    </div>`;
+}
+function addDVAToSummary(){
+  const {d,prep}=currentDVA();
+  const mode=getAutoMode("dvaDose","dvaRate");
+  const conc=parseFloat(document.getElementById("dvaConc").value || prep.conc);
+  const concUnit=document.getElementById("dvaConcUnit").value;
+  let doseVal=parseFloat(document.getElementById("dvaDose").value);
+  let rateVal=parseFloat(document.getElementById("dvaRate").value);
+  if(mode==="rateToDose") doseVal=doseFromRate(rateVal, d.doseUnit, conc, concUnit, getPeso());
+  if(mode==="doseToRate"){
+    const amount=doseAmountPerHour(doseVal, d.doseUnit, getPeso());
+    rateVal=rateFromAmount(amount.amount, amount.unit, conc, concUnit);
+  }
+  const amount=Number.isFinite(doseVal) ? doseAmountPerHour(doseVal, d.doseUnit, getPeso()) : {amount:NaN, unit:""};
+  state.summary.push({
+    type:"DVA",
+    name:d.name,
+    dose:(Number.isFinite(doseVal) ? fmt(doseVal,4)+" "+d.doseUnit : "calculada a partir da vazão"),
+    mass:(Number.isFinite(amount.amount) ? fmt(amount.amount,2)+" "+amount.unit : "—"),
+    volume:(Number.isFinite(rateVal) ? fmt(rateVal,2)+" mL/h" : "vazão calculada"),
+    range:d.range,
+    result:(Number.isFinite(amount.amount) ? `${d.name}: ${fmt(amount.amount,2)} ${amount.unit}` : ""),
+    shortResult:(Number.isFinite(amount.amount) ? `${fmt(amount.amount,2)} ${amount.unit}` : ""),
+    prep:prep.prep,
+    notes:d.notes,
+    chartKind:"infusion",
+    chartDose:(Number.isFinite(doseVal) ? fmt(doseVal,4)+" "+d.doseUnit : "calculada a partir da vazão"),
+    chartMass:(Number.isFinite(amount.amount) ? fmt(amount.amount,2)+" "+amount.unit : ""),
+    chartRate:(Number.isFinite(rateVal) ? fmt(rateVal,2)+" mL/h" : ""),
+    chartPrep:prep.prep
+  });
+  renderSummary();
+  confirmSummaryAdd(d.name);
+}
+
+function initInfusion(){
+  populateSelect(document.getElementById("infCat"), infusionData);
+  document.getElementById("infCat").addEventListener("change", updateInfDrugs);
+  document.getElementById("infDrug").addEventListener("change", updateInfDefaults);
+  document.getElementById("infPrep").addEventListener("change", updateInfPrep);
+  ["infDose","infRate","infConc","infConcUnit","infAmpConc","infAmpConcUnit","infAmpVolume","infTargetHours","infBagVolume","infDiluent","peso","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", ()=>{updateAmpContentPreview(); calcInfusion();}));
+  document.getElementById("infDose").addEventListener("input", function(){ if(this.value !== "") document.getElementById("infRate").value = ""; calcInfusion(); });
+  document.getElementById("infRate").addEventListener("input", function(){ if(this.value !== "") document.getElementById("infDose").value = ""; calcInfusion(); });
+  updateInfDrugs();
+}
+function updateInfDrugs(){
+  const cat=document.getElementById("infCat").value;
+  populateSelect(document.getElementById("infDrug"), infusionData[cat].drugs, "name");
+  updateInfDefaults();
+}
+function updateInfDefaults(){
+  const cat=document.getElementById("infCat").value, drug=document.getElementById("infDrug").value;
+  const d=infusionData[cat].drugs[drug];
+  document.getElementById("infDose").value=d.defaultDose;
+  setDoseUnitLabel("infDoseUnitLabel", d.doseUnit);
+  document.getElementById("infRate").value="";
+  const prep=document.getElementById("infPrep"); prep.innerHTML="";
+  d.preps.forEach((p,i)=>{const opt=document.createElement("option"); opt.value=i; opt.textContent=p.label; prep.appendChild(opt);});
+  updateInfPrep();
+}
+function currentInf(){
+  const cat=document.getElementById("infCat").value, drug=document.getElementById("infDrug").value;
+  const d=infusionData[cat].drugs[drug], prep=d.preps[parseInt(document.getElementById("infPrep").value || 0)];
+  return {cat, drug, d, prep};
+}
+function updateInfPrep(){
+  const {d, prep}=currentInf();
+  document.getElementById("infConc").value=prep.conc;
+  document.getElementById("infConcUnit").value=prep.unit;
+  const amp=ampouleInfoByName(d.name);
+  if(amp && amp.volume && amp.content){
+    document.getElementById("infAmpVolume").value=amp.volume;
+    document.getElementById("infAmpConc").value=fmt(amp.content/amp.volume,3);
+    document.getElementById("infAmpConcUnit").value = amp.unit==="mcg" ? "mcgml" : (amp.unit==="mg" ? "mgml" : "uiml");
+  } else {
+    document.getElementById("infAmpVolume").value="";
+    document.getElementById("infAmpConc").value="";
+  }
+  updateAmpContentPreview();
+  calcInfusion();
+}
+function calcInfusion(){
+  const {cat,d,prep}=currentInf();
+  const mode=getAutoMode("infDose","infRate");
+  let dose=parseFloat(document.getElementById("infDose").value);
+  const rate=parseFloat(document.getElementById("infRate").value);
+  const conc=parseFloat(document.getElementById("infConc").value || prep.conc), concUnit=document.getElementById("infConcUnit").value;
+  const hours=parseFloat(document.getElementById("infTargetHours")?.value || 24);
+  const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
+  const diluent=document.getElementById("infDiluent")?.value || "diluente";
+  const ampOverride=getInfAmpOverride();
+  let result, detail, modeLabel, planning="";
+  if(mode==="doseToRate"){
+    const amount=doseAmountPerHour(dose, d.doseUnit, getPeso());
+    const vazao=rateFromAmount(amount.amount, amount.unit, conc, concUnit);
+    result=`${fmt(amount.amount,2)} ${amount.unit} → ${fmt(vazao,2)} mL/h`;
+    detail=`Dose ${dose} ${d.doseUnit}. Concentração final: ${conc} ${unitLabel(concUnit)}.`;
+    planning=planning24h(d.name, dose, d.doseUnit, conc, concUnit, vazao, hours, bagVolume, diluent, ampOverride);
+    modeLabel="Automático: dose → vazão";
+  } else if(mode==="rateToDose"){
+    const calcDose=doseFromRate(rate, d.doseUnit, conc, concUnit, getPeso());
+    dose=calcDose;
+    result=`${fmt(rate,2)} mL/h → ${fmt(calcDose,4)} ${d.doseUnit}`;
+    detail=`Vazão ${rate} mL/h. Concentração final: ${conc} ${unitLabel(concUnit)}.`;
+    planning=planning24h(d.name, calcDose, d.doseUnit, conc, concUnit, rate, hours, bagVolume, diluent, ampOverride);
+    modeLabel="Automático: vazão → dose";
+  } else if(mode==="conflict"){
+    result="preencha apenas dose OU vazão";
+    detail="Ambos os campos estão preenchidos. Limpe um deles para a calculadora definir automaticamente o sentido do cálculo.";
+    modeLabel="Conflito: dois campos preenchidos";
+  } else {
+    result="aguardando dose ou vazão";
+    detail="Preencha a dose para calcular vazão, ou preencha a vazão para calcular a dose.";
+    modeLabel="Automático: aguardando entrada";
+  }
+  const scenario=infusionScenarioMeta(d.name, cat, getCenario());
+  document.getElementById("infAutoMode").value = modeLabel;
+  document.getElementById("infOut").innerHTML =
+    `<div class="med-result">
+      <div class="med-result__headline">
+        <strong>${d.name}: ${result}</strong>
+        <span>${infusionData[cat].label} · ${modeLabel} · faixa ${d.range}</span>
+      </div>
+      <div class="med-grid">
+        ${medCard("Operacional", [
+          medKv("Apresentação", ampoulePresentationLine(d.name)),
+          informedAmpouleLine() ? medKv("Apresentação disponível informada", informedAmpouleLine().replace("Apresentação informada: ","")) : "",
+          medKv("Cálculo operacional", detail)
+        ], "med-card--primary")}
+        ${medCard("Faixa e categoria", [
+          medKv("Categoria", infusionData[cat].label),
+          medKv("Faixa terapêutica", d.range)
+        ], "med-card--pk")}
+        ${scenarioCard(scenario)}
+        ${medCard("Cuidados e segurança", [
+          medKv("Observação", d.notes || "Conferir bula/protocolo institucional.")
+        ], "med-card--safety")}
+      </div>
+    </div>` +
+    (planning ? `<div class="planning-line"><strong>Planejamento de solução para ${hours}h</strong><br>${planning}</div>` : "");
+}
+function addInfusionToSummary(){
+  const {d,prep}=currentInf();
+  {
+  const mode=getAutoMode("infDose","infRate");
+  const conc=parseFloat(document.getElementById("infConc").value || prep.conc);
+  const concUnit=document.getElementById("infConcUnit").value;
+  const hours=parseFloat(document.getElementById("infTargetHours")?.value || 24);
+  const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
+  const diluent=document.getElementById("infDiluent")?.value || "diluente";
+  const ampOverride=getInfAmpOverride();
+  let doseVal=parseFloat(document.getElementById("infDose").value);
+  let rateVal=parseFloat(document.getElementById("infRate").value);
+  if(mode==="rateToDose") doseVal=doseFromRate(rateVal, d.doseUnit, conc, concUnit, getPeso());
+  if(mode==="doseToRate"){
+    const amount=doseAmountPerHour(doseVal, d.doseUnit, getPeso());
+    rateVal=rateFromAmount(amount.amount, amount.unit, conc, concUnit);
+  }
+  const amount=Number.isFinite(doseVal) ? doseAmountPerHour(doseVal, d.doseUnit, getPeso()) : {amount:NaN, unit:""};
+  const plan=planning24h(d.name, doseVal, d.doseUnit, conc, concUnit, rateVal, hours, bagVolume, diluent, ampOverride);
+  state.summary.push({
+    type:"Infusão contínua",
+    name:d.name,
+    dose:(Number.isFinite(doseVal) ? fmt(doseVal,4)+" "+d.doseUnit : "calculada a partir da vazão"),
+    mass:(Number.isFinite(amount.amount) ? fmt(amount.amount,2)+" "+amount.unit : "—"),
+    volume:(Number.isFinite(rateVal) ? fmt(rateVal,2)+" mL/h" : "vazão calculada"),
+    range:d.range,
+    result:(Number.isFinite(amount.amount) ? `${d.name}: ${fmt(amount.amount,2)} ${amount.unit}` : ""),
+    shortResult:(Number.isFinite(amount.amount) ? `${fmt(amount.amount,2)} ${amount.unit}` : ""),
+    prep:prep.prep,
+    commandHtml:plan,
+    notes:d.range,
+    chartKind:"infusion",
+    chartDose:(Number.isFinite(doseVal) ? fmt(doseVal,4)+" "+d.doseUnit : "calculada a partir da vazão"),
+    chartMass:(Number.isFinite(amount.amount) ? fmt(amount.amount,2)+" "+amount.unit : ""),
+    chartRate:(Number.isFinite(rateVal) ? fmt(rateVal,2)+" mL/h" : ""),
+    chartPrep:prep.prep,
+    chartPlanHtml:plan
+  });
+}
+  renderSummary();
+  confirmSummaryAdd(d.name);
+}
+
+
+function htmlToPlainText(html){
+  const div=document.createElement("div");
+  div.innerHTML=html || "";
+  return (div.innerText || div.textContent || "").replace(/\s+/g," ").trim();
+}
+function cleanPrepToSolution(prep){
+  if(!prep) return "preparo conforme protocolo";
+  let s=prep;
+  s=s.replace(/^.*?=\s*/,"");
+  s=s.replace(/\s*\((?:volume aspirado|volume após reconstituição|concentração da ampola)[^)]*\)/gi,"");
+  s=s.replace(/\s*\([^)]*concentração da ampola[^)]*\)/gi,"");
+  s=s.replace(/\s*\+\s*diluente\s*([0-9.,]+\s*mL)\s*=\s*solução final\s*([0-9.,]+\s*mL)\s*→\s*concentração\s*([^.;]+)/i, " em diluente até $2, concentração final $3");
+  s=s.replace(/\s*\+\s*([A-Z]{1,3}\s*[0-9,% ]*)\s*q\.s\.p\.\s*([0-9.,]+\s*mL)\s*=\s*solução final\s*\2\s*→\s*concentração\s*([^.;]+)/i, " em $1 até $2, concentração final $3");
+  s=s.replace(/\s*\+\s*([^=]+?)\s*=\s*solução final\s*([^→]+?)\s*→\s*concentração\s*([^.;]+)/i, " em $1 até $2, concentração final $3");
+  s=s.replace(/ de norepinefrina base/gi,"");
+  s=s.replace(/norepinefrina base/gi,"base");
+  s=s.replace(/\s+/g," ").trim();
+  return s.replace(/\.$/,"");
+}
+function cleanPlanToSolution(item){
+  const txt=htmlToPlainText(item.chartPlanHtml || item.commandHtml || "");
+  if(!txt) return cleanPrepToSolution(item.chartPrep || item.prep);
+  const practical=txt.match(/Modo pr\u00e1tico:\s*solicitar\s*([^\.]+)\.\s*((?:Aspirar|Reconstituir)[\s\S]+?)\.\s*Solu\u00e7\u00e3o final:\s*([^\u2192\.]+)\s*\u2192\s*concentra\u00e7\u00e3o final\s*([^\.]+)\./i);
+  if(practical){
+    return `solicitar ${practical[1].trim()}; ${practical[2].trim()}; solu\u00e7\u00e3o final ${practical[3].trim()}, concentra\u00e7\u00e3o final ${practical[4].trim()}`;
+  }
+  const sug=txt.match(/Sugest\u00e3o pr\u00e1tica:\s*usar\s*([^\.]+),\s*total\s*([^\.]+)\./i);
+  const finalSol=txt.match(/Solu\u00e7\u00e3o final:\s*([^\u2192\.]+)\s*\u2192\s*concentra\u00e7\u00e3o(?: final)?\s*([^\.]+)\./i);
+  if(sug && finalSol){
+    return `${sug[1]}, total ${sug[2]}, diluente at\u00e9 ${finalSol[1].trim()}, concentra\u00e7\u00e3o final ${finalSol[2].trim()}`;
+  }
+  return cleanPrepToSolution(item.chartPrep || item.prep);
+}
+function chartIntroText(){
+  const cenario=document.getElementById("cenario").selectedOptions[0].text;
+  const typeEl=document.getElementById("iotType");
+  const typeText=typeEl ? typeEl.selectedOptions[0].text : "técnica selecionada";
+  const hasBolus=state.summary.some(i=>i.chartKind==="bolus" || i.type==="IOT bólus");
+  const base=`Paciente com peso real estimado de ${fmt(getPeso(),1)} kg e peso predito estimado de ${fmt(pbw(),1)} kg, em cenário clínico de ${cenario}.`;
+  return hasBolus ? `${base} Planejada intubação orotraqueal por ${typeText}, com preparo de sedoanalgesia, bloqueio neuromuscular e suporte hemodinâmico.` : base;
+}
+function generateChartNote(){
+  const bolus=state.summary.filter(i=>i.chartKind==="bolus" || i.type==="IOT bólus");
+  const infusions=state.summary.filter(i=>i.chartKind==="infusion" || i.type==="DVA" || i.type==="Infusão contínua");
+  let parts=[chartIntroText()];
+  if(bolus.length){
+    parts.push("\\nDrogas realizadas em bólus:");
+    bolus.forEach((i,idx)=>{
+      const doseTxt=i.chartDose || i.dose || "";
+      const massTxt=i.chartMass || i.mass || "";
+      const volTxt=i.chartVolume || i.volume || "";
+      if(doseTxt && massTxt && doseTxt === massTxt){
+        parts.push(`${idx+1}. ${i.name}: ${massTxt}${volTxt ? `, volume administrado ${volTxt}` : ""}.`);
+      } else {
+        parts.push(`${idx+1}. ${i.name}: ${doseTxt}, dose total ${massTxt}${volTxt ? `, volume aspirado ${volTxt}` : ""}.`);
+      }
+    });
+  }
+  if(infusions.length){
+    parts.push("\\nDrogas em infusão contínua:");
+    infusions.forEach((i,idx)=>{
+      const sol=cleanPlanToSolution(i);
+      const dose=i.chartDose || i.dose || "dose calculada";
+      const mass=i.chartMass || i.mass || "";
+      const rate=i.chartRate || i.volume || "vazão calculada";
+      const equiv=mass && mass !== "—" ? `, equivalente a ${mass}` : "";
+      parts.push(`${idx+1}. ${i.name}: ${sol}. Dose inicial ${dose}${equiv}. Vazão em bomba: ${rate}.`);
+    });
+  }
+  if(!bolus.length && !infusions.length){
+    parts.push("\\nNenhuma medicação adicionada ao cenário-resumo.");
+  }
+  const out=document.getElementById("chartNoteOut");
+  if(out) out.value=parts.join("\\n");
+}
+function copyChartNote(){
+  const out=document.getElementById("chartNoteOut");
+  if(!out) return;
+  if(!out.value) generateChartNote();
+  out.select();
+  out.setSelectionRange(0, 999999);
+  try{ document.execCommand("copy"); }catch(e){}
+}
+
+function renderSummary(){
+  const out=document.getElementById("summaryOut");
+  if(!state.summary.length){
+    out.innerHTML="<strong>Nenhum item adicionado.</strong><span>Use as calculadoras acima e clique em “Adicionar ao cenário-resumo”.</span>";
+    updateSummaryFeedback();
+    return;
+  }
+  let rows=state.summary.map((i,idx)=>`<tr>
+    <td>${idx+1}</td>
+    <td>${i.type}</td>
+    <td>${i.name}</td>
+    <td>${i.dose}</td>
+    <td>${i.mass || "—"}</td>
+    <td>${i.volume || "—"}</td>
+    <td>${i.range || i.notes || "—"}</td>
+  </tr>`).join("");
+  let commands = state.summary.map(i => prepCommand(i)).join("");
+  out.innerHTML=`<strong>Cenário: ${document.getElementById("cenario").selectedOptions[0].text} · Peso ${fmt(getPeso(),1)} kg · PBW ${fmt(pbw(),1)} kg</strong>
+  <span>${scenarioNotes[getCenario()].iot}<br>${scenarioNotes[getCenario()].dva}</span>
+  <table class="summary-table"><thead><tr><th>#</th><th>Tipo</th><th>Droga</th><th>Dose padrão</th><th>Massa/tempo</th><th>Vazão</th><th>Faixa terapêutica</th></tr></thead><tbody>${rows}</tbody></table>
+  <strong style="margin-top:10px">Preparo operacional estruturado</strong>
+  ${commands}`;
+  updateSummaryFeedback();
+}
+function clearSummary(){ state.summary=[]; renderSummary(); }
+
+["peso","altura","sexo","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", ()=>{renderPatient(); updateIOTStrategy(); calcIOT(); calcDVA(); calcInfusion(); renderSummary();}));
+initModuleMenu(); initIOT(); initDVA(); initDVABolus(); initInfusion(); renderPatient(); renderSummary();
+</script>
+</body>
+</html>

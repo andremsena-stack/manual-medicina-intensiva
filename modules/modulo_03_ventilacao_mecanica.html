@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Interativo de Medicina Intensiva — Módulo 3: Ventilação Mecânica</title>
+  <style>
+    :root{
+      --bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;
+      --primary:#123c69;--primary-soft:#dce9f6;--accent:#0b6b5c;--danger:#b42318;
+      --warning:#b54708;--success:#067647;--border:#d8e0ea;--shadow:0 8px 24px rgba(16,24,40,.08);
+      --radius:16px
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+    a{color:inherit;text-decoration:none}
+    .app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+    aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d2438;color:#fff;padding:24px 18px}
+    .brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}
+    .brand h1{font-size:19px;margin:0 0 8px;line-height:1.25}
+    .brand p{margin:0;font-size:13px;color:rgba(255,255,255,.75)}
+    nav ul{list-style:none;padding:0;margin:0}
+    nav li{margin:5px 0}
+    nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88)}
+    nav a:hover{background:rgba(255,255,255,.10)}
+    main{padding:34px;max-width:1380px;width:100%}
+    .hero{background:linear-gradient(135deg,#123c69,#0b6b5c);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);margin-bottom:28px}
+    .hero h2{font-size:34px;margin:0 0 10px}.hero p{max-width:980px;color:rgba(255,255,255,.9);margin:0}
+    .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.14);font-size:12px}
+    section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}
+    section h2{margin:0 0 14px;color:var(--primary);font-size:25px}
+    section h3{margin:22px 0 10px;color:#243b53;font-size:19px}
+    .grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{background:var(--surface-soft);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .card h4{margin:0 0 8px;color:var(--primary)}.card p{margin:0;color:var(--muted)}
+    .metric{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px}.metric strong{display:block;color:var(--primary);font-size:22px}
+    .alert{border-radius:14px;padding:14px 16px;margin:16px 0;border-left:6px solid}
+    .alert-danger{background:#fff1f0;border-color:var(--danger)}.alert-warning{background:#fff7ed;border-color:var(--warning)}
+    .alert-info{background:var(--primary-soft);border-color:var(--primary)}.alert-success{background:#ecfdf3;border-color:var(--success)}
+    table{width:100%;border-collapse:collapse;margin:14px 0;overflow:hidden;border-radius:12px}
+    th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;font-size:14px}
+    th{background:var(--primary);color:#fff}tbody tr:nth-child(even){background:#f8fafc}
+    .svg-box{background:#f8fbff;border:1px solid var(--border);border-radius:16px;padding:14px;margin:14px 0}.svg-box svg{width:100%;height:auto;display:block}
+    .small{font-size:12px;color:var(--muted)}
+    details{border:1px solid var(--border);border-radius:14px;background:#fff;margin:12px 0;overflow:hidden}
+    summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--primary);background:#eef3f8}
+    summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}
+    .pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700;background:#dce9f6;color:#123c69;margin:2px}
+    .pill-danger{background:#fee4e2;color:#912018}.pill-warning{background:#fef0c7;color:#93370d}.pill-success{background:#dcfae6;color:#067647}
+    .ref{font-size:12px;color:#485568;border-top:1px solid var(--border);margin-top:12px;padding-top:10px}
+    .two-col-list{columns:2;column-gap:28px}.checklist li{margin:6px 0}
+    .calc-panel{background:#0d2438;color:#fff;border-radius:18px;padding:18px;margin:18px 0;box-shadow:var(--shadow)}
+    .calc-panel h3{color:#fff;margin-top:0}.calc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .calc-panel label{display:block;font-size:12px;color:#cbd5e1;margin-bottom:5px}
+    .calc-panel input,.calc-panel select{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:#fff;color:#111827}
+    .calc-result{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px;margin-top:12px}
+    .calc-result strong{font-size:22px;color:#fff;display:block}
+    .footer-sign{margin-top:40px;text-align:right;color:#344054}
+    @media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}.grid-2,.grid-3,.grid-4,.calc-grid{grid-template-columns:1fr}main{padding:18px}.hero h2{font-size:26px}.two-col-list{columns:1}}
+    @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}details:not([open]){border-color:#ccc}.calc-panel{background:#fff;color:#111;border:1px solid #ccc}.calc-panel h3{color:#111}.calc-result{background:#f8fafc;color:#111}.calc-panel label{color:#111}}
+  </style>
+
+  <style>
+    .brand__row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .brand__content{min-width:0}
+    .nav-toggle{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+    .nav-toggle:hover{background:rgba(255,255,255,.18)}
+    nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
+    .app.nav-collapsed{grid-template-columns:72px 1fr}
+    .app.nav-collapsed aside{padding:18px 10px}
+    .app.nav-collapsed .brand{margin-bottom:14px;padding-bottom:12px;text-align:center}
+    .app.nav-collapsed .brand__row{display:grid;justify-items:center;gap:8px}
+    .app.nav-collapsed .brand__content{display:none}
+    .app.nav-collapsed .nav-toggle{width:100%;padding:8px 4px;font-size:11px}
+    .app.nav-collapsed nav a{align-items:center;display:flex;justify-content:center;min-height:40px;padding:9px 4px;position:relative}
+    .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
+    .app.nav-collapsed nav a::before{content:attr(data-short);font-size:12px;font-weight:800}
+    @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{padding:12px 14px}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}.app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}.app.nav-collapsed .brand__content{display:block}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .toc-note,.app.nav-collapsed .brand .small{display:none}}
+  </style>
+</head>
+<body>
+<div class="app" id="moduleApp">
+  <aside>
+    <div class="brand">
+      <div class="brand__row">
+        <div class="brand__content">
+<h1>Manual Interativo de Medicina Intensiva</h1>
+      <p>Módulo 3 — Ventilação mecânica</p>
+      <div class="small" style="color:rgba(255,255,255,.65);margin-top:12px">Versão modular integrada ao padrão aprovado dos módulos 1 e 2.</div>
+        </div>
+        <button class="nav-toggle" id="moduleNavToggle" type="button" aria-controls="moduleNav" aria-expanded="true">Minimizar</button>
+      </div>
+    </div>
+    <nav id="moduleNav" aria-label="Secoes do modulo">
+      <ul>
+        <li><a href="#intro">1. Conceito geral</a></li>
+        <li><a href="#funcionamento">2. Como o ventilador funciona</a></li>
+        <li><a href="#circuito">3. Circuito e componentes</a></li>
+        <li><a href="#variaveis">4. Variáveis fundamentais</a></li>
+        <li><a href="#modos">5. Modos ventilatórios básicos</a></li>
+        <li><a href="#protetora">6. Ventilação protetora</a></li>
+        <li><a href="#pbw">7. Peso predito e volume corrente</a></li>
+        <li><a href="#peep">8. PEEP, FiO₂ e pressões</a></li>
+        <li><a href="#autopeep">9. Auto-PEEP</a></li>
+        <li><a href="#assincronias">10. Assincronias</a></li>
+        <li><a href="#cenarios">11. Cenários específicos</a></li>
+        <li><a href="#checklist">12. Checklist inicial</a></li>
+        <li><a href="#erros">13. Erros frequentes</a></li>
+        <li><a href="#referencias">Referências primárias</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h2>Módulo 3 — Ventilação mecânica invasiva</h2>
+      <p>Capítulo prático e fisiológico para entender o ventilador mecânico, configurar parâmetros iniciais pós-intubação, aplicar ventilação protetora, interpretar curvas básicas e responder a problemas frequentes.</p>
+      <div class="badge-row">
+        <span class="badge">SVG nativo</span><span class="badge">Calculadora PBW/Vt</span><span class="badge">Ventilação protetora</span><span class="badge">Curvas e alarmes</span><span class="badge">Fonte primária obrigatória</span>
+      </div>
+    </div>
+
+    <section id="intro">
+      <h2>1. O que é ventilação mecânica invasiva?</h2>
+      <p>Ventilação mecânica invasiva é o suporte ventilatório aplicado por meio de uma via aérea artificial — geralmente tubo orotraqueal ou traqueostomia — com o objetivo de garantir ventilação alveolar, oxigenação, redução do trabalho respiratório e proteção contra falência ventilatória.</p>
+      <div class="grid grid-4">
+        <div class="metric"><strong>Oxigenação</strong><span>Principalmente FiO₂, PEEP, recrutamento e relação V/Q.</span></div>
+        <div class="metric"><strong>Ventilação</strong><span>Volume minuto: volume corrente × frequência respiratória.</span></div>
+        <div class="metric"><strong>Mecânica</strong><span>Pressões, complacência, resistência, auto-PEEP e assincronias.</span></div>
+        <div class="metric"><strong>Proteção</strong><span>Evitar volutrauma, barotrauma, atelectrauma e biotrauma.</span></div>
+      </div>
+      <div class="alert alert-warning"><strong>Princípio do módulo:</strong> o ventilador não trata apenas “saturação baixa”. Ele modifica pressão intratorácica, retorno venoso, pós-carga de ventrículo direito, CO₂, pH e perfusão sistêmica.</div>
+      <div class="ref"><strong>Fonte primária:</strong> ARDS Network. Ventilation with lower tidal volumes as compared with traditional tidal volumes for acute lung injury and ARDS. <em>N Engl J Med</em>. 2000;342:1301-1308. DOI: 10.1056/NEJM200005043421801.</div>
+    </section>
+
+    <section id="funcionamento">
+      <h2>2. Como o ventilador funciona</h2>
+      <p>O ventilador é um gerador de fluxo e pressão. Ele entrega gás ao paciente conforme uma variável controlada — geralmente volume ou pressão — e encerra a inspiração conforme uma variável de ciclagem, como tempo, fluxo ou volume.</p>
+      <div class="svg-box">
+        <svg viewBox="0 0 1000 430" role="img" aria-label="Funcionamento do ventilador mecânico, com fases do ciclo e principais componentes do circuito">
+          <defs>
+            <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#067647"/></marker>
+            <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#b54708"/></marker>
+          </defs>
+          <rect x="20" y="20" width="960" height="390" rx="18" fill="#f8fbff" stroke="#d8e0ea"/>
+          <rect x="55" y="92" width="245" height="162" rx="18" fill="#dce9f6" stroke="#123c69" stroke-width="2"/>
+          <rect x="82" y="115" width="108" height="54" rx="10" fill="#ffffff" stroke="#98a2b3"/>
+          <polyline points="92,153 110,142 126,150 145,131 165,142 180,134" fill="none" stroke="#123c69" stroke-width="3"/>
+          <text x="205" y="147" font-size="15" fill="#123c69" font-weight="700">monitorização</text>
+          <text x="95" y="204" font-size="24" font-weight="700" fill="#123c69">Ventilador</text>
+          <text x="95" y="226" font-size="14" fill="#123c69">mistura O₂/ar · fluxo · trigger</text>
+          <text x="95" y="246" font-size="14" fill="#123c69">válvula inspiratória e expiratória</text>
+
+          <circle cx="322" cy="138" r="15" fill="#ecfdf3" stroke="#067647" stroke-width="2"/>
+          <text x="317" y="143" font-size="12" font-weight="700" fill="#067647">VI</text>
+          <circle cx="322" cy="208" r="15" fill="#fff6ed" stroke="#b54708" stroke-width="2"/>
+          <text x="317" y="213" font-size="12" font-weight="700" fill="#b54708">VE</text>
+
+          <path d="M338 138 C432 106, 528 106, 614 138" fill="none" stroke="#067647" stroke-width="12" marker-end="url(#arrowGreen)"/>
+          <path d="M614 232 C528 264, 432 264, 338 232" fill="none" stroke="#b54708" stroke-width="12" marker-end="url(#arrowOrange)"/>
+          <text x="415" y="92" font-size="16" fill="#067647" font-weight="700">Ramo inspiratório</text>
+          <text x="414" y="298" font-size="16" fill="#b54708" font-weight="700">Ramo expiratório</text>
+
+          <rect x="620" y="110" width="82" height="56" rx="12" fill="#fff" stroke="#123c69" stroke-width="2"/>
+          <text x="635" y="132" font-size="13" fill="#123c69" font-weight="700">HME / HMEF</text>
+          <text x="641" y="149" font-size="11" fill="#667085">calor · umidade</text>
+          <circle cx="730" cy="182" r="36" fill="#fff" stroke="#123c69" stroke-width="3"/>
+          <text x="705" y="178" font-size="14" fill="#123c69" font-weight="700">Peça em Y</text>
+          <text x="715" y="194" font-size="11" fill="#667085">junção</text>
+          <line x1="702" y1="138" x2="694" y2="138" stroke="#067647" stroke-width="8"/>
+          <line x1="702" y1="226" x2="694" y2="226" stroke="#b54708" stroke-width="8"/>
+
+          <rect x="774" y="151" width="72" height="62" rx="12" fill="#fff1f0" stroke="#b42318" stroke-width="2"/>
+          <text x="784" y="178" font-size="13" fill="#b42318" font-weight="700">Capno</text>
+          <text x="788" y="194" font-size="11" fill="#b42318">ETCO₂</text>
+          <line x1="846" y1="182" x2="886" y2="182" stroke="#344054" stroke-width="8"/>
+          <rect x="886" y="147" width="62" height="70" rx="12" fill="#fff1f0" stroke="#b42318" stroke-width="2"/>
+          <text x="901" y="181" font-size="13" fill="#b42318" font-weight="700">TOT</text>
+          <text x="897" y="197" font-size="10" fill="#b42318">cuff</text>
+
+          <ellipse cx="930" cy="182" rx="34" ry="70" fill="#ecfdf3" stroke="#067647" stroke-width="3"/>
+          <path d="M922 126 C900 152,900 212,922 238" fill="none" stroke="#067647" stroke-width="4"/>
+          <path d="M938 126 C960 152,960 212,938 238" fill="none" stroke="#067647" stroke-width="4"/>
+          <text x="902" y="270" font-size="14" fill="#067647" font-weight="700">Pulmões</text>
+
+          <rect x="56" y="312" width="888" height="68" rx="14" fill="#ffffff" stroke="#d8e0ea"/>
+          <circle cx="108" cy="346" r="18" fill="#eaf2fb" stroke="#123c69" stroke-width="2"/>
+          <text x="95" y="351" font-size="12" font-weight="700" fill="#123c69">1</text>
+          <text x="132" y="342" font-size="14" fill="#123c69" font-weight="700">Trigger / disparo</text>
+          <text x="132" y="360" font-size="12" fill="#475467">esforço do paciente ou ciclo mandatário</text>
+
+          <circle cx="325" cy="346" r="18" fill="#ecfdf3" stroke="#067647" stroke-width="2"/>
+          <text x="312" y="351" font-size="12" font-weight="700" fill="#067647">2</text>
+          <text x="349" y="342" font-size="14" fill="#067647" font-weight="700">Fase inspiratória</text>
+          <text x="349" y="360" font-size="12" fill="#475467">válvula inspiratória abre e o gás entra no pulmão</text>
+
+          <circle cx="565" cy="346" r="18" fill="#fff6ed" stroke="#b54708" stroke-width="2"/>
+          <text x="552" y="351" font-size="12" font-weight="700" fill="#b54708">3</text>
+          <text x="589" y="342" font-size="14" fill="#b54708" font-weight="700">Ciclagem</text>
+          <text x="589" y="360" font-size="12" fill="#475467">fim da inspiração por tempo, fluxo, volume ou pressão</text>
+
+          <circle cx="789" cy="346" r="18" fill="#fff1f3" stroke="#b42318" stroke-width="2"/>
+          <text x="776" y="351" font-size="12" font-weight="700" fill="#b42318">4</text>
+          <text x="813" y="342" font-size="14" fill="#b42318" font-weight="700">Fase expiratória</text>
+          <text x="813" y="360" font-size="12" fill="#475467">válvula expiratória permite saída de gás e manutenção de PEEP</text>
+        </svg>
+      </div>
+      <p style="margin-top:-4px;color:#475467"><strong>Figura 2.1.</strong> Redesenho original, baseado em referências técnicas de ventilação mecânica e nos esquemas de circuito consultados para este módulo.</p>
+      <table>
+        <thead><tr><th>Elemento</th><th>Função</th><th>Importância clínica</th></tr></thead>
+        <tbody>
+          <tr><td>Fluxo inspiratório</td><td>Entrega volume ao sistema respiratório.</td><td>Fluxo inadequado pode gerar desconforto, assincronia ou aumento de pressão de pico.</td></tr>
+          <tr><td>Válvula expiratória</td><td>Controla saída de gás e mantém PEEP.</td><td>Obstrução, condensado ou ajuste inadequado podem alterar PEEP/auto-PEEP.</td></tr>
+          <tr><td>Sensores</td><td>Medem pressão, fluxo, volume e vazamentos.</td><td>Permitem alarmes e interpretação de mecânica respiratória.</td></tr>
+          <tr><td>Trigger</td><td>Detecta esforço do paciente ou define ciclos controlados.</td><td>Trigger mal ajustado causa disparos ausentes, auto-disparo ou aumento de trabalho respiratório.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="circuito">
+      <h2>3. Circuito, condutos e componentes</h2>
+      <p>O circuito do ventilador conecta a unidade geradora de fluxo ao paciente. Em UTI, os componentes usuais incluem ramo inspiratório, ramo expiratório, peça em Y, filtro HME ou umidificador aquecido, tubo orotraqueal, sensores proximais quando disponíveis e válvula expiratória.</p>
+      <div class="svg-box">
+        <svg viewBox="0 0 1000 360" role="img" aria-label="Circuito ventilatório de duplo ramo e seus principais componentes">
+          <defs>
+            <marker id="arrG2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#067647"/></marker>
+            <marker id="arrO2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#b54708"/></marker>
+          </defs>
+          <rect width="1000" height="360" rx="18" fill="#f8fbff" stroke="#d8e0ea"/>
+          <rect x="36" y="120" width="170" height="120" rx="18" fill="#dce9f6" stroke="#123c69" stroke-width="2"/>
+          <text x="72" y="164" font-size="24" font-weight="700" fill="#123c69">Ventilador</text>
+          <text x="60" y="188" font-size="13" fill="#123c69">gerador de fluxo / monitor</text>
+          <text x="60" y="208" font-size="13" fill="#123c69">válvula insp. e exp.</text>
+
+          <path d="M208 145 C316 108, 420 108, 555 145" fill="none" stroke="#067647" stroke-width="12" marker-end="url(#arrG2)"/>
+          <text x="320" y="102" font-size="16" font-weight="700" fill="#067647">Ramo inspiratório aquecido</text>
+          <path d="M556 225 C420 262, 316 262, 208 225" fill="none" stroke="#b54708" stroke-width="12" marker-end="url(#arrO2)"/>
+          <text x="338" y="292" font-size="16" font-weight="700" fill="#b54708">Ramo expiratório</text>
+
+          <rect x="310" y="130" width="84" height="48" rx="10" fill="#fff" stroke="#123c69"/>
+          <text x="326" y="149" font-size="13" fill="#123c69" font-weight="700">Câmara</text>
+          <text x="318" y="165" font-size="11" fill="#667085">umidificador</text>
+          <rect x="458" y="126" width="84" height="56" rx="10" fill="#fff" stroke="#123c69"/>
+          <text x="469" y="148" font-size="13" fill="#123c69" font-weight="700">HME/HMEF</text>
+          <text x="467" y="165" font-size="11" fill="#667085">alternativa</text>
+
+          <circle cx="606" cy="184" r="34" fill="#fff" stroke="#123c69" stroke-width="3"/>
+          <text x="582" y="178" font-size="13" fill="#123c69" font-weight="700">Peça em Y</text>
+          <text x="593" y="194" font-size="11" fill="#667085">junção</text>
+          <rect x="656" y="152" width="72" height="62" rx="10" fill="#fff1f0" stroke="#b42318" stroke-width="2"/>
+          <text x="668" y="177" font-size="12" fill="#b42318" font-weight="700">Sensor</text>
+          <text x="673" y="193" font-size="11" fill="#b42318">proximal</text>
+          <rect x="748" y="152" width="72" height="62" rx="10" fill="#fff1f0" stroke="#b42318" stroke-width="2"/>
+          <text x="761" y="177" font-size="12" fill="#b42318" font-weight="700">ETCO₂</text>
+          <text x="756" y="193" font-size="11" fill="#b42318">capnografia</text>
+          <line x1="820" y1="183" x2="854" y2="183" stroke="#344054" stroke-width="8"/>
+          <rect x="854" y="146" width="56" height="74" rx="10" fill="#fff1f0" stroke="#b42318" stroke-width="2"/>
+          <text x="868" y="176" font-size="12" fill="#b42318" font-weight="700">TOT</text>
+          <text x="865" y="194" font-size="10" fill="#b42318">cuff</text>
+          <ellipse cx="942" cy="183" rx="32" ry="66" fill="#ecfdf3" stroke="#067647" stroke-width="3"/>
+          <path d="M936 130 C914 151,914 214,936 236" fill="none" stroke="#067647" stroke-width="4"/>
+          <path d="M948 130 C970 151,970 214,948 236" fill="none" stroke="#067647" stroke-width="4"/>
+
+          <circle cx="386" cy="235" r="15" fill="#fef3f2" stroke="#b42318" stroke-width="2"/>
+          <path d="M379 234 q7 9 14 0" fill="none" stroke="#b42318" stroke-width="2"/>
+          <text x="330" y="255" font-size="12" fill="#b42318" font-weight="700">ponto de condensado</text>
+          <circle cx="112" cy="98" r="24" fill="#fff6ed" stroke="#b54708" stroke-width="2"/>
+          <text x="98" y="104" font-size="12" fill="#b54708" font-weight="700">PEEP</text>
+          <text x="52" y="84" font-size="12" fill="#b54708" font-weight="700">válvula expiratória</text>
+        </svg>
+      </div>
+      <p style="margin-top:-4px;color:#475467"><strong>Figura 3.1.</strong> Circuito ventilatório de duplo ramo com os elementos que mais importam à beira-leito.</p>
+      <div class="grid grid-3">
+        <div class="card"><h4>Ramo inspiratório</h4><p>Leva mistura de gases até o paciente. Pode acumular água condensada se houver umidificação aquecida.</p></div>
+        <div class="card"><h4>Ramo expiratório</h4><p>Retorna o gás exalado ao ventilador. Obstrução aumenta resistência e pode simular piora mecânica.</p></div>
+        <div class="card"><h4>Filtro HME/HMEF</h4><p>Troca calor/umidade e filtra partículas. Pode aumentar resistência quando saturado por secreção.</p></div>
+        <div class="card"><h4>Umidificador aquecido</h4><p>Usado em ventilação prolongada, secreção espessa ou alto volume minuto. Favorece melhor condicionamento do gás.</p></div>
+        <div class="card"><h4>Peça em Y</h4><p>Ponto de conexão com tubo/cânula. Desconexões aqui geram queda abrupta de pressão e volume.</p></div>
+        <div class="card"><h4>Tubo orotraqueal</h4><p>Aumenta resistência proporcionalmente ao menor diâmetro interno e à presença de secreção, dobra ou mordedura.</p></div>
+      </div>
+      <div class="svg-box">
+        <svg viewBox="0 0 1000 280" role="img" aria-label="Condensado e problemas práticos no circuito ventilatório">
+          <rect width="1000" height="280" rx="18" fill="#f8fbff" stroke="#d8e0ea"/>
+          <rect x="56" y="104" width="140" height="70" rx="14" fill="#dce9f6" stroke="#123c69" stroke-width="2"/>
+          <text x="80" y="138" font-size="20" fill="#123c69" font-weight="700">Ventilador</text>
+          <text x="72" y="158" font-size="12" fill="#123c69">fonte de fluxo</text>
+          <rect x="242" y="88" width="105" height="52" rx="12" fill="#fff" stroke="#123c69" stroke-width="2"/>
+          <text x="262" y="110" font-size="13" fill="#123c69" font-weight="700">Umidificador</text>
+          <text x="270" y="126" font-size="11" fill="#667085">ativo</text>
+          <path d="M347 114 C410 114, 452 114, 500 114 C560 114, 560 190, 620 190 C700 190, 700 114, 760 114" fill="none" stroke="#067647" stroke-width="12"/>
+          <circle cx="557" cy="190" r="18" fill="#e0f2fe" stroke="#0c4a6e" stroke-width="2"/>
+          <text x="548" y="195" font-size="16" fill="#0c4a6e">💧</text>
+          <text x="460" y="222" font-size="14" fill="#0c4a6e" font-weight="700">Condensado em alça dependente</text>
+          <text x="453" y="240" font-size="12" fill="#475467">pode aumentar resistência, gerar ruído e obstrução parcial</text>
+          <rect x="778" y="86" width="92" height="56" rx="12" fill="#fff" stroke="#123c69" stroke-width="2"/>
+          <text x="800" y="107" font-size="13" fill="#123c69" font-weight="700">HME</text>
+          <text x="792" y="124" font-size="11" fill="#667085">saturado?</text>
+          <line x1="870" y1="114" x2="920" y2="114" stroke="#344054" stroke-width="8"/>
+          <rect x="920" y="82" width="40" height="64" rx="10" fill="#fff1f0" stroke="#b42318" stroke-width="2"/>
+          <text x="926" y="109" font-size="12" fill="#b42318" font-weight="700">TOT</text>
+          <text x="905" y="166" font-size="12" fill="#b42318" font-weight="700">dobra, secreção ou mordedura</text>
+          <line x1="915" y1="154" x2="940" y2="146" stroke="#b42318" stroke-width="2"/>
+        </svg>
+      </div>
+      <p style="margin-top:-4px;color:#475467"><strong>Figura 3.2.</strong> Cenários frequentes de aumento de pressão de pico relacionados ao circuito: condensado, HME saturado e obstrução do tubo.</p>
+      <div class="alert alert-info"><strong>Prática:</strong> deterioração súbita após IOT deve sempre incluir checagem mecânica do circuito: desconexão, acotovelamento, filtro obstruído, tubo dobrado, cuff excessivamente insuflado, secreção ou mordedura.</div>
+    </section>
+
+    <section id="variaveis">
+      <h2>4. Variáveis fundamentais: volume, fluxo, pressão e tempo</h2>
+      <p>Todo modo ventilatório combina quatro variáveis: volume entregue, fluxo, pressão gerada e tempo respiratório. A interpretação segura exige entender qual variável está controlada e qual será consequência da mecânica respiratória.</p>
+      <table>
+        <thead><tr><th>Variável</th><th>Definição prática</th><th>Como interpretar</th></tr></thead>
+        <tbody>
+          <tr><td>Volume corrente (Vt)</td><td>Volume entregue a cada ciclo.</td><td>Deve ser calculado pelo peso predito, não pelo peso real.</td></tr>
+          <tr><td>Frequência respiratória (FR)</td><td>Ciclos por minuto.</td><td>Junto com Vt, determina volume minuto e remoção de CO₂.</td></tr>
+          <tr><td>Fluxo inspiratório</td><td>Velocidade de entrega do volume.</td><td>Afeta tempo inspiratório, relação I:E e pressão de pico.</td></tr>
+          <tr><td>Pressão de pico</td><td>Maior pressão medida na via aérea durante inspiração.</td><td>Reflete resistência + componente elástico; sobe com secreção/broncoespasmo.</td></tr>
+          <tr><td>Pressão de platô</td><td>Pressão após pausa inspiratória, sem fluxo.</td><td>Estima pressão alveolar; central na proteção pulmonar.</td></tr>
+          <tr><td>Driving pressure</td><td>Pplat − PEEP.</td><td>Representa pressão elástica para entregar Vt; marcador de strain pulmonar.</td></tr>
+          <tr><td>PEEP</td><td>Pressão positiva ao final da expiração.</td><td>Previne colapso alveolar, mas pode causar hiperinsuflação/hemodinâmica ruim.</td></tr>
+          <tr><td>Tempo expiratório</td><td>Tempo para esvaziamento pulmonar.</td><td>Curto demais causa auto-PEEP, sobretudo em DPOC/asma.</td></tr>
+        </tbody>
+      </table>
+      <div class="svg-box">
+        <svg viewBox="0 0 1000 330" role="img">
+          <rect width="1000" height="330" rx="18" fill="#f8fbff" stroke="#d8e0ea"/>
+          <line x1="70" y1="260" x2="920" y2="260" stroke="#344054" stroke-width="2"/>
+          <line x1="70" y1="50" x2="70" y2="260" stroke="#344054" stroke-width="2"/>
+          <path d="M90 230 L105 110 L250 185 L390 245 L405 110 L550 185 L690 245 L705 110 L850 185 L910 230" fill="none" stroke="#123c69" stroke-width="4"/>
+          <line x1="105" y1="110" x2="250" y2="110" stroke="#b42318" stroke-width="2" stroke-dasharray="8 5"/>
+          <text x="112" y="100" font-size="14" fill="#b42318" font-weight="700">Ppico</text>
+          <line x1="130" y1="185" x2="250" y2="185" stroke="#0b6b5c" stroke-width="2" stroke-dasharray="8 5"/>
+          <text x="135" y="178" font-size="14" fill="#0b6b5c" font-weight="700">Pplat</text>
+          <line x1="80" y1="245" x2="920" y2="245" stroke="#b54708" stroke-width="2" stroke-dasharray="8 5"/>
+          <text x="84" y="238" font-size="14" fill="#b54708" font-weight="700">PEEP</text>
+          <text x="360" y="300" font-size="17" fill="#344054">Curva pressão × tempo — conceito esquemático</text>
+        </svg>
+      </div>
+      <div class="ref"><strong>Fonte primária/fisiológica:</strong> Carteaux G, Spinelli E, Jaber S. Understanding lung physiology through ventilator screen. <em>Intensive Care Medicine</em>. 2026. DOI: 10.1007/s00134-026-08341-5.</div>
+    </section>
+
+    <section id="modos">
+      <h2>5. Modos ventilatórios básicos</h2>
+      <p>Modos ventilatórios são formas de organizar a entrega de ciclos. Na prática inicial, é essencial entender se o ventilador controla volume ou pressão, e se o paciente está passivo, assistindo ou respirando espontaneamente.</p>
+      <table>
+        <thead><tr><th>Modo</th><th>O que o operador define</th><th>O que varia</th><th>Uso prático</th></tr></thead>
+        <tbody>
+          <tr><td>VCV / volume assisto-controlado</td><td>Volume corrente, FR, fluxo, PEEP, FiO₂.</td><td>Pressão varia conforme complacência/resistência.</td><td>Excelente para controle preciso de Vt e avaliação mecânica com pausa inspiratória.</td></tr>
+          <tr><td>PCV / pressão controlada</td><td>Pressão inspiratória, tempo inspiratório, FR, PEEP, FiO₂.</td><td>Volume varia conforme mecânica respiratória.</td><td>Útil quando se deseja limitar pressão, mas exige vigilância do Vt.</td></tr>
+          <tr><td>PSV / pressão de suporte</td><td>Pressão de suporte, PEEP, FiO₂, trigger e ciclagem.</td><td>Vt e FR dependem do esforço do paciente.</td><td>Modo espontâneo, usado em desmame e pacientes com drive adequado.</td></tr>
+          <tr><td>SIMV</td><td>Ciclos mandatórios + respiração espontânea assistida.</td><td>Participação do paciente pode variar.</td><td>Menos usado como estratégia principal de desmame em muitas UTIs.</td></tr>
+          <tr><td>PRVC/VC+</td><td>Alvo de volume com ajuste automático de pressão.</td><td>Pressão inspiratória varia ciclo a ciclo.</td><td>Combina alvo de Vt com limitação relativa de pressão; requer entender algoritmo do aparelho.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-warning"><strong>Armadilha:</strong> em pressão controlada, “pressão bonita” não garante volume adequado. Em volume controlado, “volume correto” não garante pressão segura. A proteção depende de integrar Vt, Pplat, driving pressure, PEEP, complacência e doença de base.</div>
+    </section>
+
+    <section id="protetora">
+      <h2>6. Ventilação protetora</h2>
+      <p>Ventilação protetora busca reduzir lesão pulmonar induzida pelo ventilador. O eixo central é limitar volume e pressão aplicados ao pulmão funcional disponível, com vigilância de oxigenação, CO₂, mecânica respiratória e hemodinâmica.</p>
+      <div class="grid grid-4">
+        <div class="metric"><strong>Vt 4–8</strong><span>mL/kg de peso predito</span></div>
+        <div class="metric"><strong>Pplat ≤30</strong><span>cmH₂O, quando mensurável</span></div>
+        <div class="metric"><strong>ΔP alvo ≤15</strong><span>cmH₂O como referência prática</span></div>
+        <div class="metric"><strong>PEEP</strong><span>individualizar contra colapso e hiperinsuflação</span></div>
+      </div>
+      <table>
+        <thead><tr><th>Lesão</th><th>Mecanismo</th><th>Como reduzir</th></tr></thead>
+        <tbody>
+          <tr><td>Volutrauma</td><td>Distensão excessiva por volume alto.</td><td>Usar Vt pelo peso predito; reduzir Vt se Pplat/ΔP altos.</td></tr>
+          <tr><td>Barotrauma</td><td>Pressões excessivas associadas a ruptura alveolar.</td><td>Monitorar Pplat, Ppico, pneumotórax e complacência.</td></tr>
+          <tr><td>Atelectrauma</td><td>Abertura/fechamento cíclico de unidades instáveis.</td><td>PEEP adequada, evitar colapso recorrente e FiO₂ excessiva sem recrutamento.</td></tr>
+          <tr><td>Biotrauma</td><td>Resposta inflamatória induzida por estresse mecânico.</td><td>Estratégia protetora global e tratamento da causa pulmonar/sistêmica.</td></tr>
+          <tr><td>Miotrauma</td><td>Esforço respiratório excessivo ou subutilização prolongada do diafragma.</td><td>Ajustar suporte, sedação e sincronia; evitar esforço injurioso e ventilação passiva desnecessária.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info"><strong>Driving pressure:</strong> ΔP = Pplat − PEEP. Como a complacência se relaciona com o tamanho funcional do pulmão aerado, a driving pressure ajuda a interpretar se o volume corrente está excessivo para o “baby lung”.</div>
+      <div class="ref"><strong>Fontes primárias:</strong> ARDS Network. <em>N Engl J Med</em>. 2000. DOI: 10.1056/NEJM200005043421801. Amato MBP et al. Driving pressure and survival in ARDS. <em>N Engl J Med</em>. 2015;372:747-755. DOI: 10.1056/NEJMsa1410639.</div>
+    </section>
+
+    <section id="pbw">
+      <h2>7. Peso predito e volume corrente</h2>
+      <p>Volume corrente deve ser calculado pelo peso predito, derivado da altura e sexo, porque o tamanho pulmonar se relaciona melhor com altura do que com peso real. Usar peso real em obesidade é erro clássico e pode gerar volume injurioso.</p>
+      <div class="calc-panel">
+        <h3>Calculadora rápida — peso predito e volume corrente protetor</h3>
+        <div class="calc-grid">
+          <div>
+            <label for="sex">Sexo biológico para fórmula PBW</label>
+            <select id="sex"><option value="male">Masculino</option><option value="female">Feminino</option></select>
+          </div>
+          <div>
+            <label for="height">Altura (cm)</label>
+            <input id="height" type="number" min="120" max="230" value="170">
+          </div>
+          <div>
+            <label for="realweight">Peso real (kg)</label>
+            <input id="realweight" type="number" min="30" max="250" value="70">
+          </div>
+          <div>
+            <label for="vtkg">Volume corrente alvo (mL/kg PBW)</label>
+            <select id="vtkg"><option value="4">4</option><option value="5">5</option><option value="6" selected>6</option><option value="7">7</option><option value="8">8</option></select>
+          </div>
+        </div>
+        <div class="calc-result" id="pbwResult">
+          <strong>PBW: — kg</strong>
+          <span>Volume corrente: — mL</span>
+        </div>
+        <div class="small" style="color:#dbeafe;margin-top:8px">Fórmulas ARDSNet: masculino = 50 + 0,91 × (altura cm − 152,4); feminino = 45,5 + 0,91 × (altura cm − 152,4).</div>
+      </div>
+      <table>
+        <thead><tr><th>Vt por PBW</th><th>Uso típico</th><th>Observação</th></tr></thead>
+        <tbody>
+          <tr><td>4 mL/kg</td><td>SDRA grave, Pplat/ΔP altos, estratégia ultra-protetora selecionada.</td><td>Pode exigir manejo de hipercapnia permissiva.</td></tr>
+          <tr><td>6 mL/kg</td><td>Referência clássica em SDRA e ventilação protetora.</td><td>Ponto inicial frequente.</td></tr>
+          <tr><td>7–8 mL/kg</td><td>Paciente sem SDRA, complacência preservada, necessidade ventilatória específica.</td><td>Evitar se Pplat/ΔP elevados.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="peep">
+      <h2>8. PEEP, FiO₂, pressão de platô e driving pressure</h2>
+      <p>Ajustar FiO₂ melhora a fração inspirada de oxigênio, mas não corrige colapso alveolar. Ajustar PEEP pode melhorar recrutamento e reduzir atelectrauma, mas também pode causar hiperinsuflação, queda de retorno venoso, aumento de pós-carga de VD e hipotensão.</p>
+      <table>
+        <thead><tr><th>Parâmetro</th><th>Como medir/ajustar</th><th>Problema quando excessivo</th><th>Problema quando insuficiente</th></tr></thead>
+        <tbody>
+          <tr><td>FiO₂</td><td>Fração inspirada de O₂.</td><td>Hiperóxia, absorção de atelectasia, toxicidade por O₂.</td><td>Hipoxemia.</td></tr>
+          <tr><td>PEEP</td><td>Pressão ao final da expiração.</td><td>Hiperinsuflação, hipotensão, VD, barotrauma.</td><td>Atelectasia, shunt, atelectrauma.</td></tr>
+          <tr><td>Pplat</td><td>Pausa inspiratória no paciente passivo.</td><td>Estresse alveolar elevado quando reflete pressão transpulmonar alta.</td><td>Não aplicável como “baixa demais”; deve ser interpretada com Vt/PEEP/ΔP.</td></tr>
+          <tr><td>ΔP</td><td>Pplat − PEEP.</td><td>Vt excessivo para complacência disponível.</td><td>Baixa ΔP geralmente favorável, desde que ventilação e oxigenação adequadas.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-warning"><strong>Obesidade:</strong> pressões de via aérea podem superestimar estresse pulmonar quando há alta elastância da parede torácica. Mesmo assim, Vt deve continuar baseado no peso predito, não no peso real.</div>
+      <div class="ref"><strong>Fonte de apoio fisiológico:</strong> Kitisin N et al. Mechanical ventilation for ICU patient with obesity. <em>Intensive Care Medicine</em>. 2026. DOI: 10.1007/s00134-026-08397-3.</div>
+    </section>
+
+    <section id="autopeep">
+      <h2>9. Auto-PEEP e hiperinsuflação dinâmica</h2>
+      <p>Auto-PEEP, ou PEEP intrínseca, é pressão positiva residual ao final da expiração causada por esvaziamento pulmonar incompleto antes do próximo ciclo. Ocorre quando o tempo expiratório é curto para a constante de tempo do sistema respiratório.</p>
+      <div class="grid grid-3">
+        <div class="card"><h4>Cenários clássicos</h4><p>DPOC, asma, broncoespasmo, secreção, FR alta, Vt alto, tempo expiratório curto.</p></div>
+        <div class="card"><h4>Sinais no ventilador</h4><p>Fluxo expiratório não retorna a zero antes do próximo ciclo; dificuldade de trigger; pressão/volume aprisionados.</p></div>
+        <div class="card"><h4>Risco hemodinâmico</h4><p>Aumento de pressão intratorácica, queda do retorno venoso, hipotensão e até PEA por hiperinsuflação.</p></div>
+      </div>
+      <table>
+        <thead><tr><th>Problema</th><th>Resposta prática</th></tr></thead>
+        <tbody>
+          <tr><td>Auto-PEEP por FR alta</td><td>Reduzir FR, aceitar hipercapnia permissiva quando seguro, aumentar tempo expiratório.</td></tr>
+          <tr><td>Auto-PEEP por Vt alto</td><td>Reduzir Vt e volume minuto, respeitando pH/CO₂ e doença de base.</td></tr>
+          <tr><td>Broncoespasmo</td><td>Broncodilatador, sedação adequada, tratar causa, reduzir fluxo turbulento se possível.</td></tr>
+          <tr><td>Colapso hemodinâmico súbito</td><td>Desconectar brevemente do ventilador para esvaziamento se suspeita forte de hiperinsuflação dinâmica, enquanto corrige parâmetros e trata broncoespasmo.</td></tr>
+        </tbody>
+      </table>
+      <div class="svg-box">
+        <svg viewBox="0 0 1000 300" role="img">
+          <rect width="1000" height="300" rx="18" fill="#f8fbff" stroke="#d8e0ea"/>
+          <line x1="70" y1="150" x2="930" y2="150" stroke="#344054" stroke-width="2"/>
+          <path d="M90 80 C130 40, 180 40, 220 80 C260 120, 280 145, 310 150 C350 155, 390 155, 420 150 C450 145, 470 120, 510 80 C550 40, 600 40, 640 80 C680 120, 700 145, 730 150 C770 155, 810 155, 840 150" fill="none" stroke="#0b6b5c" stroke-width="4"/>
+          <path d="M90 215 C140 175, 195 170, 230 205 C260 238, 280 255, 310 260 C365 270, 410 245, 420 220 C432 190, 470 170, 510 205 C550 240, 580 258, 620 260 C680 265, 715 240, 730 215 C750 182, 800 170, 840 210" fill="none" stroke="#b42318" stroke-width="4" stroke-dasharray="9 6"/>
+          <text x="100" y="50" font-size="16" fill="#0b6b5c" font-weight="700">Fluxo expiratório retorna a zero</text>
+          <text x="100" y="275" font-size="16" fill="#b42318" font-weight="700">Fluxo expiratório não retorna a zero: sugere auto-PEEP</text>
+        </svg>
+      </div>
+      <div class="ref"><strong>Fonte fisiológica:</strong> Carteaux G, Spinelli E, Jaber S. <em>Intensive Care Medicine</em>. 2026. DOI: 10.1007/s00134-026-08341-5.</div>
+    </section>
+
+    <section id="assincronias">
+      <h2>10. Assincronias ventilatórias</h2>
+      <p>Assincronia é o desacoplamento entre a demanda neural do paciente e a entrega do ventilador. Pode aumentar trabalho respiratório, desconforto, necessidade de sedação e risco de lesão pulmonar por esforço.</p>
+      <table>
+        <thead><tr><th>Assincronia</th><th>Sinal prático</th><th>Causas comuns</th><th>Resposta prática</th></tr></thead>
+        <tbody>
+          <tr><td>Trigger ineficaz</td><td>Esforço do paciente sem ciclo entregue.</td><td>Auto-PEEP, fraqueza, trigger pouco sensível.</td><td>Reduzir auto-PEEP, ajustar trigger, considerar PSV/ajuste de suporte.</td></tr>
+          <tr><td>Auto-disparo</td><td>Ciclos sem esforço real.</td><td>Água no circuito, vazamento, trigger sensível demais, oscilação cardíaca.</td><td>Drenar circuito, corrigir vazamento, ajustar sensibilidade.</td></tr>
+          <tr><td>Fluxo insuficiente</td><td>Paciente “puxa” mais do que o ventilador entrega.</td><td>Fluxo baixo, demanda alta, dor/ansiedade.</td><td>Aumentar fluxo, ajustar modo, tratar dor/agitação.</td></tr>
+          <tr><td>Duplo disparo</td><td>Dois ciclos consecutivos, Vt acumulado alto.</td><td>Tempo inspiratório curto, drive alto, suporte insuficiente.</td><td>Ajustar Ti/fluxo, sedoanalgesia, reduzir drive excessivo se injurioso.</td></tr>
+          <tr><td>Ciclagem precoce/tardia</td><td>Fim da inspiração antes/depois do desejado pelo paciente.</td><td>Critério de ciclagem inadequado no PSV.</td><td>Ajustar ciclagem, pressão de suporte, avaliar mecânica.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info"><strong>Leitura rápida:</strong> se o paciente “briga com o ventilador”, não aumente sedação automaticamente. Primeiro: dor, ansiedade, hipoxemia, hipercapnia, auto-PEEP, trigger, fluxo, modo e secreção.</div>
+    </section>
+
+    <section id="cenarios">
+      <h2>11. Ventilação em cenários específicos</h2>
+      <p>Esta seção organiza a ventilação por problema fisiológico. Em cada cenário, a pergunta prática é: qual é o diagnóstico provável, qual risco ventilatório domina e qual ajuste evita piora iatrogênica?</p>
+
+      <details open><summary>11.1 SDRA — síndrome do desconforto respiratório agudo</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Bloco</th><th>Conteúdo prático</th></tr></thead>
+          <tbody>
+            <tr><td>Definição/critério</td><td>Início agudo, hipoxemia com PaO₂/FiO₂ reduzida sob PEEP/CPAP, opacidades bilaterais e edema não explicado exclusivamente por insuficiência cardíaca/sobrecarga. Classificação usual: leve, moderada ou grave conforme PaO₂/FiO₂.</td></tr>
+            <tr><td>Etiologias frequentes</td><td>Pneumonia, sepse, aspiração, pancreatite, trauma, transfusão, injúria inalatória e pós-operatório complicado.</td></tr>
+            <tr><td>Objetivo ventilatório</td><td>Reduzir volutrauma, barotrauma, atelectrauma e biotrauma.</td></tr>
+            <tr><td>Ajustes iniciais</td><td>Vt 4–6 mL/kg de peso predito, pressão de platô ≤30 cmH₂O quando possível, driving pressure baixa, PEEP individualizada e FiO₂ para alvo de oxigenação.</td></tr>
+            <tr><td>Escalonamento</td><td>Prona em SDRA moderada/grave com hipoxemia persistente; considerar bloqueio neuromuscular curto em assincronia/hipoxemia grave; avaliar recrutamento/PEEP com cautela.</td></tr>
+            <tr><td>Erro frequente</td><td>Usar peso real para calcular volume corrente ou tentar normalizar gasometria à custa de pressão/volume excessivos.</td></tr>
+          </tbody>
+        </table>
+        <span class="pill">Vt 4–6 mL/kg PBW</span><span class="pill">Pplat ≤30</span><span class="pill">ΔP baixa</span><span class="pill-warning">prona se indicado</span>
+      </div></details>
+
+      <details><summary>11.2 DPOC / asma grave — ventilação obstrutiva</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Bloco</th><th>Conteúdo prático</th></tr></thead>
+          <tbody>
+            <tr><td>Critérios de reconhecimento</td><td>Expiração prolongada, sibilância ou tórax silencioso, hipercapnia, acidose respiratória, pressão de pico elevada com platô relativamente menor, fluxo expiratório que não retorna a zero antes do próximo ciclo.</td></tr>
+            <tr><td>Etiologias</td><td>Exacerbação asmática, exacerbação de DPOC, broncoespasmo por anafilaxia, aspiração, infecção respiratória, broncoespasmo peri-intubação.</td></tr>
+            <tr><td>Objetivo ventilatório</td><td>Evitar hiperinsuflação dinâmica e auto-PEEP, mesmo que seja necessário aceitar hipercapnia permissiva.</td></tr>
+            <tr><td>Ajustes iniciais</td><td>FR baixa, tempo expiratório prolongado, fluxo inspiratório mais alto quando necessário, Vt moderado/baixo, PEEP externa cautelosa e monitorização da curva fluxo-tempo.</td></tr>
+            <tr><td>Medicações relacionadas</td><td>Broncodilatadores inalatórios, corticoide, sulfato de magnésio IV em asma grave/refratária, salbutamol IV em protocolos selecionados, adrenalina se anafilaxia, cetamina como indução/sedação favorável quando apropriado.</td></tr>
+            <tr><td>Erro frequente</td><td>Aumentar FR para corrigir CO₂, piorando auto-PEEP, hipotensão e barotrauma.</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <thead><tr><th>Medicação</th><th>Quando considerar</th><th>Preparo/dose prática</th><th>Monitorização</th></tr></thead>
+          <tbody>
+            <tr><td>Sulfato de magnésio IV</td><td>Asma grave/refratária após tratamento inicial intensivo.</td><td>2 g IV em 20 min. Se 50%: 4 mL + 96 mL diluente = 100 mL. Se 10%: 20 mL + 80 mL diluente = 100 mL.</td><td>PA, reflexos, FR, função renal.</td></tr>
+            <tr><td>Salbutamol IV</td><td>Asma crítica refratária conforme protocolo.</td><td>Exemplo: 5 mg em 50 mL = 100 mcg/mL; 5–20 mcg/min em protocolos selecionados.</td><td>FC, arritmia, K⁺, lactato, tremor, isquemia.</td></tr>
+            <tr><td>Cetamina</td><td>Indução/sedação com broncodilatação e analgesia dissociativa.</td><td>IOT: 0,5–2 mg/kg IV; infusão conforme meta de sedação/analgesia.</td><td>PA, FC, salivação, fenômenos emergentes.</td></tr>
+            <tr><td>Adrenalina</td><td>Anafilaxia associada ou broncoespasmo com instabilidade grave selecionada.</td><td>IM é primeira linha na anafilaxia; infusão IV apenas em refratariedade monitorizada.</td><td>ECG, PA, K⁺, lactato, isquemia.</td></tr>
+          </tbody>
+        </table>
+        
+      <details><summary>Apresentações comerciais das medicações associadas ao broncoespasmo grave</summary><div class="detail-body">
+        <table>
+          <thead><tr><th>Medicação</th><th>Apresentação comercial — concentração, volume total e conteúdo total</th><th>Concentração/preparo usado no cenário</th></tr></thead>
+          <tbody>
+            <tr><td>Sulfato de magnésio 50%</td><td>500 mg/mL — ampola de 10 mL = 5 g.</td><td>Para 2 g: aspirar 4 mL e diluir até 100 mL.</td></tr>
+            <tr><td>Sulfato de magnésio 10%</td><td>100 mg/mL — ampola de 10 mL = 1 g.</td><td>Para 2 g: aspirar 20 mL e completar até 100 mL.</td></tr>
+            <tr><td>Adrenalina</td><td>1 mg/mL — ampola de 1 mL = 1 mg.</td><td>IM é primeira linha na anafilaxia; infusão IV apenas em refratariedade monitorizada.</td></tr>
+            <tr><td>Cetamina</td><td>50 mg/mL — frasco-ampola de 10 mL = 500 mg.</td><td>Concentração para bolus ou infusão depende da diluição escolhida.</td></tr>
+            <tr><td>Salbutamol IV</td><td>Apresentação varia por serviço; registrar concentração, volume total e conteúdo total antes do preparo.</td><td>Conferir protocolo, via, concentração final e monitorização antes de usar via IV.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+        <div class="alert alert-warning"><strong>Armadilha:</strong> hipotensão pós-IOT em ASMA/DPOC grave pode ser auto-PEEP. Antes de apenas aumentar vasopressor, avaliar hiperinsuflação dinâmica, pneumotórax e hipovolemia relativa.</div>
+      </div></details>
+
+      <details><summary>11.3 Obesidade</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Problema dominante</th><td>Redução da capacidade residual funcional, atelectasia, maior pressão pleural e dessaturação rápida.</td></tr>
+            <tr><th>Diagnóstico prático</th><td>IMC elevado, circunferência cervical/abdominal, dessaturação rápida em decúbito e complacência aparente reduzida.</td></tr>
+            <tr><th>Ajuste ventilatório</th><td>Vt por peso predito, não por peso real. PEEP pode ser necessária para evitar fechamento de vias aéreas, mas deve ser individualizada.</td></tr>
+            <tr><th>Erro frequente</th><td>Interpretar platô elevado sempre como pulmão rígido; parte pode ser parede torácica/abdome.</td></tr>
+          </tbody>
+        </table>
+        <span class="pill">PBW, não peso real</span><span class="pill-warning">PEEP individualizada</span><span class="pill">ramped/head-up</span>
+      </div></details>
+
+      <details><summary>11.4 TCE / hipertensão intracraniana</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Critérios/contexto</th><td>TCE grave, rebaixamento, sinais de hipertensão intracraniana, lesão expansiva, edema cerebral, hemorragia intracraniana ou necessidade de controle estrito de ventilação.</td></tr>
+            <tr><th>Objetivo</th><td>Evitar hipóxia, hipotensão, hipercapnia sustentada e variações abruptas de PaCO₂. Preservar pressão de perfusão cerebral.</td></tr>
+            <tr><th>Ajuste ventilatório</th><td>Normoxemia e normocapnia como regra. Hiperventilação é medida temporária em herniação iminente, não estratégia de rotina prolongada.</td></tr>
+            <tr><th>Erro frequente</th><td>Reduzir PaCO₂ agressivamente por longos períodos, causando vasoconstrição cerebral e isquemia.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>11.5 TEP de alto risco / falência de ventrículo direito</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Critérios/contexto</th><td>Choque ou hipotensão com suspeita/diagnóstico de TEP, dilatação/disfunção de VD no POCUS/eco, hipoxemia, síncope ou biomarcadores elevados.</td></tr>
+            <tr><th>Objetivo</th><td>Evitar aumento de pós-carga de VD: hipóxia, hipercapnia, acidose e PEEP excessiva pioram resistência vascular pulmonar.</td></tr>
+            <tr><th>Ajuste ventilatório</th><td>Menor pressão média possível compatível com oxigenação; evitar hiperinsuflação e PEEP excessiva; corrigir acidose e hipoxemia.</td></tr>
+            <tr><th>Erro frequente</th><td>Intubar sem preparo hemodinâmico, precipitando colapso de VD por redução de retorno venoso e aumento de pressão intratorácica.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>11.6 Choque / instabilidade hemodinâmica</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Problema dominante</th><td>Pressão positiva reduz retorno venoso e pode reduzir débito cardíaco, especialmente em hipovolemia, VD disfuncional e vasoplegia.</td></tr>
+            <tr><th>Antes da IOT</th><td>Preparar vasopressor, corrigir hipovolemia quando presente, reduzir dose de indutores, pré-oxigenar e antecipar queda de PAM.</td></tr>
+            <tr><th>No ventilador</th><td>Evitar PEEP/pressão média excessivas; titular para oxigenação e perfusão; reavaliar lactato, pele, diurese e POCUS.</td></tr>
+            <tr><th>Erro frequente</th><td>Confundir necessidade de oxigênio com necessidade de pressão alta; pressão excessiva pode piorar choque.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>11.7 Acidose metabólica grave</summary><div class="detail-body">
+        <table>
+          <tbody>
+            <tr><th>Critério/contexto</th><td>pH muito baixo por CAD, sepse, insuficiência renal, intoxicações ou choque, com hiperventilação compensatória intensa.</td></tr>
+            <tr><th>Risco da IOT</th><td>Apneia e ventilação minuto insuficiente após intubação aumentam PaCO₂ rapidamente e podem agravar acidemia.</td></tr>
+            <tr><th>Ajuste ventilatório</th><td>Planejar ventilação minuto compatível com compensação prévia, sem gerar auto-PEEP ou pressão excessiva.</td></tr>
+            <tr><th>Erro frequente</th><td>Sedar/paralisar e ventilar com FR/volume muito baixos para o grau de acidose, levando a colapso hemodinâmico.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+    </section>
+
+    <section id="checklist">
+      <h2>12. Checklist inicial pós-IOT — ventilador</h2>
+      <div class="grid grid-2">
+        <div class="card"><h4>Configuração inicial segura</h4>
+          <ul class="checklist">
+            <li>Modo inicial: VCV ou PCV conforme contexto e familiaridade.</li>
+            <li>Vt por PBW: usualmente 6 mL/kg, ajustar 4–8.</li>
+            <li>FR inicial: 16–24/min conforme CO₂/pH/doença.</li>
+            <li>PEEP: 5–10 cmH₂O, individualizar.</li>
+            <li>FiO₂ inicial alta no pós-IOT imediato, reduzir conforme SpO₂/PaO₂.</li>
+            <li>Alarmes: pressão, volume minuto, apneia, desconexão.</li>
+          </ul>
+        </div>
+        <div class="card"><h4>Reavaliação nos primeiros 10–30 min</h4>
+          <ul class="checklist">
+            <li>Capnografia e curva de ETCO₂.</li>
+            <li>SpO₂ e gasometria conforme gravidade.</li>
+            <li>Ppico, Pplat, driving pressure.</li>
+            <li>Fluxo expiratório retorna a zero?</li>
+            <li>PA, FC e necessidade de vasopressor.</li>
+            <li>Sincronia, sedoanalgesia e conforto.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="erros">
+      <h2>13. Erros frequentes e respostas práticas</h2>
+      <details open><summary>Erro 1 — Usar peso real para calcular volume corrente</summary><div class="detail-body"><p><strong>Risco:</strong> volutrauma, especialmente em obesidade. <strong>Resposta:</strong> recalcular por peso predito; ajustar Vt e reavaliar Pplat/ΔP.</p></div></details>
+      <details><summary>Erro 2 — Corrigir hipoxemia apenas aumentando FiO₂</summary><div class="detail-body"><p><strong>Risco:</strong> hiperóxia e absorção de atelectasia sem corrigir colapso. <strong>Resposta:</strong> avaliar PEEP, recrutamento, posição, secreção, edema/consolidação e hemodinâmica.</p></div></details>
+      <details><summary>Erro 3 — Ignorar fluxo expiratório que não retorna a zero</summary><div class="detail-body"><p><strong>Risco:</strong> auto-PEEP, hipotensão, PEA. <strong>Resposta:</strong> reduzir FR/Vt, aumentar tempo expiratório, tratar broncoespasmo e considerar desconexão breve se colapso por hiperinsuflação.</p></div></details>
+      <details><summary>Erro 4 — Interpretar pressão de pico como pressão alveolar</summary><div class="detail-body"><p><strong>Risco:</strong> confundir resistência com distensão alveolar. <strong>Resposta:</strong> medir Pplat com pausa inspiratória no paciente passivo e calcular ΔP.</p></div></details>
+      <details><summary>Erro 5 — Sedar mais sem investigar assincronia</summary><div class="detail-body"><p><strong>Risco:</strong> sedação excessiva, delirium, prolongamento de VM. <strong>Resposta:</strong> checar dor, ansiedade, hipoxemia, hipercapnia, trigger, fluxo, auto-PEEP, secreção e modo ventilatório.</p></div></details>
+      <details><summary>Erro 6 — Ventilar acidose metabólica grave como “paciente comum”</summary><div class="detail-body"><p><strong>Risco:</strong> aumento agudo de PaCO₂, queda do pH e colapso. <strong>Resposta:</strong> estimar volume minuto pré-IOT, ajustar FR/ventilação e colher gasometria precoce.</p></div></details>
+    </section>
+
+    <section id="referencias">
+      <h2>Referências primárias e fontes metodológicas do Módulo 3</h2>
+      
+      <details class="refs-collapsible">
+        <summary>Mostrar/ocultar referências</summary>
+        <div class="detail-body">
+          <ol>
+        <li>ARDS Network. <strong>Ventilation with lower tidal volumes as compared with traditional tidal volumes for acute lung injury and ARDS</strong>. <em>New England Journal of Medicine</em>. 2000;342:1301-1308. DOI: 10.1056/NEJM200005043421801.</li>
+        <li>Amato MBP, Meade MO, Slutsky AS, et al. <strong>Driving pressure and survival in the acute respiratory distress syndrome</strong>. <em>New England Journal of Medicine</em>. 2015;372:747-755. DOI: 10.1056/NEJMsa1410639.</li>
+        <li>Guérin C, Reignier J, Richard JC, et al. <strong>Prone positioning in severe acute respiratory distress syndrome</strong>. <em>New England Journal of Medicine</em>. 2013;368:2159-2168. DOI: 10.1056/NEJMoa1214103.</li>
+        <li>Carteaux G, Spinelli E, Jaber S. <strong>Understanding lung physiology through ventilator screen</strong>. <em>Intensive Care Medicine</em>. 2026. DOI: 10.1007/s00134-026-08341-5.</li>
+        <li>Kitisin N, Caroli A, Carvalho Ferreira J, et al. <strong>Mechanical ventilation for ICU patient with obesity: current best practices and future directions</strong>. <em>Intensive Care Medicine</em>. 2026. DOI: 10.1007/s00134-026-08397-3.</li>
+        <li>Kırsan RN, Şentürk M. <strong>Pulmonary atelectasis in anaesthesia and critical care</strong>. <em>BJA Education</em>. 2026;26(1):20-29. DOI: 10.1016/j.bjae.2025.09.005.</li>
+        <li>Fan E, Del Sorbo L, Goligher EC, et al. <strong>An Official ATS/ESICM/SCCM Clinical Practice Guideline: Mechanical Ventilation in Adult Patients with ARDS</strong>. <em>American Journal of Respiratory and Critical Care Medicine</em>. 2017;195(9):1253-1263. DOI: 10.1164/rccm.201703-0548ST.</li>
+      </ol>
+      <div class="alert alert-info"><strong>Nota metodológica:</strong> as recomendações de volume corrente, platô e driving pressure foram ancoradas em evidência primária de ventilação protetora e em fisiologia ventilatória. Revisões recentes foram usadas como apoio interpretativo, não como substituto de ensaios ou diretrizes originais.</div>
+        </div>
+      </details>
+    </section>
+
+    <div class="footer-sign">
+      <p><strong>André M. Sena - Médico (CRM/RN 12533)</strong></p>
+    </div>
+  </main>
+</div>
+
+<script>
+function calcPBW(){
+  const sex=document.getElementById('sex').value;
+  const h=parseFloat(document.getElementById('height').value||0);
+  const w=parseFloat(document.getElementById('realweight').value||0);
+  const vtkg=parseFloat(document.getElementById('vtkg').value||6);
+  if(!h || h<100){return}
+  let pbw=(sex==='male') ? 50 + 0.91*(h-152.4) : 45.5 + 0.91*(h-152.4);
+  if(pbw<20) pbw=20;
+  const vt=pbw*vtkg;
+  const bmi=w/Math.pow(h/100,2);
+  const vt4=pbw*4, vt6=pbw*6, vt8=pbw*8;
+  document.getElementById('pbwResult').innerHTML =
+    '<strong>PBW: '+pbw.toFixed(1)+' kg</strong>'+
+    '<span>Vt alvo ('+vtkg+' mL/kg): <b>'+Math.round(vt)+' mL</b> &nbsp;|&nbsp; Faixa 4–8 mL/kg: '+Math.round(vt4)+'–'+Math.round(vt8)+' mL &nbsp;|&nbsp; IMC: '+(bmi?bmi.toFixed(1):'—')+' kg/m²</span>';
+}
+['sex','height','realweight','vtkg'].forEach(id=>document.getElementById(id).addEventListener('input',calcPBW));
+calcPBW();
+</script>
+<script>
+function initModuleMenu(){
+  const app=document.getElementById("moduleApp");
+  const toggle=document.getElementById("moduleNavToggle");
+  const nav=document.getElementById("moduleNav");
+  if(!app || !toggle || !nav) return;
+  const links=Array.from(nav.querySelectorAll('a[href^="#"]'));
+  function shortLabel(link,index){
+    const text=(link.textContent || "").trim();
+    const number=text.match(/^([0-9]+(?:\.[0-9]+)?)/);
+    if(number) return number[1];
+    if(/refer/i.test(text)) return "Ref";
+    if(/leit/i.test(text)) return "Ler";
+    return String(index+1);
+  }
+  links.forEach((link,index)=>{
+    if(!link.getAttribute("data-short")) link.setAttribute("data-short", shortLabel(link,index));
+    if(!link.querySelector(".nav-label")){
+      const label=document.createElement("span");
+      label.className="nav-label";
+      label.textContent=link.textContent;
+      link.textContent="";
+      link.appendChild(label);
+    }
+  });
+  function setCollapsed(collapsed){
+    app.classList.toggle("nav-collapsed", collapsed);
+    toggle.textContent = collapsed ? "Menu" : "Minimizar";
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+  }
+  function setActive(link){
+    links.forEach(item=>item.classList.remove("module-nav-link--active"));
+    if(link) link.classList.add("module-nav-link--active");
+  }
+  toggle.addEventListener("click", ()=>setCollapsed(!app.classList.contains("nav-collapsed")));
+  links.forEach(link=>{
+    link.addEventListener("click", (event)=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(!target) return;
+      event.preventDefault();
+      target.scrollIntoView({behavior:"smooth", block:"start"});
+      try{ history.replaceState(null, "", link.getAttribute("href")); }catch(e){}
+      setActive(link);
+      if(window.matchMedia("(max-width: 980px)").matches) setCollapsed(true);
+    });
+  });
+  const initial=links.find(link=>link.getAttribute("href")===window.location.hash) || links[0];
+  setActive(initial);
+  if("IntersectionObserver" in window){
+    const observer=new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const active=links.find(link=>link.getAttribute("href")==="#"+entry.target.id);
+          setActive(active);
+        }
+      });
+    }, {root:null, rootMargin:"-20% 0px -65% 0px", threshold:0.01});
+    links.forEach(link=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(target) observer.observe(target);
+    });
+  }
+}
+initModuleMenu();
+</script>
+</body>
+</html>

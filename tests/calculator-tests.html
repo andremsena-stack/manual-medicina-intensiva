@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Testes minimos de calculadoras</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #f5f7fb;
+        color: #172033;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      main {
+        max-width: 880px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: #123c69;
+        font-size: 1.5rem;
+      }
+
+      .result {
+        border: 1px solid #d8e2ea;
+        border-radius: 8px;
+        background: #fff;
+        margin: 8px 0;
+        padding: 12px;
+      }
+
+      .pass {
+        border-left: 6px solid #067647;
+      }
+
+      .fail {
+        border-left: 6px solid #b42318;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Testes minimos de calculadoras</h1>
+      <p>Regressao local para PBW, concentracao, dose/vazao e validacao basica.</p>
+      <div id="results"></div>
+    </main>
+
+    <script>
+      const results = document.getElementById("results");
+
+      function numeric(value, label) {
+        const parsed = Number(value);
+        if (value === "" || value === null || value === undefined || !Number.isFinite(parsed) || parsed <= 0) {
+          throw new Error(`${label} invalido`);
+        }
+        return parsed;
+      }
+
+      function assertClose(actual, expected) {
+        if (Math.abs(actual - expected) >= 0.0001) {
+          throw new Error(`esperado ${expected}, obtido ${actual}`);
+        }
+      }
+
+      function mgToMcg(mg) {
+        return numeric(mg, "mg") * 1000;
+      }
+
+      function concentrationMcgMl(drugAmountMg, finalVolumeMl) {
+        return mgToMcg(drugAmountMg) / numeric(finalVolumeMl, "volume final");
+      }
+
+      function doseToRate(doseMcgKgMin, weightKg, concentration) {
+        return (numeric(doseMcgKgMin, "dose") * numeric(weightKg, "peso") * 60) / numeric(concentration, "concentracao");
+      }
+
+      function rateToDose(rateMlH, weightKg, concentration) {
+        return (numeric(rateMlH, "vazao") * numeric(concentration, "concentracao")) / (numeric(weightKg, "peso") * 60);
+      }
+
+      function pbwMale(heightCm) {
+        return 50 + 0.91 * (numeric(heightCm, "altura") - 152.4);
+      }
+
+      function pbwFemale(heightCm) {
+        return 45.5 + 0.91 * (numeric(heightCm, "altura") - 152.4);
+      }
+
+      function activeInputMode(dose, rate) {
+        const hasDose = String(dose || "").trim().length > 0;
+        const hasRate = String(rate || "").trim().length > 0;
+        if (hasDose && hasRate) throw new Error("dose e vazao nao podem ser entradas simultaneas");
+        if (hasDose) return "dose";
+        if (hasRate) return "rate";
+        return "empty";
+      }
+
+      const tests = [
+        ["concentracao final", () => assertClose(concentrationMcgMl(16, 250), 64)],
+        ["mg para mcg", () => assertClose(mgToMcg(16), 16000)],
+        ["dose para vazao", () => assertClose(doseToRate(0.1, 70, 64), 6.5625)],
+        ["vazao para dose", () => assertClose(rateToDose(6.5625, 70, 64), 0.1)],
+        ["PBW masculino", () => assertClose(pbwMale(170), 66.016)],
+        ["PBW feminino", () => assertClose(pbwFemale(170), 61.516)],
+        ["volume corrente 4 mL/kg", () => assertClose(pbwMale(170) * 4, 264.064)],
+        ["volume corrente 6 mL/kg", () => assertClose(pbwMale(170) * 6, 396.096)],
+        ["volume corrente 8 mL/kg", () => assertClose(pbwMale(170) * 8, 528.128)],
+        ["modo dose", () => activeInputMode("0.1", "") === "dose" || fail()],
+        ["modo vazao", () => activeInputMode("", "6.5") === "rate" || fail()],
+        ["modo vazio", () => activeInputMode("", "") === "empty" || fail()],
+        ["bloqueio dose/vazao", () => expectThrow(() => activeInputMode("0.1", "6.5"))],
+        ["campo vazio invalido", () => expectThrow(() => doseToRate("", 70, 64))],
+        ["valor invalido", () => expectThrow(() => doseToRate(0.1, -1, 64))]
+      ];
+
+      function fail() {
+        throw new Error("resultado inesperado");
+      }
+
+      function expectThrow(fn) {
+        let failed = false;
+        try {
+          fn();
+        } catch {
+          failed = true;
+        }
+        if (!failed) fail();
+      }
+
+      tests.forEach(([name, run]) => {
+        const node = document.createElement("div");
+        node.className = "result";
+        try {
+          run();
+          node.classList.add("pass");
+          node.textContent = `OK - ${name}`;
+        } catch (error) {
+          node.classList.add("fail");
+          node.textContent = `FALHA - ${name}: ${error.message}`;
+        }
+        results.appendChild(node);
+      });
+    </script>
+  </body>
+</html>

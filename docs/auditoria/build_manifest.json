@@ -1,0 +1,106 @@
+{
+  "generated": "2026-05-18",
+  "packageName": "kit_codex_manual_medicina_intensiva_modulos_1_6_v33_referencias_recolhiveis",
+  "moduleVersions": {
+    "Módulo 1": "modulo_01_via_aerea_iot_harmonizado_v7_clinico_refs_recolhiveis.html",
+    "Módulo 2": "modulo_02_pos_intubacao_confirmacao_revisado_v7_clinico_refs_recolhiveis.html",
+    "Módulo 3": "modulo_03_ventilacao_mecanica_harmonizado_v5_harmonizado_refs_recolhiveis.html",
+    "Módulo 4": "modulo_04_manutencao_sedoanalgesia_harmonizado_v6_harmonizado_refs_recolhiveis.html",
+    "Módulo 5": "modulo_05_drogas_vasoativas_harmonizado_v6_harmonizado_refs_recolhiveis.html",
+    "Módulo 6": "modulo_06_calculadoras_interativas_revisado_v30_unidade_dose_editavel_bolus_corrigido_refs_recolhiveis.html"
+  },
+  "modules": [
+    {
+      "id": "modulo-01",
+      "number": 1,
+      "title": "Via aérea e intubação orotraqueal",
+      "file": "modules/modulo_01_via_aerea_iot.html",
+      "sourceFile": "src/data/modules/modulo_01_via_aerea_iot.html",
+      "sizeKB": 476.9,
+      "imageCount": 4,
+      "externalImages": 0,
+      "relativeImages": 0,
+      "scriptCount": 0,
+      "styleCount": 1,
+      "detailsCount": 43
+    },
+    {
+      "id": "modulo-02",
+      "number": 2,
+      "title": "Pós-intubação e confirmação",
+      "file": "modules/modulo_02_pos_intubacao_confirmacao.html",
+      "sourceFile": "src/data/modules/modulo_02_pos_intubacao_confirmacao.html",
+      "sizeKB": 64.0,
+      "imageCount": 0,
+      "externalImages": 0,
+      "relativeImages": 0,
+      "scriptCount": 0,
+      "styleCount": 1,
+      "detailsCount": 24
+    },
+    {
+      "id": "modulo-03",
+      "number": 3,
+      "title": "Ventilação mecânica invasiva",
+      "file": "modules/modulo_03_ventilacao_mecanica.html",
+      "sourceFile": "src/data/modules/modulo_03_ventilacao_mecanica.html",
+      "sizeKB": 58.2,
+      "imageCount": 0,
+      "externalImages": 0,
+      "relativeImages": 0,
+      "scriptCount": 1,
+      "styleCount": 1,
+      "detailsCount": 15
+    },
+    {
+      "id": "modulo-04",
+      "number": 4,
+      "title": "Manutenção de sedoanalgesia em UTI",
+      "file": "modules/modulo_04_manutencao_sedoanalgesia.html",
+      "sourceFile": "src/data/modules/modulo_04_manutencao_sedoanalgesia.html",
+      "sizeKB": 57.1,
+      "imageCount": 0,
+      "externalImages": 0,
+      "relativeImages": 0,
+      "scriptCount": 1,
+      "styleCount": 1,
+      "detailsCount": 9
+    },
+    {
+      "id": "modulo-05",
+      "number": 5,
+      "title": "Drogas vasoativas em medicina intensiva",
+      "file": "modules/modulo_05_drogas_vasoativas.html",
+      "sourceFile": "src/data/modules/modulo_05_drogas_vasoativas.html",
+      "sizeKB": 65.3,
+      "imageCount": 0,
+      "externalImages": 0,
+      "relativeImages": 0,
+      "scriptCount": 1,
+      "styleCount": 1,
+      "detailsCount": 26
+    },
+    {
+      "id": "modulo-06",
+      "number": 6,
+      "title": "Calculadoras interativas",
+      "file": "modules/modulo_06_calculadoras_interativas.html",
+      "sourceFile": "src/data/modules/modulo_06_calculadoras_interativas.html",
+      "sizeKB": 139.3,
+      "imageCount": 0,
+      "externalImages": 0,
+      "relativeImages": 0,
+      "scriptCount": 1,
+      "styleCount": 1,
+      "detailsCount": 7
+    }
+  ],
+  "portability": {
+    "externalImageUrlsTotal": 0,
+    "relativeImageRefsTotal": 0,
+    "standaloneIncluded": true
+  },
+  "changes": [
+    "Referências finais de todos os módulos foram colocadas em menu recolhível."
+  ]
+}
