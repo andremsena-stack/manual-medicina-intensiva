@@ -65,15 +65,6 @@ function App() {
                 setIsSidebarOpen(false);
               }}
             />
-            <section className="policy-panel" aria-labelledby="clinical-policy-title">
-              <span className="eyebrow">Politica clinica</span>
-              <h2 id="clinical-policy-title">Conteudo preservado</h2>
-              <p>
-                Doses, diluicoes, formulas, limites e recomendacoes permanecem nos HTMLs aprovados.
-                Ajustes clinicos exigem registro como <strong>REQUER REVISAO MEDICA</strong>.
-              </p>
-              <span className="source-path">docs/clinical-sources.md</span>
-            </section>
           </div>
         </main>
       </div>

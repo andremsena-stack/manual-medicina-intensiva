@@ -5,6 +5,60 @@
 ### Tipo de alteracao
 
 - Interface
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removido da interface publica o painel lateral de disclaimer/politica clinica.
+- Mantida a politica clinica nos documentos internos do projeto, incluindo `README.md`, `docs/clinical-sources.md` e `docs/changelog.md`.
+- Removidos estilos CSS sem uso associados ao painel `policy-panel`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v18`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao, recomendacao ou texto medico.
+
+### Arquivos modificados
+
+- `src/App.tsx`
+- `src/styles.css`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
+- Responsividade
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Transformada a busca global em painel recolhivel, fechado por padrao.
+- Adicionado botao `Abrir busca/Recolher` para expandir o buscador sob demanda.
+- Mantida indicacao compacta de busca recolhida e contagem de resultados quando houver termo ativo.
+- Mantido foco automatico no campo ao abrir o buscador.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v17`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao, recomendacao ou texto medico.
+
+### Arquivos modificados
+
+- `src/components/SearchPanel.tsx`
+- `src/styles.css`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
 - Responsividade
 - PWA/offline
 
