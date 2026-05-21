@@ -34,6 +34,13 @@ function rateToDose({ rateMlH, weightKg, concentrationMcgMl }) {
   return (rate * concentration) / (weight * 60);
 }
 
+function weightBasedBolusVolume({ doseMcgKg, weightKg, concentrationMcgMl }) {
+  const dose = numeric(doseMcgKg, "dose");
+  const weight = numeric(weightKg, "peso");
+  const concentration = numeric(concentrationMcgMl, "concentracao");
+  return (dose * weight) / concentration;
+}
+
 function pbwMale(heightCm) {
   return 50 + 0.91 * (numeric(heightCm, "altura") - 152.4);
 }
@@ -76,6 +83,7 @@ assert.equal(mgToMcg(16), 16000, "conversao mg para mcg");
 const rate = doseToRate({ doseMcgKgMin: 0.1, weightKg: 70, concentrationMcgMl: 64 });
 assertClose(rate, 6.5625, "dose para vazao");
 assertClose(rateToDose({ rateMlH: rate, weightKg: 70, concentrationMcgMl: 64 }), 0.1, "vazao para dose");
+assertClose(weightBasedBolusVolume({ doseMcgKg: 500, weightKg: 70, concentrationMcgMl: 10000 }), 3.5, "bolus por peso para volume");
 
 assertClose(pbwMale(170), 66.016, "PBW masculino");
 assertClose(pbwFemale(170), 61.516, "PBW feminino");

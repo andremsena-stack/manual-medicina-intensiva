@@ -435,6 +435,7 @@
         <li>Farmacologia de bloqueadores neuromusculares: atracúrio como alternativa com metabolismo por Hofmann/esterases e risco de liberação de histamina.</li>
         <li>Creager MA, Barnes GD, Giri J, et al. <strong>2026 AHA/ACC/ACCP/ACEP/CHEST/SCAI/SHM/SIR/SVM/SVN Guideline for the Evaluation and Management of Acute Pulmonary Embolism in Adults</strong>. <em>JACC/Circulation</em>. 2026.</li>
         <li>Diretrizes ACC/AHA para doenças da aorta e recomendações contemporâneas de emergência hipertensiva foram usadas para estruturar o cenário de dissecção aórtica: controle inicial de FC/dP/dt antes de vasodilatação.</li>
+        <li>Bulas profissionais/DailyMed de metoprolol, esmolol e labetalol foram usadas para apresentações, bólus IV e alertas de administração; conferir fabricante local.</li>
       </ol>
         </div>
       </details>
@@ -550,8 +551,8 @@ const scenarioNotes = {
   },
   disseccao: {
     iot: "Dissecção aórtica: evitar taquicardia, hipertensão e descarga simpática da laringoscopia. Analgesia/opioide pode atenuar resposta adrenérgica; hipnótico deve evitar hipotensão profunda. Prioridade: controle de FC e dP/dt.",
-    dva: "Dissecção aórtica: alvo clássico é reduzir FC primeiro, geralmente com beta-bloqueador titulável como esmolol/labetalol, antes de vasodilatador. Após controle de FC, considerar vasodilatação para PAS ~100–120 mmHg se perfusão tolerar. Evitar vasodilatador isolado antes do bloqueio beta.",
-    sugestao: "Melhores opções: opioide para analgesia/resposta simpática, etomidato se instável, esmolol ou labetalol para FC/dP/dt; vasodilatador apenas após controle beta se PAS persistir elevada."
+    dva: "Dissecção aórtica: alvo clássico é reduzir FC primeiro, geralmente com beta-bloqueador titulável como esmolol, labetalol ou metoprolol conforme contexto/disponibilidade, antes de vasodilatador. Após controle de FC, considerar vasodilatação para PAS ~100–120 mmHg se perfusão tolerar. Evitar vasodilatador isolado antes do bloqueio beta.",
+    sugestao: "Melhores opções: opioide para analgesia/resposta simpática, etomidato se instável, esmolol/labetalol/metoprolol para FC/dP/dt; vasodilatador apenas após controle beta se PAS persistir elevada."
   },
   tep: {
     iot: "TEP de alto risco/choque obstrutivo: intubação pode precipitar colapso por redução do retorno venoso e piora do VD. Evitar hipoxemia, hipercapnia, acidose e PEEP excessiva; considerar preparo hemodinâmico com vasopressor antes da indução.",
@@ -721,6 +722,53 @@ const dvaBolusDrugs = {
         ],
         ampoule:"Nitroglicerina: apresentação comercial concentrada variável; conferir mg/mL, volume total e compatibilidade.",
         notes:"Uso selecionado em EAP hipertensivo/hipertensão grave conforme protocolo. Evitar em hipotensão, uso recente de inibidor de PDE5 e suspeita de infarto de VD."
+      }
+    }
+  },
+  betabloqueador_bolus: {
+    label:"Betabloqueador em bólus / anti-impulso",
+    drugs:{
+      metoprolol:{
+        name:"Metoprolol IV",
+        doseUnit:"mg",
+        defaultDose:5,
+        range:"5 mg IV lento; pode repetir a cada 2–5 min até 15 mg conforme resposta, tolerância e protocolo",
+        presentations:[
+          {label:"Metoprolol 5 mg/5 mL = 1 mg/mL", conc:1, unit:"mgml", prep:"Metoprolol 5 mg/5 mL = solução pronta para uso, concentração 1 mg/mL. Uso usual puro/sem diluição; administrar IV lento conforme protocolo."}
+        ],
+        commercialPresentations:[
+          {label:"Metoprolol 5 mg/5 mL — ampola/fr. 5 mL = 5 mg", conc:1, unit:"mgml", volume:5, content:5, contentUnit:"mg"}
+        ],
+        ampoule:"Metoprolol 5 mg/5 mL — concentração 1 mg/mL; conteúdo total 5 mg.",
+        notes:"Betabloqueador β1 seletivo. Em suspeita de dissecção aórtica, usar para controle de FC/dP/dt antes de vasodilatação quando não houver contraindicação. Evitar/cautelar em choque, bradicardia, BAV, asma/broncoespasmo grave e IC descompensada."
+      },
+      esmolol_bolus:{
+        name:"Esmolol dose de ataque",
+        doseUnit:"mcg/kg",
+        defaultDose:500,
+        range:"500 mcg/kg IV em 1 min como dose de ataque; seguir infusão titulável conforme protocolo",
+        presentations:[
+          {label:"Esmolol 10 mg/mL = 10.000 mcg/mL", conc:10000, unit:"mcgml", prep:"Esmolol 100 mg/10 mL = 10 mg/mL = 10.000 mcg/mL. Uso usual puro para dose de ataque; administrar em 1 min. Se apresentação pré-misturada/concentrada diferir, ajustar concentração."}
+        ],
+        commercialPresentations:[
+          {label:"Esmolol 100 mg/10 mL — 10 mg/mL", conc:10, unit:"mgml", volume:10, content:100, contentUnit:"mg"}
+        ],
+        ampoule:"Esmolol 100 mg/10 mL — concentração 10 mg/mL; conteúdo total 100 mg.",
+        notes:"Betabloqueador β1 ultracurto. Preferível quando se deseja titulação rápida e reversibilidade em dissecção aórtica/taquicardia hipertensiva. Monitorar PA, FC, BAV, broncoespasmo e sinais de baixo débito."
+      },
+      labetalol_bolus:{
+        name:"Labetalol IV",
+        doseUnit:"mg",
+        defaultDose:20,
+        range:"20 mg IV lento em 2 min; repetir 40–80 mg a cada 10 min conforme resposta; máximo total usual 300 mg",
+        presentations:[
+          {label:"Labetalol 100 mg/20 mL = 5 mg/mL", conc:5, unit:"mgml", prep:"Labetalol 100 mg/20 mL = solução pronta para uso, concentração 5 mg/mL. Uso usual puro/sem diluição para bólus lento; administrar conforme protocolo."}
+        ],
+        commercialPresentations:[
+          {label:"Labetalol 100 mg/20 mL — 5 mg/mL", conc:5, unit:"mgml", volume:20, content:100, contentUnit:"mg"}
+        ],
+        ampoule:"Labetalol 100 mg/20 mL — concentração 5 mg/mL; conteúdo total 100 mg.",
+        notes:"Bloqueador β e α1. Útil quando se deseja reduzir FC/dP/dt e PA sem vasodilatador isolado em dissecção aórtica, conforme protocolo. Evitar/cautelar em asma/broncoespasmo, bradicardia, BAV, choque, IC descompensada e hipotensão."
       }
     }
   }
@@ -1225,6 +1273,9 @@ function baseMassUnitFromDoseUnit(unit){
 }
 function doseUnitOptionsFor(unit){
   const base = baseMassUnitFromDoseUnit(unit);
+  if((unit || "").includes("/kg")){
+    if(base === "mcg" || base === "mg") return ["mcg/kg","mg/kg"];
+  }
   if(base === "mcg" || base === "mg") return ["mcg","mg"];
   if(base === "UI") return ["UI"];
   return [unit || ""].filter(Boolean);
@@ -1245,8 +1296,10 @@ function populateDoseUnitSelect(selectId, defaultUnit){
 function convertMassDose(value, fromUnit, toUnit){
   if(!Number.isFinite(value)) return NaN;
   if(fromUnit === toUnit) return value;
-  if(fromUnit === "mg" && toUnit === "mcg") return value*1000;
-  if(fromUnit === "mcg" && toUnit === "mg") return value/1000;
+  const fromBase=baseMassUnitFromDoseUnit(fromUnit);
+  const toBase=baseMassUnitFromDoseUnit(toUnit);
+  if(fromBase === "mg" && toBase === "mcg") return value*1000;
+  if(fromBase === "mcg" && toBase === "mg") return value/1000;
   return value;
 }
 function convertWeightBasedDose(value, fromMassUnit, targetDoseUnit){
@@ -1282,7 +1335,7 @@ function normalizeClinicalText(text){
 function drugTerms(name){
   const n = normalizeClinicalText(name);
   const terms = [];
-  ["etomidato","cetamina","propofol","midazolam","tiopental","fentanil","alfentanil","remifentanil","sufentanil","lidocaina","succinilcolina","suxametonio","rocuronio","cisatracurio","atracurio","sugamadex","neostigmina","noradrenalina","norepinefrina","vasopressina","adrenalina","epinefrina","fenilefrina","dobutamina","dopamina","milrinona","nitroglicerina","nitroprussiato","nicardipina","clevidipina","esmolol","labetalol","isoproterenol","isoprenalina","atropina"].forEach(term=>{
+  ["etomidato","cetamina","propofol","midazolam","tiopental","fentanil","alfentanil","remifentanil","sufentanil","lidocaina","succinilcolina","suxametonio","rocuronio","cisatracurio","atracurio","sugamadex","neostigmina","noradrenalina","norepinefrina","vasopressina","adrenalina","epinefrina","fenilefrina","dobutamina","dopamina","milrinona","nitroglicerina","nitroprussiato","nicardipina","clevidipina","metoprolol","esmolol","labetalol","isoproterenol","isoprenalina","atropina"].forEach(term=>{
     if(n.includes(term)) terms.push(term);
   });
   if(!terms.length && n) terms.push(n.split(/[\s/—-]+/)[0]);
@@ -1655,6 +1708,7 @@ function dvaScenarioFit(name, scenario){
   if(scenario==="disseccao"){
     if(n.includes("esmolol")) lines.push("Adequação: opção forte para controle rápido de FC/dP/dt; meia-vida curta facilita titulação.");
     if(n.includes("labetalol")) lines.push("Adequação: opção útil quando se deseja beta/alfabloqueio; atenção a bradicardia/broncoespasmo.");
+    if(n.includes("metoprolol")) lines.push("Adequação: beta-bloqueador β1 para controle de FC/dP/dt quando esmolol não estiver disponível e não houver contraindicação; menor titulabilidade que esmolol.");
     if(n.includes("nitroprussiato") || n.includes("nitroglicerina") || n.includes("nicardipina")) lines.push("Cautela: vasodilatador deve vir após controle beta para evitar taquicardia reflexa/cisalhamento.");
   }
   if(scenario==="trombolise" || scenario==="hic"){
@@ -1667,7 +1721,7 @@ function dvaScenarioFit(name, scenario){
   }
   if(scenario==="broncoespasmo"){
     if(n.includes("adrenalina")) lines.push("Uso selecionado: pode ajudar em broncoespasmo/anafilaxia; monitorar taquiarritmia/lactato.");
-    if(n.includes("esmolol") || n.includes("labetalol")) lines.push("Cautela: beta-bloqueio pode piorar broncoespasmo, sobretudo não seletivo; usar apenas com indicação forte e monitorização.");
+    if(n.includes("metoprolol") || n.includes("esmolol") || n.includes("labetalol")) lines.push("Cautela: beta-bloqueio pode piorar broncoespasmo, sobretudo não seletivo; usar apenas com indicação forte e monitorização.");
     if(n.includes("noradrenalina")) lines.push("Ponte se hipotensão, mas investigar auto-PEEP, pneumotórax e hipovolemia relativa.");
   }
   if(n.includes("isoproterenol") || n.includes("isoprenalina")) lines.push("Indicação: cronotrópico temporário em bradicardia refratária/bloqueios selecionados como ponte para marcapasso; monitorar arritmia/isquemia.");
@@ -1806,7 +1860,10 @@ function currentDVABolus(){
   const presentation=d.presentations[parseInt(document.getElementById("dvaBolusPresentation").value || 0)];
   const conc=useCustom ? parseFloat(document.getElementById("dvaBolusCustomConc").value || presentation.conc) : presentation.conc;
   const concUnit=useCustom ? document.getElementById("dvaBolusCustomUnit").value : presentation.unit;
-  const amount={amount:dose, unit:d.doseUnit, concUnit: d.doseUnit==="mcg" ? "mcgml" : (d.doseUnit==="mg" ? "mgml" : "uiml")};
+  const doseMassUnit=baseMassUnitFromDoseUnit(d.doseUnit);
+  const isWeightBased=(d.doseUnit || "").includes("/kg");
+  const totalAmount=isWeightBased ? dose*getPeso() : dose;
+  const amount={amount:totalAmount, unit:doseMassUnit, concUnit: doseMassUnit==="mcg" ? "mcgml" : (doseMassUnit==="mg" ? "mgml" : "uiml")};
   const volume=rateFromAmount(amount.amount, amount.unit, conc, concUnit);
   return {cat, drug, d, dose, rawDose, selectedDoseUnit, conc, concUnit, amount, volume, presentation, ampoule};
 }

@@ -5,6 +5,44 @@
 ### Tipo de alteracao
 
 - Conteudo clinico
+- Calculadora
+- Interface
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Adicionada categoria `Betabloqueador em bolus / anti-impulso` na calculadora de bolus/push-dose do Modulo 6.
+- Incluidas as medicacoes `Metoprolol IV`, `Esmolol dose de ataque` e `Labetalol IV`.
+- Adicionadas apresentacoes, preparo/uso usual puro, dose inicial, faixa operacional, cuidados e alertas clinicos para cada betabloqueador.
+- Ajustada a calculadora de bolus para aceitar dose por peso (`mcg/kg` e `mg/kg`) quando a medicacao exigir, preservando doses absolutas para as demais drogas.
+- Adicionado teste minimo para conversao de bolus por peso em volume administrado.
+- Atualizado o cenario `Disseccao aortica` para enderecar metoprolol, esmolol e labetalol como opcoes de controle de FC/dP/dt antes de vasodilatacao.
+- Atualizadas fontes rastreaveis em `docs/clinical-sources.md` com ACC/AHA Aortic Disease 2022 e bulas DailyMed de metoprolol, esmolol e labetalol.
+- Sincronizada a copia espelho do Modulo 6 em `modules/`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v53`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- A mudanca adiciona nova categoria farmacologica, novas medicacoes e orientacoes clinicas de uso em bolus/push-dose.
+- Nao houve alteracao das doses ou formulas ja existentes nas demais calculadoras.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `docs/clinical-sources.md`
+- `scripts/calculator-tests.mjs`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Conteudo clinico
 - Interface
 - Organizacao
 - PWA/offline

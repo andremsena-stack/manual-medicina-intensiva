@@ -81,11 +81,24 @@ Data de consulta/registro no projeto: 2026-05-18.
 - Observacoes de seguranca: usar como referencia conceitual, sem sobrescrever fontes internas automaticamente.
 - Status: fonte externa.
 
+### ACC/AHA - 2022 Guideline for the Diagnosis and Management of Aortic Disease
+
+- Link JACC: https://www.jacc.org/doi/10.1016/j.jacc.2022.08.004
+- Link AHA: https://professional.heart.org/en/guidelines-statements/2022-accaha-guideline-for-the-diagnosis-and-management-of-aortic-disease-acir0000000000001106
+- Escopo: sindromes aorticas agudas, dissecao aortica, terapia anti-impulso, beta-bloqueio IV e vasodilatacao apos controle de frequencia/forca de ejecao.
+- Modulos afetados: Modulo 1; Modulo 5; Modulo 6; cenarios de emergencia hipertensiva e disseccao aortica.
+- Observacoes de seguranca: alteracoes de metas hemodinamicas ou escolha farmacologica em disseccao aortica requerem revisao medica.
+- Data de consulta: 2026-05-21.
+- Status: fonte externa / revisao necessaria.
+
 ### DailyMed - rotulos e bulas de medicamentos injetaveis
 
 - Link propofol: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=10272dc1-657d-4798-a34a-b6341b92e560
 - Link clevidipina/Cleviprex: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=a6826aa3-fabb-4ff1-a7a3-cd4c34e3a330
 - Link nitroprussiato de sodio: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a8999285-16b1-473d-8e92-684f581534f6
+- Link metoprolol: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=993c3a0d-5472-3de3-e053-2995a90acdf6
+- Link esmolol: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ac22475d-2d78-469f-9435-b403ac4ee380
+- Link labetalol: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=abfc6b75-1ed5-41f1-0484-4597488237bc
 - Escopo: estabilidade, assepsia, descarte, fotoprotecao e tempo de uso apos abertura, puncao, reconstituicao ou diluicao quando descritos em bula.
 - Modulos afetados: Modulo 6; futuras calculadoras de sedoanalgesia, DVA e infusoes continuas.
 - Observacoes de seguranca: usar como apoio de rastreabilidade; estabilidade final deve respeitar a bula especifica do fabricante usado no servico, farmacia clinica e protocolo institucional.
