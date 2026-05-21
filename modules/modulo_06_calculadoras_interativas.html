@@ -797,9 +797,11 @@ function prepCommand(item){
   const type = item.type || "Preparo";
   const prep = item.prep || "preparo conforme protocolo";
   const dose = item.dose || "dose calculada";
+  const diluent = item.diluentInfo || diluentGuidance(item.name, prep, item.chartKind || "");
   return `<div class="prep-structured">
     <div class="prep-title">${type} — ${item.name}</div>
     <div class="prep-line prep-presentation"><b>Apresentação/preparo</b> ${prep}</div>
+    <div class="prep-line prep-presentation"><b>Diluente/uso</b> ${diluent}</div>
     <div class="prep-line prep-dose"><b>Dose</b> ${dose}</div>
     ${item.volume ? `<div class="prep-line prep-volume"><b>Volume/vazão</b> ${item.volume}</div>` : ""}
     ${item.range ? `<div class="prep-line prep-need"><b>Faixa terapêutica</b> ${item.range}</div>` : ""}
@@ -916,6 +918,42 @@ function brazilAmpouleOptions(name){
 }
 function ampoulePresentationLine(name, presentation=null){
   return brazilAmpouleOptions(name);
+}
+
+function diluentGuidance(name, prepText="", context="", selectedDiluent=""){
+  const n=(name || "").toLowerCase();
+  const source=`${prepText || ""} ${selectedDiluent || ""}`.toLowerCase();
+  if(/não diluir|nao diluir|sem diluição|sem diluicao|uso usual puro|pronta para uso|pronto para uso|emulsão lipídica pronta|emulsao lipidica pronta/.test(source)){
+    return "Uso: puro/pronto para uso. Diluente preferencial: não se aplica. Possível: não diluir; seguir bula e protocolo institucional.";
+  }
+  if(n.includes("clevidipina")){
+    return "Uso: exclusivamente pronta para uso. Diluente preferencial: não se aplica. Possível: não diluir.";
+  }
+  if(n.includes("propofol")){
+    return "Uso usual: puro. Diluente preferencial: não se aplica no preparo padrão. Possível: somente se protocolo/bula permitir diluição específica.";
+  }
+  if(n.includes("nitroprussiato")){
+    return "Uso: deve ser reconstituído/diluído. Diluente preferencial: SG 5%. Possível: conforme bula/protocolo institucional; proteger da luz.";
+  }
+  if(n.includes("isoproterenol") || n.includes("isoprenalina")){
+    return "Uso: deve ser diluído para infusão. Diluente preferencial: SG 5%. Possível: conforme bula/protocolo institucional.";
+  }
+  if(selectedDiluent && selectedDiluent.toLowerCase() !== "conforme protocolo"){
+    return `Uso: diluído. Diluente preferencial/usado no cálculo: ${selectedDiluent}. Possível: conforme compatibilidade, bula e protocolo institucional.`;
+  }
+  if(/sg\s*5|glicos/.test(source)){
+    return "Uso: diluído. Diluente preferencial informado no preparo: SG 5%. Possível: conforme bula/protocolo institucional.";
+  }
+  if(/sf\s*0,?9|soro fisiol/.test(source)){
+    return "Uso: diluído. Diluente preferencial informado no preparo: SF 0,9%. Possível: conforme bula/protocolo institucional.";
+  }
+  if(context==="bolus"){
+    return "Uso: geralmente puro em bólus se volume/concentração forem adequados. Se diluir: preferir diluente compatível definido por bula/protocolo; possíveis variam por fármaco.";
+  }
+  if(/diluente|q\.s\.p|solução final|solucao final/.test(source)){
+    return "Uso: deve ser diluído para a solução final calculada. Diluente preferencial: definir por bula/protocolo institucional. Possíveis: SF 0,9% ou SG 5% apenas se compatíveis com o fármaco.";
+  }
+  return "Uso/diluente: conferir bula e protocolo institucional antes do preparo.";
 }
 
 function informedAmpouleLine(){
@@ -1637,6 +1675,7 @@ function calcIOT(){
       <div class="med-grid">
         ${medCard("Operacional", [
           medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, iotAmpouleLine())),
+          medKv("Diluente/uso", diluentGuidance(x.d.name, iotAmpouleLine(), "bolus")),
           medKv("Cálculo operacional", `Aspirar ${fmt(x.volume,2)} mL para obter ${fmt(x.calc.amount,2)} ${x.calc.unit} (${fmt(x.conc,3)} ${x.concUnit==="mgml"?"mg/mL":(x.concUnit==="uiml"?"UI/mL":"mcg/mL")}).`)
         ], "med-card--primary")}
         ${medCard("Farmacocinética", [
@@ -1671,7 +1710,8 @@ function addIOTToSummary(){
     chartKind:"bolus",
     chartDose:`${fmt(x.rawDose,4)} ${x.selectedDoseUnit}/kg${x.selectedDoseUnit !== baseMassUnitFromDoseUnit(x.d.unit) ? " (= "+fmt(x.dose,4)+" "+x.d.unit+")" : ""}`,
     chartMass:`${fmt(x.calc.amount,2)} ${x.calc.unit}`,
-    chartVolume:`${fmt(x.volume,2)} mL`
+    chartVolume:`${fmt(x.volume,2)} mL`,
+    diluentInfo:diluentGuidance(x.d.name, iotAmpouleLine(), "bolus")
   });
   renderSummary();
   confirmSummaryAdd(x.d.name);
@@ -1748,6 +1788,7 @@ function calcDVABolus(){
       <div class="med-grid">
         ${medCard("Operacional", [
           medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
+          medKv("Diluente/uso", diluentGuidance(x.d.name, x.presentation.prep, "bolus")),
           medKv("Cálculo operacional", `Aspirar/administrar ${fmt(x.volume,2)} mL para obter ${fmt(x.amount.amount,2)} ${x.amount.unit}.`),
           medKv("Concentração usada", `${fmt(x.conc,3)} ${unitLabel(x.concUnit)}`),
           medKv("Preparo da solução", x.presentation.prep)
@@ -1780,7 +1821,8 @@ function addDVABolusToSummary(){
     chartKind:"bolus",
     chartDose:`${fmt(x.rawDose,4)} ${x.selectedDoseUnit}${x.selectedDoseUnit !== x.d.doseUnit ? " (= "+fmt(x.dose,4)+" "+x.d.doseUnit+")" : ""}`,
     chartMass:`${fmt(x.amount.amount,2)} ${x.amount.unit}`,
-    chartVolume:`${fmt(x.volume,2)} mL`
+    chartVolume:`${fmt(x.volume,2)} mL`,
+    diluentInfo:diluentGuidance(x.d.name, x.presentation.prep, "bolus")
   });
   renderSummary();
   confirmSummaryAdd(x.d.name);
@@ -1874,6 +1916,7 @@ function calcDVA(){
           medKv("Apresentação", ampoulePresentationLine(d.name)),
           medKv("Dose utilizada", doseUsed),
           medKv("Vazão em bomba", rateUsed),
+          medKv("Diluente/uso", diluentGuidance(d.name, prep.prep, "infusion")),
           medKv("Preparo de solução", prepObj.preparo),
           prepObj.diluicao ? medKv("Diluição", prepObj.diluicao) : "",
           medKv("Concentração final", prepObj.concentracao)
@@ -1917,7 +1960,8 @@ function addDVAToSummary(){
     chartDose:(Number.isFinite(doseVal) ? fmt(doseVal,4)+" "+d.doseUnit : "calculada a partir da vazão"),
     chartMass:(Number.isFinite(amount.amount) ? fmt(amount.amount,2)+" "+amount.unit : ""),
     chartRate:(Number.isFinite(rateVal) ? fmt(rateVal,2)+" mL/h" : ""),
-    chartPrep:prep.prep
+    chartPrep:prep.prep,
+    diluentInfo:diluentGuidance(d.name, prep.prep, "infusion")
   });
   renderSummary();
   confirmSummaryAdd(d.name);
@@ -2015,6 +2059,7 @@ function calcInfusion(){
         ${medCard("Operacional", [
           medKv("Apresentação", ampoulePresentationLine(d.name)),
           informedAmpouleLine() ? medKv("Apresentação disponível informada", informedAmpouleLine().replace("Apresentação informada: ","")) : "",
+          medKv("Diluente/uso", diluentGuidance(d.name, prep.prep, "infusion", diluent)),
           medKv("Cálculo operacional", detail)
         ], "med-card--primary")}
         ${medCard("Faixa e categoria", [
@@ -2065,7 +2110,8 @@ function addInfusionToSummary(){
     chartMass:(Number.isFinite(amount.amount) ? fmt(amount.amount,2)+" "+amount.unit : ""),
     chartRate:(Number.isFinite(rateVal) ? fmt(rateVal,2)+" mL/h" : ""),
     chartPrep:prep.prep,
-    chartPlanHtml:plan
+    chartPlanHtml:plan,
+    diluentInfo:diluentGuidance(d.name, prep.prep, "infusion", diluent)
   });
 }
   renderSummary();
@@ -2166,9 +2212,11 @@ function generateChartNote(){
       const concentration=chartConcentrationLine(i, prep);
       const rate=chartValue(i.chartRate || (i.chartKind==="infusion" ? i.volume : ""), i.chartKind==="bolus" ? "não se aplica a bólus" : "vazão calculada");
       const dose=chartValue(i.chartDose || i.dose, "dose não informada");
+      const diluent=i.diluentInfo || diluentGuidance(i.name, i.chartPrep || i.prep || "", i.chartKind || "");
       parts.push([
         `${idx+1}. ${i.name} (${i.type})`,
         `   - Volume aspirado + diluente: ${prep}.`,
+        `   - Diluente/uso: ${diluent}.`,
         `   - Massa por volume total: ${massVolume}.`,
         `   - Concentração por mL: ${concentration}.`,
         `   - Vazão em bomba: ${rate}.`,

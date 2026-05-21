@@ -4,6 +4,39 @@
 
 ### Tipo de alteracao
 
+- Conteudo clinico
+- Interface
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Adicionada orientacao `Diluente/uso` nos resultados das calculadoras do Modulo 6.
+- A orientacao passa a indicar se o preparo e puro/pronto para uso ou se deve ser diluido.
+- Quando houver diluente selecionado na calculadora, o resumo passa a exibir o diluente usado no calculo.
+- O `Cenario-resumo` e o texto gerado para registro agora incluem orientacao de diluente/uso por medicacao adicionada.
+- Mantida a logica de dose, vazao, concentracao, volume final e planejamento de 24h.
+- Sincronizada a copia espelho do Modulo 6 em `modules/`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v51`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- A mudanca adiciona texto clinico sobre preparo puro versus diluido, diluente preferencial/usado no calculo e compatibilidade por bula/protocolo.
+- Nao houve alteracao de dose, formula, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
 - Interface
 - Organizacao
 - PWA/offline
