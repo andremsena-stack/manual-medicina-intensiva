@@ -4,6 +4,34 @@
 
 ### Tipo de alteracao
 
+- Conteudo clinico
+- Interface
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removido do Modulo 6 o box informativo sobre peso predito em `Dados globais do paciente`, conforme solicitacao do autor.
+- Sincronizada a copia espelho do Modulo 6 em `modules/`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v47`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Foi removido um bloco textual informativo de conteudo clinico.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
 - PWA/offline
 - Interface
 
