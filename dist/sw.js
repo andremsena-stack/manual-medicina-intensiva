@@ -1,4 +1,4 @@
-const CACHE_NAME = "guia-intensiva-pwa-v49";
+const CACHE_NAME = "guia-intensiva-pwa-v50";
 const CORE_ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"];
 
 const cacheResponse = (request, response) => {

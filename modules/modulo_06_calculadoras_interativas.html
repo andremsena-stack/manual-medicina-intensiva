@@ -794,18 +794,14 @@ function amountShort(text){
   return (m ? m[1] : text).trim();
 }
 function prepCommand(item){
-  if(item.commandHtml) return item.commandHtml;
   const type = item.type || "Preparo";
   const prep = item.prep || "preparo conforme protocolo";
   const dose = item.dose || "dose calculada";
-  const result = item.shortResult || item.result || "";
   return `<div class="prep-structured">
     <div class="prep-title">${type} — ${item.name}</div>
     <div class="prep-line prep-presentation"><b>Apresentação/preparo</b> ${prep}</div>
     <div class="prep-line prep-dose"><b>Dose</b> ${dose}</div>
-    ${item.mass ? `<div class="prep-line prep-result"><b>Massa/tempo</b> ${item.mass}</div>` : ""}
     ${item.volume ? `<div class="prep-line prep-volume"><b>Volume/vazão</b> ${item.volume}</div>` : ""}
-    ${result ? `<div class="prep-line prep-practical"><b>Cálculo operacional</b> ${result}</div>` : ""}
     ${item.range ? `<div class="prep-line prep-need"><b>Faixa terapêutica</b> ${item.range}</div>` : ""}
   </div>`;
 }
@@ -2206,14 +2202,13 @@ function renderSummary(){
     <td>${i.type}</td>
     <td>${i.name}</td>
     <td>${i.dose}</td>
-    <td>${i.mass || "—"}</td>
     <td>${i.volume || "—"}</td>
     <td>${i.range || i.notes || "—"}</td>
   </tr>`).join("");
   let commands = state.summary.map(i => prepCommand(i)).join("");
   out.innerHTML=`<strong>Cenário: ${document.getElementById("cenario").selectedOptions[0].text} · Peso ${fmt(getPeso(),1)} kg · PBW ${fmt(pbw(),1)} kg</strong>
   <span>${scenarioNotes[getCenario()].iot}<br>${scenarioNotes[getCenario()].dva}</span>
-  <table class="summary-table"><thead><tr><th>#</th><th>Tipo</th><th>Droga</th><th>Dose padrão</th><th>Massa/tempo</th><th>Vazão</th><th>Faixa terapêutica</th></tr></thead><tbody>${rows}</tbody></table>
+  <table class="summary-table"><thead><tr><th>#</th><th>Tipo</th><th>Droga</th><th>Dose padrão</th><th>Vazão</th><th>Faixa terapêutica</th></tr></thead><tbody>${rows}</tbody></table>
   <strong style="margin-top:10px">Preparo operacional estruturado</strong>
   ${commands}`;
   updateSummaryFeedback();
