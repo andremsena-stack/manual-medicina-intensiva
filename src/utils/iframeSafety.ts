@@ -89,6 +89,10 @@ function injectModuleMenuStyles(document: Document): void {
     .nav-toggle{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
     .nav-toggle:hover{background:rgba(255,255,255,.18)}
     nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
+    .app:not(.nav-collapsed) aside nav ul{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .app:not(.nav-collapsed) aside nav li{margin:0;min-width:0}
+    .app:not(.nav-collapsed) aside nav a{align-items:center;display:flex;height:100%;line-height:1.2;min-height:38px;padding:8px 9px}
+    @media(min-width:981px){.app:not(.nav-collapsed){grid-template-columns:1fr}.app:not(.nav-collapsed) aside{height:auto;max-height:46vh;position:sticky;top:0;z-index:10}.app:not(.nav-collapsed) main{max-width:none}}
     .app.nav-collapsed{grid-template-columns:72px 1fr}
     .app.nav-collapsed aside{padding:18px 10px}
     .app.nav-collapsed .brand{margin-bottom:14px;padding-bottom:12px;text-align:center}
@@ -99,6 +103,8 @@ function injectModuleMenuStyles(document: Document): void {
     .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
     .app.nav-collapsed nav a::before{content:attr(data-short);font-size:12px;font-weight:800}
     @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{padding:12px 14px}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}.app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}.app.nav-collapsed .brand__content{display:block}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .toc-note,.app.nav-collapsed .brand .small{display:none}}
+    @media(max-width:720px){.app:not(.nav-collapsed) aside nav ul{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:460px){.app:not(.nav-collapsed) aside nav ul{grid-template-columns:1fr}}
   `;
   document.head.appendChild(style);
 }

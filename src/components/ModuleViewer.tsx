@@ -39,11 +39,9 @@ export function ModuleViewer({ module, targetSectionId }: ModuleViewerProps) {
   return (
     <section className="module-viewer" aria-label={`Modulo ${module.number}: ${module.title}`}>
       <div className="module-viewer__toolbar">
-        <div>
-          <span className="eyebrow">Modulo {module.number}</span>
-          <h2>{module.title}</h2>
-        </div>
-        <span className="source-path">src/data/modules/{module.fileName}</span>
+        <h2>
+          Modulo {module.number} - {module.title}
+        </h2>
       </div>
       <div className="module-viewer__frame-wrap">
         <iframe

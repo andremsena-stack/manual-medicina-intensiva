@@ -20,6 +20,8 @@
     .nav-toggle{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
     .nav-toggle:hover{background:rgba(255,255,255,.18)}
     nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
+    .metric-link{display:block;text-decoration:none;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+    .metric-link:hover,.metric-link:focus-visible{border-color:var(--accent);box-shadow:0 8px 20px rgba(11,107,92,.14);outline:0;transform:translateY(-1px)}
     .app.nav-collapsed{grid-template-columns:72px 1fr}
     .app.nav-collapsed aside{padding:18px 10px}
     .app.nav-collapsed .brand{margin-bottom:14px;padding-bottom:12px;text-align:center}
@@ -68,20 +70,17 @@
     <div class="hero">
       <h2>Módulo 1 — Via aérea e intubação orotraqueal</h2>
       <p>Capítulo prático e científico sobre abordagem da via aérea no paciente crítico, com ênfase em avaliação, preparação, pré-oxigenação, sequência de intubação, escolha farmacológica orientada ao procedimento e prevenção de complicações.</p>
-      <div class="badge-row">
-        <span class="badge">SVG nativo</span><span class="badge">Cards expansíveis</span><span class="badge">Fonte primária obrigatória</span><span class="badge">Sem SPIN</span><span class="badge">Pronto para expansão JS</span>
-      </div>
     </div>
 
     <section id="intro">
       <h2>1. Introdução — risco fisiológico, anatômico e logístico</h2>
       <p>Este módulo organiza a intubação orotraqueal (IOT) pelo risco que muda a conduta: via aérea anatômica difícil, via aérea fisiológica vulnerável e falha logística.</p>
       <div class="grid grid-3">
-        <div class="metric"><strong>Via aérea anatômica</strong><span>Preditores físicos de laringoscopia, ventilação ou acesso cirúrgico difícil.</span></div>
-        <div class="metric"><strong>Via aérea fisiológica</strong><span>Risco de deterioração por hipoxemia, acidose, choque ou VD vulnerável.</span></div>
+        <a class="metric metric-link" href="#anatomia" aria-label="Ir para a seção 2: Anatomia aplicada"><strong>Via aérea anatômica</strong><span>Preditores físicos de laringoscopia, ventilação ou acesso cirúrgico difícil.</span></a>
+        <a class="metric metric-link" href="#via-aerea-fisiologicamente-dificil" aria-label="Ir para o item 3.3: Via aérea fisiologicamente difícil"><strong>Via aérea fisiológica</strong><span>Risco de deterioração por hipoxemia, acidose, choque ou VD vulnerável.</span></a>
         <div class="metric"><strong>Via aérea logística</strong><span>Equipe, material, ambiente, monitorização, plano de resgate e comunicação.</span></div>
       </div>
-      <details open><summary>8.0 Linha do tempo visual das sequências</summary><div class="detail-body">
+      <details open><summary>1.1 Linha do tempo visual das sequências</summary><div class="detail-body">
         <div class="svg-box"><svg viewBox="0 0 900 420" role="img" aria-label="Linhas do tempo das técnicas de intubação">
           <rect width="900" height="420" rx="18" fill="#f8fbff"/>
           <g font-family="Arial" font-size="13">
@@ -163,7 +162,7 @@
       <h3>3.2 Ventilação e acidose</h3>
       <p>Em acidose metabólica grave, o paciente pode depender de alto volume minuto compensatório. Indução, apneia e ventilação mecânica inicial inadequada podem elevar rapidamente PaCO₂, reduzir pH e precipitar instabilidade elétrica ou hemodinâmica.</p>
       <div class="alert alert-danger"><strong>Ponto de segurança:</strong> em acidose metabólica profunda, evite períodos prolongados de apneia e planeje ventilação pós-IOT com volume minuto compatível com a compensação prévia, respeitando segurança pulmonar.</div>
-      <h3>3.3 Via aérea fisiologicamente difícil</h3>
+      <h3 id="via-aerea-fisiologicamente-dificil">3.3 Via aérea fisiologicamente difícil</h3>
       <table>
         <thead><tr><th>Fenótipo</th><th>Risco durante IOT</th><th>Estratégia preventiva</th></tr></thead>
         <tbody>
@@ -282,6 +281,29 @@
           <text x="72" y="210" fill="#5f6b7a" font-size="14">Regra: limitar tentativas, chamar ajuda cedo e priorizar oxigenação.</text>
         </svg>
       </div>
+      <details open><summary>5.4 Como usar o algoritmo A/B/C/D na via aérea crítica</summary><div class="detail-body">
+        <p>O algoritmo A/B/C/D deve ser entendido como uma sequência de oxigenação e decisão, não como permissão para repetir tentativas iguais. A referência DAS 2025 mantém a estrutura linear: intubação traqueal no Plano A, ventilação por dispositivo supraglótico no Plano B, ventilação sob máscara no Plano C e via aérea frontal de emergência no Plano D. Em paciente crítico, “acordar” frequentemente não é viável; por isso, a prioridade operacional é manter oxigenação, reconhecer falha cedo e progredir de plano.</p>
+        <table>
+          <thead><tr><th>Plano</th><th>Objetivo</th><th>Ações-chave</th><th>Critério para avançar</th></tr></thead>
+          <tbody>
+            <tr><td>Plano A</td><td>Intubação traqueal com maior chance de sucesso na primeira tentativa.</td><td>Melhor operador disponível, posicionamento otimizado, oxigenação contínua, sucção pronta, VL/laringoscopia conforme contexto, bougie ou estilete escolhidos antes da tentativa.</td><td>Falha de visualização, falha de passagem do tubo, dessaturação, sangramento/secreção limitante ou tentativa sem mudança real de estratégia.</td></tr>
+            <tr><td>Plano B</td><td>Restaurar oxigenação/ventilação por dispositivo supraglótico e ganhar tempo seguro.</td><td>Inserir DSA adequado, preferir modelo com melhor vedação quando disponível, retirar pressão cricoide se estiver impedindo inserção, confirmar ventilação com capnografia e excursão torácica.</td><td>DSA não ventila, vazamento importante, oxigenação não melhora, aspiração/obstrução impede uso ou há deterioração fisiológica.</td></tr>
+            <tr><td>Plano C</td><td>Ventilar sob máscara e decidir entre nova estratégia, despertar quando possível ou progressão para resgate.</td><td>Ventilação a duas mãos, cânula oral/nasal, PEEP, ajuste de posição, redução de insuflação gástrica, chamada de ajuda e reavaliação rápida do próximo passo.</td><td>Máscara não oxigena/ventila, SpO₂ cai apesar de manobras efetivas, capnografia ausente/inadequada ou o paciente entra em cenário CICO.</td></tr>
+            <tr><td>Plano D</td><td>Oxigenação por via aérea frontal de emergência quando não é possível intubar nem oxigenar.</td><td>Declarar “não intubo, não oxigeno”, interromper tentativas orais repetidas, acionar equipe treinada e executar técnica institucional padronizada de acesso frontal de emergência.</td><td>Não é etapa opcional: é acionado quando Planos A, B e C falham em manter oxigenação.</td></tr>
+          </tbody>
+        </table>
+      </div></details>
+
+      <details><summary>5.5 Pontos de segurança antes de passar de um plano ao outro</summary><div class="detail-body">
+        <table><tbody>
+          <tr><th>Declare a falha</th><td>O comando verbal “falha do Plano A” ou “falha de oxigenação” reduz ambiguidade e facilita a transição para o próximo plano.</td></tr>
+          <tr><th>Mude uma variável relevante</th><td>Nova tentativa só deve ocorrer com mudança concreta: operador, dispositivo, lâmina, bougie/estilete, posição, sucção, DSA ou plano de resgate.</td></tr>
+          <tr><th>Use capnografia como eixo</th><td>Onda capnográfica persistente confirma ventilação traqueal ou ventilação efetiva por DSA/máscara; ausência de onda exige checagem imediata de tubo, circuito, sensor, ventilação e pulso.</td></tr>
+          <tr><th>Oxigenação vem antes do tubo</th><td>Em queda de SpO₂, a tarefa é recuperar oxigenação; insistir em laringoscopia durante dessaturação transforma dificuldade anatômica em falha fisiológica.</td></tr>
+          <tr><th>Prepare o Plano D antes da indução</th><td>Identificar a membrana cricotireóidea, deixar material acessível e definir quem executa o resgate evita atraso quando a deterioração já começou.</td></tr>
+        </tbody></table>
+        <div class="ref"><strong>Referencial:</strong> DAS 2025 prioriza oxigenação contínua, sucesso na primeira tentativa, confirmação por capnografia com onda, progressão pelo algoritmo, trabalho em equipe e treinamento. DAS 2015 já enfatizava declarar falha, usar DSA para manter oxigenação e evitar técnicas cegas através do DSA.</div>
+      </div></details>
     </section>
 
     <section id="posicionamento">
@@ -327,7 +349,6 @@
 
 <section id="estrategias-iot">
       <h2>8.1 Estratégias de intubação — técnica versus contexto fisiológico</h2>
-      <p>Esta seção alinha o capítulo de via aérea com a calculadora interativa. O objetivo é evitar que a calculadora ofereça uma opção que não tenha sido contextualizada no módulo explicativo.</p>
 
       <h3>Técnicas de intubação: separar técnica de contexto fisiológico</h3>
       <table>
@@ -340,8 +361,6 @@
           <tr><td>Crash airway / peri-PCR</td><td>Via aérea imediata em paciente inconsciente, peri-PCR ou sem reflexos protetores.</td><td>Parada, peri-parada, coma profundo ou colapso iminente.</td><td>Se houver consciência/tônus, ainda pode ser necessário hipnótico em dose reduzida.</td></tr>
         </tbody>
       </table>
-      <div class="alert alert-info"><strong>Conceito:</strong> broncoespasmo, choque, hipertensão intracraniana, TEP e dissecção aórtica não são “tipos de intubação”; são contextos fisiológicos que modificam a escolha de fármacos, pré-oxigenação, ventilação e metas hemodinâmicas.</div>
-      <div class="alert alert-warning"><strong>Integração farmacológica:</strong> hipnóticos, opioides, adjuvantes, bloqueadores e reversores permanecem concentrados no ponto 9. Esta seção fica posicionada logo após as sequências porque orienta a escolha da técnica antes da escolha farmacológica.</div>
 
     </section>
 
@@ -371,6 +390,7 @@
       <details open><summary>Etomidato — hipnótico imidazólico</summary><div class="detail-body">
         <table><tbody>
           <tr><th>Dose IOT</th><td>0,2–0,3 mg/kg IV.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Modulador positivo do receptor GABA-A, aumentando a transmissão inibitória no sistema nervoso central; produz hipnose, sem efeito analgésico relevante.</td></tr>
           <tr><th>Latência / início de ação</th><td>Rápido; usualmente dentro de 30–60 segundos após bolus IV.</td></tr>
           <tr><th>Duração de ação</th><td>Breve; aproximadamente 3–5 minutos após dose única de indução, com variação dose-dependente.</td></tr>
           <tr><th>Exemplo 70 kg</th><td>14–21 mg.</td></tr>
@@ -388,6 +408,7 @@
       <details><summary>Propofol — hipnótico GABAérgico</summary><div class="detail-body">
         <table><tbody>
           <tr><th>Dose IOT</th><td>1–2 mg/kg IV; considerar 0,5–1 mg/kg ou evitar em choque, hipovolemia ou idoso frágil.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Hipnótico intravenoso que potencializa a neurotransmissão inibitória mediada por GABA-A; promove hipnose e amnésia, sem analgesia.</td></tr>
           <tr><th>Latência / início de ação</th><td>Rápido; cerca de 30–45 segundos após bolus IV.</td></tr>
           <tr><th>Duração de ação</th><td>Curta após bolus único; em geral 5–10 minutos por redistribuição, podendo prolongar em idosos, hipoperfusão ou doses repetidas.</td></tr>
           <tr><th>Exemplo 70 kg</th><td>70–140 mg; em paciente instável, 35–70 mg se escolhido.</td></tr>
@@ -405,6 +426,7 @@
       <details><summary>Cetamina — anestésico dissociativo com analgesia</summary><div class="detail-body">
         <table><tbody>
           <tr><th>Dose IOT</th><td>1–2 mg/kg IV.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Antagonista não competitivo dos receptores NMDA, reduzindo neurotransmissão glutamatérgica excitatória; produz anestesia dissociativa com analgesia.</td></tr>
           <tr><th>Latência / início de ação</th><td>Rápido por via IV; aproximadamente 30–60 segundos.</td></tr>
           <tr><th>Duração de ação</th><td>Em geral 5–15 minutos após bolus IV, conforme dose, associação farmacológica e estado hemodinâmico.</td></tr>
           <tr><th>Exemplo 70 kg</th><td>70–140 mg.</td></tr>
@@ -422,6 +444,7 @@
       <details><summary>Midazolam — benzodiazepínico</summary><div class="detail-body">
         <table><tbody>
           <tr><th>Dose IOT</th><td>0,05–0,1 mg/kg IV, com titulação cuidadosa.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Benzodiazepínico modulador positivo do receptor GABA-A no sítio benzodiazepínico; gera ansiólise, sedação, amnésia e anticonvulsão, sem analgesia.</td></tr>
           <tr><th>Latência / início de ação</th><td>Mais lento e menos previsível que etomidato, propofol e cetamina; cerca de 1–5 minutos por via IV.</td></tr>
           <tr><th>Duração de ação</th><td>Variável; frequentemente 15–60 minutos após bolus, podendo prolongar com idade avançada, obesidade, choque, disfunção hepática ou doses repetidas.</td></tr>
           <tr><th>Exemplo 70 kg</th><td>3,5–7 mg.</td></tr>
@@ -438,6 +461,7 @@
       <details><summary>Tiopental — barbitúrico hipnótico especializado</summary><div class="detail-body">
         <table><tbody>
           <tr><th>Dose IOT</th><td>3–5 mg/kg IV, geralmente em ambiente anestésico ou neurocrítico selecionado.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Barbitúrico que potencializa a ação do GABA-A, prolongando a abertura do canal de cloro; depressor hipnótico do sistema nervoso central, sem analgesia.</td></tr>
           <tr><th>Latência / início de ação</th><td>Rápido; aproximadamente 30–60 segundos após bolus IV.</td></tr>
           <tr><th>Duração de ação</th><td>Curta após bolus único, cerca de 5–10 minutos, mas pode prolongar com redistribuição alterada, doses repetidas ou instabilidade.</td></tr>
           <tr><th>Exemplo 70 kg</th><td>210–350 mg.</td></tr>
@@ -451,10 +475,11 @@
 
 
       <h3>9.2 Opioides/analgésicos e adjuvantes analgésicos</h3>
-      <table><thead><tr><th>Fármaco</th><th>Papel peri-IOT</th><th>Comentário prático</th></tr></thead><tbody><tr><td>Fentanil</td><td>Opioide mais utilizado como adjuvante analgésico e simpaticolítico.</td><td>Útil para atenuar resposta à laringoscopia; cuidado com rigidez torácica em bolus rápido/alta dose, hipotensão e depressão respiratória.</td></tr><tr><td>Remifentanil</td><td>Opioide ultracurto, titulável por infusão.</td><td>Mais útil em intubação acordada ou sedação titulável; exige bomba, monitorização contínua e equipe habituada.</td></tr><tr><td>Alfentanil</td><td>Opioide de início rápido e duração curta.</td><td>Pode ser usado para atenuar resposta hemodinâmica à laringoscopia; disponibilidade varia por serviço.</td></tr><tr><td>Sufentanil</td><td>Opioide potente, mais frequente em anestesia.</td><td>Uso menos rotineiro em IOT de emergência/UTI; requer familiaridade com dose e contexto hemodinâmico.</td></tr><tr><td>Morfina</td><td>Analgesia pós-IOT, não opção típica de RSI.</td><td>Início mais lento; não deve ser tratada como principal analgésico de indução rápida.</td></tr><tr><td>Cetamina</td><td>Hipnótico dissociativo com propriedade analgésica.</td><td>Útil quando analgesia, sedação e broncodilatação são desejáveis; já descrita no bloco de hipnóticos.</td></tr></tbody></table>
+      <table><thead><tr><th>Fármaco</th><th>Mecanismo resumido</th><th>Papel peri-IOT</th><th>Comentário prático</th></tr></thead><tbody><tr><td>Fentanil</td><td>Agonista opioide principalmente em receptores µ.</td><td>Opioide mais utilizado como adjuvante analgésico e simpaticolítico.</td><td>Útil para atenuar resposta à laringoscopia; cuidado com rigidez torácica em bolus rápido/alta dose, hipotensão e depressão respiratória.</td></tr><tr><td>Remifentanil</td><td>Agonista opioide µ ultracurto, metabolizado por esterases inespecíficas.</td><td>Opioide ultracurto, titulável por infusão.</td><td>Mais útil em intubação acordada ou sedação titulável; exige bomba, monitorização contínua e equipe habituada.</td></tr><tr><td>Alfentanil</td><td>Agonista opioide µ de início rápido.</td><td>Opioide de início rápido e duração curta.</td><td>Pode ser usado para atenuar resposta hemodinâmica à laringoscopia; disponibilidade varia por serviço.</td></tr><tr><td>Sufentanil</td><td>Agonista opioide µ altamente potente.</td><td>Opioide potente, mais frequente em anestesia.</td><td>Uso menos rotineiro em IOT de emergência/UTI; requer familiaridade com dose e contexto hemodinâmico.</td></tr><tr><td>Morfina</td><td>Agonista opioide principalmente em receptores µ.</td><td>Analgesia pós-IOT, não opção típica de RSI.</td><td>Início mais lento; não deve ser tratada como principal analgésico de indução rápida.</td></tr><tr><td>Lidocaína IV</td><td>Bloqueador de canais de sódio voltagem-dependentes.</td><td>Adjuvante selecionado, não analgésico principal de RSI.</td><td>Pode ser considerada em cenário selecionado; conferir concentração e contraindicações.</td></tr><tr><td>Cetamina</td><td>Antagonista não competitivo de receptores NMDA.</td><td>Hipnótico dissociativo com propriedade analgésica.</td><td>Útil quando analgesia, sedação e broncodilatação são desejáveis; já descrita no bloco de hipnóticos.</td></tr></tbody></table>
 
       <details open><summary>Fentanil — opioide sintético</summary><div class="detail-body"><table><tbody>
         <tr><th>Dose peri-IOT</th><td>1–3 mcg/kg IV, conforme objetivo e estabilidade.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Agonista opioide principalmente em receptores µ, reduzindo transmissão nociceptiva e resposta simpática ao estímulo doloroso; não produz hipnose isoladamente.</td></tr>
           <tr><th>Latência / início de ação</th><td>Rápido; cerca de 1–2 minutos por via IV.</td></tr>
         <tr><th>Pico de efeito</th><td>Aproximadamente 3–5 minutos, relevante para sincronizar com a laringoscopia quando usado como simpaticolítico.</td></tr>
         <tr><th>Duração de ação</th><td>Em geral 30–60 minutos após bolus, podendo prolongar com doses repetidas ou infusão.</td></tr>
@@ -469,6 +494,7 @@
 
       <details><summary>Remifentanil — opioide ultracurto</summary><div class="detail-body"><table><tbody>
         <tr><th>Uso peri-IOT</th><td>Mais usado como infusão titulável em intubação acordada, anestesia ou controle fino de resposta simpática.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Agonista opioide µ de ação ultracurta, metabolizado por esterases inespecíficas; fornece analgesia e simpaticólise titulável sem efeito hipnótico próprio.</td></tr>
           <tr><th>Latência / início de ação</th><td>Muito rápido; aproximadamente 1 minuto quando administrado em infusão/bolus por equipe treinada.</td></tr>
         <tr><th>Duração de ação</th><td>Ultracurta; efeito costuma dissipar em 3–10 minutos após interrupção, por metabolização por esterases inespecíficas.</td></tr>
         <tr><th>Faixa prática</th><td>0,05–0,2 mcg/kg/min em infusão titulada; bolus deve ser evitado ou usado apenas por equipe experiente pelo risco de apneia/bradicardia/hipotensão.</td></tr>
@@ -482,6 +508,7 @@
 
       <details><summary>Alfentanil — opioide de início rápido</summary><div class="detail-body"><table><tbody>
         <tr><th>Dose peri-IOT</th><td>10–20 mcg/kg IV para atenuação de resposta à laringoscopia, conforme contexto anestésico.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Agonista opioide µ de início rápido, reduzindo nocicepção e resposta autonômica à laringoscopia; não substitui hipnótico nem bloqueador neuromuscular.</td></tr>
           <tr><th>Latência / início de ação</th><td>Rápido; aproximadamente 1–2 minutos por via IV.</td></tr>
         <tr><th>Duração de ação</th><td>Curta; em geral 10–20 minutos, conforme dose e contexto clínico.</td></tr>
         <tr><th>Exemplo 70 kg</th><td>700–1400 mcg.</td></tr>
@@ -494,6 +521,7 @@
 
       <details><summary>Sufentanil — opioide potente</summary><div class="detail-body"><table><tbody>
         <tr><th>Dose peri-IOT</th><td>0,1–0,3 mcg/kg IV, conforme técnica anestésica e estabilidade.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Agonista opioide µ altamente potente, com analgesia e atenuação da resposta simpática; exige precisão de dose pelo risco de depressão respiratória e rigidez.</td></tr>
           <tr><th>Latência / início de ação</th><td>Rápido; aproximadamente 1–3 minutos por via IV.</td></tr>
         <tr><th>Duração de ação</th><td>Variável; em geral 30–60 minutos após bolus, podendo prolongar conforme dose e redistribuição.</td></tr>
         <tr><th>Exemplo 70 kg</th><td>7–21 mcg.</td></tr>
@@ -507,6 +535,7 @@
       <details><summary>Lidocaína IV — adjuvante selecionado, não analgésico principal de RSI</summary><div class="detail-body">
         <table><tbody>
           <tr><th>Dose peri-IOT</th><td>1–1,5 mg/kg IV em cenário selecionado.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Bloqueia canais de sódio voltagem-dependentes, reduzindo condução neural e excitabilidade miocárdica; no peri-IOT é adjuvante, não analgésico opioide nem hipnótico.</td></tr>
           <tr><th>Latência / início de ação</th><td>Aproximadamente 45–90 segundos por via IV.</td></tr>
           <tr><th>Duração clínica</th><td>Em geral 10–20 minutos, com variação por dose, perfusão hepática e contexto clínico.</td></tr>
           <tr><th>Exemplo 70 kg</th><td>70–105 mg.</td></tr>
@@ -522,6 +551,7 @@
 
       <details><summary>Morfina — analgesia pós-IOT, não RSI</summary><div class="detail-body"><table><tbody>
         <tr><th>Dose analgésica inicial</th><td>0,05–0,1 mg/kg IV, titulada; não é analgésico de início ideal para RSI.</td></tr>
+          <tr><th>Mecanismo de ação</th><td>Agonista opioide principalmente em receptores µ, promovendo analgesia e sedação dose-dependente; início mais lento limita uso como analgésico principal de RSI.</td></tr>
           <tr><th>Latência / início de ação</th><td>Mais lenta para finalidade de RSI; cerca de 5–10 minutos por via IV.</td></tr>
         <tr><th>Duração de ação</th><td>Prolongada para o contexto peri-IOT; aproximadamente 3–4 horas, com maior risco de acúmulo em disfunção renal por metabólitos ativos.</td></tr>
         <tr><th>Exemplo 70 kg</th><td>3,5–7 mg.</td></tr>
@@ -626,27 +656,20 @@
 
     <section id="complicacoes">
       <h2>11. Complicações peri-intubação</h2>
-      <div class="grid grid-3">
-        <div class="card"><h4>Hipotensão pós-IOT</h4><p>Resulta de vasodilatação por hipnótico, perda de drive simpático, hipovolemia, sepse, aumento de pressão intratorácica e redução de retorno venoso.</p></div>
-        <div class="card"><h4>Hipoxemia</h4><p>Relacionada a pré-oxigenação insuficiente, shunt, edema/consolidação, apneia prolongada e tentativas múltiplas.</p></div>
-        <div class="card"><h4>Intubação esofágica</h4><p>Deve ser excluída por capnografia com onda persistente; ausculta isolada é insuficiente.</p></div>
-        <div class="card"><h4>Aspiração</h4><p>Risco em rebaixamento, vômitos, estase gástrica, trauma e via aérea contaminada.</p></div>
-        <div class="card"><h4>Awareness/paralisia consciente</h4><p>Ocorre se bloqueio neuromuscular persiste sem sedação/analgesia adequadas.</p></div>
-        <div class="card"><h4>Colapso cardiovascular</h4><p>Evento terminal multifatorial: hipóxia, acidose, choque, drogas e pressão positiva.</p></div>
-      </div>
-      <details open><summary>11.1 Hipotensão pós-IOT — fisiopatologia e prevenção</summary><div class="detail-body">
-        <table>
-          <thead><tr><th>Mecanismo</th><th>Por que acontece</th><th>Prevenção/resposta</th></tr></thead>
-          <tbody>
-            <tr><td>Perda simpática</td><td>Hipnóticos e opioides reduzem catecolamina endógena e tônus vascular.</td><td>Reduzir dose, usar fármaco hemodinamicamente mais neutro e vasopressor precoce se choque.</td></tr>
-            <tr><td>Pressão positiva</td><td>Aumenta pressão intratorácica, reduz retorno venoso e pode piorar VD.</td><td>Evitar PEEP excessiva, corrigir auto-PEEP e monitorar VD/TEP/HAP.</td></tr>
-            <tr><td>Hipovolemia/vasoplegia</td><td>Paciente crítico depende de vasoconstrição compensatória.</td><td>POCUS, fluido se responsivo, noradrenalina antes ou imediatamente após indução.</td></tr>
-            <tr><td>Acidose/hipoxemia</td><td>Reduz contratilidade e aumenta risco arrítmico.</td><td>Minimizar apneia, pré-oxigenar, manter ventilação minuto pós-IOT.</td></tr>
-          </tbody>
-        </table>
-        <p>Na coorte internacional INTUBE, instabilidade cardiovascular peri-intubação foi frequente em pacientes críticos, reforçando que hipotensão pós-IOT deve ser prevista antes da indução, não apenas tratada depois.</p>
-      </div></details>
-      <div class="ref"><strong>Fontes:</strong> INTUBE study, JAMA 2021; Higgs et al., BJA 2018; ASA Difficult Airway Guidelines 2022.</div>
+      <p>No Módulo 1, as complicações são tratadas pelo ângulo da antecipação: reconhecer o risco antes da laringoscopia, preparar o plano e reduzir a chance de deterioração. A confirmação do tubo, DOPE/DOPES, hipotensão pós-IOT e resposta operacional aos eventos imediatos ficam no Módulo 2.</p>
+      <table>
+        <thead><tr><th>Complicação</th><th>Como antecipar antes/durante a IOT</th><th>Prevenção peri-IOT</th><th>Resposta detalhada</th></tr></thead>
+        <tbody>
+          <tr><td>Hipoxemia</td><td>Shunt, edema/consolidação, obesidade, broncoespasmo, SpO₂ baixa ou queda rápida durante preparo.</td><td>Pré-oxigenação adequada, cabeceira elevada/ramped quando indicado, VNI/HFNC/PEEP conforme fenótipo, oxigenação apneica e primeira tentativa otimizada.</td><td>Módulo 2: dessaturação pós-IOT e DOPE/DOPES.</td></tr>
+          <tr><td>Hipotensão/colapso cardiovascular</td><td>Choque, vasopressor em uso, índice de choque alto, acidose, hipovolemia, VD vulnerável ou necessidade de pressão positiva.</td><td>Escolher técnica e fármacos compatíveis, preparar vasopressor, reduzir carga sedativa quando apropriado, evitar apneia prolongada e planejar ventilação pós-IOT.</td><td>Módulo 2: hipotensão pós-intubação.</td></tr>
+          <tr><td>Tubo mal posicionado</td><td>Visualização ruim, múltiplas tentativas, secreção/sangue, tubo avançado demais ou fixação instável.</td><td>Capnografia pronta antes da tentativa, observação da passagem do tubo quando possível, marcação de profundidade, fixação e plano de rechecagem.</td><td>Módulo 2: confirmação primária/secundária, profundidade, cuff e fixação.</td></tr>
+          <tr><td>Aspiração</td><td>Vômitos, sangramento, rebaixamento, estase gástrica, trauma ou via aérea contaminada.</td><td>Aspiração testada e acessível, posicionamento quando possível, operador experiente, minimizar tentativas e evitar ventilação agressiva sem necessidade.</td><td>Módulo 2: deterioração ventilatória pós-IOT e avaliação de complicações.</td></tr>
+          <tr><td>Awareness/paralisia consciente</td><td>Uso de bloqueador neuromuscular, especialmente rocurônio, sem plano explícito de analgesia e hipnose pós-IOT.</td><td>Confirmar hipnótico/analgesia antes do bloqueador e deixar sedoanalgesia contínua preparada antes da laringoscopia.</td><td>Módulo 2: sedoanalgesia imediata e checklist dos primeiros minutos.</td></tr>
+          <tr><td>Pneumotórax/auto-PEEP</td><td>Broncoespasmo, DPOC/asma, ventilação difícil, pressão alta, trauma, barotrauma ou piora hemodinâmica após pressão positiva.</td><td>Evitar hiperventilação manual, ajustar ventilação inicial com cautela, manter suspeita alta em queda súbita de SpO₂/PAM.</td><td>Módulo 2: DOPE/DOPES e triagem de auto-PEEP; Módulo 3: ajuste ventilatório definitivo.</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info"><strong>Regra prática:</strong> no Módulo 1, pergunte “como evitar que aconteça?”; no Módulo 2, pergunte “como confirmar, reconhecer e corrigir agora?”.</div>
+      <div class="ref"><strong>Fontes:</strong> INTUBE study, JAMA 2021; Higgs et al., BJA 2018; ASA Difficult Airway Guidelines 2022; DAS 2025 unanticipated difficult tracheal intubation guideline; SCCM PADIS 2018.</div>
     </section>
 
     <section id="erros">
@@ -772,6 +795,8 @@
         <li>Apfelbaum JL, Hagberg CA, Connis RT, et al. <strong>2022 American Society of Anesthesiologists Practice Guidelines for Management of the Difficult Airway</strong>. <em>Anesthesiology</em>. 2022;136(1):31-81. DOI: 10.1097/ALN.0000000000004002. Diretriz.</li>
         <li>Frerk C, Mitchell VS, McNarry AF, et al. <strong>Difficult Airway Society 2015 guidelines for management of unanticipated difficult intubation in adults</strong>. <em>British Journal of Anaesthesia</em>. 2015;115(6):827-848. DOI: 10.1093/bja/aev371. Diretriz.</li>
         <li>Higgs A, McGrath BA, Goddard C, et al. <strong>Guidelines for the management of tracheal intubation in critically ill adults</strong>. <em>British Journal of Anaesthesia</em>. 2018;120(2):323-352. DOI: 10.1016/j.bja.2017.10.021. Diretriz.</li>
+        <li>Ahmad I, El-Boghdadly K, Iliff H, et al. <strong>Difficult Airway Society 2025 guidelines for management of unanticipated difficult tracheal intubation in adults</strong>. <em>British Journal of Anaesthesia</em>. 2026;136(1):283-307. DOI: 10.1016/j.bja.2025.10.006. Diretriz.</li>
+        <li>Russotto V, Myatra SN, Laffey JG, et al. <strong>Intubation Practices and Adverse Peri-intubation Events in Critically Ill Patients From 29 Countries</strong>. <em>JAMA</em>. 2021;325(12):1164-1172. DOI: 10.1001/jama.2021.1727. Estudo INTUBE.</li>
         <li>Devlin JW, Skrobik Y, Gélinas C, et al. <strong>Clinical Practice Guidelines for the Prevention and Management of Pain, Agitation/Sedation, Delirium, Immobility, and Sleep Disruption in Adult Patients in the ICU</strong>. <em>Critical Care Medicine</em>. 2018;46(9):e825-e873. DOI: 10.1097/CCM.0000000000003299. Diretriz SCCM PADIS.</li>
         <li>Evans L, Rhodes A, Alhazzani W, et al. <strong>Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021</strong>. <em>Intensive Care Medicine</em>. 2021;47:1181-1247. DOI: 10.1007/s00134-021-06506-y. Diretriz GRADE.</li>
         <li>Jabre P, Combes X, Lapostolle F, et al. <strong>Etomidate versus ketamine for rapid sequence intubation in acutely ill patients: a multicentre randomised controlled trial</strong>. <em>Lancet</em>. 2009;374:293-300. DOI: 10.1016/S0140-6736(09)60949-1. Ensaio clínico randomizado.</li>
@@ -779,9 +804,8 @@
       
         <li>U.S. Food and Drug Administration / DailyMed. <strong>Etomidate Injection Prescribing Information</strong>. Documento regulatório de bula: início de ação geralmente dentro de 1 minuto e duração breve, dose-dependente. Fonte regulatória primária para farmacologia clínica.</li>
         <li>U.S. Food and Drug Administration. <strong>Rocuronium Bromide Injection Prescribing Information</strong>. Documento regulatório de bula com tabelas de início de bloqueio e duração clínica por dose. Fonte regulatória primária para farmacologia clínica.</li>
-        <li>U.S. Food and Drug Administration / DailyMed. <strong>Propofol, Ketamine, Midazolam, Fentanyl, Remifentanil, Succinylcholine, Cisatracurium, Atracurium and Sugammadex Prescribing Information</strong>. Bulas regulatórias usadas como apoio para apresentação, latência/duração aproximada e alertas de segurança farmacológica.</li>
+        <li>U.S. Food and Drug Administration / DailyMed. <strong>Propofol, Ketamine, Midazolam, Fentanyl, Remifentanil, Alfentanil, Sufentanil, Morphine, Lidocaine, Succinylcholine, Cisatracurium, Atracurium and Sugammadex Prescribing Information</strong>. Bulas regulatórias usadas como apoio para mecanismo de ação, apresentação, latência/duração aproximada e alertas de segurança farmacológica.</li>
       </ol>
-      <div class="alert alert-info"><strong>Nota metodológica:</strong> este capítulo usa fontes primárias e diretrizes originais. Conteúdos de revisão, aulas e resumos não foram usados como âncora científica principal.</div>
         </div>
       </details>
     </section>

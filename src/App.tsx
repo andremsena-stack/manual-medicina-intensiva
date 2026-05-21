@@ -13,11 +13,24 @@ function App() {
   const [route, setRoute] = useState(() => parseHashRoute(window.location.hash));
   const [query, setQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     const onHashChange = () => setRoute(parseHashRoute(window.location.hash));
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsSearchOpen(false);
+        setIsSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
   const activeModule = modules.find((module) => module.id === route.moduleId) ?? modules[0];
@@ -27,8 +40,20 @@ function App() {
     window.location.hash = routeToHash({ moduleId, sectionId });
   };
 
+  const openSidebar = () => {
+    setIsSearchOpen(false);
+    setIsSidebarOpen(true);
+  };
+
+  const setSearchPanelOpen = (open: boolean) => {
+    setIsSearchOpen(open);
+    if (open) {
+      setIsSidebarOpen(false);
+    }
+  };
+
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${isSidebarOpen ? "app-shell--sidebar-open" : ""}`}>
       <Sidebar
         modules={modules}
         activeModule={activeModule}
@@ -41,32 +66,34 @@ function App() {
 
       <div className="workspace">
         <header className="topbar">
-          <button className="button button--primary mobile-menu" type="button" onClick={() => setIsSidebarOpen(true)}>
+          <button
+            className="button button--primary mobile-menu"
+            type="button"
+            onClick={openSidebar}
+            aria-label="Abrir sumario de modulos"
+          >
             Modulos
           </button>
-          <div>
-            <span className="eyebrow">PWA offline-first</span>
-            <p>Conteudo clinico preservado em HTML fonte e renderizado via ModuleViewer.</p>
-          </div>
-          <span className="build-badge">v1</span>
         </header>
 
         <main className="content-grid">
           <div className="primary-column">
             <ModuleViewer module={activeModule} targetSectionId={route.sectionId} />
           </div>
-          <div className="secondary-column">
-            <SearchPanel
-              query={query}
-              results={results}
-              onQueryChange={setQuery}
-              onSelectResult={(moduleId, sectionId) => {
-                navigateTo(moduleId, sectionId);
-                setIsSidebarOpen(false);
-              }}
-            />
-          </div>
         </main>
+
+        <SearchPanel
+          query={query}
+          results={results}
+          isOpen={isSearchOpen}
+          onOpenChange={setSearchPanelOpen}
+          onQueryChange={setQuery}
+          onSelectResult={(moduleId, sectionId) => {
+            navigateTo(moduleId, sectionId);
+            setIsSearchOpen(false);
+            setIsSidebarOpen(false);
+          }}
+        />
       </div>
     </div>
   );

@@ -1,5 +1,736 @@
 # Changelog
 
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Interface
+- Responsividade
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Reduzida a barra superior da aplicacao para um controle flutuante compacto de abertura do sumario de modulos.
+- Ajustado o cabecalho do `ModuleViewer` para exibir apenas numero e titulo do modulo em formato enxuto.
+- Ajustado o painel de busca lateral para informar `Digite 2+ letras` antes da pesquisa.
+- Adicionado fechamento dos paineis laterais por tecla `Escape`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v41`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de conteudo medico, dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/App.tsx`
+- `src/components/ModuleViewer.tsx`
+- `src/components/SearchPanel.tsx`
+- `src/styles.css`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Consolidada a sobreposicao entre os Modulos 1 e 2 sobre complicacoes peri e pos-IOT.
+- Reorganizado o Modulo 1 para tratar complicacoes pelo angulo de antecipacao e prevencao durante a intubacao.
+- Mantida a resposta operacional detalhada no Modulo 2 para confirmacao do tubo, DOPE/DOPES, hipotensao pos-IOT, sedoanalgesia imediata e primeiros minutos apos a IOT.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v40`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao resumiu e reorganizou conteudo clinico sobre complicacoes peri e pos-IOT.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Consolidada a sobreposicao entre os Modulos 2 e 3 sobre transicao para ventilacao mecanica e auto-PEEP.
+- Mantida no Modulo 2 a tabela de ajustes iniciais pos-IOT e transformada a explicacao detalhada de auto-PEEP em triagem rapida de beira-leito.
+- Mantido o Modulo 3 como referencia principal para fisiologia, curvas e ajuste definitivo de auto-PEEP.
+- Recolhido o bloco `Medidas de ponte ate ajuste definitivo` no Modulo 2 para reduzir poluicao visual sem remover condutas.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 2.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v39`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao resumiu e reorganizou conteudo clinico de ventilacao mecanica/auto-PEEP no Modulo 2.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_02_pos_intubacao_confirmacao.html`
+- `modules/modulo_02_pos_intubacao_confirmacao.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
+- Organizacao
+- Conteudo clinico
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Convertidas as calculadoras didaticas dos Modulos 4 e 5 em blocos recolhidos, preservando a funcionalidade e reduzindo redundancia visual com o Modulo 6.
+- Renomeadas as entradas de navegacao dos Modulos 4 e 5 de `Mini-calculadora` para `Exemplo de calculo`.
+- Removidas as notas metodologicas exibidas ao final das referencias dos Modulos 1 a 6, mantendo a politica metodologica e clinica registrada na documentacao do projeto.
+- Mantidas doses, diluicoes, formulas, volumes, concentracoes e scripts de calculo existentes.
+- Sincronizadas as copias espelho em `modules/`.
+- Atualizados os hashes de integridade dos Modulos 1 a 6.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v38`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao removeu avisos/metodologia visiveis nos HTMLs e reposicionou calculadoras didaticas como conteudo recolhido.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `src/data/modules/modulo_02_pos_intubacao_confirmacao.html`
+- `src/data/modules/modulo_03_ventilacao_mecanica.html`
+- `src/data/modules/modulo_04_manutencao_sedoanalgesia.html`
+- `src/data/modules/modulo_05_drogas_vasoativas.html`
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_02_pos_intubacao_confirmacao.html`
+- `modules/modulo_03_ventilacao_mecanica.html`
+- `modules/modulo_04_manutencao_sedoanalgesia.html`
+- `modules/modulo_05_drogas_vasoativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removidos os blocos de selos visuais no topo dos modulos 2 a 6 para reduzir poluicao visual e redundancia de apresentacao.
+- Mantido o conteudo clinico correspondente no corpo dos modulos.
+- Sincronizadas as copias espelho em `modules/`.
+- Atualizados os hashes de integridade dos modulos 2 a 6.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v37`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao, recomendacao ou calculadora.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_02_pos_intubacao_confirmacao.html`
+- `src/data/modules/modulo_03_ventilacao_mecanica.html`
+- `src/data/modules/modulo_04_manutencao_sedoanalgesia.html`
+- `src/data/modules/modulo_05_drogas_vasoativas.html`
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_02_pos_intubacao_confirmacao.html`
+- `modules/modulo_03_ventilacao_mecanica.html`
+- `modules/modulo_04_manutencao_sedoanalgesia.html`
+- `modules/modulo_05_drogas_vasoativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Reescrita e ampliada a secao `11. Hipotensao pos-intubacao` do Modulo 2 com sintese de evidencia, janelas de risco de 30 a 60 minutos e condutas para reconhecimento/correcao precoce.
+- Acrescentados topicos operacionais `Evidencia e janela de risco` e `Reconhecer em tempo real`.
+- Atualizadas as listas de resposta imediata e prevencao para proxima IOT, sem incluir doses novas.
+- Acrescentadas referencias primarias sobre hipotensao/colapso cardiovascular peri-intubacao: Heffner 2012, Green 2015, INTUBE/JAMA 2021, INTUBE/AJRCCM 2022, PrePARE 2019 e Tangkulpanich 2023.
+- Mantidas doses, diluicoes, formulas, volumes, concentracoes e calculadoras existentes.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 2.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v36`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao adicionou conteudo clinico interpretativo e recomendacoes operacionais de reconhecimento/correcao de hipotensao pos-IOT.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_02_pos_intubacao_confirmacao.html`
+- `modules/modulo_02_pos_intubacao_confirmacao.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Interface
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removido do Modulo 2 o box visual `Nota operacional` sobre diluicoes padronizaveis e concentracao customizavel, conforme solicitacao explicita.
+- Mantidas as tabelas de sedoanalgesia, doses, diluicoes, formulas, volumes, concentracoes e calculadoras existentes.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 2.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v35`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao removeu texto operacional relacionado a diluicoes/concentracoes exibido ao leitor.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_02_pos_intubacao_confirmacao.html`
+- `modules/modulo_02_pos_intubacao_confirmacao.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Ampliada a tabela `9.1 Estrategia por cenario clinico` do Modulo 2 com as colunas `Farmaco/estrategia sugerida` e `Evidencia comparativa e desfecho`.
+- Incluidas sinteses de evidencia para analgesia/sedacao pos-RSI, choque, broncoespasmo, HIC/TCE e delirium/agitação sem necessidade de sedacao profunda.
+- Acrescentadas referencias primarias e estudos comparativos: MENDS, SEDCOM, MIDEX/PRODEX, MENDS2, SPICE III, Brain Trauma Foundation e estudo randomizado de cetamina em pacientes ventilados.
+- Mantidas doses, diluicoes, formulas, volumes, concentracoes e calculadoras existentes.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 2.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v34`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao adicionou conteudo clinico explicativo e interpretacao de evidencia farmacologica, conforme solicitacao explicita.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_02_pos_intubacao_confirmacao.html`
+- `modules/modulo_02_pos_intubacao_confirmacao.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Interface
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Reorganizada a secao `1. Objetivo do modulo` do Modulo 2: os blocos `Confirmar`, `Fixar` e `Estabilizar` foram reunidos em um fluxograma unico.
+- Adicionada tabela abaixo do fluxograma com atitudes imediatas, parametros a observar e observacoes de seguranca para cada etapa.
+- Mantidas doses, diluicoes, formulas, volumes, concentracoes e calculadoras existentes.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 2.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v33`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao reorganizou e detalhou conteudo operacional pos-IOT conforme solicitacao explicita.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_02_pos_intubacao_confirmacao.html`
+- `modules/modulo_02_pos_intubacao_confirmacao.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Interface
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removido o paragrafo introdutorio/disclaimer da secao `8.1 Estrategias de intubacao — tecnica versus contexto fisiologico` do Modulo 1.
+- Mantido todo o restante da secao 8.1 sem alteracoes.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v32`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao removeu texto editorial/clinico introdutorio conforme solicitacao explicita.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Aprofundada a secao `Estrategia A/B/C/D` do Modulo 1 com dois blocos expansivos: `5.4 Como usar o algoritmo A/B/C/D na via aerea critica` e `5.5 Pontos de seguranca antes de passar de um plano ao outro`.
+- Organizada a logica dos Planos A, B, C e D em tabela com objetivo, acoes-chave e criterio para avancar.
+- Incluidos pontos de seguranca sobre declaracao de falha, mudanca real de estrategia, capnografia, priorizacao de oxigenacao e preparacao do Plano D antes da inducao.
+- Mantidas doses, diluicoes, formulas, volumes, concentracoes e calculadoras existentes.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v31`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao adicionou conteudo clinico explicativo e operacional sobre estrategia de via aerea, conforme solicitacao explicita.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Expandida a secao `11. Complicacoes peri-intubacao` do Modulo 1 para contemplar, alem de hipotensao pos-IOT, os topicos de hipoxemia peri-IOT, intubacao esofagica/tubo mal posicionado, aspiracao peri-intubacao, awareness/paralisia consciente e colapso cardiovascular peri-IOT.
+- Cada novo subtopico foi organizado com conceito, risco, prevencao e resposta pratica.
+- Adicionadas referencias formais para o estudo INTUBE/JAMA 2021 e para a diretriz DAS 2025 de intubacao traqueal dificil nao antecipada.
+- Mantidas doses, diluicoes, formulas, volumes, concentracoes e calculadoras existentes.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v30`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao adicionou conteudo clinico explicativo e operacional, conforme solicitacao explicita.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Adicionada coluna `Mecanismo resumido` na tabela da secao `9.2 Opioides/analgesicos e adjuvantes analgesicos` do Modulo 1.
+- Adicionada linha `Mecanismo de acao` aos blocos detalhados de fentanil, remifentanil, alfentanil, sufentanil, lidocaina IV e morfina.
+- Incluida lidocaina IV na tabela-resumo da secao 9.2 para alinhar a tabela com o bloco detalhado ja existente.
+- Mantidas doses, diluicoes, volumes, apresentacoes, indicacoes de preferencia e alertas ja existentes.
+- Atualizada a nota de fontes regulatorias para incluir alfentanil, sufentanil, morfina e lidocaina.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v29`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao adicionou conteudo farmacologico explicativo, conforme solicitacao explicita.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Adicionada linha `Mecanismo de acao` aos hipnoticos/sedativos de inducao do Modulo 1: etomidato, propofol, cetamina, midazolam e tiopental.
+- Mantidas doses, diluicoes, volumes, apresentacoes, indicacoes de preferencia e alertas ja existentes.
+- Atualizada a nota de fontes regulatorias para incluir apoio a mecanismo de acao.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v28`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao adicionou conteudo farmacologico explicativo, conforme solicitacao explicita.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Interface
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removido do Modulo 1 o alerta `Integracao farmacologica` da secao `8.1 Estrategias de intubacao`.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v27`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao removeu conteudo explicativo clinico-textual, conforme solicitacao explicita.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Interface
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removido do Modulo 1 o alerta `Conceito` da secao `8.1 Estrategias de intubacao`.
+- Mantido o alerta subsequente de integracao farmacologica.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v26`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao removeu conteudo explicativo clinico-textual, conforme solicitacao explicita.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado ou concentracao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
+- Navegacao
+- Responsividade
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Ajustado o sumario interno dos modulos renderizados no `ModuleViewer` para listar topicos em grade de ate 4 colunas por linha.
+- Aplicado o comportamento via camada comum `iframeSafety.ts`, afetando todos os modulos sem reescrever o conteudo clinico dos HTMLs.
+- Adicionadas quebras responsivas para 2 colunas e 1 coluna em telas estreitas.
+- Ajustado o sumario interno aberto para ocupar menos altura visual e preservar rolagem quando necessario.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v25`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Alteracao restrita a layout, navegacao e responsividade do sumario interno dos modulos.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao, recomendacao ou texto medico.
+
+### Arquivos modificados
+
+- `src/utils/iframeSafety.ts`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
+- Responsividade
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Reduzido o cabecalho do `ModuleViewer` para exibir apenas numero do modulo e titulo.
+- Removido da interface o caminho tecnico `src/data/modules/...` exibido no cabecalho do modulo.
+- Removido o marcador separado `Modulo X` para evitar duplicidade visual.
+- Ajustado o espacamento do cabecalho do modulo para ocupar menos altura.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v24`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Alteracao restrita a interface e reducao de metadados visuais.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao, recomendacao ou texto medico.
+
+### Arquivos modificados
+
+- `src/components/ModuleViewer.tsx`
+- `src/styles.css`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
+- Conteudo editorial
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removida do topo do Modulo 1 a linha de selos tecnicos `SVG nativo`, `Cards expansíveis`, `Fonte primaria obrigatoria`, `Sem SPIN` e `Pronto para expansao JS`.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v23`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Alteracao restrita a remocao de metadados tecnicos de interface.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao, recomendacao ou texto medico.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
+- Responsividade
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removido o texto tecnico `PWA offline-first` e a descricao do cabecalho superior da interface publica.
+- Removido o badge visual `v1` do cabecalho superior.
+- Reduzida a barra superior para um controle minimo contendo apenas o botao `Modulos`.
+- Removido fundo, borda e sombra do cabecalho superior para reduzir ocupacao visual.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v22`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Alteracao restrita a interface e ocupacao visual.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao, recomendacao ou texto medico.
+
+### Arquivos modificados
+
+- `src/App.tsx`
+- `src/styles.css`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
+- Navegacao
+- Responsividade
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Transformado o card `Via aerea fisiologica` do bloco inicial do Modulo 1 em link interno para o item `3.3 Via aerea fisiologicamente dificil`.
+- Adicionado identificador direto ao titulo `3.3 Via aerea fisiologicamente dificil`.
+- Convertida a busca global em aba lateral direita recolhida, abrindo como painel sobreposto ao conteudo central.
+- Ao abrir a busca global, o sumario lateral de modulos e fechado automaticamente.
+- Ajustado o sumario lateral de modulos para redimensionar o conteudo central em telas com largura suficiente, evitando sobreposicao ao modulo exibido.
+- Removida a coluna fixa de busca do layout principal.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v21`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Alteracoes restritas a navegacao, responsividade e affordance visual.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao, recomendacao ou texto medico.
+
+### Arquivos modificados
+
+- `src/App.tsx`
+- `src/components/SearchPanel.tsx`
+- `src/styles.css`
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
+- Navegacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Transformado o card `Via aerea anatomica` do bloco inicial do Modulo 1 em link interno para a secao `2. Anatomia aplicada`.
+- Adicionado estilo visual de foco/hover para indicar que o card e selecionavel.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v20`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Alteracao restrita a navegacao e affordance visual.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao, recomendacao ou texto medico.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-19
+
+### Tipo de alteracao
+
+- Interface
+- Conteudo editorial
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Corrigida a numeracao do bloco expansivel `Linha do tempo visual das sequencias` no Modulo 1.
+- Alterado o marcador de `8.0` para `1.1`, pois o bloco esta dentro da secao `1. Introducao`.
+- Sincronizada a copia espelho em `modules/`.
+- Atualizado o hash de integridade do Modulo 1.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v19`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Alteracao restrita a numeracao editorial de topico.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao, recomendacao ou texto medico.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `modules/modulo_01_via_aerea_iot.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
 ## 2026-05-19
 
 ### Tipo de alteracao

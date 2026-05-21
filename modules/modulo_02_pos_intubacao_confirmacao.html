@@ -62,19 +62,24 @@
     <div class="hero">
       <h2>Módulo 2 — Pós-intubação e confirmação</h2>
       <p>Capítulo procedural sobre confirmação do tubo, capnografia, checagem sistemática após intubação, transição para ventilação mecânica, sedoanalgesia inicial e resposta às complicações precoces.</p>
-      <div class="badge-row">
-        <span class="badge">Capnografia obrigatória</span><span class="badge">DOPE/DOPES</span><span class="badge">Auto-PEEP</span><span class="badge">Pós-IOT imediato</span><span class="badge">Checklist operacional</span><span class="badge">Fonte primária</span>
-      </div>
     </div>
 
     <section id="objetivo">
       <h2>1. Objetivo do módulo</h2>
       <p>Após a passagem do tubo, o procedimento ainda não terminou. A fase pós-intubação concentra eventos críticos: intubação esofágica não reconhecida, intubação seletiva, pneumotórax, hipotensão, ventilação inadequada, ausência de sedoanalgesia e atraso no reconhecimento de deterioração.</p>
-      <div class="grid grid-3">
-        <div class="metric"><strong>Confirmar</strong><span>Localização traqueal com capnografia e métodos complementares.</span></div>
-        <div class="metric"><strong>Fixar</strong><span>Profundidade adequada, cuff, fixação e documentação.</span></div>
-        <div class="metric"><strong>Estabilizar</strong><span>Ventilação, oxigenação, hemodinâmica e sedoanalgesia.</span></div>
+      <div class="flow" aria-label="Fluxograma pós-intubação">
+        <div class="card"><h4>1. Confirmar</h4><p>Localização traqueal com capnografia e métodos complementares.</p></div>
+        <div class="card"><h4>2. Fixar</h4><p>Profundidade adequada, cuff, fixação e documentação.</p></div>
+        <div class="card"><h4>3. Estabilizar</h4><p>Ventilação, oxigenação, hemodinâmica e sedoanalgesia.</p></div>
       </div>
+      <table>
+        <thead><tr><th>Etapa</th><th>Atitudes imediatas</th><th>Parâmetros a observar</th><th>Observações de segurança</th></tr></thead>
+        <tbody>
+          <tr><td>Confirmar</td><td>Conectar capnografia, ventilar, confirmar onda de CO₂ persistente e associar avaliação clínica complementar.</td><td>Onda capnográfica, ETCO₂, SpO₂, expansibilidade torácica, ausculta bilateral e ausculta epigástrica.</td><td>Na ausência de onda confiável, tratar a posição do tubo como incerta até prova em contrário.</td></tr>
+          <tr><td>Fixar</td><td>Conferir profundidade, insuflação do cuff, fixação externa e documentação do ponto de referência.</td><td>Centímetros no lábio/arcada dentária, simetria ventilatória, pressão do cuff quando mensurável e risco de intubação seletiva.</td><td>Reavaliar posição após transporte, mudança de decúbito, piora ventilatória ou queda de saturação.</td></tr>
+          <tr><td>Estabilizar</td><td>Iniciar ventilador, ajustar oxigenação/ventilação, monitorar hemodinâmica e garantir sedoanalgesia pós-IOT.</td><td>SpO₂, ETCO₂, pressão arterial, frequência cardíaca, pressões de via aérea, sincronia e nível de sedação/analgesia.</td><td>Dessaturação ou hipotensão pós-IOT exigem abordagem sistemática antes de assumir que o problema é apenas ventilatório ou apenas hemodinâmico.</td></tr>
+        </tbody>
+      </table>
       <div class="alert alert-danger"><strong>Regra central:</strong> ausculta, expansão torácica e condensação no tubo não substituem capnografia com onda para confirmação de intubação traqueal.</div>
       <div class="ref"><strong>Fontes primárias:</strong> Apfelbaum JL et al. <em>Anesthesiology</em>, 2022. ASA Difficult Airway Guidelines. DOI: 10.1097/ALN.0000000000004002. Frerk C et al. <em>British Journal of Anaesthesia</em>, 2015. DAS Guidelines. DOI: 10.1093/bja/aev371.</div>
     </section>
@@ -257,27 +262,18 @@
       </table>
       <div class="alert alert-danger"><strong>Acidose metabólica grave:</strong> não iniciar ventilação com volume minuto muito inferior ao esforço compensatório pré-IOT. Reavaliar ETCO₂ e gasometria precocemente.</div>
 
-      <h3>8.2 O que é auto-PEEP?</h3>
-      <p><strong>Auto-PEEP</strong>, também chamada de <strong>PEEP intrínseca</strong>, é a pressão positiva que permanece dentro dos alvéolos ao final da expiração porque o paciente não conseguiu esvaziar completamente os pulmões antes do próximo ciclo ventilatório.</p>
-      <p>Na prática, significa que a próxima inspiração começa sobre um pulmão ainda hiperinsuflado. Isso ocorre por <strong>tempo expiratório insuficiente</strong>, <strong>obstrução ao fluxo expiratório</strong> ou combinação de ambos.</p>
-
-      <div class="grid grid-3">
-        <div class="card"><h4>Mecanismo</h4><p>O ar entra, mas não sai completamente. A pressão alveolar final fica maior que a PEEP programada no ventilador.</p></div>
-        <div class="card"><h4>Cenários clássicos</h4><p>Asma grave, DPOC, broncoespasmo, secreção/obstrução, frequência respiratória alta, tempo expiratório curto ou volume minuto excessivo.</p></div>
-        <div class="card"><h4>Risco principal</h4><p>Hiperinsuflação dinâmica com aumento da pressão intratorácica, redução do retorno venoso, hipotensão e até colapso cardiovascular.</p></div>
-      </div>
-
+      <h3>8.2 Triagem rápida de auto-PEEP no pós-IOT</h3>
+      <p>No Módulo 2, o objetivo é reconhecer auto-PEEP como causa reversível de deterioração nos primeiros minutos após a intubação. A fisiologia, as curvas e o ajuste ventilatório detalhado ficam no Módulo 3.</p>
       <table>
-        <thead><tr><th>Achado</th><th>O que sugere</th><th>Resposta prática</th></tr></thead>
+        <thead><tr><th>Quando suspeitar</th><th>Risco imediato</th><th>Resposta inicial</th></tr></thead>
         <tbody>
-          <tr><td>Fluxo expiratório não retorna à linha de base antes da próxima inspiração</td><td>Expiração incompleta e aprisionamento aéreo.</td><td>Reduzir frequência respiratória, reduzir volume minuto quando possível e aumentar tempo expiratório.</td></tr>
-          <tr><td>Pressão de pico elevada com broncoespasmo/secreção</td><td>Aumento de resistência de vias aéreas e esvaziamento lento.</td><td>Tratar broncoespasmo, aspirar secreções, checar tubo/circuito e prolongar expiração.</td></tr>
-          <tr><td>Hipotensão após iniciar ventilação mecânica</td><td>Redução do retorno venoso por pressão intratorácica elevada, especialmente em asma/DPOC.</td><td>Suspeitar de auto-PEEP, desconectar brevemente do ventilador se colapso iminente, ventilar manualmente com baixa frequência e corrigir ajustes.</td></tr>
-          <tr><td>Paciente disparando pouco ou com esforço para iniciar ciclos</td><td>Auto-PEEP aumenta o limiar necessário para disparar o ventilador.</td><td>Ajustar sensibilidade, considerar PEEP externa com cautela em DPOC, otimizar sedação/analgesia e reduzir aprisionamento.</td></tr>
+          <tr><td>Asma/DPOC, broncoespasmo, secreção, FR alta, tempo expiratório curto ou fluxo expiratório que não retorna à linha de base.</td><td>Aprisionamento aéreo, pressão intratorácica elevada e dificuldade de disparo.</td><td>Reduzir frequência respiratória, aumentar tempo expiratório e tratar obstrução.</td></tr>
+          <tr><td>Pressão de pico elevada logo após conectar o ventilador.</td><td>Resistência alta, obstrução do tubo/circuito ou hiperinsuflação dinâmica.</td><td>Checar tubo/circuito, aspirar se necessário, tratar broncoespasmo e revisar volume minuto.</td></tr>
+          <tr><td>Hipotensão súbita após iniciar ventilação mecânica, especialmente em asma/DPOC.</td><td>Redução do retorno venoso por hiperinsuflação dinâmica; pode simular ou agravar choque.</td><td>Suspeitar de auto-PEEP, ventilar com baixa frequência e considerar desconexão breve se colapso iminente.</td></tr>
         </tbody>
       </table>
 
-      <details open><summary>Como reduzir auto-PEEP no pós-IOT</summary><div class="detail-body">
+      <details><summary>Medidas de ponte até ajuste definitivo</summary><div class="detail-body">
         <ul class="checklist">
           <li><strong>Reduzir frequência respiratória</strong> para aumentar o tempo expiratório.</li>
           <li><strong>Aumentar fluxo inspiratório</strong> no modo volume-controlado quando apropriado, encurtando o tempo inspiratório e ampliando o tempo expiratório.</li>
@@ -290,11 +286,12 @@
 
       <div class="alert alert-warning"><strong>Armadilha:</strong> em asma/DPOC pós-IOT, aumentar muito a frequência respiratória para “baixar CO₂” pode piorar auto-PEEP, hipotensão e barotrauma. Nesses cenários, aceitar hipercapnia permissiva pode ser mais seguro do que tentar normalizar rapidamente o CO₂.</div>
 
-      <div class="ref"><strong>Fontes primárias e fisiologia aplicada:</strong> Higgs A et al. <em>British Journal of Anaesthesia</em>, 2018. Guidelines for tracheal intubation in critically ill adults. DOI: 10.1016/j.bja.2017.10.021. Carteaux G, Spinelli E, Jaber S. <em>Intensive Care Medicine</em>, 2026. Understanding lung physiology through ventilator screen. DOI: 10.1007/s00134-026-08341-5.</div>
+      <div class="ref"><strong>Fonte e continuidade:</strong> para fisiologia, curvas e ajuste definitivo da auto-PEEP, usar o Módulo 3. Higgs A et al. <em>British Journal of Anaesthesia</em>, 2018. DOI: 10.1016/j.bja.2017.10.021. Carteaux G, Spinelli E, Jaber S. <em>Intensive Care Medicine</em>, 2026. DOI: 10.1007/s00134-026-08341-5.</div>
     </section>
 
     <section id="sedoanalgesia">
       <h2>9. Sedoanalgesia imediata pós-IOT</h2>
+      <div class="alert alert-info"><strong>Escopo desta seção:</strong> usar este bloco para os primeiros minutos após a confirmação do tubo. A manutenção diária, despertar, delirium e ajuste longitudinal da sedoanalgesia ficam no Módulo 4; cálculo operacional de volume, concentração e vazão fica no Módulo 6.</div>
 <details><summary>Apresentações comerciais usuais no Brasil — sedoanalgesia e bloqueio</summary><div class="detail-body">
         <table>
           <thead><tr><th>Fármaco</th><th>Apresentação comercial — concentração, volume total e conteúdo total</th><th>Uso no módulo</th></tr></thead>
@@ -328,19 +325,19 @@
 
       <h3>9.1 Estratégia por cenário clínico</h3>
       <table>
-        <thead><tr><th>Situação</th><th>Estratégia prática</th><th>Armadilha</th></tr></thead>
+        <thead><tr><th>Situação</th><th>Fármaco/estratégia sugerida</th><th>Estratégia prática</th><th>Evidência comparativa e desfecho</th><th>Armadilha</th></tr></thead>
         <tbody>
-          <tr><td>Pós-RSI com rocurônio</td><td>Iniciar sedação/analgesia imediatamente após confirmação do tubo.</td><td>Paciente paralisado pode parecer “confortável” sem estar sedado.</td></tr>
-          <tr><td>Choque</td><td>Evitar bolus sedativos agressivos; considerar analgesia titulada, cetamina como adjuvante e reduzir doses de hipnóticos hipotensores.</td><td>Propofol em dose plena pode precipitar colapso hemodinâmico.</td></tr>
-          <tr><td>Broncoespasmo</td><td>Cetamina pode ajudar como adjuvante sedativo/analgésico; tratar obstrução, ajustar ventilador e prolongar tempo expiratório.</td><td>Confundir pressão alta por broncoespasmo com necessidade isolada de reduzir volume corrente.</td></tr>
-          <tr><td>HIC/TCE</td><td>Evitar hipóxia, hipotensão, tosse e assincronia; propofol ou midazolam podem ser úteis conforme pressão arterial e objetivo neurológico.</td><td>Hipotensão por sedativo reduz pressão de perfusão cerebral e piora lesão secundária.</td></tr>
-          <tr><td>Delirium/agitação sem necessidade de sedação profunda</td><td>Considerar dexmedetomidina quando o objetivo for sedação leve, cooperação e menor depressão respiratória.</td><td>Usar benzodiazepínico contínuo sem indicação pode prolongar despertar e delirium.</td></tr>
+          <tr><td>Pós-RSI com rocurônio</td><td>Analgesia titulada com opioide + hipnótico/sedativo contínuo compatível com a hemodinâmica. Dexmedetomidina isolada geralmente não é suficiente se houver bloqueio residual e necessidade de sedação profunda.</td><td>Iniciar sedação/analgesia imediatamente após confirmação do tubo e definir alvo RASS.</td><td>PADIS 2018 sustenta analgesia-first e sedação leve quando viável; não há ensaio clínico específico para “pós-RSI com rocurônio”, mas evitar paralisia sem hipnose/analgesia é medida de segurança essencial.</td><td>Paciente paralisado pode parecer “confortável” sem estar sedado.</td></tr>
+          <tr><td>Choque</td><td>Analgesia titulada; considerar cetamina como adjuvante quando apropriado; reduzir ou evitar bolus de hipnóticos hipotensores. Midazolam pode ser alternativa quando propofol é mal tolerado.</td><td>Evitar bolus sedativos agressivos, reavaliar PA/PAM após cada ajuste e manter vasopressor pronto ou em curso se indicado.</td><td>Não há sedativo com melhora de mortalidade demonstrada especificamente em choque pós-IOT. Em sepse ventilada, MENDS2 não mostrou superioridade de dexmedetomidina sobre propofol em dias vivos sem delirium/coma, dias livres de ventilador ou mortalidade; SPICE III também não mostrou redução de mortalidade com dexmedetomidina versus cuidado usual.</td><td>Propofol em dose plena pode precipitar colapso hemodinâmico.</td></tr>
+          <tr><td>Broncoespasmo</td><td>Cetamina como adjuvante sedativo/analgésico quando broncoespasmo e necessidade de sedação coexistem.</td><td>Tratar obstrução, ajustar ventilador, prolongar tempo expiratório e evitar hiperventilação manual vigorosa.</td><td>O suporte para cetamina no broncoespasmo é fisiológico e baseado em evidência limitada. Estudos pequenos descrevem redução de resistência de vias aéreas/melhora de complacência; ensaios em UTI com cetamina mostram resultados mistos e não demonstram benefício consistente em mortalidade, tempo de ventilação ou permanência em UTI.</td><td>Confundir pressão alta por broncoespasmo com necessidade isolada de reduzir volume corrente.</td></tr>
+          <tr><td>HIC/TCE</td><td>Propofol se pressão arterial permitir; midazolam se propofol for mal tolerado ou se houver necessidade anticonvulsivante/sedação profunda. Associar analgesia para evitar tosse e resposta simpática.</td><td>Evitar hipóxia, hipotensão, tosse e assincronia; titular sedação conforme objetivo neurológico e perfusão cerebral.</td><td>Brain Trauma Foundation recomenda propofol para controle de pressão intracraniana, mas não para melhora de mortalidade ou desfecho funcional em 6 meses; alerta para morbidade com dose alta. Portanto, o benefício é de controle fisiológico/ICP, não de desfecho final comprovado.</td><td>Hipotensão por sedativo reduz pressão de perfusão cerebral e piora lesão secundária.</td></tr>
+          <tr><td>Delirium/agitação sem necessidade de sedação profunda</td><td>Dexmedetomidina quando a meta for sedação leve, cooperação e menor depressão respiratória; propofol segue opção adequada se for necessária sedação mais profunda/titulável.</td><td>Considerar dexmedetomidina para paciente que precisa despertar, interagir ou reduzir benzodiazepínico, monitorando bradicardia e hipotensão.</td><td>MENDS mostrou mais dias vivos sem delirium/coma com dexmedetomidina versus lorazepam. SEDCOM mostrou menor delirium e extubação cerca de 1,9 dia mais precoce versus midazolam. MIDEX mostrou menor duração de ventilação versus midazolam, mas PRODEX não mostrou vantagem clara versus propofol; MENDS2 não mostrou superioridade de dexmedetomidina versus propofol na sepse.</td><td>Usar benzodiazepínico contínuo sem indicação pode prolongar despertar e delirium.</td></tr>
         </tbody>
       </table>
 
       <h3>9.2 Analgésicos em infusão contínua</h3>
 
-      <details open><summary>Fentanil — opioide µ-agonista sintético</summary><div class="detail-body">
+      <details><summary>Fentanil — opioide µ-agonista sintético</summary><div class="detail-body">
         <table><tbody>
           <tr><th>Mecanismo</th><td>Agonista de receptores opioides µ; promove analgesia, sedação secundária e atenuação da resposta simpática à dor/estresse.</td></tr>
           <tr><th>Quando usar</th><td>Analgesia pós-IOT, ventilação mecânica, dor intensa, necessidade de opioide titulável em paciente crítico.</td></tr>
@@ -381,7 +378,7 @@
 
       <h3>9.3 Sedativos/hipnóticos em infusão contínua</h3>
 
-      <details open><summary>Propofol — hipnótico GABAérgico</summary><div class="detail-body">
+      <details><summary>Propofol — hipnótico GABAérgico</summary><div class="detail-body">
         <table><tbody>
           <tr><th>Mecanismo</th><td>Potencializa transmissão GABA-A; hipnose rápida, redução do metabolismo cerebral e efeito anticonvulsivante. Não fornece analgesia.</td></tr>
           <tr><th>Quando usar</th><td>Sedação titulável pós-IOT, necessidade de despertar rápido, controle de assincronia, TCE/HIC quando hemodinâmica permite.</td></tr>
@@ -447,11 +444,7 @@
         </tbody>
       </table>
 
-      <div class="alert alert-warning">
-        <strong>Nota operacional:</strong> as diluições acima são exemplos padronizáveis para cálculo e ensino. A versão final da calculadora deverá permitir concentração customizável, porque hospitais podem usar soluções mais concentradas em restrição hídrica, bombas de seringa ou protocolos próprios.
-      </div>
-
-      <div class="ref"><strong>Fontes primárias e bases operacionais:</strong> Devlin JW et al. <em>Critical Care Medicine</em>, 2018. SCCM PADIS Guidelines. DOI: 10.1097/CCM.0000000000003299. Hughes CG et al. <em>Critical Care Medicine</em>, 2021. 2021 Clinical Practice Guidelines for Adult Critically Ill Patients with Acute Pain. DOI: 10.1097/CCM.0000000000005139. As apresentações/diluições devem ser confirmadas em bula profissional de saúde e protocolo institucional. A obra brasileira <em>Medicina Intensiva — Abordagem Prática</em> reforça a necessidade de conferir informações do fabricante para dose, modo de administração, contraindicações e efeitos adversos antes do uso clínico.</div>
+      <div class="ref"><strong>Fontes primárias e bases operacionais:</strong> Devlin JW et al. <em>Critical Care Medicine</em>, 2018. SCCM PADIS Guidelines. DOI: 10.1097/CCM.0000000000003299. Hughes CG et al. <em>Critical Care Medicine</em>, 2021. 2021 Clinical Practice Guidelines for Adult Critically Ill Patients with Acute Pain. DOI: 10.1097/CCM.0000000000005139. MENDS, SEDCOM, MIDEX/PRODEX, MENDS2, SPICE III e Brain Trauma Foundation foram usados para a tabela de evidência por cenário. As apresentações/diluições devem ser confirmadas em bula profissional de saúde e protocolo institucional. A obra brasileira <em>Medicina Intensiva — Abordagem Prática</em> reforça a necessidade de conferir informações do fabricante para dose, modo de administração, contraindicações e efeitos adversos antes do uso clínico.</div>
     </section>
 
     <section id="dessaturacao">
@@ -507,13 +500,17 @@
 
     <section id="hipotensao">
       <h2>11. Hipotensão pós-intubação</h2>
-      <p>A hipotensão pós-IOT pode resultar de sedativos, vasodilatação, hipovolemia, redução do retorno venoso pela pressão positiva, auto-PEEP, pneumotórax, acidose, hipoxemia ou disfunção ventricular.</p>
+      <p>A hipotensão pós-IOT deve ser tratada como deterioração hemodinâmica precoce, não apenas como “efeito esperado da sedação”. Em estudos de emergência e UTI, o evento costuma ser medido dentro de janelas de 30 a 60 minutos após a indução/intubação, em vez de por uma média única de tempo de instalação. Heffner et al. observaram hipotensão pós-intubação em 22% das intubações de emergência, associada a maior mortalidade hospitalar; Green et al. encontraram incidência de 46% em pacientes críticos intubados por equipes de UTI; no INTUBE, instabilidade/colapso cardiovascular peri-intubação ocorreu em 43,4% dos pacientes críticos e se associou a maior mortalidade. A vigilância deve começar antes da indução e permanecer ativa durante os primeiros minutos e a primeira hora pós-IOT.</p>
       <div class="grid grid-2">
-        <details open><summary>Resposta imediata</summary><div class="detail-body"><ul class="checklist"><li>Confirmar pulso, PA, ECG e SpO₂.</li><li>FiO₂ 100% e checar ventilação/capnografia.</li><li>Reduzir pressões/PEEP se suspeita de impacto hemodinâmico.</li><li>Iniciar ou aumentar vasopressor se choque/vasoplegia.</li><li>Fluid challenge apenas se houver plausibilidade de responsividade.</li><li>Investigar pneumotórax, seletiva, auto-PEEP, tamponamento/TEP se contexto.</li></ul></div></details>
-        <details open><summary>Prevenção na próxima IOT</summary><div class="detail-body"><ul class="checklist"><li>Reconhecer choque antes da indução.</li><li>Preparar noradrenalina antes da passagem.</li><li>Reduzir doses de hipnóticos hipotensores.</li><li>Evitar apneia prolongada e hipóxia.</li><li>Escolher ventilação inicial com menor agressão hemodinâmica.</li><li>Ter plano para VD vulnerável/auto-PEEP.</li></ul></div></details>
+        <details open><summary>Evidência e janela de risco</summary><div class="detail-body"><ul class="checklist"><li><strong>Heffner et al.:</strong> hipotensão pós-IOT definida por pressão sistólica &lt;90 mmHg em até 60 minutos; maior risco com índice de choque elevado, doença renal crônica, intubação por insuficiência respiratória aguda e idade.</li><li><strong>Tangkulpanich et al.:</strong> em suspeita de sepse, hipotensão em até 60 minutos ocorreu em 26,9%; idade avançada e lactato inicial elevado foram associados ao evento.</li><li><strong>INTUBE:</strong> colapso/instabilidade cardiovascular incluiu pressão sistólica &lt;65 mmHg, pressão sistólica &lt;90 mmHg por mais de 30 minutos, novo/aumento de vasopressor, bolus de fluido relevante ou parada cardíaca; fatores associados incluíram idade, frequência cardíaca alta, pressão sistólica baixa, pior oxigenação pré-indução e uso de propofol como indutor.</li><li><strong>PrePARE:</strong> bolus cristalóide pré-indução não reduziu colapso cardiovascular de forma global; portanto, fluido deve ser guiado por responsividade/plausibilidade fisiológica, não usado automaticamente.</li></ul></div></details>
+        <details open><summary>Reconhecer em tempo real</summary><div class="detail-body"><ul class="checklist"><li>Comparar PA/PAM pós-IOT com o basal imediatamente pré-indução.</li><li>Manter PA em ciclos curtos nos primeiros minutos; se houver linha arterial, acompanhar tendência batimento a batimento.</li><li>Tratar queda súbita de ETCO₂, perda de pulso periférico, alteração de consciência residual, piora de perfusão, taquicardia/bradicardia ou aumento rápido de vasopressor como sinal de possível colapso circulatório.</li><li>Reavaliar simultaneamente tubo, circuito, capnografia, ausculta, pressão de vias aéreas, PEEP/auto-PEEP e possibilidade de pneumotórax.</li></ul></div></details>
+      </div>
+      <div class="grid grid-2">
+        <details open><summary>Resposta imediata</summary><div class="detail-body"><ul class="checklist"><li>Confirmar pulso central/periférico, PA/PAM, ECG, SpO₂ e capnografia.</li><li>FiO₂ 100%, checar ventilação e excluir rapidamente perda de via aérea, seletiva, obstrução, desconexão e pneumotórax.</li><li>Reduzir pressão intratorácica quando houver suspeita de impacto ventilatório: revisar PEEP, pressões, tempo expiratório e auto-PEEP.</li><li>Iniciar ou aumentar vasopressor conforme protocolo institucional se choque, vasoplegia ou hipoperfusão persistirem.</li><li>Fluid challenge apenas se houver plausibilidade de responsividade e ausência de sinais fortes de congestão/sobrecarga.</li><li>Usar POCUS, quando disponível, para pesquisar pneumotórax, disfunção ventricular, tamponamento, TEP ou hipovolemia relevante.</li></ul></div></details>
+        <details open><summary>Prevenção na próxima IOT</summary><div class="detail-body"><ul class="checklist"><li>Reconhecer choque antes da indução: PA/PAM baixa, índice de choque elevado, lactato alto, vasopressor em uso ou perfusão ruim.</li><li>Preparar vasopressor e plano de resgate hemodinâmico antes da passagem do tubo.</li><li>Evitar aprofundamento sedativo desnecessário em paciente instável e preferir estratégia farmacológica compatível com o cenário hemodinâmico.</li><li>Evitar apneia prolongada, hipóxia e acidose, porque reduzem reserva cardiovascular.</li><li>Escolher ventilação inicial com menor agressão hemodinâmica, reavaliando PEEP, volume/pressão, frequência e tempo expiratório.</li><li>Ter plano específico para ventrículo direito vulnerável, broncoespasmo/DPOC com auto-PEEP, pneumotórax e choque obstrutivo.</li></ul></div></details>
       </div>
       <div class="alert alert-danger"><strong>Armadilha:</strong> “PAM caiu porque sedou” pode ocultar pneumotórax, auto-PEEP, seletiva ou choque obstrutivo. Sempre reavaliar tubo, circuito, pulmão e perfusão.</div>
-      <div class="ref"><strong>Fontes primárias:</strong> Higgs A et al. <em>British Journal of Anaesthesia</em>, 2018. DOI: 10.1016/j.bja.2017.10.021. Evans L et al. <em>Intensive Care Medicine</em>, 2021. SSC 2021. DOI: 10.1007/s00134-021-06506-y.</div>
+      <div class="ref"><strong>Fontes primárias:</strong> Higgs A et al. <em>British Journal of Anaesthesia</em>, 2018. DOI: 10.1016/j.bja.2017.10.021. Heffner AC et al. <em>Journal of Critical Care</em>, 2012. DOI: 10.1016/j.jcrc.2012.04.022. Green RS et al. <em>Journal of Critical Care</em>, 2015. DOI: 10.1016/j.jcrc.2015.06.007. Russotto V et al. <em>JAMA</em>, 2021. DOI: 10.1001/jama.2021.1727. Russotto V et al. <em>American Journal of Respiratory and Critical Care Medicine</em>, 2022. DOI: 10.1164/rccm.202111-2575OC. Janz DR et al. <em>Lancet Respiratory Medicine</em>, 2019. DOI: 10.1016/S2213-2600(19)30246-2. Tangkulpanich P et al. <em>Open Access Emergency Medicine</em>, 2023. DOI: 10.2147/OAEM.S426822. Evans L et al. <em>Intensive Care Medicine</em>, 2021. SSC 2021. DOI: 10.1007/s00134-021-06506-y.</div>
     </section>
 
     <section id="checklist">
@@ -547,12 +544,24 @@
         <li>Apfelbaum JL, Hagberg CA, Connis RT, et al. <strong>2022 American Society of Anesthesiologists Practice Guidelines for Management of the Difficult Airway</strong>. <em>Anesthesiology</em>. 2022;136(1):31-81. DOI: 10.1097/ALN.0000000000004002. Diretriz.</li>
         <li>Frerk C, Mitchell VS, McNarry AF, et al. <strong>Difficult Airway Society 2015 guidelines for management of unanticipated difficult intubation in adults</strong>. <em>British Journal of Anaesthesia</em>. 2015;115(6):827-848. DOI: 10.1093/bja/aev371. Diretriz.</li>
         <li>Higgs A, McGrath BA, Goddard C, et al. <strong>Guidelines for the management of tracheal intubation in critically ill adults</strong>. <em>British Journal of Anaesthesia</em>. 2018;120(2):323-352. DOI: 10.1016/j.bja.2017.10.021. Diretriz.</li>
+        <li>Heffner AC, Swords DS, Nussbaum ML, Kline JA, Jones AE. <strong>Predictors of the complication of postintubation hypotension during emergency airway management</strong>. <em>Journal of Critical Care</em>. 2012;27(6):587-593. DOI: 10.1016/j.jcrc.2012.04.022. Coorte retrospectiva.</li>
+        <li>Green RS, Turgeon AF, McIntyre LA, et al. <strong>Postintubation hypotension in intensive care unit patients: a multicenter cohort study</strong>. <em>Journal of Critical Care</em>. 2015;30(5):1055-1060. DOI: 10.1016/j.jcrc.2015.06.007. Coorte multicêntrica.</li>
+        <li>Russotto V, Myatra SN, Laffey JG, et al. <strong>Intubation Practices and Adverse Peri-intubation Events in Critically Ill Patients From 29 Countries</strong>. <em>JAMA</em>. 2021;325(12):1164-1172. DOI: 10.1001/jama.2021.1727. Estudo observacional INTUBE.</li>
+        <li>Russotto V, Tassistro E, Myatra SN, et al. <strong>Peri-intubation Cardiovascular Collapse in Patients Who Are Critically Ill: Insights from the INTUBE Study</strong>. <em>American Journal of Respiratory and Critical Care Medicine</em>. 2022;206(4):449-458. DOI: 10.1164/rccm.202111-2575OC. Estudo observacional multicêntrico.</li>
+        <li>Janz DR, Casey JD, Semler MW, et al. <strong>Effect of a fluid bolus on cardiovascular collapse among critically ill adults undergoing tracheal intubation (PrePARE): a randomised controlled trial</strong>. <em>Lancet Respiratory Medicine</em>. 2019;7(12):1039-1047. DOI: 10.1016/S2213-2600(19)30246-2. Ensaio clínico randomizado.</li>
+        <li>Tangkulpanich P, Angkoontassaneeyarat C, Trainarongsakul T, Jenpanitpong C. <strong>Factors Associated with Postintubation Hypotension Among Patients with Suspected Sepsis in Emergency Department</strong>. <em>Open Access Emergency Medicine</em>. 2023;15:427-436. DOI: 10.2147/OAEM.S426822. Estudo retrospectivo.</li>
         <li>Link MS, Berkow LC, Kudenchuk PJ, et al. <strong>Part 7: Adult Advanced Cardiovascular Life Support: 2015 American Heart Association Guidelines Update for CPR and ECC</strong>. <em>Circulation</em>. 2015;132:S444-S464. DOI: 10.1161/CIR.0000000000000261. Diretriz.</li>
         <li>Panchal AR, Bartos JA, Cabañas JG, et al. <strong>Part 3: Adult Basic and Advanced Life Support: 2020 American Heart Association Guidelines for CPR and ECC</strong>. <em>Circulation</em>. 2020;142:S366-S468. DOI: 10.1161/CIR.0000000000000916. Diretriz.</li>
         <li>Devlin JW, Skrobik Y, Gélinas C, et al. <strong>Clinical Practice Guidelines for the Prevention and Management of Pain, Agitation/Sedation, Delirium, Immobility, and Sleep Disruption in Adult Patients in the ICU</strong>. <em>Critical Care Medicine</em>. 2018;46(9):e825-e873. DOI: 10.1097/CCM.0000000000003299. Diretriz SCCM PADIS.</li>
+        <li>Pandharipande PP, Pun BT, Herr DL, et al. <strong>Effect of Sedation With Dexmedetomidine vs Lorazepam on Acute Brain Dysfunction in Mechanically Ventilated Patients: The MENDS Randomized Controlled Trial</strong>. <em>JAMA</em>. 2007;298(22):2644-2653. DOI: 10.1001/jama.298.22.2644. Ensaio clínico randomizado.</li>
+        <li>Riker RR, Shehabi Y, Bokesch PM, et al. <strong>Dexmedetomidine vs Midazolam for Sedation of Critically Ill Patients: A Randomized Trial</strong>. <em>JAMA</em>. 2009;301(5):489-499. DOI: 10.1001/jama.2009.56. Ensaio clínico randomizado SEDCOM.</li>
+        <li>Jakob SM, Ruokonen E, Grounds RM, et al. <strong>Dexmedetomidine vs Midazolam or Propofol for Sedation During Prolonged Mechanical Ventilation: Two Randomized Controlled Trials</strong>. <em>JAMA</em>. 2012;307(11):1151-1160. DOI: 10.1001/jama.2012.304. Ensaios MIDEX/PRODEX.</li>
+        <li>Hughes CG, Mailloux PT, Devlin JW, et al. <strong>Dexmedetomidine or Propofol for Sedation in Mechanically Ventilated Adults with Sepsis</strong>. <em>New England Journal of Medicine</em>. 2021;384:1424-1436. DOI: 10.1056/NEJMoa2024922. Ensaio MENDS2.</li>
+        <li>Shehabi Y, Howe BD, Bellomo R, et al. <strong>Early Sedation with Dexmedetomidine in Critically Ill Patients</strong>. <em>New England Journal of Medicine</em>. 2019;380:2506-2517. DOI: 10.1056/NEJMoa1904710. Ensaio SPICE III.</li>
+        <li>Brain Trauma Foundation. <strong>Guidelines for the Management of Severe Traumatic Brain Injury, Fourth Edition</strong>. Recomendação sobre propofol para controle de pressão intracraniana, sem melhora comprovada de mortalidade ou desfecho em 6 meses.</li>
+        <li>Perbet S, Verdonk F, Godet T, et al. <strong>Low doses of ketamine reduce delirium but not opiate consumption in mechanically ventilated and sedated ICU patients: a randomised double-blind control trial</strong>. <em>Anaesthesia Critical Care & Pain Medicine</em>. 2018;37(6):589-595. DOI: 10.1016/j.accpm.2018.09.006. Ensaio clínico randomizado.</li>
         <li>Evans L, Rhodes A, Alhazzani W, et al. <strong>Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021</strong>. <em>Intensive Care Medicine</em>. 2021;47:1181-1247. DOI: 10.1007/s00134-021-06506-y. Diretriz GRADE.</li>
       </ol>
-      <div class="alert alert-info"><strong>Nota metodológica:</strong> este módulo utiliza diretrizes e documentos primários. Recursos educacionais, revisões narrativas e fontes terciárias podem orientar a didática, mas não são âncoras científicas principais.</div>
         </div>
       </details>
     </section>
