@@ -6,6 +6,37 @@
 
 - Conteudo clinico
 - Interface
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removida do Modulo 6 a secao inicial `Dados e seguranca`.
+- Reorganizada a ordem visual do Modulo 6 para iniciar diretamente em `Dados globais do paciente`.
+- Atualizados sumario interno e numeracao dos blocos operacionais do Modulo 6.
+- Sincronizada a copia espelho do Modulo 6 em `modules/`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v48`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Foi removido bloco textual metodologico/de seguranca do Modulo 6.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Interface
 - PWA/offline
 
 ### Alteracoes realizadas

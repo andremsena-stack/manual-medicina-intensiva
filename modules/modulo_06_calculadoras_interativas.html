@@ -192,12 +192,11 @@
     </div>
     <nav id="moduleNav" aria-label="Seções do módulo">
       <ul>
-        <li><a href="#intro" data-short="1"><span class="nav-label">1. Conceito</span></a></li>
-        <li><a href="#paciente" data-short="2"><span class="nav-label">2. Dados do paciente</span></a></li>
-        <li><a href="#iot" data-short="3"><span class="nav-label">3. Calculadora de IOT</span></a></li>
-        <li><a href="#dva" data-short="4"><span class="nav-label">4. Calculadora de DVA</span></a></li>
-        <li><a href="#continua" data-short="5"><span class="nav-label">5. Infusão contínua integrada</span></a></li>
-        <li><a href="#resumo" data-short="6"><span class="nav-label">6. Cenário-resumo</span></a></li>
+        <li><a href="#paciente" data-short="1"><span class="nav-label">1. Dados do paciente</span></a></li>
+        <li><a href="#iot" data-short="2"><span class="nav-label">2. Calculadora de IOT</span></a></li>
+        <li><a href="#dva" data-short="3"><span class="nav-label">3. Calculadora de DVA</span></a></li>
+        <li><a href="#continua" data-short="4"><span class="nav-label">4. Infusão contínua integrada</span></a></li>
+        <li><a href="#resumo" data-short="5"><span class="nav-label">5. Cenário-resumo</span></a></li>
         <li><a href="#referencias" data-short="Ref"><span class="nav-label">Referências</span></a></li>
         <li><a href="#leituras" data-short="Ler"><span class="nav-label">Sugestão de leitura</span></a></li>
       </ul>
@@ -210,31 +209,8 @@
       <p>Ferramentas práticas para cálculo de bólus em intubação orotraqueal, drogas vasoativas e infusões contínuas. O objetivo é padronizar unidades, reduzir erro de conversão e fornecer um cenário-resumo com dose, concentração e vazão.</p>
     </div>
 
-    <section id="intro">
-      <h2>1. Dados e segurança</h2>
-      <p>As regras metodológicas ficam recolhidas para não competir com o fluxo de prescrição. Abra apenas quando quiser revisar os critérios de segurança e padronização usados pela calculadora.</p>
-      <details class="refs-collapsible">
-        <summary>Mostrar/ocultar regras de segurança e padronização</summary>
-        <div class="detail-body">
-          <p>As calculadoras deste módulo foram desenhadas para apoio operacional à beira-leito. Elas não substituem julgamento clínico, conferência de bula, protocolo institucional, dupla checagem de enfermagem/farmácia, monitorização contínua e reavaliação da resposta clínica.</p>
-          <div class="alert alert-danger"><strong>Obrigatório:</strong> conferir concentração real da ampola, unidade da prescrição, diluente, concentração final, via de administração, bomba de infusão e compatibilidade antes de administrar.</div>
-          <table>
-            <thead><tr><th>Regra</th><th>Aplicação prática</th></tr></thead>
-            <tbody>
-              <tr><td>Unidade padronizada</td><td>mcg/kg/min para catecolaminas/inotrópicos, UI/min para vasopressina, mcg/kg/h ou mg/kg/h para sedativos conforme fármaco, mg/kg para bólus.</td></tr>
-              <tr><td>Apresentação comercial</td><td>Descrever como a ampola/frascos se apresenta no Brasil: concentração por mL, volume total e conteúdo total por unidade. Ex.: Midazolam 5 mg/mL em ampola de 1 mL, 3 mL ou 10 mL.</td></tr>
-              <tr><td>Concentração usada no cálculo</td><td>É a concentração efetivamente selecionada para calcular volume aspirado ou vazão. Pode ser igual à concentração comercial ou uma concentração após diluição/reconstituição.</td></tr>
-              <tr><td>Preparo explícito</td><td>A calculadora deve separar: apresentação comercial disponível, volume aspirado da droga, volume de diluente, volume final da solução e concentração final.</td></tr>
-              <tr><td>Noradrenalina</td><td>Hemitartarato 8 mg/4 mL ≈ norepinefrina base 4 mg/4 mL. A dose em mcg/kg/min deve ser calculada com base.</td></tr>
-              <tr><td>Cenário clínico</td><td>O mesmo fármaco pode ser adequado ou inadequado conforme sepse, cardiogênico, emergência hipertensiva, trombólise ou hipertensão intracraniana.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </details>
-    </section>
-
     <section id="paciente">
-      <h2>2. Dados globais do paciente</h2>
+      <h2>1. Dados globais do paciente</h2>
       <p>Os dados abaixo alimentam todas as calculadoras do módulo.</p>
       <div class="calc-panel">
         <h3>Paciente</h3>
@@ -260,7 +236,7 @@
     </section>
 
     <section id="iot">
-      <h2>3. Estratégia de intubação e bólus farmacológico</h2>
+      <h2>2. Estratégia de intubação e bólus farmacológico</h2>
       <div class="calc-panel">
         <h3>Estratégia de intubação</h3>
         <div class="calc-grid">
@@ -310,7 +286,7 @@
     </section>
 
     <section id="dva">
-      <h2>4. Calculadora de droga vasoativa</h2>
+      <h2>3. Calculadora de droga vasoativa</h2>
       <div class="calc-panel">
         <h3>DVA — dose ↔ bomba</h3>
         <input id="dvaAutoMode" type="hidden" value="">
@@ -373,7 +349,7 @@
     </section>
 
     <section id="continua">
-      <h2>5. Infusão contínua integrada — sedoanalgesia, bloqueador e DVA</h2>
+      <h2>4. Infusão contínua integrada — sedoanalgesia, bloqueador e DVA</h2>
       <div class="calc-panel">
         <h3>Infusão contínua</h3>
         <input id="infAutoMode" type="hidden" value="">
@@ -420,7 +396,7 @@
     </section>
 
     <section id="resumo">
-      <h2>6. Cenário-resumo</h2>
+      <h2>5. Cenário-resumo</h2>
       <p>O resumo organiza as drogas calculadas no atendimento, com dose, volume/vazão e solução preparada.</p>
       <div class="calc-panel">
         <h3>Resumo operacional</h3>
