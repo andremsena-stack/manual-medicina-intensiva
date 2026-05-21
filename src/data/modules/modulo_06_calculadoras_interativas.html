@@ -92,6 +92,10 @@
     .strategy-card{background:#f8fafc;border:1px solid #d8e0ea;border-left:5px solid #64748b;border-radius:12px;padding:10px}
     .strategy-card__title{color:#123c69;font-size:11px;font-weight:800;letter-spacing:.02em;margin-bottom:6px;text-transform:uppercase}
     .strategy-card div{font-size:12px;line-height:1.35;margin:4px 0}
+    .sva-flow{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+    .sva-flow span{background:#e7f2ef;border:1px solid #99f6e4;border-radius:999px;color:#0b6b5c;font-size:10.5px;font-weight:800;line-height:1.1;padding:4px 7px}
+    .sva-flow span::after{content:"→";color:#64748b;margin-left:5px}
+    .sva-flow span:last-child::after{content:""}
     .strategy-card--context{background:#eff6ff;border-left-color:#2563eb}
     .strategy-card--plan{background:#f0fdfa;border-color:#99f6e4;border-left-color:#0b6b5c}
     .strategy-card--caution{background:#fff7ed;border-color:#fed7aa;border-left-color:#b54708}
@@ -1635,30 +1639,35 @@ const iotTypeNotes = {
     short:"Hipnose + bloqueio em sequência rápida",
     prefer:"Hipnótico + bloqueador neuromuscular",
     avoid:"Atraso entre hipnose, bloqueio e laringoscopia",
+    sva:["Preparar","Pré-O2","Induzir","Bloquear","Laringoscopia","Confirmar","Pós-IOT"],
     detail:"RSI clássica: pré-oxigenação, hipnótico e bloqueador em rápida sequência, laringoscopia após latência adequada. Usar quando há necessidade de controle rápido da via aérea e risco de aspiração."
   },
   modificada: {
     short:"RSI adaptada ao risco fisiológico",
     prefer:"Pré-oxigenação + ventilação suave se necessário",
     avoid:"Pressão alta em máscara e apneia prolongada",
+    sva:["Preparar","Pré-O2","Ventilar suave","Induzir","Bloquear","Confirmar","Pós-IOT"],
     detail:"Sequência modificada: adapta a RSI ao paciente que não tolera apneia ou precisa de ventilação assistida com baixa pressão. Útil em hipoxemia, obesidade, acidose ou baixa reserva."
   },
   dsi: {
     short:"Dissociação antes da pré-oxigenação",
     prefer:"Cetamina + ventilação espontânea",
     avoid:"Paralisar antes de conseguir pré-oxigenar",
+    sva:["Dissociar","Pré-O2/VNI","Reavaliar","Bloquear","Intubar","Confirmar"],
     detail:"DSI: usar dissociação, geralmente com cetamina, para permitir VNI/HFNC/pré-oxigenação em paciente agitado ou hipoxêmico. Depois de melhorar reserva, realizar bloqueio e laringoscopia."
   },
   acordada: {
     short:"Preservar ventilação espontânea",
     prefer:"Anestesia tópica + sedação mínima",
     avoid:"Bloqueador antes de confirmar acesso traqueal",
+    sva:["Planejar","Anestesiar","Sedação mínima","Intubar","Confirmar","Converter plano"],
     detail:"Intubação acordada: indicada quando há via aérea difícil prevista, risco de não ventilar/não intubar, intolerância à apneia ou via aérea cirúrgica difícil. Priorizar anestesia tópica e técnica cooperativa."
   },
   crash: {
     short:"Via aérea imediata/peri-PCR",
     prefer:"Oxigenação e passagem rápida do tubo",
     avoid:"Atrasar via aérea por sedação desnecessária",
+    sva:["Oxigenar","Tubo imediato","Confirmar","Ventilar","Corrigir causa"],
     detail:"Crash airway: em inconsciência profunda/ausência de reflexos, pode não haver necessidade de hipnótico. Se houver tônus ou consciência, usar dose reduzida e suporte hemodinâmico."
   }
 };
@@ -1680,6 +1689,7 @@ function updateIOTStrategy(){
         <div class="strategy-card__title">Técnica e contexto</div>
         <div><b>Técnica:</b> ${typeText}</div>
         <div><b>Contexto fisiológico:</b> ${scenarioText}</div>
+        <div class="sva-flow" aria-label="Sequência SVA compacta">${(s.sva || []).map(step=>`<span>${step}</span>`).join("")}</div>
       </div>
       <div class="strategy-card strategy-card--plan">
         <div class="strategy-card__title">Objetivo e sequência</div>

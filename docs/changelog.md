@@ -5,6 +5,35 @@
 ### Tipo de alteracao
 
 - Conteudo clinico
+- Interface
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Adicionado mini-fluxo compacto no modelo SVA dentro do card `Tecnica e contexto` da estrategia de intubacao do Modulo 6.
+- Criadas sequencias curtas para RSI, sequencia modificada, DSI, intubacao acordada e crash airway.
+- Mantido o mini-fluxo em chips pequenos para evitar aumento relevante do tamanho visual do box.
+- Sincronizada a copia espelho do Modulo 6 em `modules/`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v55`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- A mudanca adiciona uma sequencia operacional sintetica para tecnica de intubacao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Conteudo clinico
 - Calculadora
 - Interface
 - Organizacao
