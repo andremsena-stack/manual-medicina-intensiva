@@ -361,7 +361,7 @@
         </div>
         <div class="calc-grid" style="margin-top:12px">
           <div><label for="infRate">Vazão da bomba (mL/h)</label><input id="infRate" type="number" step="0.01" placeholder="preencher mL/h se desejar calcular dose"></div>
-          <div><label for="infTargetHours">Planejar para</label><select id="infTargetHours"><option value="24" selected>24 horas</option><option value="12">12 horas</option><option value="6">6 horas</option><option value="48">48 horas</option></select></div>
+          <div><label for="infTargetHours">Planejar solução para</label><select id="infTargetHours"><option value="12" selected>12 horas (padrão)</option><option value="6">6 horas</option><option value="24">24 horas (exige validação)</option></select></div>
           <div><label for="infBagVolume">Frasco/bolsa final</label><select id="infBagVolume"><option value="100">100 mL</option><option value="250" selected>250 mL</option><option value="500">500 mL</option><option value="1000">1000 mL</option></select></div>
           <div><label for="infDiluent">Diluente</label><select id="infDiluent"><option value="SF 0,9%">SF 0,9%</option><option value="SG 5%">SG 5%</option><option value="conforme protocolo">Conforme protocolo</option></select></div>
         </div>
@@ -760,7 +760,7 @@ const infusionData = {
     magnesioIV:{name:"Sulfato de magnésio IV — broncoespasmo", doseUnit:"mg/h", defaultDose:6000, range:"2 g IV em 20 min em asma grave/refratária; calculadora usa 6000 mg/h para infundir 2 g em 20 min", preps:[
       {label:"2 g em 100 mL usando MgSO₄ 50% = 20 mg/mL", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 4 mL se apresentação 50% (500 mg/mL) + diluente 96 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 20 min"},
       {label:"2 g em 100 mL usando MgSO₄ 10% = 20 mg/mL", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 20 mL se apresentação 10% (100 mg/mL) + diluente 80 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 20 min"}
-    ], notes:"Adjuvante em broncoespasmo grave/refratário. Monitorar PA, reflexos, FR e risco de depressão respiratória/hipotensão, especialmente em insuficiência renal. Não é infusão contínua de 24h."},
+    ], notes:"Adjuvante em broncoespasmo grave/refratário. Monitorar PA, reflexos, FR e risco de depressão respiratória/hipotensão, especialmente em insuficiência renal. Não é infusão contínua prolongada."},
     salbutamolIV:{name:"Salbutamol IV", doseUnit:"mcg/min", defaultDose:5, range:"5–20 mcg/min conforme protocolo em broncoespasmo crítico", preps:[
       {label:"5 mg em 50 mL = 100 mcg/mL", conc:100, unit:"mcgml", prep:"Salbutamol 5 mg = volume conforme apresentação disponível + diluente q.s.p. 50 mL = solução final 50 mL → concentração 100 mcg/mL"}
     ], notes:"Uso selecionado em asma crítica refratária; monitorar FC, arritmia, K, lactato, tremor e isquemia."}
@@ -798,10 +798,12 @@ function prepCommand(item){
   const prep = item.prep || "preparo conforme protocolo";
   const dose = item.dose || "dose calculada";
   const diluent = item.diluentInfo || diluentGuidance(item.name, prep, item.chartKind || "");
+  const stability = item.stabilityInfo || solutionStabilityGuidance(item.name, prep, item.chartKind || "", item.chartHours || 12);
   return `<div class="prep-structured">
     <div class="prep-title">${type} — ${item.name}</div>
     <div class="prep-line prep-presentation"><b>Apresentação/preparo</b> ${prep}</div>
     <div class="prep-line prep-presentation"><b>Diluente/uso</b> ${diluent}</div>
+    <div class="prep-line prep-final"><b>Estabilidade/validade</b> ${stability}</div>
     <div class="prep-line prep-dose"><b>Dose</b> ${dose}</div>
     ${item.volume ? `<div class="prep-line prep-volume"><b>Volume/vazão</b> ${item.volume}</div>` : ""}
     ${item.range ? `<div class="prep-line prep-need"><b>Faixa terapêutica</b> ${item.range}</div>` : ""}
@@ -956,6 +958,32 @@ function diluentGuidance(name, prepText="", context="", selectedDiluent=""){
   return "Uso/diluente: conferir bula e protocolo institucional antes do preparo.";
 }
 
+function solutionStabilityGuidance(name, prepText="", context="", plannedHours=12){
+  const n=(name || "").toLowerCase();
+  const source=(prepText || "").toLowerCase();
+  const hours=Number.isFinite(Number(plannedHours)) ? Number(plannedHours) : 12;
+  const extra=hours>12 ? " Atenção: planejamento acima de 12h só deve ser usado se validado por bula, farmácia clínica e protocolo local." : "";
+  if(n.includes("sulfato de magnésio") || n.includes("sulfato de magnesio")){
+    return "Infusão curta: preparar para uso imediato; não tratar como solução de manutenção prolongada. Identificar horário de preparo e seguir estabilidade definida por farmácia/bula.";
+  }
+  if(n.includes("propofol")){
+    return `Emulsão lipídica: risco microbiológico. Padrão operacional: usar/trocar em até 12h ou no menor prazo definido por bula, farmácia clínica ou protocolo local.${extra}`;
+  }
+  if(n.includes("clevidipina")){
+    return `Emulsão lipídica pronta para uso: não diluir. Padrão operacional: descartar/trocar em até 12h após abertura/punção ou no menor prazo da bula/protocolo.${extra}`;
+  }
+  if(n.includes("nitroprussiato")){
+    return `Fotossensível: proteger da luz durante preparo e infusão. Padrão operacional desta calculadora: montar para 12h; a estabilidade final deve respeitar bula/farmácia/protocolo.${extra}`;
+  }
+  if(/liofilizado|reconstitu/.test(source)){
+    return `Reconstituído/diluído: montar preferencialmente para 12h e respeitar o menor prazo de estabilidade após reconstituição definido por bula, farmácia clínica ou protocolo local.${extra}`;
+  }
+  if(context==="bolus"){
+    return "Bólus/seringa de titulação: preferir preparo próximo ao uso; se mantido para uso sequencial, identificar horário e respeitar estabilidade de bula/farmácia/protocolo.";
+  }
+  return `Solução de infusão: padrão operacional de montagem para 12h. Identificar data/hora de preparo, proteger quando indicado e trocar antes se houver prazo menor por bula, farmácia clínica ou protocolo local.${extra}`;
+}
+
 function informedAmpouleLine(){
   const amp = getInfAmpOverride();
   if(!amp) return "";
@@ -1060,6 +1088,7 @@ function planning24h(name, dose, doseUnit, conc, concUnit, rate, hours, bagVolum
       <div class="prep-line prep-final"><b>Preparo:</b> 2 g em 100 mL e infundir em 20 min.</div>
       <div class="prep-line prep-volume"><b>Se MgSO₄ 50%:</b> aspirar 4 mL + 96 mL de diluente.</div>
       <div class="prep-line prep-volume"><b>Se MgSO₄ 10%:</b> aspirar 20 mL + 80 mL de diluente.</div>
+      <div class="prep-line prep-final"><b>Estabilidade/validade:</b> ${solutionStabilityGuidance(name, "", "infusion", hours)}</div>
       <div class="prep-note">Monitorar PA, reflexos, frequência respiratória e função renal.</div>
     </div>`;
   }
@@ -1068,6 +1097,7 @@ function planning24h(name, dose, doseUnit, conc, concUnit, rate, hours, bagVolum
       <div class="prep-title">Infusão contínua — ${name}</div>
       <div class="prep-line prep-presentation"><b>Apresentação:</b> emulsão lipídica pronta para uso, geralmente 0,5 mg/mL.</div>
       <div class="prep-line prep-final"><b>Preparo:</b> não diluir; usar conforme bula e protocolo institucional.</div>
+      <div class="prep-line prep-final"><b>Estabilidade/validade:</b> ${solutionStabilityGuidance(name, "", "infusion", hours)}</div>
       <div class="prep-line prep-rate"><b>Planejamento:</b> titular por vazão e carga lipídica; evitar exceder limites de volume/duração do protocolo.</div>
     </div>`;
   }
@@ -1091,6 +1121,7 @@ function planning24h(name, dose, doseUnit, conc, concUnit, rate, hours, bagVolum
   const calculatedAmpoules = ampouleCountText(exactAmpCount);
   const plannedAmpoules = ampouleCountText(ampCount);
   const requestedAmpoules = integerAmpouleRequest(exactAmpCount);
+  const stabilityText = solutionStabilityGuidance(name, "", "infusion", hours);
   const volumeSolutionLine = aspirated !== null
     ? `<div class="prep-line prep-volume"><b>Volume aspirado e solu\u00e7\u00e3o final:</b> Necessidade calculada: ${calculatedAmpoules}. Modo pr\u00e1tico: solicitar ${requestedAmpoules} \u00e0 farm\u00e1cia. Aspirar ${fmt(aspirated,1)} mL (${fmt(totalDrug,2)} ${amp.unit}; ${plannedAmpoules}) + ${fmt(diluentVol,1)} mL de ${diluent}. Solu\u00e7\u00e3o final: ${fmt(totalDrug,2)} ${amp.unit}/${fmt(bagVolume,1)} mL \u2192 concentra\u00e7\u00e3o final ${fmt(finalConc,3)} ${amp.unit}/mL.</div>`
     : `<div class="prep-line prep-volume"><b>Reconstitui\u00e7\u00e3o e solu\u00e7\u00e3o final:</b> Necessidade calculada: ${calculatedAmpoules}. Modo pr\u00e1tico: solicitar ${requestedAmpoules} \u00e0 farm\u00e1cia. Reconstituir conforme bula, usar total ${fmt(totalDrug,2)} ${amp.unit} (${plannedAmpoules}) + ${diluent} q.s.p. ${fmt(bagVolume,1)} mL. Solu\u00e7\u00e3o final: ${fmt(totalDrug,2)} ${amp.unit}/${fmt(bagVolume,1)} mL \u2192 concentra\u00e7\u00e3o final ${fmt(finalConc,3)} ${amp.unit}/mL.</div>`;
@@ -1098,6 +1129,7 @@ function planning24h(name, dose, doseUnit, conc, concUnit, rate, hours, bagVolum
     <div class="prep-title">Infus\u00e3o cont\u00ednua \u2014 ${name}</div>
     <div class="prep-line prep-presentation"><b>Apresenta\u00e7\u00e3o considerada:</b> ${ampVolumeText}; ${ampConcText}; conte\u00fado total por unidade ${fmt(amp.content,2)} ${amp.unit}.</div>
     ${volumeSolutionLine}
+    <div class="prep-line prep-final"><b>Estabilidade/validade da solu\u00e7\u00e3o:</b> ${stabilityText}</div>
     <div class="prep-line prep-dose"><b>Dose inicial e vaz\u00e3o calculada:</b> dose escolhida ${doseText} \u2192 vaz\u00e3o ${fmt(rate,2)} mL/h para ofertar esta dose. Dura\u00e7\u00e3o estimada da solu\u00e7\u00e3o: ~${fmt(duration,1)} h.</div>
     <div class="prep-line prep-need"><b>Consumo e necessidade em ${hours}h:</b> volume consumido: ${fmt(volumeNeeded,1)} mL; necessidade calculada: \u2248 ${fmt(need,2)} ${amp.unit} (${calculatedAmpoules}). Solicita\u00e7\u00e3o pr\u00e1tica: ${requestedAmpoules}.</div>
     <div class="prep-line prep-result"><b>Resultado em unidade por hora:</b> ${name}: ${fmt(amount.amount,2)} ${amount.unit}.</div>
@@ -1676,6 +1708,7 @@ function calcIOT(){
         ${medCard("Operacional", [
           medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, iotAmpouleLine())),
           medKv("Diluente/uso", diluentGuidance(x.d.name, iotAmpouleLine(), "bolus")),
+          medKv("Estabilidade/validade", solutionStabilityGuidance(x.d.name, iotAmpouleLine(), "bolus")),
           medKv("Cálculo operacional", `Aspirar ${fmt(x.volume,2)} mL para obter ${fmt(x.calc.amount,2)} ${x.calc.unit} (${fmt(x.conc,3)} ${x.concUnit==="mgml"?"mg/mL":(x.concUnit==="uiml"?"UI/mL":"mcg/mL")}).`)
         ], "med-card--primary")}
         ${medCard("Farmacocinética", [
@@ -1711,7 +1744,8 @@ function addIOTToSummary(){
     chartDose:`${fmt(x.rawDose,4)} ${x.selectedDoseUnit}/kg${x.selectedDoseUnit !== baseMassUnitFromDoseUnit(x.d.unit) ? " (= "+fmt(x.dose,4)+" "+x.d.unit+")" : ""}`,
     chartMass:`${fmt(x.calc.amount,2)} ${x.calc.unit}`,
     chartVolume:`${fmt(x.volume,2)} mL`,
-    diluentInfo:diluentGuidance(x.d.name, iotAmpouleLine(), "bolus")
+    diluentInfo:diluentGuidance(x.d.name, iotAmpouleLine(), "bolus"),
+    stabilityInfo:solutionStabilityGuidance(x.d.name, iotAmpouleLine(), "bolus")
   });
   renderSummary();
   confirmSummaryAdd(x.d.name);
@@ -1789,6 +1823,7 @@ function calcDVABolus(){
         ${medCard("Operacional", [
           medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
           medKv("Diluente/uso", diluentGuidance(x.d.name, x.presentation.prep, "bolus")),
+          medKv("Estabilidade/validade", solutionStabilityGuidance(x.d.name, x.presentation.prep, "bolus")),
           medKv("Cálculo operacional", `Aspirar/administrar ${fmt(x.volume,2)} mL para obter ${fmt(x.amount.amount,2)} ${x.amount.unit}.`),
           medKv("Concentração usada", `${fmt(x.conc,3)} ${unitLabel(x.concUnit)}`),
           medKv("Preparo da solução", x.presentation.prep)
@@ -1822,7 +1857,8 @@ function addDVABolusToSummary(){
     chartDose:`${fmt(x.rawDose,4)} ${x.selectedDoseUnit}${x.selectedDoseUnit !== x.d.doseUnit ? " (= "+fmt(x.dose,4)+" "+x.d.doseUnit+")" : ""}`,
     chartMass:`${fmt(x.amount.amount,2)} ${x.amount.unit}`,
     chartVolume:`${fmt(x.volume,2)} mL`,
-    diluentInfo:diluentGuidance(x.d.name, x.presentation.prep, "bolus")
+    diluentInfo:diluentGuidance(x.d.name, x.presentation.prep, "bolus"),
+    stabilityInfo:solutionStabilityGuidance(x.d.name, x.presentation.prep, "bolus")
   });
   renderSummary();
   confirmSummaryAdd(x.d.name);
@@ -1917,6 +1953,7 @@ function calcDVA(){
           medKv("Dose utilizada", doseUsed),
           medKv("Vazão em bomba", rateUsed),
           medKv("Diluente/uso", diluentGuidance(d.name, prep.prep, "infusion")),
+          medKv("Estabilidade/validade", solutionStabilityGuidance(d.name, prep.prep, "infusion", 12)),
           medKv("Preparo de solução", prepObj.preparo),
           prepObj.diluicao ? medKv("Diluição", prepObj.diluicao) : "",
           medKv("Concentração final", prepObj.concentracao)
@@ -1961,7 +1998,9 @@ function addDVAToSummary(){
     chartMass:(Number.isFinite(amount.amount) ? fmt(amount.amount,2)+" "+amount.unit : ""),
     chartRate:(Number.isFinite(rateVal) ? fmt(rateVal,2)+" mL/h" : ""),
     chartPrep:prep.prep,
-    diluentInfo:diluentGuidance(d.name, prep.prep, "infusion")
+    diluentInfo:diluentGuidance(d.name, prep.prep, "infusion"),
+    stabilityInfo:solutionStabilityGuidance(d.name, prep.prep, "infusion", 12),
+    chartHours:12
   });
   renderSummary();
   confirmSummaryAdd(d.name);
@@ -2019,7 +2058,7 @@ function calcInfusion(){
   let dose=parseFloat(document.getElementById("infDose").value);
   const rate=parseFloat(document.getElementById("infRate").value);
   const conc=parseFloat(document.getElementById("infConc").value || prep.conc), concUnit=document.getElementById("infConcUnit").value;
-  const hours=parseFloat(document.getElementById("infTargetHours")?.value || 24);
+  const hours=parseFloat(document.getElementById("infTargetHours")?.value || 12);
   const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
   const diluent=document.getElementById("infDiluent")?.value || "diluente";
   const ampOverride=getInfAmpOverride();
@@ -2060,6 +2099,7 @@ function calcInfusion(){
           medKv("Apresentação", ampoulePresentationLine(d.name)),
           informedAmpouleLine() ? medKv("Apresentação disponível informada", informedAmpouleLine().replace("Apresentação informada: ","")) : "",
           medKv("Diluente/uso", diluentGuidance(d.name, prep.prep, "infusion", diluent)),
+          medKv("Estabilidade/validade", solutionStabilityGuidance(d.name, prep.prep, "infusion", hours)),
           medKv("Cálculo operacional", detail)
         ], "med-card--primary")}
         ${medCard("Faixa e categoria", [
@@ -2080,7 +2120,7 @@ function addInfusionToSummary(){
   const mode=getAutoMode("infDose","infRate");
   const conc=parseFloat(document.getElementById("infConc").value || prep.conc);
   const concUnit=document.getElementById("infConcUnit").value;
-  const hours=parseFloat(document.getElementById("infTargetHours")?.value || 24);
+  const hours=parseFloat(document.getElementById("infTargetHours")?.value || 12);
   const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
   const diluent=document.getElementById("infDiluent")?.value || "diluente";
   const ampOverride=getInfAmpOverride();
@@ -2111,7 +2151,9 @@ function addInfusionToSummary(){
     chartRate:(Number.isFinite(rateVal) ? fmt(rateVal,2)+" mL/h" : ""),
     chartPrep:prep.prep,
     chartPlanHtml:plan,
-    diluentInfo:diluentGuidance(d.name, prep.prep, "infusion", diluent)
+    diluentInfo:diluentGuidance(d.name, prep.prep, "infusion", diluent),
+    stabilityInfo:solutionStabilityGuidance(d.name, prep.prep, "infusion", hours),
+    chartHours:hours
   });
 }
   renderSummary();
@@ -2213,10 +2255,12 @@ function generateChartNote(){
       const rate=chartValue(i.chartRate || (i.chartKind==="infusion" ? i.volume : ""), i.chartKind==="bolus" ? "não se aplica a bólus" : "vazão calculada");
       const dose=chartValue(i.chartDose || i.dose, "dose não informada");
       const diluent=i.diluentInfo || diluentGuidance(i.name, i.chartPrep || i.prep || "", i.chartKind || "");
+      const stability=i.stabilityInfo || solutionStabilityGuidance(i.name, i.chartPrep || i.prep || "", i.chartKind || "", i.chartHours || 12);
       parts.push([
         `${idx+1}. ${i.name} (${i.type})`,
         `   - Volume aspirado + diluente: ${prep}.`,
         `   - Diluente/uso: ${diluent}.`,
+        `   - Estabilidade/validade: ${stability}.`,
         `   - Massa por volume total: ${massVolume}.`,
         `   - Concentração por mL: ${concentration}.`,
         `   - Vazão em bomba: ${rate}.`,

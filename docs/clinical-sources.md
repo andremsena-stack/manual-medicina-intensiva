@@ -81,6 +81,17 @@ Data de consulta/registro no projeto: 2026-05-18.
 - Observacoes de seguranca: usar como referencia conceitual, sem sobrescrever fontes internas automaticamente.
 - Status: fonte externa.
 
+### DailyMed - rotulos e bulas de medicamentos injetaveis
+
+- Link propofol: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=10272dc1-657d-4798-a34a-b6341b92e560
+- Link clevidipina/Cleviprex: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=a6826aa3-fabb-4ff1-a7a3-cd4c34e3a330
+- Link nitroprussiato de sodio: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a8999285-16b1-473d-8e92-684f581534f6
+- Escopo: estabilidade, assepsia, descarte, fotoprotecao e tempo de uso apos abertura, puncao, reconstituicao ou diluicao quando descritos em bula.
+- Modulos afetados: Modulo 6; futuras calculadoras de sedoanalgesia, DVA e infusoes continuas.
+- Observacoes de seguranca: usar como apoio de rastreabilidade; estabilidade final deve respeitar a bula especifica do fabricante usado no servico, farmacia clinica e protocolo institucional.
+- Data de consulta: 2026-05-21.
+- Status: fonte externa / revisao necessaria.
+
 ## Fontes tecnicas externas
 
 ### MDN Web Docs - HTML

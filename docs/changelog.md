@@ -11,6 +11,42 @@
 
 ### Alteracoes realizadas
 
+- Padronizado o planejamento de solucao do Modulo 6 para 12 horas como opcao inicial.
+- Removida a opcao visual de planejamento para 48 horas na calculadora de infusao continua.
+- Mantida opcao de 24 horas apenas como planejamento que exige validacao por bula, farmacia clinica e protocolo local.
+- Adicionada linha `Estabilidade/validade` nos boxes de medicacao das calculadoras de IOT, bolus DVA, DVA e infusao continua.
+- Adicionada orientacao de estabilidade/validade no `Preparo operacional estruturado` e no texto gerado do `Cenario-resumo`.
+- Incluidas orientacoes especificas para emulsao lipidica, nitroprussiato fotossensivel, solucoes reconstituidas/diluidas, bolus/seringas de titulacao e infusoes curtas.
+- Registrada fonte de apoio DailyMed em `docs/clinical-sources.md` para rastreabilidade de bulas e estabilidade.
+- Sincronizada a copia espelho do Modulo 6 em `modules/`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v52`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- A mudanca adiciona texto clinico sobre estabilidade, validade, descarte, fotoprotecao e tempo operacional de uso da solucao.
+- Nao houve alteracao de dose, formula, concentracao, volume calculado ou logica dose/vazao das calculadoras.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `docs/clinical-sources.md`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Interface
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
 - Adicionada orientacao `Diluente/uso` nos resultados das calculadoras do Modulo 6.
 - A orientacao passa a indicar se o preparo e puro/pronto para uso ou se deve ser diluido.
 - Quando houver diluente selecionado na calculadora, o resumo passa a exibir o diluente usado no calculo.
