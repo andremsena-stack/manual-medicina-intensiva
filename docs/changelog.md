@@ -4,6 +4,36 @@
 
 ### Tipo de alteracao
 
+- Interface
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Reformatado o texto gerado em `Cenario-resumo` no Modulo 6.
+- O texto para prontuario agora lista as medicacoes na ordem de adicao, em topicos enumerados.
+- Cada medicacao passa a exibir dose/unidade de referencia, volume aspirado + diluente, massa por volume total, concentracao por mL e vazao em bomba em linhas separadas.
+- Sincronizada a copia espelho do Modulo 6 em `modules/`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v49`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+- A mudanca altera apenas a formatacao do texto gerado a partir dos valores ja calculados.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
 - Conteudo clinico
 - Interface
 - Organizacao

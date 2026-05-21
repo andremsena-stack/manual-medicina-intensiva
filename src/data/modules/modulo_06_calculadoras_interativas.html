@@ -2118,35 +2118,68 @@ function chartIntroText(){
   const base=`Paciente com peso real estimado de ${fmt(getPeso(),1)} kg e peso predito estimado de ${fmt(pbw(),1)} kg, em cenário clínico de ${cenario}.`;
   return hasBolus ? `${base} Planejada intubação orotraqueal por ${typeText}, com preparo de sedoanalgesia, bloqueio neuromuscular e suporte hemodinâmico.` : base;
 }
+function chartValue(value, fallback="não informado"){
+  const text=(value || "").replace(/\s+/g," ").trim();
+  return text && text !== "—" ? text : fallback;
+}
+function chartSourceText(item){
+  return [
+    htmlToPlainText(item.chartPlanHtml || item.commandHtml || ""),
+    item.chartPrep || "",
+    item.prep || ""
+  ].filter(Boolean).join(". ").replace(/\s+/g," ").trim();
+}
+function chartConcentrationLine(item, prepLine){
+  const source=`${chartSourceText(item)}. ${prepLine || ""}`;
+  const match=source.match(/concentração(?: final)?\s*:?\s*([^.;]+)/i);
+  return match ? match[1].trim() : "não informado";
+}
+function chartMassVolumeLine(item, prepLine){
+  const source=`${chartSourceText(item)}. ${prepLine || ""}`;
+  const explicit=source.match(/solução final\s+([^,;.]+?\/\s*[0-9.,]+\s*mL)/i);
+  if(explicit) return explicit[1].trim();
+  const massStart=source.match(/^\s*([^=.;]+?)\s*=/);
+  const finalVol=source.match(/solução final\s*:?\s*([^→.;,]+)/i);
+  if(massStart && finalVol) return `${massStart[1].trim()} / ${finalVol[1].trim()}`;
+  const mass=chartValue(item.chartMass || item.mass, "");
+  const volume=chartValue(item.chartVolume || "", "");
+  if(mass && volume) return `${mass} / ${volume}`;
+  return mass || "não informado";
+}
+function chartPreparationLine(item){
+  const doseMass=chartValue(item.chartMass || item.mass, "");
+  const volume=chartValue(item.chartVolume || "", "");
+  if(item.chartKind==="bolus" && volume){
+    const prepText=chartSourceText(item);
+    const hasDiluent=/diluente|solução final|q\.s\.p\./i.test(prepText);
+    if(hasDiluent){
+      const clean=cleanPrepToSolution(item.chartPrep || item.prep);
+      return `${clean}; administrar ${volume}${doseMass ? ` para ${doseMass}` : ""}`;
+    }
+    return `Aspirar ${volume}${doseMass ? ` para obter ${doseMass}` : ""}; diluente não aplicável ou não informado para este item.`;
+  }
+  return cleanPlanToSolution(item);
+}
 function generateChartNote(){
-  const bolus=state.summary.filter(i=>i.chartKind==="bolus" || i.type==="IOT bólus");
-  const infusions=state.summary.filter(i=>i.chartKind==="infusion" || i.type==="DVA" || i.type==="Infusão contínua");
   let parts=[chartIntroText()];
-  if(bolus.length){
-    parts.push("\\nDrogas realizadas em bólus:");
-    bolus.forEach((i,idx)=>{
-      const doseTxt=i.chartDose || i.dose || "";
-      const massTxt=i.chartMass || i.mass || "";
-      const volTxt=i.chartVolume || i.volume || "";
-      if(doseTxt && massTxt && doseTxt === massTxt){
-        parts.push(`${idx+1}. ${i.name}: ${massTxt}${volTxt ? `, volume administrado ${volTxt}` : ""}.`);
-      } else {
-        parts.push(`${idx+1}. ${i.name}: ${doseTxt}, dose total ${massTxt}${volTxt ? `, volume aspirado ${volTxt}` : ""}.`);
-      }
+  if(state.summary.length){
+    parts.push("\\nMedicações adicionadas:");
+    state.summary.forEach((i,idx)=>{
+      const prep=chartPreparationLine(i);
+      const massVolume=chartMassVolumeLine(i, prep);
+      const concentration=chartConcentrationLine(i, prep);
+      const rate=chartValue(i.chartRate || (i.chartKind==="infusion" ? i.volume : ""), i.chartKind==="bolus" ? "não se aplica a bólus" : "vazão calculada");
+      const dose=chartValue(i.chartDose || i.dose, "dose não informada");
+      parts.push([
+        `${idx+1}. ${i.name} (${i.type})`,
+        `   - Volume aspirado + diluente: ${prep}.`,
+        `   - Massa por volume total: ${massVolume}.`,
+        `   - Concentração por mL: ${concentration}.`,
+        `   - Vazão em bomba: ${rate}.`,
+        `   - Unidade de medida de referência: ${dose}.`
+      ].join("\\n"));
     });
-  }
-  if(infusions.length){
-    parts.push("\\nDrogas em infusão contínua:");
-    infusions.forEach((i,idx)=>{
-      const sol=cleanPlanToSolution(i);
-      const dose=i.chartDose || i.dose || "dose calculada";
-      const mass=i.chartMass || i.mass || "";
-      const rate=i.chartRate || i.volume || "vazão calculada";
-      const equiv=mass && mass !== "—" ? `, equivalente a ${mass}` : "";
-      parts.push(`${idx+1}. ${i.name}: ${sol}. Dose inicial ${dose}${equiv}. Vazão em bomba: ${rate}.`);
-    });
-  }
-  if(!bolus.length && !infusions.length){
+  } else {
     parts.push("\\nNenhuma medicação adicionada ao cenário-resumo.");
   }
   const out=document.getElementById("chartNoteOut");
