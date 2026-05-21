@@ -1061,34 +1061,34 @@ function diluentGuidance(name, prepText="", context="", selectedDiluent=""){
 
 function solutionStabilityGuidance(name, prepText="", context="", plannedHours=12){
   const n=(name || "").toLowerCase();
-  const source=(prepText || "").toLowerCase();
-  const hours=Number.isFinite(Number(plannedHours)) ? Number(plannedHours) : 12;
-  const extra=hours>12 ? " Atenção: planejamento acima de 12h só deve ser usado se validado por bula, farmácia clínica e protocolo local." : "";
-  if(n.includes("sulfato de magnésio") || n.includes("sulfato de magnesio")){
-    return "Infusão curta: preparar para uso imediato; não tratar como solução de manutenção prolongada. Identificar horário de preparo e seguir estabilidade definida por farmácia/bula.";
-  }
   if(n.includes("propofol")){
-    return `Emulsão lipídica: risco microbiológico. Padrão operacional: usar/trocar em até 12h ou no menor prazo definido por bula, farmácia clínica ou protocolo local.${extra}`;
+    return "Bula: descartar produto/equipo/solução com propofol em até 12h ou ao fim do procedimento.";
   }
   if(n.includes("clevidipina")){
-    return `Emulsão lipídica pronta para uso: não diluir. Padrão operacional: descartar/trocar em até 12h após abertura/punção ou no menor prazo da bula/protocolo.${extra}`;
+    return "Bula: frasco puncionado deve ser usado/descartado em até 12h; não diluir.";
   }
   if(n.includes("nitroprussiato")){
-    return `Fotossensível: proteger da luz durante preparo e infusão. Padrão operacional desta calculadora: montar para 12h; a estabilidade final deve respeitar bula/farmácia/protocolo.${extra}`;
+    return "Bula: solução recém-diluída, protegida da luz, estável por 24h.";
   }
   if(n.includes("amiodarona")){
-    return `Solução antiarrítmica: montar preferencialmente para 12h na calculadora e respeitar compatibilidade de diluente/equipo, concentração máxima, estabilidade da farmácia clínica e protocolo local.${extra}`;
+    return "Bula: em SG 5%, 1–6 mg/mL; poliolefina/vidro sem perda em 24h; PVC com perda <10% em 2h.";
+  }
+  if(n.includes("nicardipina")){
+    return "Bula: solução diluída estável por 24h em temperatura ambiente.";
   }
   if(n.includes("octreotida")){
-    return `Infusão vasoativa esplâncnica: montar preferencialmente para 12h na calculadora; manter identificação de preparo e respeitar estabilidade definida por bula, farmácia clínica e protocolo local.${extra}`;
+    return "Bula consultada: permite diluição IV 50–200 mL; sem prazo de estabilidade de BIC nesta base.";
   }
-  if(/liofilizado|reconstitu/.test(source)){
-    return `Reconstituído/diluído: montar preferencialmente para 12h e respeitar o menor prazo de estabilidade após reconstituição definido por bula, farmácia clínica ou protocolo local.${extra}`;
+  if(n.includes("nitroglicerina")){
+    return "Bula consultada: sem prazo de estabilidade da solução nesta base; atenção à adsorção em PVC.";
+  }
+  if(n.includes("sulfato de magnésio") || n.includes("sulfato de magnesio")){
+    return "Infusão curta; sem prazo específico nesta base.";
   }
   if(context==="bolus"){
-    return "Bólus/seringa de titulação: preferir preparo próximo ao uso; se mantido para uso sequencial, identificar horário e respeitar estabilidade de bula/farmácia/protocolo.";
+    return "Sem estabilidade documentada nesta base; preparar próximo ao uso.";
   }
-  return `Solução de infusão: padrão operacional de montagem para 12h. Identificar data/hora de preparo, proteger quando indicado e trocar antes se houver prazo menor por bula, farmácia clínica ou protocolo local.${extra}`;
+  return "Sem estabilidade documentada nesta base; seguir bula/farmácia.";
 }
 
 function informedAmpouleLine(){

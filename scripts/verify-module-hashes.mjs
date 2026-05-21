@@ -12,7 +12,7 @@ const expectedHashes = {
   "modulo_03_ventilacao_mecanica.html": "d609a55d58555c3ea79670810ab4096df63351aacdca48bf62624b4ec3df71b0",
   "modulo_04_manutencao_sedoanalgesia.html": "0530f2b305f58893d5f3c3708c8bf8ca01c8190e9a1736a3786e31e2bc1e2463",
   "modulo_05_drogas_vasoativas.html": "27b73b01dd1885e0b49ebf6027df46710a8095f1d97f6c58c791e3f80178583d",
-  "modulo_06_calculadoras_interativas.html": "800c2465a0aeaa6bdd6e2a7657ec243aa397fd11e5ff5b7f34ac9466d9ec09ea"
+  "modulo_06_calculadoras_interativas.html": "90f98180a00bda024e41987fdd751e8b4177a6e741bb7abab7699721240d6e11"
 };
 
 let failures = 0;

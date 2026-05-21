@@ -10,6 +10,37 @@
 
 ### Alteracoes realizadas
 
+- Substituidas frases genericas de estabilidade/validade por informacoes documentadas por molecula quando presentes na base de bulas consultada.
+- Incluidas mensagens especificas para propofol, clevidipina, nitroprussiato, amiodarona, nicardipina, octreotida e nitroglicerina.
+- Reduzido o texto padrao para medicamentos sem estabilidade documentada na base local: `Sem estabilidade documentada nesta base; seguir bula/farmacia.`
+- Atualizadas fontes rastreaveis de estabilidade em `docs/clinical-sources.md`.
+- Sincronizada a copia espelho do Modulo 6 em `modules/`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v56`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- A mudanca troca orientacao operacional generica por dados resumidos de bula/rotulo quando disponiveis.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `docs/clinical-sources.md`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Interface
+- PWA/offline
+
+### Alteracoes realizadas
+
 - Adicionado mini-fluxo compacto no modelo SVA dentro do card `Tecnica e contexto` da estrategia de intubacao do Modulo 6.
 - Criadas sequencias curtas para RSI, sequencia modificada, DSI, intubacao acordada e crash airway.
 - Mantido o mini-fluxo em chips pequenos para evitar aumento relevante do tamanho visual do box.

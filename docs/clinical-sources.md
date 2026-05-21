@@ -96,7 +96,9 @@ Data de consulta/registro no projeto: 2026-05-18.
 - Link propofol: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=10272dc1-657d-4798-a34a-b6341b92e560
 - Link clevidipina/Cleviprex: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=a6826aa3-fabb-4ff1-a7a3-cd4c34e3a330
 - Link nitroprussiato de sodio: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a8999285-16b1-473d-8e92-684f581534f6
-- Link amiodarona: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=545e9d26-0b4a-4784-b9c4-f8d62caf3a7c
+- Link nitroglicerina: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=578d8159-5ec6-457f-b4a8-9add624d43a8
+- Link nicardipina: https://www.dailymed.nlm.nih.gov/dailymed/getFile.cfm?setid=c576c9d5-853b-4e93-be6c-3579dfa5564c&type=pdf
+- Link amiodarona: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=4240b2e9-be05-3de5-e063-6394a90a4bb2
 - Link lidocaina antiarritmica: https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=6947af02-f4e0-7f9c-e053-2a91aa0a45cd
 - Link procainamida: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=0aac32fa-37b7-5520-e063-6394a90a1fe4
 - Link octreotida/Sandostatin: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=4e2c9856-1836-49f0-9472-4dbeeb408f39
