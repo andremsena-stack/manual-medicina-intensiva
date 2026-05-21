@@ -28,12 +28,14 @@
     nav li{margin:5px 0}
     nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88)}
     nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
-    .app.nav-collapsed{grid-template-columns:72px 1fr}
-    .app.nav-collapsed aside{padding:18px 10px}
-    .app.nav-collapsed .brand{margin-bottom:14px;padding-bottom:12px;text-align:center}
-    .app.nav-collapsed .brand__row{display:grid;justify-items:center;gap:8px}
-    .app.nav-collapsed .brand__content{display:none}
-    .app.nav-collapsed .nav-toggle{width:100%;padding:8px 4px;font-size:11px}
+    .app.nav-collapsed{display:block;grid-template-columns:1fr}
+    .app.nav-collapsed aside{background:transparent!important;box-shadow:none!important;height:52px!important;left:auto!important;max-height:none!important;overflow:visible!important;padding:0!important;position:fixed!important;right:0!important;top:46vh!important;width:54px!important;z-index:80!important}
+    .app.nav-collapsed .brand{border:0!important;margin:0!important;padding:0!important;text-align:center}
+    .app.nav-collapsed .brand__row{display:block}
+    .app.nav-collapsed .brand__content{display:none!important}
+    .app.nav-collapsed .nav-toggle{align-items:center;background:#123c69;border:1px solid rgba(255,255,255,.28);border-radius:8px 0 0 8px;box-shadow:0 14px 30px rgba(13,36,56,.28);display:flex;height:52px;justify-content:center;padding:0;width:54px}
+    .app.nav-collapsed .nav-toggle:hover{background:#0d2438}
+    .app.nav-collapsed nav{display:none}
     .app.nav-collapsed nav a{align-items:center;display:flex;justify-content:center;min-height:40px;padding:9px 4px;position:relative}
     .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
     .app.nav-collapsed nav a::before{content:attr(data-short);font-size:12px;font-weight:800}
@@ -164,7 +166,7 @@
     summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--primary);background:#eef3f8}
     summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}
     .footer-sign{margin-top:40px;text-align:right;color:#344054}
-    @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{padding:12px 14px}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}.app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}.app.nav-collapsed .brand__content{display:block}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .small{display:none}.grid-2,.grid-3,.grid-4,.calc-grid{grid-template-columns:1fr}main{padding:18px}.hero h2{font-size:26px}}
+    @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{height:52px!important;left:auto!important;position:fixed!important;right:0!important;top:46vh!important;width:54px!important}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0!important;margin:0!important;padding:0!important;text-align:center}.app.nav-collapsed .brand__row{display:block}.app.nav-collapsed .brand__content{display:none!important}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .small{display:none}.grid-2,.grid-3,.grid-4,.calc-grid{grid-template-columns:1fr}main{padding:18px}.hero h2{font-size:26px}}
     .compact-details{background:#f8fafc;border-color:#d8e0ea;border-radius:12px;margin-top:8px!important}
     .compact-details summary{align-items:center;background:#eef3f8;display:flex;font-size:13px;justify-content:space-between;padding:8px 10px}
     .compact-details summary::after{background:#dce9f6;border-radius:999px;color:#123c69;content:"Editar";font-size:10px;font-weight:800;padding:3px 8px;text-transform:uppercase}
@@ -195,7 +197,7 @@
         <li><a href="#paciente" data-short="1"><span class="nav-label">1. Dados do paciente</span></a></li>
         <li><a href="#iot" data-short="2"><span class="nav-label">2. Calculadora de IOT</span></a></li>
         <li><a href="#dva" data-short="3"><span class="nav-label">3. Calculadora de DVA</span></a></li>
-        <li><a href="#continua" data-short="4"><span class="nav-label">4. Infusão contínua integrada</span></a></li>
+        <li><a href="#continua" data-short="4"><span class="nav-label">4. Drogas em infusão contínua</span></a></li>
         <li><a href="#resumo" data-short="5"><span class="nav-label">5. Cenário-resumo</span></a></li>
         <li><a href="#referencias" data-short="Ref"><span class="nav-label">Referências</span></a></li>
         <li><a href="#leituras" data-short="Ler"><span class="nav-label">Sugestão de leitura</span></a></li>
@@ -326,6 +328,9 @@
           <div><label for="dvaBolusDose">Dose desejada <span id="dvaBolusDoseUnitLabel" class="unit-inline"></span></label><input id="dvaBolusDose" type="number" step="0.01"></div>
           <div><label for="dvaBolusDoseUnitSelect">Unidade da dose</label><select id="dvaBolusDoseUnitSelect"></select></div>
         </div>
+        <div class="compact-note" style="margin-top:10px;color:#dbeafe">
+          Anti-hipertensivos em bólus têm uso restrito por cenário. Nitroglicerina em bólus é reservada a fenótipo SCAPE/EAP hipertensivo grave com VNI e monitorização; nitroprussiato não deve ser administrado em bólus IV direto, apenas em infusão titulada e protegida da luz.
+        </div>
         <div class="calc-grid" style="margin-top:12px">
           <div><label for="dvaBolusPresentation">Concentração usada no cálculo</label><select id="dvaBolusPresentation"></select></div>
         </div>
@@ -349,7 +354,7 @@
     </section>
 
     <section id="continua">
-      <h2>4. Infusão contínua integrada — sedoanalgesia, bloqueador e DVA</h2>
+      <h2>4. Drogas em infusão contínua - preparo e administração.</h2>
       <div class="calc-panel">
         <h3>Infusão contínua</h3>
         <input id="infAutoMode" type="hidden" value="">
@@ -634,7 +639,7 @@ const dvaDrugs = {
       nitroprussiato:{name:"Nitroprussiato", doseUnit:"mcg/kg/min", defaultDose:0.5, range:"0,3–10 mcg/kg/min", preps:[{label:"1 frasco-ampola nitroprussiato 50 mg em 250 mL = 200 mcg/mL", conc:200, unit:"mcgml", prep:"Nitroprussiato 50 mg = 1 frasco-ampola 50 mg liofilizado, reconstituído conforme bula (volume após reconstituição conforme fabricante) + SG 5% q.s.p. 250 mL = solução final 250 mL → concentração 200 mcg/mL; proteger da luz"}], notes:"Vasodilatador arterial/venoso potente; toxicidade cianeto/tiocianato."},
       nicardipina:{name:"Nicardipina", doseUnit:"mg/h", defaultDose:5, range:"5–15 mg/h", preps:[{label:"Nicardipina 25 mg em 250 mL = 0,1 mg/mL (conferir ampola disponível)", conc:0.1, unit:"mgml", prep:"Nicardipina 25 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por ampola/fr.) + diluente q.s.p. 250 mL = solução final 250 mL → concentração 0,1 mg/mL"}], notes:"Controle pressórico em neuroemergências quando disponível."},
       clevidipina:{name:"Clevidipina", doseUnit:"mg/h", defaultDose:2, range:"1–2 mg/h inicial; titular rapidamente; maioria ≤16 mg/h; limitar carga lipídica e duração conforme bula/protocolo", preps:[{label:"Clevidipina 0,5 mg/mL — emulsão pronta para uso", conc:0.5, unit:"mgml", prep:"Clevidipina 0,5 mg/mL = emulsão lipídica pronta para uso (volume total do frasco conforme fabricante). Não diluir. Usar equipo compatível e trocar conforme protocolo institucional"}], notes:"Bloqueador de canal de cálcio arterial ultracurto; útil em emergência hipertensiva/neuroemergências quando disponível. Contraindicada em alergia a soja/ovo conforme formulação e distúrbios do metabolismo lipídico."},
-      esmolol:{name:"Esmolol", doseUnit:"mcg/kg/min", defaultDose:50, range:"25–200 mcg/kg/min", preps:[{label:"Esmolol 2500 mg em 250 mL = 10 mg/mL (conferir apresentação disponível)", conc:10, unit:"mgml", prep:"Esmolol 2500 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por frasco/ampola) + diluente q.s.p. 250 mL = solução final 250 mL → concentração 10 mg/mL"}], notes:"Controle de FC/dPdt; atenção à unidade mg/mL."},
+      esmolol:{name:"Esmolol", doseUnit:"mcg/kg/min", defaultDose:50, range:"25–200 mcg/kg/min", preps:[{label:"Esmolol 2500 mg em 250 mL = 10 mg/mL (conferir apresentação disponível)", conc:10, unit:"mgml", prep:"Esmolol 2500 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por frasco/ampola) + diluente q.s.p. 250 mL = solução final 250 mL → concentração 10 mg/mL"}], notes:"Controle de FC/dPdt; atenção à unidade mg/mL.", bolusInfo:"Dose de ataque usual quando indicada: 500 mcg/kg IV em 1 min antes da infusão, conforme PA/FC e protocolo. Para 70 kg: 35 mg; calcular pelo peso real do paciente."},
       labetalol:{name:"Labetalol", doseUnit:"mg/h", defaultDose:60, range:"Infusão 0,5–2 mg/min (30–120 mg/h) ou bolus conforme protocolo", preps:[{label:"Labetalol 100 mg em 100 mL = 1 mg/mL (conferir ampola disponível)", conc:1, unit:"mgml", prep:"Labetalol 100 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por ampola/fr.) + diluente q.s.p. 100 mL = solução final 100 mL → concentração 1 mg/mL"}], notes:"Beta/alfabloqueador útil em emergências hipertensivas selecionadas; cautela em asma grave, BAV, bradicardia e IC descompensada."}
     }
   },
@@ -706,7 +711,7 @@ const dvaBolusDrugs = {
     }
   },
   vasodilatador_bolus: {
-    label:"Vasodilatador em bólus",
+    label:"Anti-hipertensivo/vasodilatador em bólus",
     drugs:{
       nitroglicerina_bolus:{
         name:"Nitroglicerina bólus",
@@ -721,7 +726,21 @@ const dvaBolusDrugs = {
           {label:"Nitroglicerina — apresentação comercial concentrada variável", conc:null, unit:"", volume:null, content:null, contentUnit:""}
         ],
         ampoule:"Nitroglicerina: apresentação comercial concentrada variável; conferir mg/mL, volume total e compatibilidade.",
-        notes:"Uso selecionado em EAP hipertensivo/hipertensão grave conforme protocolo. Evitar em hipotensão, uso recente de inibidor de PDE5 e suspeita de infarto de VD."
+        notes:"Uso selecionado em SCAPE/EAP hipertensivo grave com hipertensão importante, descarga simpática e necessidade imediata de VNI, geralmente seguido de infusão titulada. Não usar como rotina para toda IC aguda/EAP. Evitar em hipotensão, uso recente de inibidor de PDE5, suspeita de infarto de VD e estenose aórtica crítica conhecida."
+      },
+      hidralazina_bolus:{
+        name:"Hidralazina IV",
+        doseUnit:"mg",
+        defaultDose:10,
+        range:"10–20 mg IV lento conforme cenário, resposta pressórica e protocolo; início menos imediato e duração prolongada",
+        presentations:[
+          {label:"Hidralazina 20 mg/mL — ampola 1 mL = 20 mg", conc:20, unit:"mgml", prep:"Hidralazina 20 mg/mL = ampola 1 mL com 20 mg. Pode ser administrada em bólus IV lento conforme protocolo, ou diluída se padronização local exigir."}
+        ],
+        commercialPresentations:[
+          {label:"Hidralazina 20 mg/mL — ampola 1 mL = 20 mg", conc:20, unit:"mgml", volume:1, content:20, contentUnit:"mg"}
+        ],
+        ampoule:"Hidralazina 20 mg/mL — ampola de 1 mL = 20 mg; conferir apresentação local.",
+        notes:"Vasodilatador arteriolar direto. Útil em hipertensão grave na gestação/preeclâmpsia quando apropriado e disponível. Tem início menos imediato, duração mais longa, risco de hipotensão tardia e taquicardia reflexa; exige reavaliação seriada de PA e contexto."
       }
     }
   },
@@ -796,6 +815,19 @@ const infusionData = {
     cisatracurio:{name:"Cisatracúrio", doseUnit:"mcg/kg/min", defaultDose:2, range:"1–3 mcg/kg/min", preps:[{label:"100 mg em 50 mL = 2 mg/mL", conc:2, unit:"mgml", prep:"Cisatracúrio 100 mg = 50 mL se apresentação 2 mg/mL; pode ser usado puro se volume final 50 mL → concentração 2 mg/mL"}]},
     rocuronio:{name:"Rocurônio", doseUnit:"mcg/kg/min", defaultDose:10, range:"5–12 mcg/kg/min", preps:[{label:"100 mg em 50 mL = 2 mg/mL", conc:2, unit:"mgml", prep:"Rocurônio 100 mg = 10 mL se apresentação 10 mg/mL + diluente 40 mL = solução final 50 mL → concentração 2 mg/mL"}], notes:"Bloqueador não despolarizante; monitorar TOF quando disponível e garantir hipnose/analgesia."},
     atracurio:{name:"Atracúrio", doseUnit:"mcg/kg/min", defaultDose:5, range:"5–10 mcg/kg/min", preps:[{label:"100 mg em 50 mL = 2 mg/mL", conc:2, unit:"mgml", prep:"Atracúrio 100 mg = 10 mL se apresentação 10 mg/mL + diluente 40 mL = solução final 50 mL → concentração 2 mg/mL"}], notes:"Alternativa ao cisatracúrio; metabolismo por Hofmann/esterases; risco de histamina, hipotensão e broncoespasmo."}
+  }},
+  antiarritmico: { label:"Antiarrítmico em infusão contínua", drugs:{
+    amiodarona:{name:"Amiodarona", doseUnit:"mg/h", defaultDose:60, range:"Fase 1: 150 mg em 10 min; fase 2: 1 mg/min por 6h (60 mg/h); fase 3: 0,5 mg/min por 18h (30 mg/h); ajustar conforme ritmo, PA e protocolo", preps:[{label:"900 mg em 500 mL de SG 5% = 1,8 mg/mL", conc:1.8, unit:"mgml", prep:"Amiodarona 900 mg = 6 ampolas 150 mg/3 mL (volume aspirado 18 mL) + SG 5% q.s.p. 500 mL = solução final 500 mL → concentração 1,8 mg/mL"}], notes:"Antiarrítmico classe III com efeitos multicanais. Para taquiarritmias selecionadas conforme protocolo; monitorar PA, QT, bradicardia, BAV, hepatotoxicidade e interação medicamentosa.", phaseInfo:"Usar a calculadora para a fase escolhida: 60 mg/h corresponde a 1 mg/min; 30 mg/h corresponde a 0,5 mg/min. A dose de ataque inicial de 150 mg/10 min deve ser prescrita como fase separada.", maxInfusionTime:"Regime inicial usual de 24h: cerca de 1000 mg no primeiro dia. Doses diárias acima de 2100 mg foram associadas a maior risco de hipotensão em estudos de bula."},
+    lidocaina_arritmia:{name:"Lidocaína IV — antiarrítmico", doseUnit:"mg/h", defaultDose:120, range:"1–4 mg/min (60–240 mg/h) após bólus conforme protocolo; reduzir em idosos, IC, choque ou hepatopatia", preps:[{label:"2000 mg em 500 mL = 4 mg/mL", conc:4, unit:"mgml", prep:"Lidocaína 2000 mg = 100 mL se apresentação 20 mg/mL (2%) + diluente 400 mL = solução final 500 mL → concentração 4 mg/mL"}], notes:"Antiarrítmico classe IB. Uso em arritmias ventriculares selecionadas; monitorar sonolência, parestesias, convulsão, BAV, bradicardia, hipotensão e toxicidade por anestésico local.", phaseInfo:"Após bólus inicial conforme protocolo, manter infusão contínua na menor dose efetiva e reavaliar necessidade."},
+    procainamida:{name:"Procainamida", doseUnit:"mg/h", defaultDose:240, range:"Manutenção 2–6 mg/min (120–360 mg/h) após dose de ataque; ajustar por PA, QRS/QT, função renal e protocolo", preps:[{label:"1000 mg em 250 mL de SG 5% = 4 mg/mL", conc:4, unit:"mgml", prep:"Procainamida 1000 mg = volume conforme apresentação disponível + SG 5% q.s.p. 250 mL = solução final 250 mL → concentração 4 mg/mL"}], notes:"Antiarrítmico classe IA. Monitorar hipotensão, alargamento de QRS, prolongamento de QT, torsades, bloqueios, função renal e sinais de toxicidade.", phaseInfo:"A dose de ataque é administrada em fase separada e a infusão de manutenção deve ser monitorizada continuamente."}
+  }},
+  anticonvulsivante: { label:"Anticonvulsivante/anestésico em BIC", drugs:{
+    midazolam_status:{name:"Midazolam — status epilepticus refratário", doseUnit:"mg/kg/h", defaultDose:0.2, range:"0,1–0,2 mg/kg/h inicial em status refratário; titulação superior apenas com EEG/protocolo especializado", preps:[{label:"50 mg em 50 mL = 1 mg/mL", conc:1, unit:"mgml", prep:"Midazolam 50 mg = 10 mL se apresentação 5 mg/mL + diluente 40 mL = solução final 50 mL → concentração 1 mg/mL"}], notes:"Infusão anestésica para status epilepticus refratário em paciente monitorizado/intubado quando indicado. Exige plano de ventilação, vasopressor se necessário e monitorização neurológica/EEG quando disponível.", phaseInfo:"A infusão contínua vem após terapia inicial e drogas de segunda linha; evitar mascarar crise com bloqueador neuromuscular sem EEG."},
+    propofol_status:{name:"Propofol — status epilepticus refratário", doseUnit:"mcg/kg/min", defaultDose:50, range:"30–200 mcg/kg/min em status refratário conforme protocolo, EEG e tolerância hemodinâmica", preps:[{label:"10 mg/mL puro", conc:10, unit:"mgml", prep:"Propofol 10 mg/mL: uso usual puro, sem diluição. Ex.: frasco 50 mL contém 500 mg; concentração final 10 mg/mL"}], notes:"Anestésico hipnótico para status refratário selecionado. Monitorar hipotensão, triglicerídeos, lactato, CK, acidose, hiperpotassemia e risco de síndrome de infusão do propofol.", maxInfusionTime:"Evitar dose alta/prolongada; reavaliar diariamente e seguir limite de dose/duração do protocolo institucional."},
+    cetamina_status:{name:"Cetamina — status epilepticus refratário", doseUnit:"mg/kg/h", defaultDose:1, range:"1–7 mg/kg/h em status refratário/super-refratário conforme protocolo especializado", preps:[{label:"500 mg em 50 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Cetamina 500 mg = 10 mL se apresentação 50 mg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mg/mL"}], notes:"Antagonista NMDA usado como adjuvante em status refratário/super-refratário. Monitorar PA, FC, secreções, dissociação, delirium e interações com sedação concomitante.", phaseInfo:"Geralmente associada a outro sedativo/anestésico e a monitorização especializada; não substitui abordagem escalonada do status epilepticus."}
+  }},
+  gastro_hepatologia: { label:"Gastro-hepatologia / hemostático esplâncnico", drugs:{
+    octreotida:{name:"Octreotida", doseUnit:"mcg/h", defaultDose:50, range:"Bólus inicial 50 mcg, seguido de 25–50 mcg/h por 2–5 dias em suspeita/confirmada hemorragia varicosa, conforme protocolo", preps:[{label:"500 mcg em 50 mL = 10 mcg/mL", conc:10, unit:"mcgml", prep:"Octreotida 500 mcg = 1 mL se apresentação 500 mcg/mL + SF 0,9% 49 mL = solução final 50 mL → concentração 10 mcg/mL"}], notes:"Análogo da somatostatina com redução do fluxo esplâncnico/portal. Usar como vasoativo em hemorragia varicosa suspeita ou confirmada, idealmente associado à endoscopia e demais medidas do protocolo.", phaseInfo:"Pode haver bólus inicial de 50 mcg antes da infusão; a calculadora estima a BIC da fase contínua.", maxInfusionTime:"Duração usual 2–5 dias em hemorragia varicosa, conforme Baveno/AASLD/protocolo e evolução clínica."}
   }},
   vasoativa: { label:"Droga vasoativa", drugs:{}},
   diuretico: { label:"Diurético em infusão contínua", drugs:{
@@ -920,7 +952,11 @@ function brazilAmpouleOptions(name){
     nitroglicerina: "Nitroglicerina: apresentações concentradas variam por fabricante; conferir mg/mL e volume total antes de preparar.",
     nitroprussiato: "Nitroprussiato de sódio: frasco-ampola 50 mg liofilizado; reconstituir e proteger da luz conforme bula.",
     nicardipina: "Nicardipina: disponibilidade/apresentação variável; conferir padronização institucional.",
+    hidralazina: "Hidralazina 20 mg/mL: ampola de 1 mL = 20 mg; conferir disponibilidade local.",
     clevidipina: "Clevidipina 0,5 mg/mL: emulsão lipídica pronta para uso; não diluir.",
+    amiodarona: "Amiodarona 50 mg/mL: ampola de 3 mL = 150 mg; diluição usual em SG 5% para infusão.",
+    procainamida: "Procainamida: apresentação variável; conferir concentração, volume total e recomendação de diluição.",
+    octreotida: "Octreotida: ampolas de 50 mcg/mL, 100 mcg/mL ou 500 mcg/mL podem existir; conferir padronização local.",
     esmolol: "Esmolol: apresentações variam; pode haver solução pronta ou frasco concentrado para diluição. Conferir mg/mL e volume total.",
     labetalol: "Labetalol: apresentações variam por disponibilidade; conferir concentração e volume total.",
     isoproterenol: "Isoproterenol/isoprenalina: apresentações variam; conferir conteúdo total, concentração e diluente recomendado.",
@@ -956,7 +992,11 @@ function brazilAmpouleOptions(name){
   if(n.includes("nitroglicerina")) return options.nitroglicerina;
   if(n.includes("nitroprussiato")) return options.nitroprussiato;
   if(n.includes("nicardipina")) return options.nicardipina;
+  if(n.includes("hidralazina")) return options.hidralazina;
   if(n.includes("clevidipina")) return options.clevidipina;
+  if(n.includes("amiodarona")) return options.amiodarona;
+  if(n.includes("procainamida")) return options.procainamida;
+  if(n.includes("octreotida")) return options.octreotida;
   if(n.includes("esmolol")) return options.esmolol;
   if(n.includes("labetalol")) return options.labetalol;
   if(n.includes("isoproterenol") || n.includes("isoprenalina")) return options.isoproterenol;
@@ -984,6 +1024,15 @@ function diluentGuidance(name, prepText="", context="", selectedDiluent=""){
   }
   if(n.includes("nitroprussiato")){
     return "Uso: deve ser reconstituído/diluído. Diluente preferencial: SG 5%. Possível: conforme bula/protocolo institucional; proteger da luz.";
+  }
+  if(n.includes("amiodarona")){
+    return "Uso: deve ser diluído para infusão. Diluente preferencial: SG 5%. Possível: seguir compatibilidade de bula/farmácia clínica; evitar preparo fora do protocolo institucional.";
+  }
+  if(n.includes("hidralazina")){
+    return "Uso: pode ser administrada pura em bólus IV lento ou diluída conforme protocolo local. Diluente preferencial/possível: definir por bula, farmácia clínica e padronização institucional.";
+  }
+  if(n.includes("octreotida")){
+    return "Uso: diluído para infusão contínua quando indicado. Diluente preferencial: SF 0,9% conforme prática usual/protocolo. Possível: conforme compatibilidade de bula e farmácia clínica.";
   }
   if(n.includes("isoproterenol") || n.includes("isoprenalina")){
     return "Uso: deve ser diluído para infusão. Diluente preferencial: SG 5%. Possível: conforme bula/protocolo institucional.";
@@ -1023,6 +1072,12 @@ function solutionStabilityGuidance(name, prepText="", context="", plannedHours=1
   if(n.includes("nitroprussiato")){
     return `Fotossensível: proteger da luz durante preparo e infusão. Padrão operacional desta calculadora: montar para 12h; a estabilidade final deve respeitar bula/farmácia/protocolo.${extra}`;
   }
+  if(n.includes("amiodarona")){
+    return `Solução antiarrítmica: montar preferencialmente para 12h na calculadora e respeitar compatibilidade de diluente/equipo, concentração máxima, estabilidade da farmácia clínica e protocolo local.${extra}`;
+  }
+  if(n.includes("octreotida")){
+    return `Infusão vasoativa esplâncnica: montar preferencialmente para 12h na calculadora; manter identificação de preparo e respeitar estabilidade definida por bula, farmácia clínica e protocolo local.${extra}`;
+  }
   if(/liofilizado|reconstitu/.test(source)){
     return `Reconstituído/diluído: montar preferencialmente para 12h e respeitar o menor prazo de estabilidade após reconstituição definido por bula, farmácia clínica ou protocolo local.${extra}`;
   }
@@ -1060,6 +1115,7 @@ function formatPrepStructured(prepText, conc, concUnit){
 function doseAmountPerHour(dose, unit, peso){
   if(unit === "mcg/kg/min") return {amount: dose*peso*60, unit:"mcg/h", concUnit:"mcgml"};
   if(unit === "mcg/kg/h") return {amount: dose*peso, unit:"mcg/h", concUnit:"mcgml"};
+  if(unit === "mcg/h") return {amount: dose, unit:"mcg/h", concUnit:"mcgml"};
   if(unit === "mcg/min") return {amount: dose*60, unit:"mcg/h", concUnit:"mcgml"};
   if(unit === "UI/min") return {amount: dose*60, unit:"UI/h", concUnit:"uiml"};
   if(unit === "mg/h") return {amount: dose, unit:"mg/h", concUnit:"mgml"};
@@ -1098,6 +1154,10 @@ function ampouleInfoByName(name){
   if(n.includes("nitroglicerina")) return {unit:"mcg", content:50000, volume:10, label:"ampola 50 mg/10 mL"};
   if(n.includes("nitroprussiato")) return {unit:"mcg", content:50000, volume:null, label:"frasco-ampola 50 mg; reconstituir conforme bula"};
   if(n.includes("nicardipina")) return {unit:"mg", content:25, volume:null, label:"25 mg conforme apresentação disponível"};
+  if(n.includes("hidralazina")) return {unit:"mg", content:20, volume:1, label:"ampola 20 mg/1 mL (volume total 1 mL; 20 mg/mL)"};
+  if(n.includes("amiodarona")) return {unit:"mg", content:150, volume:3, label:"ampola 150 mg/3 mL (volume total 3 mL; 50 mg/mL)"};
+  if(n.includes("procainamida")) return {unit:"mg", content:1000, volume:null, label:"procainamida 1 g conforme apresentação disponível"};
+  if(n.includes("octreotida")) return {unit:"mcg", content:500, volume:1, label:"ampola 500 mcg/1 mL (volume total 1 mL; 500 mcg/mL)"};
   if(n.includes("esmolol")) return {unit:"mg", content:2500, volume:null, label:"2500 mg conforme apresentação disponível"};
   if(n.includes("labetalol")) return {unit:"mg", content:100, volume:null, label:"100 mg conforme apresentação disponível"};
   if(n.includes("clevidipina")) return {unit:"mg", content:25, volume:50, label:"frasco/seringa 25 mg/50 mL (0,5 mg/mL), pronto para uso"};
@@ -1180,7 +1240,6 @@ function planning24h(name, dose, doseUnit, conc, concUnit, rate, hours, bagVolum
     <div class="prep-line prep-final"><b>Estabilidade/validade da solu\u00e7\u00e3o:</b> ${stabilityText}</div>
     <div class="prep-line prep-dose"><b>Dose inicial e vaz\u00e3o calculada:</b> dose escolhida ${doseText} \u2192 vaz\u00e3o ${fmt(rate,2)} mL/h para ofertar esta dose. Dura\u00e7\u00e3o estimada da solu\u00e7\u00e3o: ~${fmt(duration,1)} h.</div>
     <div class="prep-line prep-need"><b>Consumo e necessidade em ${hours}h:</b> volume consumido: ${fmt(volumeNeeded,1)} mL; necessidade calculada: \u2248 ${fmt(need,2)} ${amp.unit} (${calculatedAmpoules}). Solicita\u00e7\u00e3o pr\u00e1tica: ${requestedAmpoules}.</div>
-    <div class="prep-line prep-result"><b>Resultado em unidade por hora:</b> ${name}: ${fmt(amount.amount,2)} ${amount.unit}.</div>
   </div>`;
 }
 
@@ -1207,6 +1266,10 @@ function doseFromRate(rate, doseUnit, conc, concUnit, peso){
   if(doseUnit === "mcg/kg/h"){
     if(concUnit === "mgml") return (amountHour*1000)/peso;
     return amountHour/peso;
+  }
+  if(doseUnit === "mcg/h"){
+    if(concUnit === "mgml") return amountHour*1000;
+    return amountHour;
   }
   if(doseUnit === "mcg/min"){
     if(concUnit === "mgml") return (amountHour*1000)/60;
@@ -1335,7 +1398,7 @@ function normalizeClinicalText(text){
 function drugTerms(name){
   const n = normalizeClinicalText(name);
   const terms = [];
-  ["etomidato","cetamina","propofol","midazolam","tiopental","fentanil","alfentanil","remifentanil","sufentanil","lidocaina","succinilcolina","suxametonio","rocuronio","cisatracurio","atracurio","sugamadex","neostigmina","noradrenalina","norepinefrina","vasopressina","adrenalina","epinefrina","fenilefrina","dobutamina","dopamina","milrinona","nitroglicerina","nitroprussiato","nicardipina","clevidipina","metoprolol","esmolol","labetalol","isoproterenol","isoprenalina","atropina"].forEach(term=>{
+  ["etomidato","cetamina","propofol","midazolam","tiopental","fentanil","alfentanil","remifentanil","sufentanil","lidocaina","succinilcolina","suxametonio","rocuronio","cisatracurio","atracurio","sugamadex","neostigmina","noradrenalina","norepinefrina","vasopressina","adrenalina","epinefrina","fenilefrina","dobutamina","dopamina","milrinona","nitroglicerina","nitroprussiato","nicardipina","hidralazina","clevidipina","metoprolol","esmolol","labetalol","isoproterenol","isoprenalina","atropina","amiodarona","procainamida","octreotida"].forEach(term=>{
     if(n.includes(term)) terms.push(term);
   });
   if(!terms.length && n) terms.push(n.split(/[\s/—-]+/)[0]);
@@ -1347,7 +1410,7 @@ function textMentionsDrug(text, name){
 }
 function textMentionsKnownDrug(text){
   const t = normalizeClinicalText(text);
-  return ["etomidato","cetamina","propofol","midazolam","tiopental","fentanil","rocuronio","succinilcolina","noradrenalina","norepinefrina","vasopressina","adrenalina","fenilefrina","dobutamina","dopamina","milrinona","nitroglicerina","nitroprussiato","nicardipina","clevidipina","esmolol","labetalol","atropina"].some(term=>t.includes(term));
+  return ["etomidato","cetamina","propofol","midazolam","tiopental","fentanil","rocuronio","succinilcolina","noradrenalina","norepinefrina","vasopressina","adrenalina","fenilefrina","dobutamina","dopamina","milrinona","nitroglicerina","nitroprussiato","nicardipina","hidralazina","clevidipina","esmolol","labetalol","atropina","amiodarona","procainamida","octreotida"].some(term=>t.includes(term));
 }
 function drugMentionHasCaution(text, name){
   const cautionWords = ["cautela","evitar","menos favoravel","risco","limitar","contraindic"];
@@ -1723,6 +1786,11 @@ function dvaScenarioFit(name, scenario){
     if(n.includes("adrenalina")) lines.push("Uso selecionado: pode ajudar em broncoespasmo/anafilaxia; monitorar taquiarritmia/lactato.");
     if(n.includes("metoprolol") || n.includes("esmolol") || n.includes("labetalol")) lines.push("Cautela: beta-bloqueio pode piorar broncoespasmo, sobretudo não seletivo; usar apenas com indicação forte e monitorização.");
     if(n.includes("noradrenalina")) lines.push("Ponte se hipotensão, mas investigar auto-PEEP, pneumotórax e hipovolemia relativa.");
+  }
+  if(scenario==="has_emergencia"){
+    if(n.includes("hidralazina")) lines.push("Uso selecionado: opção em hipertensão grave na gestação/preeclâmpsia quando apropriado; atenção a início menos imediato, duração prolongada, hipotensão tardia e taquicardia reflexa.");
+    if(n.includes("nitroglicerina")) lines.push("Uso selecionado: bólus apenas em fenótipo SCAPE/EAP hipertensivo grave com VNI e monitorização; não usar como rotina para toda IC aguda/EAP.");
+    if(n.includes("nitroprussiato")) lines.push("Cautela: não usar como bólus IV direto; uso adequado é infusão contínua titulada, protegida da luz e com monitorização rigorosa.");
   }
   if(n.includes("isoproterenol") || n.includes("isoprenalina")) lines.push("Indicação: cronotrópico temporário em bradicardia refratária/bloqueios selecionados como ponte para marcapasso; monitorar arritmia/isquemia.");
   if(n.includes("clevidipina")) lines.push("Tempo/segurança: emulsão lipídica pronta para uso; titular rapidamente, evitar uso prolongado/alto volume conforme bula e carga lipídica.");
@@ -2161,7 +2229,10 @@ function calcInfusion(){
         ], "med-card--primary")}
         ${medCard("Faixa e categoria", [
           medKv("Categoria", infusionData[cat].label),
-          medKv("Faixa terapêutica", d.range)
+          medKv("Faixa terapêutica", d.range),
+          d.phaseInfo ? medKv("Fases de administração", d.phaseInfo) : "",
+          d.bolusInfo ? medKv("Bólus associado", d.bolusInfo) : "",
+          d.maxInfusionTime ? medKv("Tempo máximo/limite", d.maxInfusionTime) : ""
         ], "med-card--pk")}
         ${scenarioCard(scenario)}
         ${medCard("Cuidados e segurança", [

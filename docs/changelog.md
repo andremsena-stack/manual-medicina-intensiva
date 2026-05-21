@@ -12,6 +12,49 @@
 
 ### Alteracoes realizadas
 
+- Adicionada `Hidralazina IV` na categoria de anti-hipertensivo/vasodilatador em bolus.
+- Atualizada a orientacao de nitroglicerina em bolus para restringir o uso ao fenotipo SCAPE/EAP hipertensivo grave com VNI e monitorizacao.
+- Incluida nota operacional de que nitroprussiato nao deve ser administrado como bolus IV direto, permanecendo como infusao titulada e protegida da luz.
+- Adicionadas categorias de infusao continua: antiarritmicos, anticonvulsivantes/anestesicos em BIC e gastro-hepatologia/hemostatico esplancnico.
+- Incluidas `Amiodarona`, `Lidocaina IV antiarritmica`, `Procainamida`, `Midazolam status epilepticus`, `Propofol status epilepticus`, `Cetamina status epilepticus` e `Octreotida`.
+- Adicionados campos visuais para fases de administracao, bolus associado e tempo maximo/limite quando aplicavel.
+- Incluida orientacao de dose de ataque do esmolol no box de infusao continua.
+- Removida a linha visual redundante de resultado em massa/tempo no preparo operacional estruturado.
+- Renomeada a secao para `4. Drogas em infusão contínua - preparo e administração.`
+- Compactada a navegacao lateral principal e reposicionado o menu interno recolhido dos modulos como aba lateral.
+- Atualizadas fontes rastreaveis em `docs/clinical-sources.md`.
+- Sincronizada a copia espelho do Modulo 6 em `modules/`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v54`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- A mudanca adiciona novas classes farmacologicas, novas medicacoes, indicacoes de uso, limites operacionais e orientacoes de preparo/estabilidade.
+- Ajustes de interface sem impacto clinico: compactacao da navegacao, titulo da secao e reposicionamento do menu interno.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `src/styles.css`
+- `src/utils/iframeSafety.ts`
+- `docs/clinical-sources.md`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Conteudo clinico
+- Calculadora
+- Interface
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
 - Adicionada categoria `Betabloqueador em bolus / anti-impulso` na calculadora de bolus/push-dose do Modulo 6.
 - Incluidas as medicacoes `Metoprolol IV`, `Esmolol dose de ataque` e `Labetalol IV`.
 - Adicionadas apresentacoes, preparo/uso usual puro, dose inicial, faixa operacional, cuidados e alertas clinicos para cada betabloqueador.

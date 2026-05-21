@@ -96,12 +96,56 @@ Data de consulta/registro no projeto: 2026-05-18.
 - Link propofol: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=10272dc1-657d-4798-a34a-b6341b92e560
 - Link clevidipina/Cleviprex: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=a6826aa3-fabb-4ff1-a7a3-cd4c34e3a330
 - Link nitroprussiato de sodio: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a8999285-16b1-473d-8e92-684f581534f6
+- Link amiodarona: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=545e9d26-0b4a-4784-b9c4-f8d62caf3a7c
+- Link lidocaina antiarritmica: https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=6947af02-f4e0-7f9c-e053-2a91aa0a45cd
+- Link procainamida: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=0aac32fa-37b7-5520-e063-6394a90a1fe4
+- Link octreotida/Sandostatin: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=4e2c9856-1836-49f0-9472-4dbeeb408f39
 - Link metoprolol: https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=993c3a0d-5472-3de3-e053-2995a90acdf6
 - Link esmolol: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ac22475d-2d78-469f-9435-b403ac4ee380
 - Link labetalol: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=abfc6b75-1ed5-41f1-0484-4597488237bc
 - Escopo: estabilidade, assepsia, descarte, fotoprotecao e tempo de uso apos abertura, puncao, reconstituicao ou diluicao quando descritos em bula.
 - Modulos afetados: Modulo 6; futuras calculadoras de sedoanalgesia, DVA e infusoes continuas.
 - Observacoes de seguranca: usar como apoio de rastreabilidade; estabilidade final deve respeitar a bula especifica do fabricante usado no servico, farmacia clinica e protocolo institucional.
+- Data de consulta: 2026-05-21.
+- Status: fonte externa / revisao necessaria.
+
+### Nitroglicerina em alta dose para SCAPE / edema agudo hipertensivo
+
+- Link revisao UIC: https://dig.pharmacy.uic.edu/faqs/2021-2/april-2021-faqs/what-is-the-evidence-on-the-use-of-high-dose-nitroglycerin-for-scape/
+- Link estudo prospectivo: https://www.sciencedirect.com/science/article/pii/S0736467921004674
+- Escopo: uso selecionado de nitroglicerina IV em alta dose/bolus em SCAPE, associado a ventilacao nao invasiva e monitorizacao.
+- Modulos afetados: Modulo 6; bolus/push-dose; vasodilatadores; emergencia hipertensiva; edema agudo hipertensivo.
+- Observacoes de seguranca: evidencia limitada e majoritariamente observacional; nao generalizar para toda IC aguda/EAP; contraindicar/cautelar em hipotensao, PDE5 recente, suspeita de infarto de VD e estenose aortica critica.
+- Data de consulta: 2026-05-21.
+- Status: fonte externa / revisao necessaria.
+
+### ACOG - hipertensao grave na gestacao e pos-parto
+
+- Link ACOG severe hypertension: https://www.acog.org/community/districts-and-sections/district-ii/programs-and-resources/safe-motherhood-initiative/severe-hypertension
+- Link Practice Bulletin 222: https://www.preeclampsia.org/frontend/assets/img/advocacy_resource/Gestational_Hypertension_and_Preeclampsia_ACOG_Practice_Bulletin%2C_Number_222_1605448006.pdf
+- Escopo: tratamento urgente da hipertensao grave na gestacao/pos-parto, incluindo labetalol, hidralazina e nifedipina.
+- Modulos afetados: Modulo 6; anti-hipertensivos em bolus; emergencias hipertensivas selecionadas.
+- Observacoes de seguranca: indicacao depende de contexto obstetrico, contraindicacoes e protocolo institucional.
+- Data de consulta: 2026-05-21.
+- Status: fonte externa / revisao necessaria.
+
+### Baveno VII / AASLD - hemorragia varicosa e drogas vasoativas
+
+- Link revisao Baveno VII: https://pmc.ncbi.nlm.nih.gov/articles/PMC10047815/
+- Link Hepatitis C Online/AASLD: https://www.hepatitisc.uw.edu/go/management-cirrhosis-related-complications/varices-screening-prevention-bleeding/core-concept/all
+- Escopo: inicio precoce de drogas vasoativas em suspeita de hemorragia varicosa; octreotida em bolus inicial e infusao continua por 2-5 dias conforme protocolo.
+- Modulos afetados: Modulo 6; drogas em infusao continua; gastro-hepatologia/hemostatico esplancnico.
+- Observacoes de seguranca: nao substitui endoscopia, reposicao, antibiotico e protocolo de hemorragia digestiva; uso off-label pode variar por pais/instituicao.
+- Data de consulta: 2026-05-21.
+- Status: fonte externa / revisao necessaria.
+
+### Neurocritical Care Society / ENLS - status epilepticus
+
+- Link ENLS Status Epilepticus: https://www.neurocriticalcare.org/Portals/0/ENLS%205.0/ENLS%205.0%20Protocol%20-%20SE.pdf
+- Link guideline PubMed: https://pubmed.ncbi.nlm.nih.gov/22528274/
+- Escopo: tratamento de status epilepticus refratario com intubacao, monitorizacao e infusoes anestesicas continuas como midazolam, propofol e adjuvantes.
+- Modulos afetados: Modulo 6; anticonvulsivantes/anestesicos em BIC.
+- Observacoes de seguranca: exige monitorizacao especializada, suporte ventilatorio/hemodinamico e EEG quando disponivel; alteracoes de dose requerem revisao medica.
 - Data de consulta: 2026-05-21.
 - Status: fonte externa / revisao necessaria.
 
