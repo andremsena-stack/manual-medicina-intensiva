@@ -18,6 +18,7 @@
 - Usuarios desconectados passam a ver uma tela inicial com botoes `Entrar` e `Criar conta`.
 - Usuarios conectados sem assinatura ativa sao direcionados ao fluxo de pagamento Stripe antes da liberacao do manual.
 - Usuarios com assinatura ativa veem o app normalmente e o avatar/menu de usuario com opcao de sair.
+- Adicionados estados visuais `ClerkLoading` e `ClerkFailed` para evitar tela em branco quando o Clerk ainda esta carregando ou quando o dominio/DNS ainda nao foi verificado.
 - Adicionadas Cloudflare Pages Functions para consultar status de assinatura, criar checkout mensal, abrir Portal do Cliente Stripe e receber webhook Stripe.
 - Adicionada validacao backend do token Clerk com `@clerk/backend`.
 - Adicionada sincronizacao do status de assinatura Stripe no `private_metadata` do usuario Clerk.

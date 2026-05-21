@@ -1,4 +1,14 @@
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/clerk-react";
+import {
+  ClerkFailed,
+  ClerkLoaded,
+  ClerkLoading,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useAuth
+} from "@clerk/clerk-react";
 import { useCallback, useEffect, useState, type PropsWithChildren } from "react";
 
 const billingRequired = import.meta.env.VITE_CLERK_BILLING_REQUIRED !== "false";
@@ -71,6 +81,20 @@ export function AuthConfigurationMissing() {
       </div>
       <p className="auth-note">
         No Cloudflare Pages, adicione esta variavel em Settings &gt; Environment variables e gere um novo deploy.
+      </p>
+    </AuthShell>
+  );
+}
+
+function AuthProviderFailed() {
+  return (
+    <AuthShell
+      title="Nao foi possivel carregar o login"
+      subtitle="Verifique as chaves do Clerk, o dominio de producao e os registros DNS exigidos pelo Clerk."
+    >
+      <p className="auth-note">
+        Quando o Clerk nao consegue carregar, o app permanece bloqueado para proteger o conteudo. Depois de ajustar DNS
+        e variaveis, gere um novo deploy e tente novamente.
       </p>
     </AuthShell>
   );
@@ -273,12 +297,20 @@ function SignedInAccessGate({ children }: PropsWithChildren) {
 export function AuthGate({ children }: PropsWithChildren) {
   return (
     <>
-      <SignedOut>
-        <SignedOutScreen />
-      </SignedOut>
-      <SignedIn>
-        <SignedInAccessGate>{children}</SignedInAccessGate>
-      </SignedIn>
+      <ClerkLoading>
+        <LoadingScreen />
+      </ClerkLoading>
+      <ClerkFailed>
+        <AuthProviderFailed />
+      </ClerkFailed>
+      <ClerkLoaded>
+        <SignedOut>
+          <SignedOutScreen />
+        </SignedOut>
+        <SignedIn>
+          <SignedInAccessGate>{children}</SignedInAccessGate>
+        </SignedIn>
+      </ClerkLoaded>
     </>
   );
 }
