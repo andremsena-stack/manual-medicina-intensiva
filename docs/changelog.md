@@ -4,6 +4,34 @@
 
 ### Tipo de alteracao
 
+- Interface
+- Organizacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Renomeado o topico `2. Estrategia de intubacao e bolus farmacologico` para `2. Calculadora para Intubacao`.
+- Atualizado o item correspondente no menu interno do Modulo 6.
+- Sincronizada a copia espelho do Modulo 6 em `modules/`.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v57`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Alteracao apenas de nomenclatura visual da secao.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
 - Conteudo clinico
 - Interface
 - PWA/offline
