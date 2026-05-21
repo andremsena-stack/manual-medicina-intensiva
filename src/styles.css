@@ -46,6 +46,16 @@ a {
   color: inherit;
 }
 
+.sr-only {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 .app-shell {
   min-height: 100dvh;
 }
@@ -56,26 +66,20 @@ a {
   padding: 10px;
 }
 
-.topbar {
+.module-menu-trigger {
   align-items: center;
   background: transparent;
   border: 0;
-  box-shadow: none;
-  display: flex;
+  box-shadow: 0 10px 22px rgba(18, 36, 56, 0.18);
+  display: inline-flex;
   justify-content: flex-start;
+  min-height: 38px;
   padding: 0;
-  pointer-events: none;
+  padding: 8px 12px;
   position: fixed;
   left: 14px;
   top: 14px;
   z-index: 8;
-}
-
-.topbar .button {
-  box-shadow: 0 10px 22px rgba(18, 36, 56, 0.18);
-  min-height: 38px;
-  padding: 8px 12px;
-  pointer-events: auto;
 }
 
 .content-grid {
@@ -90,6 +94,7 @@ a {
 .sidebar {
   background: #0d2438;
   bottom: 0;
+  box-shadow: 18px 0 34px rgba(13, 36, 56, 0.24);
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -103,7 +108,7 @@ a {
   transform: translateX(-105%);
   transition: transform 180ms ease;
   width: min(88vw, 360px);
-  z-index: 10;
+  z-index: 30;
 }
 
 .sidebar--open {
@@ -128,9 +133,10 @@ a {
 .sidebar__edge-collapse {
   align-self: flex-end;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
-  margin: -8px -8px -10px 0;
+  margin: -6px -18px -10px 0;
   position: sticky;
   top: 10px;
+  transform: translateX(8px);
   z-index: 2;
 }
 
@@ -289,7 +295,7 @@ a {
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 18;
+  z-index: 40;
 }
 
 .search-panel--collapsed {
@@ -308,25 +314,36 @@ a {
   box-shadow: var(--shadow);
   color: #fff;
   display: inline-flex;
-  flex-direction: column;
+  justify-content: center;
   font-weight: 900;
-  gap: 8px;
-  letter-spacing: 0;
-  min-height: 96px;
+  min-height: 52px;
   min-width: 48px;
-  padding: 12px 8px;
-  text-transform: uppercase;
-  writing-mode: vertical-rl;
+  padding: 0;
+  position: relative;
+}
+
+.search-panel__rail svg {
+  fill: none;
+  height: 23px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+  width: 23px;
 }
 
 .search-panel__rail strong {
   background: #fff7e8;
+  border: 1px solid #f2cf93;
   border-radius: 999px;
   color: var(--amber);
   font-size: 0.78rem;
   line-height: 1;
-  padding: 5px 6px;
-  writing-mode: horizontal-tb;
+  min-width: 22px;
+  padding: 4px 6px;
+  position: absolute;
+  right: 30px;
+  top: -8px;
 }
 
 .search-panel__rail:hover,
@@ -489,35 +506,9 @@ a {
   padding: 14px;
 }
 
-@media (min-width: 760px) {
-  .app-shell--sidebar-open {
-    display: grid;
-    grid-template-columns: 320px minmax(0, 1fr);
-  }
-
-  .app-shell--sidebar-open .sidebar {
-    border-right: 1px solid rgba(255, 255, 255, 0.12);
-    bottom: auto;
-    height: 100dvh;
-    max-width: none;
-    position: sticky;
-    top: 0;
-    transform: none;
-    width: auto;
-  }
-}
-
 @media (min-width: 1040px) {
   .workspace {
     padding: 14px;
-  }
-
-  .app-shell--sidebar-open {
-    grid-template-columns: 320px minmax(0, 1fr);
-  }
-
-  .app-shell--sidebar-open .sidebar {
-    width: 320px;
   }
 
   .content-grid {
@@ -527,7 +518,7 @@ a {
 }
 
 @media (max-width: 680px) {
-  .topbar {
+  .module-menu-trigger {
     left: 10px;
     top: 10px;
   }

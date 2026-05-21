@@ -1,4 +1,4 @@
-const CACHE_NAME = "guia-intensiva-pwa-v42";
+const CACHE_NAME = "guia-intensiva-pwa-v45";
 const CORE_ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"];
 
 self.addEventListener("install", (event) => {

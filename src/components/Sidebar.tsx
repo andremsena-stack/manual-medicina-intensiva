@@ -4,6 +4,7 @@ interface SidebarProps {
   modules: ModuleRecord[];
   activeModule: ModuleRecord;
   activeSectionId?: string;
+  expandedModuleId?: ModuleId | null;
   isOpen: boolean;
   onCollapse: () => void;
   onSelectModule: (moduleId: ModuleId) => void;
@@ -14,6 +15,7 @@ export function Sidebar({
   modules,
   activeModule,
   activeSectionId,
+  expandedModuleId,
   isOpen,
   onCollapse,
   onSelectModule,
@@ -41,6 +43,7 @@ export function Sidebar({
       <nav className="module-nav" aria-label="Modulos">
         {modules.map((module) => {
           const isActiveModule = module.id === activeModule.id;
+          const isExpandedModule = module.id === expandedModuleId;
 
           return (
             <div key={module.id} className="module-nav__group">
@@ -48,13 +51,13 @@ export function Sidebar({
                 className={`module-nav__item ${isActiveModule ? "module-nav__item--active" : ""}`}
                 type="button"
                 onClick={() => onSelectModule(module.id)}
-                onDoubleClick={onCollapse}
+                aria-expanded={isExpandedModule}
               >
                 <span>Modulo {module.number}</span>
                 <strong>{module.title}</strong>
               </button>
 
-              {isActiveModule ? (
+              {isExpandedModule ? (
                 <div className="section-nav section-nav--inline" aria-label={`Secoes do modulo ${module.number}`}>
                   <div className="section-nav__title">Secoes do modulo {module.number}</div>
                   {module.sections.length ? (

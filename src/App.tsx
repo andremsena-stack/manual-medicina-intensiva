@@ -14,12 +14,17 @@ function App() {
   const [query, setQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [expandedModuleId, setExpandedModuleId] = useState<ModuleId | null>(() => route.moduleId);
 
   useEffect(() => {
     const onHashChange = () => setRoute(parseHashRoute(window.location.hash));
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
+
+  useEffect(() => {
+    setExpandedModuleId(route.moduleId);
+  }, [route.moduleId]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -40,6 +45,16 @@ function App() {
     window.location.hash = routeToHash({ moduleId, sectionId });
   };
 
+  const selectModule = (moduleId: ModuleId) => {
+    if (moduleId === activeModule.id) {
+      setExpandedModuleId((current) => (current === moduleId ? null : moduleId));
+      return;
+    }
+
+    setExpandedModuleId(moduleId);
+    navigateTo(moduleId);
+  };
+
   const openSidebar = () => {
     setIsSearchOpen(false);
     setIsSidebarOpen(true);
@@ -53,28 +68,30 @@ function App() {
   };
 
   return (
-    <div className={`app-shell ${isSidebarOpen ? "app-shell--sidebar-open" : ""}`}>
+    <div className="app-shell">
       <Sidebar
         modules={modules}
         activeModule={activeModule}
         activeSectionId={route.sectionId}
+        expandedModuleId={expandedModuleId}
         isOpen={isSidebarOpen}
         onCollapse={() => setIsSidebarOpen(false)}
-        onSelectModule={(moduleId) => navigateTo(moduleId)}
-        onSelectSection={navigateTo}
+        onSelectModule={selectModule}
+        onSelectSection={(moduleId, sectionId) => {
+          setExpandedModuleId(moduleId);
+          navigateTo(moduleId, sectionId);
+        }}
       />
 
       <div className="workspace">
-        <header className="topbar">
-          <button
-            className="button button--primary mobile-menu"
-            type="button"
-            onClick={openSidebar}
-            aria-label="Abrir sumario de modulos"
-          >
-            Modulos
-          </button>
-        </header>
+        <button
+          className="button button--primary module-menu-trigger"
+          type="button"
+          onClick={openSidebar}
+          aria-label="Abrir sumario de modulos"
+        >
+          Modulos
+        </button>
 
         <main className="content-grid">
           <div className="primary-column">

@@ -37,8 +37,12 @@ export function SearchPanel({
           aria-controls="global-search-body"
           aria-expanded="false"
         >
-          <span>Busca</span>
-          {hasSearch ? <strong>{results.length}</strong> : null}
+          <span className="sr-only">Abrir busca global</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m16.5 16.5 4 4" />
+          </svg>
+          {hasSearch ? <strong aria-label={`${results.length} resultados`}>{results.length}</strong> : null}
         </button>
       </section>
     );

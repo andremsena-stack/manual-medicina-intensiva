@@ -4,6 +4,89 @@
 
 ### Tipo de alteracao
 
+- Interface
+- Responsividade
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removido o redimensionamento em grid quando o sumario de modulos e aberto em telas maiores.
+- Mantidos o sumario de modulos e o painel de busca como paineis laterais sobrepostos ao conteudo central.
+- Ajustada a prioridade visual dos paineis laterais para que a leitura do modulo nao seja reestruturada ao abrir menus.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v45`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de conteudo medico, dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/styles.css`
+- `src/App.tsx`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Interface
+- Responsividade
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Substituida a aba recolhida de busca por uma lupa lateral direita.
+- Mantido o formulario de busca oculto ate clique na lupa.
+- Ajustado o sumario lateral: clicar no modulo alterna a exibicao dos subtópicos do modulo ativo.
+- Mantida a seta lateral como controle de recolhimento da barra de modulos inteira.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v44`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de conteudo medico, dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/App.tsx`
+- `src/components/SearchPanel.tsx`
+- `src/components/Sidebar.tsx`
+- `src/styles.css`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Interface
+- Responsividade
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Removido o elemento `header.topbar` da aplicacao.
+- Mantido apenas um botao flutuante compacto para abrir o sumario de modulos.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v43`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de conteudo medico, dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/App.tsx`
+- `src/styles.css`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
 - Conteudo clinico
 - Organizacao
 - Interface
