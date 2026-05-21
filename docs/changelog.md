@@ -4,6 +4,42 @@
 
 ### Tipo de alteracao
 
+- Conteudo clinico
+- Organizacao
+- Interface
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Consolidada a delimitacao entre os Modulos 2, 4 e 6 sobre sedoanalgesia.
+- Acrescentado no Modulo 2 o escopo de uso para os primeiros minutos apos confirmacao do tubo.
+- Acrescentado no Modulo 4 o escopo de referencia longitudinal para manutencao de sedoanalgesia em UTI.
+- Mantido o Modulo 6 como local operacional para calculo de volume, concentracao e vazao.
+- Recolhidos por padrao blocos longos no Modulo 2 e a regra de apresentacao medicamentosa no Modulo 4 para reduzir redundancia visual.
+- Sincronizadas as copias espelho em `modules/`.
+- Atualizados os hashes de integridade dos Modulos 2 e 4.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v42`.
+
+### Impacto clinico
+
+- REQUER REVISAO MEDICA.
+- Alteracao delimitou e reorganizou conteudo clinico de sedoanalgesia entre modulos.
+- Nao houve alteracao de dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_02_pos_intubacao_confirmacao.html`
+- `modules/modulo_02_pos_intubacao_confirmacao.html`
+- `src/data/modules/modulo_04_manutencao_sedoanalgesia.html`
+- `modules/modulo_04_manutencao_sedoanalgesia.html`
+- `scripts/verify-module-hashes.mjs`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
 - Interface
 - Responsividade
 - PWA/offline
