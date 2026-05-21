@@ -4,6 +4,30 @@
 
 ### Tipo de alteracao
 
+- PWA/offline
+- Interface
+
+### Alteracoes realizadas
+
+- Ajustado o service worker para buscar navegacoes e HTML pela rede antes de usar cache local.
+- Mantido fallback offline para `index.html` quando a rede nao estiver disponivel.
+- Reduzida a chance de o PWA manter a interface antiga apos novo deploy.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v46`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de conteudo medico, dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
 - Interface
 - Responsividade
 - PWA/offline
