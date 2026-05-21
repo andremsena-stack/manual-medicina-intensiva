@@ -14,6 +14,8 @@ O papel tecnico do projeto e melhorar estrutura, interface, responsividade, vali
 
 ## Arquitetura
 
+- `src/components/AuthGate.tsx`: bloqueio de acesso com Clerk Auth e assinatura Stripe.
+- `functions/api/`: rotas protegidas para status de assinatura, Checkout, Portal do Cliente e webhook Stripe.
 - `src/data/modules/`: HTMLs clinicos canonicos dos modulos 1-6.
 - `src/components/ModuleViewer.tsx`: renderiza o HTML bruto em `iframe srcDoc`.
 - `src/utils/search.ts`: busca global em texto extraido dos modulos.
@@ -23,6 +25,26 @@ O papel tecnico do projeto e melhorar estrutura, interface, responsividade, vali
 - `public/manifest.webmanifest`: manifesto PWA.
 - `docs/`: politica clinica, fontes, changelog e notas tecnicas.
 - `legacy/`: entrada de fallback para a versao HTML estatica anterior.
+
+## Login e assinatura
+
+O app usa Clerk para autenticar usuarios e Stripe Checkout para assinatura mensal. A verificacao de acesso e feita em Cloudflare Pages Functions usando token Clerk no backend.
+
+Variaveis principais:
+
+```env
+VITE_CLERK_PUBLISHABLE_KEY=pk_live_...
+VITE_CLERK_BILLING_REQUIRED=true
+CLERK_SECRET_KEY=sk_live_...
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_MONTHLY_PRICE_ID=price_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+APP_URL=https://manual-medicina-intensiva.pages.dev
+```
+
+Veja o passo a passo em `docs/clerk-auth-billing.md`.
+
+Observacao comercial importante: enquanto os HTMLs estiverem empacotados no bundle estatico, o Clerk protege a experiencia de uso, mas nao torna o conteudo tecnicamente inacessivel para usuarios avancados. Antes do lancamento pago, mover os modulos para entrega por backend protegido se a protecao forte do conteudo for obrigatoria.
 
 ## Versoes clinicas integradas
 

@@ -42,6 +42,11 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
 a {
   color: inherit;
 }
@@ -58,6 +63,125 @@ a {
 
 .app-shell {
   min-height: 100dvh;
+}
+
+.auth-screen {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 18px;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 14px;
+  max-width: 920px;
+  padding: 24px;
+  width: min(100%, 920px);
+}
+
+.auth-card h1 {
+  color: var(--primary-strong);
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.auth-card p {
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.auth-actions,
+.auth-userbar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.auth-userbar {
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+
+.auth-note {
+  font-size: 0.9rem;
+}
+
+.auth-error {
+  background: #fff1f0;
+  border: 1px solid #f4c7c3;
+  border-radius: 8px;
+  color: var(--danger) !important;
+  font-size: 0.92rem;
+  padding: 10px 12px;
+}
+
+.auth-code {
+  background: #0d2438;
+  border-radius: 8px;
+  color: #fff;
+  overflow-x: auto;
+  padding: 12px;
+}
+
+.billing-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  min-height: 220px;
+  overflow: hidden;
+  padding: 8px;
+}
+
+.auth-loader {
+  animation: auth-spin 900ms linear infinite;
+  border: 3px solid var(--line);
+  border-radius: 999px;
+  border-top-color: var(--primary);
+  height: 34px;
+  width: 34px;
+}
+
+.account-menu-trigger {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 10px 22px rgba(18, 36, 56, 0.18);
+  display: inline-flex;
+  justify-content: center;
+  min-height: 40px;
+  min-width: 40px;
+  padding: 4px;
+  position: fixed;
+  right: 14px;
+  top: 14px;
+  z-index: 9;
+}
+
+.account-billing-button {
+  background: transparent;
+  border: 0;
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 6px 8px 6px 10px;
+}
+
+@keyframes auth-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .workspace {

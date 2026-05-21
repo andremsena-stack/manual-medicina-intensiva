@@ -6,6 +6,97 @@
 
 - Interface
 - Organizacao
+- Documentacao
+- PWA/offline
+- Autenticacao
+- Assinatura
+
+### Alteracoes realizadas
+
+- Substituida a primeira abordagem de Clerk Billing/PricingTable por infraestrutura Clerk Auth + Stripe Checkout.
+- Instalado `@clerk/clerk-react` e ajustada a interface de autenticacao para usar `SignedOut`, `SignInButton`, `SignUpButton`, `SignedIn` e `UserButton`.
+- Usuarios desconectados passam a ver uma tela inicial com botoes `Entrar` e `Criar conta`.
+- Usuarios conectados sem assinatura ativa sao direcionados ao fluxo de pagamento Stripe antes da liberacao do manual.
+- Usuarios com assinatura ativa veem o app normalmente e o avatar/menu de usuario com opcao de sair.
+- Adicionadas Cloudflare Pages Functions para consultar status de assinatura, criar checkout mensal, abrir Portal do Cliente Stripe e receber webhook Stripe.
+- Adicionada validacao backend do token Clerk com `@clerk/backend`.
+- Adicionada sincronizacao do status de assinatura Stripe no `private_metadata` do usuario Clerk.
+- Adicionado botao de gerenciamento de assinatura para usuarios autenticados com acesso ativo.
+- Atualizadas variaveis de ambiente em `.env.example`.
+- Atualizada documentacao de configuracao em `docs/clerk-auth-billing.md` e `README.md`.
+- Removido o menu interno dos modulos renderizados no iframe por camada de seguranca visual em runtime, preservando o menu lateral principal da PWA.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v59`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de conteudo medico, dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `package.json`
+- `package-lock.json`
+- `.env.example`
+- `.gitignore`
+- `functions/_shared.ts`
+- `functions/api/subscription-status.ts`
+- `functions/api/create-checkout-session.ts`
+- `functions/api/create-portal-session.ts`
+- `functions/api/stripe-webhook.ts`
+- `src/main.tsx`
+- `src/components/AuthGate.tsx`
+- `src/styles.css`
+- `src/utils/iframeSafety.ts`
+- `README.md`
+- `docs/clerk-auth-billing.md`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Interface
+- Organizacao
+- Documentacao
+- PWA/offline
+
+### Alteracoes realizadas
+
+- Instalado SDK oficial do Clerk para autenticar usuarios no PWA.
+- Adicionado `AuthGate` para bloquear o manual quando o usuario nao estiver logado ou nao possuir assinatura/feature liberada.
+- Integrado `PricingTable` do Clerk para exibir planos quando a conta esta autenticada, mas sem acesso ativo.
+- Adicionada tela de configuracao ausente quando `VITE_CLERK_PUBLISHABLE_KEY` nao estiver definida.
+- Adicionadas variaveis de ambiente em `.env.example`.
+- Criado `docs/clerk-auth-billing.md` com fluxo de configuracao, assinatura mensal, protecao forte do conteudo e regra futura de sessao unica.
+- Atualizado `README.md` com a arquitetura de login/assinatura.
+- Incrementada a versao do cache do service worker para `guia-intensiva-pwa-v58`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de conteudo medico, dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `package.json`
+- `package-lock.json`
+- `.env.example`
+- `.gitignore`
+- `src/main.tsx`
+- `src/components/AuthGate.tsx`
+- `src/styles.css`
+- `README.md`
+- `docs/clerk-auth-billing.md`
+- `public/sw.js`
+- `docs/changelog.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Interface
+- Organizacao
 - PWA/offline
 
 ### Alteracoes realizadas
