@@ -1,5 +1,108 @@
 # Changelog
 
+## 2026-05-22 — Headline DVA mostra dose prescrita + equivalência por hora
+
+### Tipo de alteração
+
+- Interface — **legibilidade do headline da calculadora DVA**
+
+### Alterações realizadas
+
+- `calcDVA` em `src/data/modules/modulo_06_calculadoras_interativas.html`:
+  - Modo **dose → vazão**: quando a `doseUnit` difere da unidade por hora
+    convertida (ex.: `UI/min` → `UI/h`, `mcg/kg/min` → `mcg/h`,
+    `mcg/min` → `mcg/h`), o headline agora exibe a dose prescrita primeiro e
+    a massa por hora entre parênteses. Exemplo: `Vasopressina: 0,0300 UI/min
+    (1,80 UI/h) → 9,00 mL/h`.
+  - Modo **vazão → dose**: aplica simetricamente — primeiro a dose calculada
+    na `doseUnit` clínica, depois a massa equivalente por hora entre parênteses.
+  - Quando `doseUnit` já é por hora (`mg/h`, `mcg/h`, `mg/kg/h`), o formato
+    antigo é mantido para evitar redundância.
+
+### Motivo clínico
+
+A unidade clinicamente prescrita é a referência para o intensivista (UI/min
+para vasopressina, mcg/kg/min para noradrenalina/adrenalina, etc.). Mostrar a
+unidade convertida por hora isoladamente forçava conversão mental no leitor.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html` (`calcDVA`)
+- `scripts/verify-module-hashes.mjs` (hash atualizado para
+  `31ca0ec701b54de00ccb20d62aa0d76a28d553aac72282e4853fe2b51a015f38`)
+
+## 2026-05-22 — Amiodarona: orientação de vazão por fase (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- Conteúdo clínico — **reescrita do texto de orientação de fases (`phaseInfo`)**
+
+### Alterações realizadas
+
+- Reescrito o campo `phaseInfo` de `infusionData.antiarritmico.drugs.amiodarona`
+  (`src/data/modules/modulo_06_calculadoras_interativas.html`).
+- Texto anterior expressava equivalências em mg/min (1 mg/min, 0,5 mg/min) sem
+  trazer a vazão prática em mL/h.
+- Texto atual traz vazões de referência por fase para a solução padrão
+  900 mg/500 mL (1,8 mg/mL):
+  - **Fase 1 (ataque 150 mg em 10 min)** → ≈ **500 mL/h** por 10 min
+  - **Fase 2 (manutenção 60 mg/h por 6 h)** → ≈ **33 mL/h**
+  - **Fase 3 (manutenção 30 mg/h por 18 h)** → ≈ **17 mL/h**
+
+### Verificação matemática (solução 1,8 mg/mL)
+
+- Fase 1: 150 mg / 10 min = 15 mg/min = 900 mg/h ⇒ 900 / 1,8 = **500 mL/h** ✓
+- Fase 2: 60 mg/h ⇒ 60 / 1,8 = 33,33 mL/h ≈ **33 mL/h** ✓
+- Fase 3: 30 mg/h ⇒ 30 / 1,8 = 16,67 mL/h ≈ **17 mL/h** ✓
+
+### **REQUER REVISAO MEDICA**
+
+Mudança em texto de orientação clínica/posológica:
+- Confirmar adequação dos arredondamentos (33 e 17 mL/h) ao padrão institucional.
+- Confirmar que a apresentação 900 mg/500 mL em SG 5% é a preparação de referência
+  para o serviço; caso o serviço adote outra concentração, a vazão deve ser
+  recalculada (ou usar a calculadora interativa para a apresentação real).
+- Manter a ressalva de ajuste por ritmo, PA e protocolo institucional.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html` (`phaseInfo` da amiodarona)
+- `scripts/verify-module-hashes.mjs` (hash atualizado para
+  `ecfbf4ac6073474247393a83d2009c663710d39a9a4bacff983f019f070bd2a2`)
+
+## 2026-05-22 — Nova prep de Dobutamina (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- Conteúdo clínico — **adição de nova preparação de medicação**
+
+### Alterações realizadas
+
+- Adicionada segunda opção de preparação para **Dobutamina** na calculadora de infusão contínua /
+  drogas vasoativas (`infusionData.vasoativa.drugs.dobutamina` / `dvaDrugs.inotropico.drugs.dobutamina`):
+  - **Solução concentrada**: 4 ampolas de 250 mg/20 mL em 250 mL → 4000 mcg/mL (4 mg/mL)
+  - Preparo: 80 mL de dobutamina (4 ampolas × 250 mg/20 mL) + 170 mL de diluente = 250 mL
+  - Acrescentada conforme solicitação clínica explícita do usuário.
+
+### Verificação matemática
+
+- 4 ampolas × 250 mg = **1000 mg** total de dobutamina
+- 4 ampolas × 20 mL = **80 mL** aspirados
+- Diluente: 250 - 80 = **170 mL**
+- Concentração final: 1000 mg / 250 mL = **4 mg/mL = 4000 mcg/mL** ✓
+
+### **REQUER REVISAO MEDICA**
+
+A diluição/concentração adicionada precisa de validação clínica antes de uso em produção:
+- Confirmar se 4000 mcg/mL está dentro dos limites de osmolaridade/estabilidade para infusão central
+- Confirmar compatibilidade com diluentes habituais (SG 5% / SF 0,9%)
+- Confirmar protocolo institucional para uso de soluções concentradas de dobutamina
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html` (nova opção em `preps:[]`)
+- `scripts/verify-module-hashes.mjs` (hash atualizado)
+
 ## 2026-05-22 — Cards visuais no cenário-resumo (Módulo 6)
 
 ### Tipo de alteração

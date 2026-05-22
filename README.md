@@ -28,7 +28,7 @@ O papel tecnico do projeto e melhorar estrutura, interface, responsividade, vali
 
 ## Login e assinatura
 
-O app usa Clerk para autenticar usuarios e Stripe Checkout para assinatura mensal. A verificacao de acesso e feita em Cloudflare Pages Functions usando token Clerk no backend.
+O app usa Clerk para autenticar usuarios e Stripe Checkout para assinatura mensal. O gate de leitura usa `user.publicMetadata.subscriptionStatus` ou `user.publicMetadata.stripeSubscriptionStatus` para liberar o manual.
 
 Variaveis principais:
 
@@ -37,12 +37,15 @@ VITE_CLERK_PUBLISHABLE_KEY=pk_live_...
 VITE_CLERK_BILLING_REQUIRED=true
 CLERK_SECRET_KEY=sk_live_...
 STRIPE_SECRET_KEY=sk_live_...
-STRIPE_MONTHLY_PRICE_ID=price_...
+STRIPE_PRICE_ID=price_1TZf0zAIon1Sw6HssZDB0ZPO
 STRIPE_WEBHOOK_SECRET=whsec_...
-APP_URL=https://manual-medicina-intensiva.pages.dev
+APP_URL=https://manualvirtus.com.br
 ```
 
+Em producao o botao `Assinar agora` chama `POST /api/create-checkout-session`, que monta a sessao Stripe usando `STRIPE_PRICE_ID`. A variavel `VITE_STRIPE_CHECKOUT_URL` permanece opcional como fallback de desenvolvimento.
+
 Veja o passo a passo em `docs/clerk-auth-billing.md`.
+Para migrar para dominio proprio, veja `docs/DEPLOY_MANUALVIRTUS.md`.
 
 Observacao comercial importante: enquanto os HTMLs estiverem empacotados no bundle estatico, o Clerk protege a experiencia de uso, mas nao torna o conteudo tecnicamente inacessivel para usuarios avancados. Antes do lancamento pago, mover os modulos para entrega por backend protegido se a protecao forte do conteudo for obrigatoria.
 
