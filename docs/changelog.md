@@ -1,5 +1,50 @@
 # Changelog
 
+## 2026-05-22 — Ampola: input por massa+volume com concentração derivada
+
+### Tipo de alteração
+
+- Interface + lógica de cálculo (não-clínica) — **simplificação dos inputs de
+  ampola na calculadora de infusão contínua**
+
+### Alterações realizadas
+
+- Painel "Ampola/fr. disponível" reformulado:
+  - Antes: `Concentração da ampola` (mcg/mL | mg/mL | UI/mL) + `Unidade` +
+    `Volume total` + `Conteúdo total` (readonly).
+  - Depois: `Massa total da ampola` + `Unidade da massa` (mg | mcg | UI) +
+    `Volume total (mL)` + `Concentração calculada` (readonly).
+  - Concentração da ampola passa a ser sempre derivada (massa ÷ volume),
+    eliminando inconsistência potencial entre o número informado e o que está
+    escrito no rótulo da ampola.
+  - O preview agora exibe: `5 mg/mL | Massa total da ampola: 15 mg`.
+- Painel "Ajustes avançados da solução final" **removido**:
+  - O override manual de `Concentração final da solução` deixa de existir.
+  - A concentração final passa a vir exclusivamente do preset
+    `Solução final sugerida` (campo `prep.conc` / `prep.unit` no
+    `infusionData`).
+  - Quem precisar de uma preparação fora do padrão deve solicitar a adição da
+    preparação ao catálogo — evita risco de cálculo silenciosamente errado por
+    valores destoantes inseridos no override.
+
+### Mudanças no JS
+
+- `getInfAmpOverride()` agora lê `infAmpMass` + `infAmpMassUnit` + `infAmpVolume`
+  e computa `conc = mass/volume`.
+- `updateAmpContentPreview()` exibe concentração calculada + massa total.
+- `updateInfPrep()` preenche os campos de ampola a partir de
+  `ampouleInfoByName()` (não mais `infConc`/`infConcUnit`).
+- `calcInfusion()` e `addInfusionToSummary()` deixam de ler `infConc`/`infConcUnit`
+  — usam `prep.conc` e `prep.unit` diretamente.
+- `initInfusion()` registra event listeners apenas para os novos IDs.
+- Adicionada `concUnitFromMassUnit()` (inverso de `massUnitFromConcUnit()`).
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (hash atualizado para
+  `e80f7eb90b4b43246e0bc15338db706f944cd01fe94837004076184724031a98`)
+
 ## 2026-05-22 — Headline DVA mostra dose prescrita + equivalência por hora
 
 ### Tipo de alteração

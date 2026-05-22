@@ -412,21 +412,12 @@
           <summary>Ampola/fr. disponível</summary>
           <div class="detail-body">
             <div class="calc-grid">
-              <div><label for="infAmpConc">Concentração da ampola/fr.</label><input id="infAmpConc" type="number" step="0.001" placeholder="ex.: 50"></div>
-              <div><label for="infAmpConcUnit">Unidade</label><select id="infAmpConcUnit"><option value="mcgml">mcg/mL</option><option value="mgml">mg/mL</option><option value="uiml">UI/mL</option></select></div>
-              <div><label for="infAmpVolume">Volume total (mL)</label><input id="infAmpVolume" type="number" step="0.1" placeholder="ex.: 10"></div>
-              <div><label>Conteúdo total</label><input id="infAmpContentPreview" type="text" value="—" readonly></div>
+              <div><label for="infAmpMass">Massa total da ampola/fr.</label><input id="infAmpMass" type="number" step="0.001" placeholder="ex.: 15"></div>
+              <div><label for="infAmpMassUnit">Unidade da massa</label><select id="infAmpMassUnit"><option value="mg">mg</option><option value="mcg">mcg</option><option value="UI">UI</option></select></div>
+              <div><label for="infAmpVolume">Volume total (mL)</label><input id="infAmpVolume" type="number" step="0.1" placeholder="ex.: 3"></div>
+              <div><label>Concentração calculada</label><input id="infAmpConcPreview" type="text" value="—" readonly></div>
             </div>
-          </div>
-        </details>
-        <details class="refs-collapsible" style="margin-top:10px">
-          <summary>Ajustes avançados da solução final</summary>
-          <div class="detail-body">
-            <div class="calc-grid">
-              <div><label for="infConc">Concentração final da solução</label><input id="infConc" type="number" step="0.01"></div>
-              <div><label for="infConcUnit">Unidade</label><select id="infConcUnit"><option value="mcgml">mcg/mL</option><option value="mgml">mg/mL</option><option value="uiml">UI/mL</option></select></div>
-            </div>
-            <div class="compact-note">Use apenas quando a solução final preparada for diferente da opção selecionada.</div>
+            <div class="compact-note">A concentração da ampola é calculada automaticamente (massa total ÷ volume total) e é usada para calcular o volume a aspirar.</div>
           </div>
         </details>
         <div class="btnrow">
@@ -987,25 +978,34 @@ function massUnitFromConcUnit(unit){
   if(unit === "uiml") return "UI";
   return "";
 }
+function concUnitFromMassUnit(unit){
+  if(unit === "mcg") return "mcgml";
+  if(unit === "mg") return "mgml";
+  if(unit === "UI") return "uiml";
+  return "";
+}
 function getInfAmpOverride(){
-  const conc=parseFloat(document.getElementById("infAmpConc")?.value);
+  const mass=parseFloat(document.getElementById("infAmpMass")?.value);
   const vol=parseFloat(document.getElementById("infAmpVolume")?.value);
-  const concUnit=document.getElementById("infAmpConcUnit")?.value || "";
-  const unit=massUnitFromConcUnit(concUnit);
-  if(!Number.isFinite(conc) || conc<=0 || !Number.isFinite(vol) || vol<=0 || !unit) return null;
+  const unit=document.getElementById("infAmpMassUnit")?.value || "";
+  const concUnit=concUnitFromMassUnit(unit);
+  if(!Number.isFinite(mass) || mass<=0 || !Number.isFinite(vol) || vol<=0 || !unit) return null;
+  const conc=mass/vol;
   return {
     unit,
-    content: conc*vol,
+    content: mass,
     volume: vol,
     conc,
     concUnit,
-    label:`ampola/fr. ${fmt(vol,1)} mL; concentração ${fmt(conc,3)} ${unitLabel(concUnit)}`
+    label:`ampola/fr. ${fmt(vol,1)} mL com ${fmt(mass,2)} ${unit} (concentração ${fmt(conc,3)} ${unitLabel(concUnit)})`
   };
 }
 function updateAmpContentPreview(){
   const amp=getInfAmpOverride();
-  const out=document.getElementById("infAmpContentPreview");
-  if(out) out.value = amp ? `${fmt(amp.content,2)} ${amp.unit} por ampola/fr.` : "—";
+  const out=document.getElementById("infAmpConcPreview");
+  if(out) out.value = amp
+    ? `${fmt(amp.conc,3)} ${unitLabel(amp.concUnit)} | Massa total da ampola: ${fmt(amp.content,2)} ${amp.unit}`
+    : "—";
 }
 
 function brazilAmpouleOptions(name){
@@ -2245,7 +2245,7 @@ function initInfusion(){
   document.getElementById("infCat").addEventListener("change", updateInfDrugs);
   document.getElementById("infDrug").addEventListener("change", updateInfDefaults);
   document.getElementById("infPrep").addEventListener("change", updateInfPrep);
-  ["infDose","infRate","infConc","infConcUnit","infAmpConc","infAmpConcUnit","infAmpVolume","infTargetHours","infBagVolume","infDiluent","peso","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", ()=>{updateAmpContentPreview(); calcInfusion();}));
+  ["infDose","infRate","infAmpMass","infAmpMassUnit","infAmpVolume","infTargetHours","infBagVolume","infDiluent","peso","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", ()=>{updateAmpContentPreview(); calcInfusion();}));
   document.getElementById("infDose").addEventListener("input", function(){ if(this.value !== "") document.getElementById("infRate").value = ""; calcInfusion(); });
   document.getElementById("infRate").addEventListener("input", function(){ if(this.value !== "") document.getElementById("infDose").value = ""; calcInfusion(); });
   updateInfDrugs();
@@ -2271,17 +2271,15 @@ function currentInf(){
   return {cat, drug, d, prep};
 }
 function updateInfPrep(){
-  const {d, prep}=currentInf();
-  document.getElementById("infConc").value=prep.conc;
-  document.getElementById("infConcUnit").value=prep.unit;
+  const {d}=currentInf();
   const amp=ampouleInfoByName(d.name);
   if(amp && amp.volume && amp.content){
     document.getElementById("infAmpVolume").value=amp.volume;
-    document.getElementById("infAmpConc").value=fmt(amp.content/amp.volume,3);
-    document.getElementById("infAmpConcUnit").value = amp.unit==="mcg" ? "mcgml" : (amp.unit==="mg" ? "mgml" : "uiml");
+    document.getElementById("infAmpMass").value=fmt(amp.content,3);
+    document.getElementById("infAmpMassUnit").value=amp.unit || "mg";
   } else {
     document.getElementById("infAmpVolume").value="";
-    document.getElementById("infAmpConc").value="";
+    document.getElementById("infAmpMass").value="";
   }
   updateAmpContentPreview();
   calcInfusion();
@@ -2291,7 +2289,7 @@ function calcInfusion(){
   const mode=getAutoMode("infDose","infRate");
   let dose=parseFloat(document.getElementById("infDose").value);
   const rate=parseFloat(document.getElementById("infRate").value);
-  const conc=parseFloat(document.getElementById("infConc").value || prep.conc), concUnit=document.getElementById("infConcUnit").value;
+  const conc=prep.conc, concUnit=prep.unit;
   const hours=parseFloat(document.getElementById("infTargetHours")?.value || 12);
   const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
   const diluent=document.getElementById("infDiluent")?.value || "diluente";
@@ -2361,8 +2359,8 @@ function addInfusionToSummary(){
   const {d,prep}=currentInf();
   {
   const mode=getAutoMode("infDose","infRate");
-  const conc=parseFloat(document.getElementById("infConc").value || prep.conc);
-  const concUnit=document.getElementById("infConcUnit").value;
+  const conc=prep.conc;
+  const concUnit=prep.unit;
   const hours=parseFloat(document.getElementById("infTargetHours")?.value || 12);
   const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
   const diluent=document.getElementById("infDiluent")?.value || "diluente";
