@@ -328,25 +328,34 @@ body.landing-active {
   color: var(--l-ink);
 }
 
-.landing-shell .button--cta {
-  background: linear-gradient(135deg, var(--l-cyan), var(--l-cyan-2));
+.landing-shell .button--cta,
+.paywall-card .button--cta {
+  /* Hardcoded fallback — as vars --l-cyan/--l-cyan-2 só existem no escopo
+     .landing-shell. Sem fallback, paywall (fora do landing-shell) fica sem fundo. */
+  background: linear-gradient(135deg, #30f1e6, #12bed1);
   border: 0;
   color: #02161b;
   padding: 10px 18px;
   box-shadow: 0 12px 30px -10px rgba(48, 241, 230, 0.55), 0 0 0 1px rgba(48, 241, 230, 0.3) inset;
+  cursor: pointer;
+  text-decoration: none;
+  justify-content: center;
 }
 
-.landing-shell .button--cta:hover {
+.landing-shell .button--cta:hover,
+.paywall-card .button--cta:hover {
   transform: translateY(-1px);
   box-shadow: 0 18px 36px -12px rgba(48, 241, 230, 0.7), 0 0 0 1px rgba(48, 241, 230, 0.45) inset;
 }
 
-.landing-shell .button--lg {
+.landing-shell .button--lg,
+.paywall-card .button--lg {
   font-size: 1.02rem;
   padding: 13px 22px;
 }
 
-.landing-shell .button--xl {
+.landing-shell .button--xl,
+.paywall-card .button--xl {
   font-size: 1.08rem;
   padding: 15px 28px;
 }
@@ -1227,6 +1236,242 @@ body.landing-active {
 
 .primary-column {
   min-width: 0;
+}
+
+/* Paywall: app fica visível, sidebar/busca interativos, painel central bloqueado.
+   pointer-events: none nos descendentes da primary-column impede expandir
+   collapsibles e clicar em controles dos módulos. Scroll da página continua livre. */
+.app-paywall-locked .primary-column {
+  filter: grayscale(0.18) saturate(0.85);
+  opacity: 0.78;
+  position: relative;
+}
+
+.app-paywall-locked .primary-column * {
+  pointer-events: none !important;
+}
+
+.app-paywall-locked .primary-column ::selection {
+  background: transparent;
+}
+
+.paywall-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(8, 22, 38, 0) 0%, rgba(8, 22, 38, 0.04) 40%, rgba(8, 22, 38, 0.12) 100%);
+}
+
+.paywall-card {
+  pointer-events: auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 28px 60px rgba(13, 36, 56, 0.28);
+  border: 1px solid var(--line);
+  max-width: 1080px;
+  width: 100%;
+  padding: 28px;
+  text-align: left;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+  gap: 28px;
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+}
+
+.paywall-card-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.paywall-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.paywall-title {
+  font-size: 1.4rem;
+  line-height: 1.25;
+  margin: 0;
+  color: var(--text);
+}
+
+.paywall-lead {
+  font-size: 0.96rem;
+  line-height: 1.5;
+  margin: 0;
+  color: var(--text-muted, #38475c);
+}
+
+.paywall-cta {
+  align-self: stretch;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.paywall-refresh {
+  align-self: flex-start;
+}
+
+.paywall-note {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-muted, #5b6b80);
+  margin: 0;
+}
+
+.paywall-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  background: #f6f8fb;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+}
+
+.paywall-carousel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.paywall-carousel-eyebrow {
+  display: block;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.paywall-carousel-title {
+  font-size: 0.96rem;
+  line-height: 1.3;
+  margin: 0;
+  color: var(--text);
+}
+
+.paywall-carousel-nav {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.paywall-carousel-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--primary);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.paywall-carousel-arrow:hover,
+.paywall-carousel-arrow:focus-visible {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  outline: 0;
+}
+
+.paywall-carousel-frame {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  flex: 1 1 auto;
+  min-height: 520px;
+}
+
+.paywall-carousel-iframe {
+  /* Renderiza o iframe como se tivesse ~1.43x a área visível e aplica
+     transform: scale(0.7) para encolher visualmente. Resultado: o conteúdo
+     do módulo enxerga uma viewport "desktop-like" (~770-900px de largura)
+     e o usuário vê o layout completo das calculadoras dentro do paywall.
+     Interação seletiva (scroll + headers) é preservada via CSS injetado
+     dentro do iframe (PREVIEW_BLOCK_CSS). */
+  width: 142.857%;
+  height: 142.857%;
+  border: 0;
+  display: block;
+  background: #fff;
+  transform: scale(0.7);
+  transform-origin: top left;
+}
+
+.paywall-carousel-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.paywall-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 0;
+  background: #c8d1dc;
+  padding: 0;
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.paywall-carousel-dot:hover {
+  background: #92a2b6;
+}
+
+.paywall-carousel-dot--active {
+  background: var(--primary);
+  transform: scale(1.25);
+}
+
+@media (max-width: 880px) {
+  .paywall-card {
+    grid-template-columns: 1fr;
+    max-width: 540px;
+    max-height: calc(100vh - 16px);
+    overflow-y: auto;
+  }
+  .paywall-carousel-frame {
+    min-height: 380px;
+  }
+}
+
+@media (max-width: 640px) {
+  .paywall-overlay {
+    padding: 16px;
+    align-items: flex-end;
+  }
+  .paywall-card {
+    padding: 22px 20px 20px;
+    gap: 18px;
+  }
+  .paywall-title {
+    font-size: 1.2rem;
+  }
 }
 
 /* Sidebar: ocupa a primeira coluna do CSS grid em .app-shell.

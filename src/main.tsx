@@ -19,6 +19,8 @@ const isModulesPreview =
   import.meta.env.DEV && (previewMode === "modulos" || previewMode === "modules");
 // Preview do app completo (Sidebar + ModuleViewer + Search) sem Clerk. DEV-only.
 const isAppPreview = import.meta.env.DEV && previewMode === "app";
+// Preview isolado do paywall (overlay + carrossel) sobre o App. DEV-only.
+const isPaywallPreview = import.meta.env.DEV && previewMode === "paywall";
 
 const clerkAppearance = {
   variables: {
@@ -28,7 +30,17 @@ const clerkAppearance = {
   }
 };
 
-if (isAppPreview) {
+if (isPaywallPreview) {
+  // Dev-only: renderiza App + paywall overlay para validar layout do carrossel
+  // sem precisar de Clerk autenticado nem de subscription. Eliminado do bundle prod.
+  void import("./components/AuthGate").then(({ PaywallPreview }) => {
+    root.render(
+      <StrictMode>
+        <PaywallPreview />
+      </StrictMode>
+    );
+  });
+} else if (isAppPreview) {
   // Dev-only: renderiza o App standalone sem Clerk. Permite iterar a navegação,
   // sidebar e busca sem precisar de login em produção. Eliminado do bundle prod
   // pelo gate import.meta.env.DEV combinado com o dynamic import.

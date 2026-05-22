@@ -5,18 +5,27 @@ import {
   SignedIn,
   SignedOut,
   SignInButton,
+  SignUpButton,
   UserButton,
   useAuth,
   useUser
 } from "@clerk/clerk-react";
-import { useEffect, useState, type PropsWithChildren, type ReactNode } from "react";
+import { useEffect, useRef, useState, type PropsWithChildren, type ReactNode } from "react";
+import App from "../App";
 import { useImageWithoutHalo } from "../utils/imageProcessing";
 import modulo06Html from "../data/modules/modulo_06_calculadoras_interativas.html?raw";
+import { moduleSources } from "../data/moduleSources";
 
 const billingRequired = import.meta.env.VITE_CLERK_BILLING_REQUIRED !== "false";
 const stripeCheckoutFallbackUrl = import.meta.env.VITE_STRIPE_CHECKOUT_URL;
 const isDevEnvironment = import.meta.env.DEV;
-const founderPaymentLink = "https://buy.stripe.com/14AeVc0vS66vgVKeJB3gk01";
+// Link de pagamento da fase fundadora. Em produção o fallback aponta para o
+// Payment Link live R$ 29,99 one-time. Em dev/test, definir
+// VITE_FOUNDER_PAYMENT_LINK no .env.local apontando para um Payment Link de
+// teste (https://buy.stripe.com/test_...).
+const founderPaymentLink =
+  import.meta.env.VITE_FOUNDER_PAYMENT_LINK ??
+  "https://buy.stripe.com/14AeVc0vS66vgVKeJB3gk01";
 
 type SubscriptionStatus = {
   active: boolean;
@@ -155,9 +164,17 @@ function LandingNav({ previewMode = false }: { previewMode?: boolean }) {
             </button>
           </SignInButton>
         )}
-        <a className="button button--cta" href={founderPaymentLink}>
-          Acesso fundador
-        </a>
+        {previewMode ? (
+          <button className="button button--cta" type="button" disabled>
+            Acesso fundador
+          </button>
+        ) : (
+          <SignUpButton mode="modal">
+            <button className="button button--cta" type="button">
+              Acesso fundador
+            </button>
+          </SignUpButton>
+        )}
       </nav>
     </header>
   );
@@ -419,9 +436,17 @@ export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean
             preparados para a consulta objetiva na emergência e na terapia intensiva.
           </p>
           <div className="landing-cta">
-            <a className="button button--cta button--lg" href={founderPaymentLink}>
-              Garantir acesso fundador — R$ 29,99
-            </a>
+            {previewMode ? (
+              <button className="button button--cta button--lg" type="button" disabled>
+                Garantir acesso fundador — R$ 29,99
+              </button>
+            ) : (
+              <SignUpButton mode="modal">
+                <button className="button button--cta button--lg" type="button">
+                  Garantir acesso fundador — R$ 29,99
+                </button>
+              </SignUpButton>
+            )}
             {previewMode ? (
               <button className="button button--ghost button--lg" type="button" disabled>
                 Já tenho conta
@@ -549,12 +574,20 @@ export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean
               <li><span className="dot dot--success" aria-hidden="true" /> Atualizações clínicas inclusas no acesso</li>
               <li><span className="dot dot--success" aria-hidden="true" /> Atendimento prioritário para a turma fundadora</li>
             </ul>
-            <a className="button button--cta button--xl" href={founderPaymentLink}>
-              Quero meu acesso fundador
-            </a>
+            {previewMode ? (
+              <button className="button button--cta button--xl" type="button" disabled>
+                Quero meu acesso fundador
+              </button>
+            ) : (
+              <SignUpButton mode="modal">
+                <button className="button button--cta button--xl" type="button">
+                  Quero meu acesso fundador
+                </button>
+              </SignUpButton>
+            )}
             <p className="founder-note">
-              Após o pagamento, crie a sua conta no Manual utilizando o mesmo e-mail informado no
-              Stripe para liberar o acesso automaticamente.
+              Crie sua conta agora e conclua o pagamento de R$ 29,99 em seguida para liberar o
+              acesso completo ao Manual.
             </p>
             <p className="founder-note">
               As vagas da fase fundadora são limitadas. Encerrado o período, o produto passa ao modelo
@@ -613,49 +646,194 @@ function AuthProviderFailed() {
   );
 }
 
-function SubscriptionScreen({
-  status,
-  isBusy,
-  error,
-  onSubscribe,
-  onManage,
+// CSS injetado dentro do iframe da prévia. Três responsabilidades:
+// 1) Esconder o header lateral (aside/brand/nav-toggle) — sobra mais espaço útil.
+// 2) Bloquear inputs/calculadoras (interatividade somente em headers de seção).
+// 3) Banner sticky "somente leitura" no topo do iframe.
+const PREVIEW_BLOCK_CSS = `
+  /* Esconde o aside/menu lateral e força o main a ocupar toda a largura.
+     Cobre os módulos 1-6 (usam .app grid 310px 1fr) e o módulo 7 (sem aside). */
+  .app, #moduleApp {
+    display: block !important;
+    grid-template-columns: 1fr !important;
+  }
+  .app > aside, #moduleApp > aside, body > aside {
+    display: none !important;
+  }
+  .app > main, #moduleApp > main {
+    margin: 0 !important;
+    padding: 12px 16px !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+  /* Inputs, calculadoras e form widgets ficam visualmente esmaecidos
+     e não respondem a cliques/digitação. Headers (h2, h3) continuam ativos
+     para permitir colapsar/expandir seções da prévia. */
+  input, textarea, select, button:not([data-codex-collapsible]),
+  [contenteditable], .calc-input, .calc-input--active, .calc-input--locked,
+  form, [role="button"]:not(h2):not(h3) {
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    opacity: 0.65;
+  }
+  /* Banner sticky avisando que é prévia */
+  body::before {
+    content: "Prévia somente leitura — assine para usar as calculadoras";
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999999;
+    display: block;
+    background: linear-gradient(90deg, #123c69, #1e5a96);
+    color: #fff;
+    font: 700 12px/1.4 system-ui, -apple-system, sans-serif;
+    letter-spacing: 0.04em;
+    text-align: center;
+    padding: 8px 12px;
+  }
+`;
+
+function PaywallPreviewCarousel() {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const total = moduleSources.length;
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    if (paused) {
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      setIndex((current) => (current + 1) % total);
+    }, 12000);
+    return () => window.clearTimeout(timer);
+  }, [index, paused, total]);
+
+  const current = moduleSources[index];
+  const goPrev = () => setIndex((c) => (c - 1 + total) % total);
+  const goNext = () => setIndex((c) => (c + 1) % total);
+
+  const handleIframeLoad = () => {
+    const iframe = iframeRef.current;
+    const doc = iframe?.contentDocument;
+    if (!doc || !doc.head) {
+      return;
+    }
+    let style = doc.getElementById("paywall-preview-block-style") as HTMLStyleElement | null;
+    if (!style) {
+      style = doc.createElement("style");
+      style.id = "paywall-preview-block-style";
+      doc.head.appendChild(style);
+    }
+    style.textContent = PREVIEW_BLOCK_CSS;
+  };
+
+  return (
+    <div
+      className="paywall-carousel"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      <div className="paywall-carousel-header">
+        <div>
+          <span className="paywall-carousel-eyebrow">Veja por dentro do Manual</span>
+          <h3 className="paywall-carousel-title">
+            Módulo {current.number} — {current.title}
+          </h3>
+        </div>
+        <div className="paywall-carousel-nav" role="group" aria-label="Navegar módulos">
+          <button
+            type="button"
+            className="paywall-carousel-arrow"
+            onClick={goPrev}
+            aria-label="Módulo anterior"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            className="paywall-carousel-arrow"
+            onClick={goNext}
+            aria-label="Próximo módulo"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+      <div className="paywall-carousel-frame">
+        <iframe
+          key={current.id}
+          ref={iframeRef}
+          title={`Pré-visualização do módulo ${current.number} — ${current.title}`}
+          srcDoc={current.html}
+          className="paywall-carousel-iframe"
+          sandbox="allow-same-origin allow-scripts"
+          loading="lazy"
+          onLoad={handleIframeLoad}
+        />
+      </div>
+      <div className="paywall-carousel-dots" role="tablist" aria-label="Módulo em destaque">
+        {moduleSources.map((mod, i) => (
+          <button
+            key={mod.id}
+            type="button"
+            role="tab"
+            aria-selected={i === index}
+            aria-label={`Ver módulo ${mod.number}`}
+            className={`paywall-carousel-dot ${i === index ? "paywall-carousel-dot--active" : ""}`}
+            onClick={() => setIndex(i)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PaywallOverlay({
+  paymentUrl,
+  isWaiting,
   onRefresh
 }: {
-  status: SubscriptionStatus | null;
-  isBusy: boolean;
-  error: string | null;
-  onSubscribe: () => void;
-  onManage: () => void;
+  paymentUrl: string;
+  isWaiting: boolean;
   onRefresh: () => void;
 }) {
   return (
-    <AuthShell
-      title="Assinatura necessaria"
-      subtitle="Sua conta esta autenticada. Para liberar o manual completo, conclua a assinatura mensal pelo Stripe."
-    >
-      <div className="auth-userbar">
-        <span>Status: {status?.status ?? "sem assinatura ativa"}</span>
-        <UserButton />
-      </div>
-      <div className="auth-actions">
-        <button className="button button--primary" type="button" onClick={onSubscribe} disabled={isBusy}>
-          {isBusy ? "Abrindo checkout..." : "Assinar agora"}
-        </button>
-        {status?.status ? (
-          <button className="button button--quiet" type="button" onClick={onManage} disabled={isBusy}>
-            Gerenciar assinatura
+    <div className="paywall-overlay" role="dialog" aria-modal="false" aria-labelledby="paywall-title">
+      <div className="paywall-card">
+        <div className="paywall-card-copy">
+          <span className="paywall-eyebrow">Acesso fundador</span>
+          <h2 id="paywall-title" className="paywall-title">
+            Conclua o pagamento para liberar o Manual
+          </h2>
+          <p className="paywall-lead">
+            Sua conta está criada. Veja ao lado os 7 módulos reais do Manual em rotação —
+            calculadoras, fluxos clínicos e referências. O acesso completo, com interação e
+            cálculo, é liberado após a confirmação do pagamento de R$ 29,99 (pagamento único
+            da fase fundadora).
+          </p>
+          <a className="button button--cta button--xl paywall-cta" href={paymentUrl}>
+            Concluir pagamento — R$ 29,99
+          </a>
+          <button
+            className="button button--quiet paywall-refresh"
+            type="button"
+            onClick={onRefresh}
+            disabled={isWaiting}
+          >
+            {isWaiting ? "Aguardando confirmação do pagamento..." : "Já paguei — atualizar acesso"}
           </button>
-        ) : null}
-        <button className="button button--quiet" type="button" onClick={onRefresh} disabled={isBusy}>
-          Atualizar status
-        </button>
+          <p className="paywall-note">
+            Após pagar você é redirecionado de volta. O acesso é liberado automaticamente assim
+            que o Stripe confirma o pagamento.
+          </p>
+        </div>
+        <PaywallPreviewCarousel />
       </div>
-      {error ? <p className="auth-error">{error}</p> : null}
-      <p className="auth-note">
-        Apos o pagamento, o Stripe notificara o app por webhook. Se o acesso nao liberar imediatamente,
-        use "Atualizar status" alguns segundos depois.
-      </p>
-    </AuthShell>
+    </div>
   );
 }
 
@@ -674,13 +852,26 @@ function subscriptionStatusFromPublicMetadata(
   };
 }
 
+function buildFounderPaymentUrl(clerkUserId: string | undefined, email: string | undefined): string {
+  const params = new URLSearchParams();
+  if (clerkUserId) {
+    params.set("client_reference_id", clerkUserId);
+  }
+  if (email) {
+    params.set("prefilled_email", email);
+  }
+  const query = params.toString();
+  return query ? `${founderPaymentLink}?${query}` : founderPaymentLink;
+}
+
 function SignedInAccessGate({ children }: PropsWithChildren) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { user, isLoaded: isUserLoaded } = useUser();
   const [accessState, setAccessState] = useState<AccessState>("idle");
   const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [isCheckoutBusy, setIsCheckoutBusy] = useState(false);
+  const [isWaitingPayment, setIsWaitingPayment] = useState(false);
+  const pollTimeoutRef = useRef<number | null>(null);
   const isBillingBusy = isCheckoutBusy;
   const appReturnUrl = `${window.location.origin}${window.location.pathname}`;
 
@@ -699,45 +890,83 @@ function SignedInAccessGate({ children }: PropsWithChildren) {
     setAccessState(status.active ? "active" : "blocked");
   }, [isLoaded, isSignedIn, isUserLoaded, user?.publicMetadata]);
 
-  const startCheckout = async () => {
-    setIsCheckoutBusy(true);
-    setError(null);
+  useEffect(() => {
+    if (typeof window === "undefined" || !user) {
+      return;
+    }
 
-    try {
-      const token = await getToken();
-      const response = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {})
-        },
-        body: JSON.stringify({ returnUrl: appReturnUrl })
-      });
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("checkout") !== "success") {
+      return;
+    }
 
-      const data = (await response.json().catch(() => ({}))) as { url?: string; error?: string };
+    params.delete("checkout");
+    const cleanQuery = params.toString();
+    const cleanUrl =
+      window.location.pathname +
+      (cleanQuery ? `?${cleanQuery}` : "") +
+      window.location.hash;
+    window.history.replaceState({}, "", cleanUrl);
 
-      if (!response.ok || !data.url) {
-        if (isDevEnvironment && stripeCheckoutFallbackUrl) {
-          window.location.assign(stripeCheckoutFallbackUrl);
-          return;
-        }
-        throw new Error(data.error || "Nao foi possivel iniciar o checkout da assinatura.");
+    let attempts = 0;
+    const maxAttempts = 15;
+    setIsWaitingPayment(true);
+
+    const poll = async () => {
+      attempts += 1;
+      try {
+        await user.reload();
+      } catch {
+        // ignora — tenta novamente
       }
-
-      window.location.assign(data.url);
-    } catch (caught) {
-      if (isDevEnvironment && stripeCheckoutFallbackUrl) {
-        window.location.assign(stripeCheckoutFallbackUrl);
+      const reloaded = subscriptionStatusFromPublicMetadata(
+        user.publicMetadata as Record<string, unknown>
+      );
+      if (reloaded.active) {
+        setSubscription(reloaded);
+        setAccessState("active");
+        setIsWaitingPayment(false);
         return;
       }
-      setError(caught instanceof Error ? caught.message : "Falha ao iniciar checkout da assinatura.");
-      setIsCheckoutBusy(false);
+      if (attempts >= maxAttempts) {
+        setIsWaitingPayment(false);
+        return;
+      }
+      pollTimeoutRef.current = window.setTimeout(poll, 2000);
+    };
+
+    void poll();
+
+    return () => {
+      if (pollTimeoutRef.current !== null) {
+        window.clearTimeout(pollTimeoutRef.current);
+        pollTimeoutRef.current = null;
+      }
+    };
+  }, [user]);
+
+  const refreshAccess = async () => {
+    if (!user) {
+      window.location.reload();
+      return;
+    }
+    setIsWaitingPayment(true);
+    try {
+      await user.reload();
+      const reloaded = subscriptionStatusFromPublicMetadata(
+        user.publicMetadata as Record<string, unknown>
+      );
+      setSubscription(reloaded);
+      setAccessState(reloaded.active ? "active" : "blocked");
+    } catch {
+      // mantém estado atual; se nada mudou, o user reverá o paywall
+    } finally {
+      setIsWaitingPayment(false);
     }
   };
 
   const openCustomerPortal = async () => {
     setIsCheckoutBusy(true);
-    setError(null);
 
     try {
       const token = await getToken();
@@ -757,8 +986,7 @@ function SignedInAccessGate({ children }: PropsWithChildren) {
       }
 
       window.location.assign(data.url);
-    } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Falha ao abrir portal de assinatura.");
+    } catch {
       setIsCheckoutBusy(false);
     }
   };
@@ -775,28 +1003,65 @@ function SignedInAccessGate({ children }: PropsWithChildren) {
     return <LoadingScreen />;
   }
 
-  if (accessState === "blocked" || accessState === "error") {
-    return (
-      <SubscriptionScreen
-        status={subscription}
-        isBusy={isBillingBusy}
-        error={error}
-        onSubscribe={startCheckout}
-        onManage={openCustomerPortal}
-        onRefresh={() => window.location.reload()}
-      />
-    );
-  }
+  const primaryEmail = user?.primaryEmailAddress?.emailAddress;
+  const paymentUrl = buildFounderPaymentUrl(user?.id, primaryEmail);
+  const isBlocked = accessState === "blocked" || accessState === "error";
+  // Stripe Customer Portal só faz sentido para assinaturas recorrentes.
+  // No modelo atual (Payment Link one-time R$ 29,99 fundador), o webhook
+  // não recebe customerId — não há subscription para gerenciar. Esconde o
+  // botão "Assinatura" quando não houver stripeCustomerId no metadata.
+  const stripeCustomerId =
+    typeof user?.publicMetadata?.stripeCustomerId === "string"
+      ? user.publicMetadata.stripeCustomerId
+      : undefined;
+  const hasManageableSubscription = Boolean(stripeCustomerId);
+  // Mantém variável para evitar warnings com possíveis usos futuros do status
+  void subscription;
+  void isDevEnvironment;
+  void stripeCheckoutFallbackUrl;
 
   return (
     <>
       <div className="account-menu-trigger" aria-label="Menu da conta">
-        <button className="account-billing-button" type="button" onClick={openCustomerPortal} disabled={isBillingBusy}>
-          Assinatura
-        </button>
+        {!isBlocked && hasManageableSubscription && (
+          <button
+            className="account-billing-button"
+            type="button"
+            onClick={openCustomerPortal}
+            disabled={isBillingBusy}
+          >
+            Assinatura
+          </button>
+        )}
         <UserButton />
       </div>
-      {children}
+      <div className={isBlocked ? "app-paywall-locked" : undefined}>{children}</div>
+      {isBlocked ? (
+        <PaywallOverlay
+          paymentUrl={paymentUrl}
+          isWaiting={isWaitingPayment}
+          onRefresh={() => {
+            void refreshAccess();
+          }}
+        />
+      ) : null}
+    </>
+  );
+}
+
+// Dev-only: renderiza o App com o paywall ativo para iterar visual sem Clerk.
+// Importado dinamicamente em main.tsx no caminho `?preview=paywall` (DEV-only).
+export function PaywallPreview() {
+  return (
+    <>
+      <div className="app-paywall-locked">
+        <App />
+      </div>
+      <PaywallOverlay
+        paymentUrl="https://buy.stripe.com/test_preview"
+        isWaiting={false}
+        onRefresh={() => undefined}
+      />
     </>
   );
 }
