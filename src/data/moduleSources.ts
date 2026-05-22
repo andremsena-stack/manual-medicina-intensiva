@@ -6,6 +6,7 @@ import modulo03 from "./modules/modulo_03_ventilacao_mecanica.html?raw";
 import modulo04 from "./modules/modulo_04_manutencao_sedoanalgesia.html?raw";
 import modulo05 from "./modules/modulo_05_drogas_vasoativas.html?raw";
 import modulo06 from "./modules/modulo_06_calculadoras_interativas.html?raw";
+import modulo07 from "./modules/modulo_07_referencias.html?raw";
 
 export const moduleSources: ModuleSource[] = [
   {
@@ -49,5 +50,12 @@ export const moduleSources: ModuleSource[] = [
     title: "Calculadoras interativas",
     fileName: "modulo_06_calculadoras_interativas.html",
     html: modulo06
+  },
+  {
+    id: "modulo-07",
+    number: 7,
+    title: "Referências consolidadas",
+    fileName: "modulo_07_referencias.html",
+    html: modulo07
   }
 ];

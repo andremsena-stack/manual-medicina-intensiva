@@ -106,6 +106,32 @@
     .calc-result table{color:#172033;background:#fff}
     .calc-result th{background:#dce9f6;color:#123c69}
     .summary-table th,.summary-table td{font-size:11px;line-height:1.25;padding:7px 8px}
+    .resumo-group{margin:14px 0 16px}
+    .resumo-group-title{align-items:center;color:#eef9ff;display:flex;font-size:.74rem;font-weight:800;gap:10px;letter-spacing:.16em;margin:0 0 10px;padding:0 2px;text-transform:uppercase}
+    .resumo-group-title::before{background:linear-gradient(90deg,#30f1e6,transparent);border-radius:2px;content:"";display:block;height:2px;width:36px}
+    .resumo-group-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .resumo-pill-card{background:rgba(8,27,39,.92);border:1px solid rgba(159,232,255,.16);border-radius:12px;overflow:hidden;transition:border-color 160ms ease,transform 160ms ease}
+    .resumo-pill-card:hover{border-color:rgba(48,241,230,.32);transform:translateY(-1px)}
+    .resumo-pill-card-bar{background:linear-gradient(90deg,#30f1e6,rgba(48,241,230,.05) 70%,transparent);height:3px}
+    .resumo-pill-card-body{display:grid;gap:7px;padding:11px 14px 12px}
+    .resumo-pill-eyebrow{color:#30f1e6;font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+    .resumo-pill-name{color:#eef9ff;font-size:.98rem;font-weight:700;letter-spacing:.005em}
+    .resumo-pill-row{align-items:center;display:flex;font-size:.84rem;gap:8px;justify-content:space-between;line-height:1.3}
+    .resumo-pill-row>span:first-child{color:#9bb0be}
+    .resumo-pill-row>span:last-child{color:#eef9ff;font-weight:600;text-align:right}
+    .resumo-pill-row--soft>span:last-child{color:#d8ecf6;font-size:.78rem;font-weight:500}
+    .resumo-pill-chip{background:rgba(48,241,230,.14)!important;border:1px solid rgba(48,241,230,.36);border-radius:999px;color:#30f1e6!important;font-size:.78rem!important;padding:2px 10px}
+    .resumo-pill-val{color:#30f1e6!important}
+    @media(max-width:520px){.resumo-group-grid{grid-template-columns:1fr}}
+    .planning-line-details{border:1px solid #d8e0ea;border-left:5px solid #0b6b5c;border-radius:12px;background:#fff;margin:10px 0 4px;padding:0;overflow:hidden}
+    .planning-line-details > summary{background:#e7f8f4;color:#0b6b5c;cursor:pointer;font-size:12px;font-weight:800;letter-spacing:.02em;list-style:none;padding:10px 14px;text-transform:uppercase}
+    .planning-line-details > summary::-webkit-details-marker{display:none}
+    .planning-line-details > summary::before{content:"▸";display:inline-block;margin-right:8px;transition:transform 160ms ease}
+    .planning-line-details[open] > summary::before{transform:rotate(90deg)}
+    .planning-line-details[open] > summary{background:#dcfae6;color:#067647}
+    .planning-line-details .planning-hint{color:#5f6b7a;font-size:10px;font-weight:600;margin-left:8px;text-transform:none}
+    .planning-line-details[open] .planning-hint{display:none}
+    .planning-line-details .planning-line-body{padding:10px 14px 14px}
     .prep-command{font-size:12px;line-height:1.35;background:#f8fafc;border:1px solid #d8e0ea;border-radius:10px;padding:8px;margin:7px 0;color:#172033}
     .prep-command b{color:#123c69}
     .prep-structured{font-size:12px;line-height:1.4;background:#ffffff;border:1px solid #d8e0ea;border-left:5px solid #123c69;border-radius:12px;color:#172033;display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin:8px 0;padding:10px}
@@ -203,7 +229,6 @@
         <li><a href="#dva" data-short="3"><span class="nav-label">3. Calculadora de DVA</span></a></li>
         <li><a href="#continua" data-short="4"><span class="nav-label">4. Drogas em infusão contínua</span></a></li>
         <li><a href="#resumo" data-short="5"><span class="nav-label">5. Cenário-resumo</span></a></li>
-        <li><a href="#referencias" data-short="Ref"><span class="nav-label">Referências</span></a></li>
         <li><a href="#leituras" data-short="Ler"><span class="nav-label">Sugestão de leitura</span></a></li>
       </ul>
     </nav>
@@ -421,34 +446,6 @@
       </div>
     </section>
 
-    <section id="referencias">
-      <h2>Referências e fontes metodológicas</h2>
-      <details class="refs-collapsible">
-        <summary>Mostrar/ocultar referências</summary>
-        <div class="detail-body">
-          <ol>
-        <li>ARDS Network. <strong>Ventilation with lower tidal volumes as compared with traditional tidal volumes for acute lung injury and the acute respiratory distress syndrome</strong>. <em>New England Journal of Medicine</em>. 2000;342:1301-1308. Estudo/protocolo que popularizou o uso de volume corrente calculado por peso predito em ventilação protetora.</li>
-        <li>Brown CA, Sakles JC, Mick NW, editors. <strong>The Walls Manual of Emergency Airway Management</strong>. Ler seções sobre RSI, delayed sequence intubation, awake intubation e crash airway.</li>
-        <li>Devlin JW, Skrobik Y, Gélinas C, et al. <strong>Clinical Practice Guidelines for the Prevention and Management of Pain, Agitation/Sedation, Delirium, Immobility, and Sleep Disruption in Adult Patients in the ICU</strong>. <em>Critical Care Medicine</em>. 2018;46:e825-e873. Base para analgesia orientada por metas, uso de opioides e adjuvantes no paciente crítico.</li>
-        <li>Lewis K, Balas MC, Stollings JL, et al. <strong>A focused update to the PADIS guideline</strong>. <em>Critical Care Medicine</em>. 2025.</li>
-        <li>Prescott HC, Antonelli M, Alhazzani W, et al. <strong>Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2026</strong>. <em>Critical Care Medicine / Intensive Care Medicine</em>. 2026.</li>
-        <li>Monnet X, Messina A, Greco M, et al. <strong>ESICM guidelines on circulatory shock and hemodynamic monitoring 2025</strong>. <em>Intensive Care Medicine</em>. 2025;51:1971–2012.</li>
-        <li>De Backer D, Biston P, Devriendt J, et al. <strong>Comparison of dopamine and norepinephrine in the treatment of shock</strong>. <em>New England Journal of Medicine</em>. 2010;362:779–789.</li>
-        <li>Hernández G, Ospina-Tascón GA, Damiani LP, et al. <strong>ANDROMEDA-SHOCK</strong>. <em>JAMA</em>. 2019;321:654–664.</li>
-        <li>Felker GM, Lee KL, Bull DA, et al. <strong>Diuretic strategies in patients with acute decompensated heart failure</strong>. <em>New England Journal of Medicine</em>. 2011;364:797-805. Ensaio DOSE: bolus versus infusão contínua e dose alta versus baixa de furosemida.</li>
-        <li>GINA. <strong>Global Strategy for Asthma Management and Prevention</strong>. Seção de exacerbação grave: sulfato de magnésio IV como adjuvante em resposta inadequada ao tratamento inicial intensivo.</li>
-        <li>World Allergy Organization / diretrizes de anafilaxia. Seções de anafilaxia refratária: adrenalina IM como primeira linha e infusão IV titulada em ambiente monitorizado quando refratária.</li>
-        <li>Clevidipine prescribing information / Cleviprex dosing resources: início 1–2 mg/h, titulação rápida e cautela com carga lipídica/duração prolongada.</li>
-        <li>Referências de farmacologia crítica para isoproterenol/isoprenalina: uso como cronotrópico temporário em bradicardia refratária, titulado por frequência, PA e perfusão.</li>
-        <li>Protocolos de neurointensivismo/status epilepticus: tiopental contínuo como terapia especializada para hipertensão intracraniana/status refratário com monitorização intensiva.</li>
-        <li>Farmacologia de bloqueadores neuromusculares: atracúrio como alternativa com metabolismo por Hofmann/esterases e risco de liberação de histamina.</li>
-        <li>Creager MA, Barnes GD, Giri J, et al. <strong>2026 AHA/ACC/ACCP/ACEP/CHEST/SCAI/SHM/SIR/SVM/SVN Guideline for the Evaluation and Management of Acute Pulmonary Embolism in Adults</strong>. <em>JACC/Circulation</em>. 2026.</li>
-        <li>Diretrizes ACC/AHA para doenças da aorta e recomendações contemporâneas de emergência hipertensiva foram usadas para estruturar o cenário de dissecção aórtica: controle inicial de FC/dP/dt antes de vasodilatação.</li>
-        <li>Bulas profissionais/DailyMed de metoprolol, esmolol e labetalol foram usadas para apresentações, bólus IV e alertas de administração; conferir fabricante local.</li>
-      </ol>
-        </div>
-      </details>
-    </section>
 
     <section id="leituras">
       <h2>Sugestão de leitura por cenário</h2>
@@ -459,7 +456,7 @@
     </section>
 
     <div class="footer-sign">
-      <p><strong>André M. Sena - Médico (CRM/RN 12533)</strong></p>
+      <p><strong>Virtus - Clinical Tools</strong></p>
     </div>
   </main>
 </div>
@@ -1200,16 +1197,13 @@ function planning24h(name, dose, doseUnit, conc, concUnit, rate, hours, bagVolum
       <div class="prep-line prep-final"><b>Preparo:</b> 2 g em 100 mL e infundir em 20 min.</div>
       <div class="prep-line prep-volume"><b>Se MgSO₄ 50%:</b> aspirar 4 mL + 96 mL de diluente.</div>
       <div class="prep-line prep-volume"><b>Se MgSO₄ 10%:</b> aspirar 20 mL + 80 mL de diluente.</div>
-      <div class="prep-line prep-final"><b>Estabilidade/validade:</b> ${solutionStabilityGuidance(name, "", "infusion", hours)}</div>
       <div class="prep-note">Monitorar PA, reflexos, frequência respiratória e função renal.</div>
     </div>`;
   }
   if(lowerName.includes("clevidipina")){
     return `<div class="prep-structured">
       <div class="prep-title">Infusão contínua — ${name}</div>
-      <div class="prep-line prep-presentation"><b>Apresentação:</b> emulsão lipídica pronta para uso, geralmente 0,5 mg/mL.</div>
       <div class="prep-line prep-final"><b>Preparo:</b> não diluir; usar conforme bula e protocolo institucional.</div>
-      <div class="prep-line prep-final"><b>Estabilidade/validade:</b> ${solutionStabilityGuidance(name, "", "infusion", hours)}</div>
       <div class="prep-line prep-rate"><b>Planejamento:</b> titular por vazão e carga lipídica; evitar exceder limites de volume/duração do protocolo.</div>
     </div>`;
   }
@@ -1239,9 +1233,7 @@ function planning24h(name, dose, doseUnit, conc, concUnit, rate, hours, bagVolum
     : `<div class="prep-line prep-volume"><b>Reconstitui\u00e7\u00e3o e solu\u00e7\u00e3o final:</b> Necessidade calculada: ${calculatedAmpoules}. Modo pr\u00e1tico: solicitar ${requestedAmpoules} \u00e0 farm\u00e1cia. Reconstituir conforme bula, usar total ${fmt(totalDrug,2)} ${amp.unit} (${plannedAmpoules}) + ${diluent} q.s.p. ${fmt(bagVolume,1)} mL. Solu\u00e7\u00e3o final: ${fmt(totalDrug,2)} ${amp.unit}/${fmt(bagVolume,1)} mL \u2192 concentra\u00e7\u00e3o final ${fmt(finalConc,3)} ${amp.unit}/mL.</div>`;
   return `<div class="prep-structured">
     <div class="prep-title">Infus\u00e3o cont\u00ednua \u2014 ${name}</div>
-    <div class="prep-line prep-presentation"><b>Apresenta\u00e7\u00e3o considerada:</b> ${ampVolumeText}; ${ampConcText}; conte\u00fado total por unidade ${fmt(amp.content,2)} ${amp.unit}.</div>
     ${volumeSolutionLine}
-    <div class="prep-line prep-final"><b>Estabilidade/validade da solu\u00e7\u00e3o:</b> ${stabilityText}</div>
     <div class="prep-line prep-dose"><b>Dose inicial e vaz\u00e3o calculada:</b> dose escolhida ${doseText} \u2192 vaz\u00e3o ${fmt(rate,2)} mL/h para ofertar esta dose. Dura\u00e7\u00e3o estimada da solu\u00e7\u00e3o: ~${fmt(duration,1)} h.</div>
     <div class="prep-line prep-need"><b>Consumo e necessidade em ${hours}h:</b> volume consumido: ${fmt(volumeNeeded,1)} mL; necessidade calculada: \u2248 ${fmt(need,2)} ${amp.unit} (${calculatedAmpoules}). Solicita\u00e7\u00e3o pr\u00e1tica: ${requestedAmpoules}.</div>
   </div>`;
@@ -1837,11 +1829,12 @@ function calcIOT(){
         <span>${iotDrugs[x.cat].label} · dose ${fmt(x.rawDose,4)} ${x.selectedDoseUnit}/kg${x.selectedDoseUnit !== baseMassUnitFromDoseUnit(x.d.unit) ? ` (= ${fmt(x.dose,4)} ${x.d.unit})` : ""} · faixa ${range}</span>
       </div>
       <div class="med-grid">
-        ${medCard("Operacional", [
+        ${medCard("Solução preparada", [
           medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, iotAmpouleLine())),
           medKv("Diluente/uso", diluentGuidance(x.d.name, iotAmpouleLine(), "bolus")),
-          medKv("Estabilidade/validade", solutionStabilityGuidance(x.d.name, iotAmpouleLine(), "bolus")),
-          medKv("Cálculo operacional", `Aspirar ${fmt(x.volume,2)} mL para obter ${fmt(x.calc.amount,2)} ${x.calc.unit} (${fmt(x.conc,3)} ${x.concUnit==="mgml"?"mg/mL":(x.concUnit==="uiml"?"UI/mL":"mcg/mL")}).`)
+          medKv("Volume a aspirar", `${fmt(x.volume,2)} mL`),
+          medKv("Massa total", `${fmt(x.calc.amount,2)} ${x.calc.unit}`),
+          medKv("Concentração da solução", `${fmt(x.conc,3)} ${x.concUnit==="mgml"?"mg/mL":(x.concUnit==="uiml"?"UI/mL":"mcg/mL")}`)
         ], "med-card--primary")}
         ${medCard("Farmacocinética", [
           medKv("Papel", x.d.role),
@@ -1854,6 +1847,7 @@ function calcIOT(){
           medKv("Cuidados", x.d.notes),
           medKv("Contraindicações relativas", safety.contra),
           medKv("Efeitos adversos relevantes", safety.adverse),
+          medKv("Estabilidade/validade", solutionStabilityGuidance(x.d.name, iotAmpouleLine(), "bolus")),
           medKv("Fotoproteção/equipo", safety.photo)
         ], "med-card--safety")}
       </div>
@@ -1955,13 +1949,13 @@ function calcDVABolus(){
         <span>${dvaBolusDrugs[x.cat].label} · dose ${fmt(x.rawDose,4)} ${x.selectedDoseUnit}${x.selectedDoseUnit !== x.d.doseUnit ? ` (= ${fmt(x.dose,4)} ${x.d.doseUnit})` : ""} · faixa ${x.d.range}</span>
       </div>
       <div class="med-grid">
-        ${medCard("Operacional", [
+        ${medCard("Solução preparada", [
           medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
           medKv("Diluente/uso", diluentGuidance(x.d.name, x.presentation.prep, "bolus")),
-          medKv("Estabilidade/validade", solutionStabilityGuidance(x.d.name, x.presentation.prep, "bolus")),
-          medKv("Cálculo operacional", `Aspirar/administrar ${fmt(x.volume,2)} mL para obter ${fmt(x.amount.amount,2)} ${x.amount.unit}.`),
-          medKv("Concentração usada", `${fmt(x.conc,3)} ${unitLabel(x.concUnit)}`),
-          medKv("Preparo da solução", x.presentation.prep)
+          medKv("Preparo da solução", x.presentation.prep),
+          medKv("Volume a administrar", `${fmt(x.volume,2)} mL`),
+          medKv("Massa total", `${fmt(x.amount.amount,2)} ${x.amount.unit}`),
+          medKv("Concentração da solução", `${fmt(x.conc,3)} ${unitLabel(x.concUnit)}`)
         ], "med-card--primary")}
         ${medCard("Dose", [
           medKv("Categoria", dvaBolusDrugs[x.cat].label),
@@ -1970,7 +1964,8 @@ function calcDVABolus(){
         ], "med-card--pk")}
         ${scenarioCard(scenario)}
         ${medCard("Cuidados e segurança", [
-          medKv("Cuidados", x.d.notes)
+          medKv("Cuidados", x.d.notes),
+          medKv("Estabilidade/validade", solutionStabilityGuidance(x.d.name, x.presentation.prep, "bolus"))
         ], "med-card--safety")}
       </div>
     </div>`;
@@ -2083,15 +2078,14 @@ function calcDVA(){
         <span>${modeLabel} · faixa ${d.range}</span>
       </div>
       <div class="med-grid">
-        ${medCard("Operacional", [
+        ${medCard("Solução preparada", [
           medKv("Apresentação", ampoulePresentationLine(d.name)),
-          medKv("Dose utilizada", doseUsed),
-          medKv("Vazão em bomba", rateUsed),
           medKv("Diluente/uso", diluentGuidance(d.name, prep.prep, "infusion")),
-          medKv("Estabilidade/validade", solutionStabilityGuidance(d.name, prep.prep, "infusion", 12)),
           medKv("Preparo de solução", prepObj.preparo),
           prepObj.diluicao ? medKv("Diluição", prepObj.diluicao) : "",
-          medKv("Concentração final", prepObj.concentracao)
+          medKv("Concentração final", prepObj.concentracao),
+          medKv("Dose utilizada", doseUsed),
+          medKv("Vazão em bomba", rateUsed)
         ], "med-card--primary")}
         ${medCard("Faixa e cálculo", [
           medKv("Faixa terapêutica", d.range),
@@ -2099,7 +2093,8 @@ function calcDVA(){
         ], "med-card--pk")}
         ${scenarioCard(scenario)}
         ${medCard("Cuidados e segurança", [
-          medKv("Observação", d.notes)
+          medKv("Observação", d.notes),
+          medKv("Estabilidade/validade", solutionStabilityGuidance(d.name, prep.prep, "infusion", 12))
         ], "med-card--safety")}
       </div>
     </div>`;
@@ -2197,10 +2192,11 @@ function calcInfusion(){
   const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
   const diluent=document.getElementById("infDiluent")?.value || "diluente";
   const ampOverride=getInfAmpOverride();
-  let result, detail, modeLabel, planning="";
+  let result, detail, modeLabel, planning="", vazaoFinal=NaN;
   if(mode==="doseToRate"){
     const amount=doseAmountPerHour(dose, d.doseUnit, getPeso());
     const vazao=rateFromAmount(amount.amount, amount.unit, conc, concUnit);
+    vazaoFinal=vazao;
     result=`${fmt(amount.amount,2)} ${amount.unit} → ${fmt(vazao,2)} mL/h`;
     detail=`Dose ${dose} ${d.doseUnit}. Concentração final: ${conc} ${unitLabel(concUnit)}.`;
     planning=planning24h(d.name, dose, d.doseUnit, conc, concUnit, vazao, hours, bagVolume, diluent, ampOverride);
@@ -2208,6 +2204,7 @@ function calcInfusion(){
   } else if(mode==="rateToDose"){
     const calcDose=doseFromRate(rate, d.doseUnit, conc, concUnit, getPeso());
     dose=calcDose;
+    vazaoFinal=rate;
     result=`${fmt(rate,2)} mL/h → ${fmt(calcDose,4)} ${d.doseUnit}`;
     detail=`Vazão ${rate} mL/h. Concentração final: ${conc} ${unitLabel(concUnit)}.`;
     planning=planning24h(d.name, calcDose, d.doseUnit, conc, concUnit, rate, hours, bagVolume, diluent, ampOverride);
@@ -2230,27 +2227,31 @@ function calcInfusion(){
         <span>${infusionData[cat].label} · ${modeLabel} · faixa ${d.range}</span>
       </div>
       <div class="med-grid">
-        ${medCard("Operacional", [
-          medKv("Apresentação", ampoulePresentationLine(d.name)),
+        ${medCard("Solução preparada", [
+          medKv("Apresentação do fármaco", ampoulePresentationLine(d.name)),
           informedAmpouleLine() ? medKv("Apresentação disponível informada", informedAmpouleLine().replace("Apresentação informada: ","")) : "",
           medKv("Diluente/uso", diluentGuidance(d.name, prep.prep, "infusion", diluent)),
-          medKv("Estabilidade/validade", solutionStabilityGuidance(d.name, prep.prep, "infusion", hours)),
-          medKv("Cálculo operacional", detail)
+          medKv("Volume total da solução", `${bagVolume} mL`),
+          (Number.isFinite(conc) ? medKv("Massa total na solução", `${fmt(conc*bagVolume,2)} ${unitLabel(concUnit).replace("/mL","")}`) : ""),
+          medKv("Concentração final", `${fmt(conc,3)} ${unitLabel(concUnit)}`)
         ], "med-card--primary")}
-        ${medCard("Faixa e categoria", [
-          medKv("Categoria", infusionData[cat].label),
+        ${medCard("Posologia e farmacodinâmica", [
+          medKv("Classe", infusionData[cat].label),
           medKv("Faixa terapêutica", d.range),
+          (Number.isFinite(dose) ? medKv("Dose utilizada", `${fmt(dose,4)} ${d.doseUnit}`) : ""),
+          (Number.isFinite(vazaoFinal) ? medKv("Vazão na bomba", `${fmt(vazaoFinal,2)} mL/h`) : ""),
           d.phaseInfo ? medKv("Fases de administração", d.phaseInfo) : "",
           d.bolusInfo ? medKv("Bólus associado", d.bolusInfo) : "",
           d.maxInfusionTime ? medKv("Tempo máximo/limite", d.maxInfusionTime) : ""
         ], "med-card--pk")}
         ${scenarioCard(scenario)}
         ${medCard("Cuidados e segurança", [
-          medKv("Observação", d.notes || "Conferir bula/protocolo institucional.")
+          medKv("Observação", d.notes || "Conferir bula/protocolo institucional."),
+          medKv("Estabilidade/validade da solução", solutionStabilityGuidance(d.name, prep.prep, "infusion", hours))
         ], "med-card--safety")}
       </div>
     </div>` +
-    (planning ? `<div class="planning-line"><strong>Planejamento de solução para ${hours}h</strong><br>${planning}</div>` : "");
+    (planning ? `<details class="planning-line-details"><summary>Planejamento de solução para ${hours}h <span class="planning-hint">(clique para abrir)</span></summary><div class="planning-line-body">${planning}</div></details>` : "");
 }
 function addInfusionToSummary(){
   const {d,prep}=currentInf();
@@ -2271,8 +2272,11 @@ function addInfusionToSummary(){
   }
   const amount=Number.isFinite(doseVal) ? doseAmountPerHour(doseVal, d.doseUnit, getPeso()) : {amount:NaN, unit:""};
   const plan=planning24h(d.name, doseVal, d.doseUnit, conc, concUnit, rateVal, hours, bagVolume, diluent, ampOverride);
+  const cat=document.getElementById("infCat").value;
   state.summary.push({
     type:"Infusão contínua",
+    categoryKey:cat,
+    categoryLabel:infusionData[cat]?.label || "",
     name:d.name,
     dose:(Number.isFinite(doseVal) ? fmt(doseVal,4)+" "+d.doseUnit : "calculada a partir da vazão"),
     mass:(Number.isFinite(amount.amount) ? fmt(amount.amount,2)+" "+amount.unit : "—"),
@@ -2420,6 +2424,62 @@ function copyChartNote(){
   try{ document.execCommand("copy"); }catch(e){}
 }
 
+function splitValueUnit(s){
+  if(s===undefined||s===null||s==="—") return {value:"—",unit:""};
+  const txt=String(s).trim();
+  const m=txt.match(/^([+-]?[\d.,]+)\s*(.*)$/);
+  if(m) return {value:m[1].trim(),unit:m[2].trim()};
+  return {value:txt,unit:""};
+}
+function shortPrepLabel(prep){
+  if(!prep) return "—";
+  const cleaned=String(prep).replace(/\s+/g," ").trim();
+  // Tenta extrair "X mg/UI/mcg em N mL" ou trecho final "concentracao X mg/mL"
+  const conc=cleaned.match(/concentra[cç][aã]o(?: final)?\s*([0-9.,]+\s*(?:mg|mcg|UI)\s*\/\s*mL)/i);
+  if(conc) return conc[1];
+  const inDil=cleaned.match(/([0-9.,]+\s*(?:mg|mcg|UI))[^]*?(\d+\s*mL)/i);
+  if(inDil) return `${inDil[1]} em ${inDil[2]}`;
+  return cleaned.length>56 ? cleaned.slice(0,53).trim()+"…" : cleaned;
+}
+const INFUSION_GROUPS=[
+  {id:"sedo", label:"Sedoanalgesia e bloqueio", cats:["analgesico","sedativo","bloqueador"]},
+  {id:"vaso", label:"Drogas vasoativas", cats:["vasoativa"]},
+  {id:"outros", label:"Outros", cats:["antiarritmico","anticonvulsivante","gastro_hepatologia","diuretico","broncoespasmo","anafilaxia"]}
+];
+
+function renderInfusionPillCard(i){
+  const dose=splitValueUnit(i.dose);
+  const rate=splitValueUnit(i.volume);
+  const prep=shortPrepLabel(i.chartPrep||i.prep);
+  return `<div class="resumo-pill-card">
+    <div class="resumo-pill-card-bar"></div>
+    <div class="resumo-pill-card-body">
+      <span class="resumo-pill-eyebrow">${i.categoryLabel || "Infusão contínua"}</span>
+      <strong class="resumo-pill-name">${i.name}</strong>
+      <div class="resumo-pill-row"><span>Dose</span><span class="resumo-pill-chip">${dose.value}${dose.unit ? " "+dose.unit : ""}</span></div>
+      <div class="resumo-pill-row"><span>Vazão</span><span class="resumo-pill-val">${rate.value}${rate.unit ? " "+rate.unit : ""}</span></div>
+      <div class="resumo-pill-row resumo-pill-row--soft"><span>Diluição</span><span>${prep}</span></div>
+    </div>
+  </div>`;
+}
+
+function renderInfusionGroups(){
+  const items=state.summary.filter(i=>i.type==="Infusão contínua");
+  if(!items.length) return "";
+  const buckets=INFUSION_GROUPS.map(g=>({...g, items:items.filter(i=>g.cats.includes(i.categoryKey))}));
+  // Items sem categoria mapeada caem em Outros para não sumirem
+  const knownCats=INFUSION_GROUPS.flatMap(g=>g.cats);
+  const orphans=items.filter(i=>!knownCats.includes(i.categoryKey));
+  if(orphans.length){
+    const outros=buckets.find(b=>b.id==="outros");
+    outros.items=outros.items.concat(orphans);
+  }
+  return buckets.filter(b=>b.items.length).map(b=>`<div class="resumo-group">
+    <h4 class="resumo-group-title">${b.label}</h4>
+    <div class="resumo-group-grid">${b.items.map(renderInfusionPillCard).join("")}</div>
+  </div>`).join("");
+}
+
 function renderSummary(){
   const out=document.getElementById("summaryOut");
   if(!state.summary.length){
@@ -2436,8 +2496,10 @@ function renderSummary(){
     <td>${i.range || i.notes || "—"}</td>
   </tr>`).join("");
   let commands = state.summary.map(i => prepCommand(i)).join("");
+  const infusionGroups = renderInfusionGroups();
   out.innerHTML=`<strong>Cenário: ${document.getElementById("cenario").selectedOptions[0].text} · Peso ${fmt(getPeso(),1)} kg · PBW ${fmt(pbw(),1)} kg</strong>
   <span>${scenarioNotes[getCenario()].iot}<br>${scenarioNotes[getCenario()].dva}</span>
+  ${infusionGroups}
   <table class="summary-table"><thead><tr><th>#</th><th>Tipo</th><th>Droga</th><th>Dose padrão</th><th>Vazão</th><th>Faixa terapêutica</th></tr></thead><tbody>${rows}</tbody></table>
   <strong style="margin-top:10px">Preparo operacional estruturado</strong>
   ${commands}`;

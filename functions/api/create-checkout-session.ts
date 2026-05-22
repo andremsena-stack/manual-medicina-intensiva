@@ -6,7 +6,7 @@ import {
   requireClerkUserId,
   requireEnv,
   stripePost,
-  subscriptionFromMetadata,
+  subscriptionFromUserMetadata,
   type Env
 } from "../_shared";
 
@@ -21,16 +21,18 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     const user = await getClerkUser(env, userId);
     const body = (await request.json().catch(() => ({}))) as { returnUrl?: string };
     const returnUrl = getSafeReturnUrl(request, env, body.returnUrl);
-    const subscription = subscriptionFromMetadata(user.private_metadata);
+    const subscription = subscriptionFromUserMetadata(user);
 
     const params = new URLSearchParams();
     params.set("mode", "subscription");
-    params.set("line_items[0][price]", requireEnv(env, "STRIPE_MONTHLY_PRICE_ID"));
+    params.set("line_items[0][price]", requireEnv(env, "STRIPE_PRICE_ID"));
     params.set("line_items[0][quantity]", "1");
     params.set("success_url", `${returnUrl}${returnUrl.includes("?") ? "&" : "?"}checkout=success`);
     params.set("cancel_url", `${returnUrl}${returnUrl.includes("?") ? "&" : "?"}checkout=cancelled`);
     params.set("client_reference_id", userId);
+    params.set("metadata[clerkUserId]", userId);
     params.set("metadata[clerk_user_id]", userId);
+    params.set("subscription_data[metadata][clerkUserId]", userId);
     params.set("subscription_data[metadata][clerk_user_id]", userId);
     params.set("allow_promotion_codes", "true");
 

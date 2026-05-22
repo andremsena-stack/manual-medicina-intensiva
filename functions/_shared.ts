@@ -4,7 +4,7 @@ export interface Env {
   APP_URL?: string;
   CLERK_SECRET_KEY: string;
   STRIPE_ALLOWED_STATUSES?: string;
-  STRIPE_MONTHLY_PRICE_ID: string;
+  STRIPE_PRICE_ID: string;
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET?: string;
 }
@@ -14,6 +14,7 @@ export interface ClerkUser {
   email_addresses?: Array<{ id: string; email_address: string }>;
   primary_email_address_id?: string;
   private_metadata?: Record<string, unknown>;
+  public_metadata?: Record<string, unknown>;
 }
 
 export interface StripeSubscriptionSummary {
@@ -88,6 +89,14 @@ export async function getClerkUser(env: Env, userId: string): Promise<ClerkUser>
   return clerkApi<ClerkUser>(env, `/users/${userId}`);
 }
 
+export async function findClerkUserIdByEmail(env: Env, email: string): Promise<string | undefined> {
+  const params = new URLSearchParams();
+  params.append("email_address[]", email);
+
+  const users = await clerkApi<ClerkUser[]>(env, `/users?${params.toString()}`);
+  return users[0]?.id;
+}
+
 export function getPrimaryEmail(user: ClerkUser): string | undefined {
   const primary = user.email_addresses?.find((email) => email.id === user.primary_email_address_id);
   return primary?.email_address ?? user.email_addresses?.[0]?.email_address;
@@ -99,13 +108,20 @@ export async function updateUserStripeMetadata(
   stripe: StripeSubscriptionSummary
 ): Promise<void> {
   const user = await getClerkUser(env, userId);
-  const current = user.private_metadata ?? {};
+  const current = user.public_metadata ?? {};
+  const subscriptionStatus =
+    stripe.status === "active" || stripe.status === "trialing"
+      ? "active"
+      : stripe.status
+        ? "inactive"
+        : current.subscriptionStatus;
 
   await clerkApi(env, `/users/${userId}/metadata`, {
     method: "PATCH",
     body: JSON.stringify({
-      private_metadata: {
+      public_metadata: {
         ...current,
+        subscriptionStatus,
         stripeCustomerId: stripe.customerId ?? current.stripeCustomerId,
         stripeSubscriptionId: stripe.subscriptionId ?? current.stripeSubscriptionId,
         stripeSubscriptionStatus: stripe.status ?? current.stripeSubscriptionStatus,
@@ -122,11 +138,23 @@ export function subscriptionFromMetadata(metadata: Record<string, unknown> | und
     customerId: typeof metadata?.stripeCustomerId === "string" ? metadata.stripeCustomerId : undefined,
     subscriptionId:
       typeof metadata?.stripeSubscriptionId === "string" ? metadata.stripeSubscriptionId : undefined,
-    status: typeof metadata?.stripeSubscriptionStatus === "string" ? metadata.stripeSubscriptionStatus : undefined,
+    status:
+      typeof metadata?.subscriptionStatus === "string"
+        ? metadata.subscriptionStatus
+        : typeof metadata?.stripeSubscriptionStatus === "string"
+          ? metadata.stripeSubscriptionStatus
+          : undefined,
     priceId: typeof metadata?.stripePriceId === "string" ? metadata.stripePriceId : undefined,
     currentPeriodEnd:
       typeof metadata?.stripeCurrentPeriodEnd === "number" ? metadata.stripeCurrentPeriodEnd : null
   };
+}
+
+export function subscriptionFromUserMetadata(user: ClerkUser): StripeSubscriptionSummary {
+  return subscriptionFromMetadata({
+    ...(user.private_metadata ?? {}),
+    ...(user.public_metadata ?? {})
+  });
 }
 
 export function isSubscriptionActive(env: Env, status: string | undefined): boolean {

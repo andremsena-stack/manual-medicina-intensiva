@@ -6,7 +6,7 @@ Adicionar controle comercial ao Manual Interativo de Medicina Intensiva:
 
 - login por Clerk;
 - assinatura mensal por Stripe Checkout;
-- liberacao de acesso por status de assinatura salvo no `private_metadata` do usuario Clerk;
+- liberacao de acesso por status de assinatura salvo no `public_metadata` do usuario Clerk;
 - portal Stripe para o assinante gerenciar cartao, faturas e cancelamento;
 - webhook Stripe para sincronizar criacao, atualizacao e cancelamento de assinatura.
 
@@ -14,25 +14,27 @@ Adicionar controle comercial ao Manual Interativo de Medicina Intensiva:
 
 Configure no Cloudflare Pages em `Settings > Environment variables`.
 
-### Frontend
+### Frontend (publicas)
 
 ```env
 VITE_CLERK_PUBLISHABLE_KEY=pk_live_...
 VITE_CLERK_BILLING_REQUIRED=true
 ```
 
-### Backend / Functions
+`VITE_STRIPE_CHECKOUT_URL` permanece apenas como fallback opcional de desenvolvimento; em producao o botao `Assinar agora` chama `POST /api/create-checkout-session`.
+
+### Backend / Functions (secrets)
 
 ```env
 CLERK_SECRET_KEY=sk_live_...
 STRIPE_SECRET_KEY=sk_live_...
-STRIPE_MONTHLY_PRICE_ID=price_...
+STRIPE_PRICE_ID=price_1TZf0zAIon1Sw6HssZDB0ZPO
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_ALLOWED_STATUSES=active,trialing
-APP_URL=https://manual-medicina-intensiva.pages.dev
+APP_URL=https://manualvirtus.com.br
 ```
 
-Nunca exponha `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY` ou `STRIPE_WEBHOOK_SECRET` com prefixo `VITE_`.
+Nunca exponha `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` ou `STRIPE_PRICE_ID` com prefixo `VITE_`.
 
 ## Configuracao no Clerk
 
@@ -46,7 +48,7 @@ Nunca exponha `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY` ou `STRIPE_WEBHOOK_SECRET`
 
 1. Criar um produto para a assinatura do manual.
 2. Criar um preco recorrente mensal.
-3. Copiar o `price_...` para `STRIPE_MONTHLY_PRICE_ID`.
+3. Copiar o `price_...` para `STRIPE_PRICE_ID` (atualmente `price_1TZf0zAIon1Sw6HssZDB0ZPO`).
 4. Ativar o Customer Portal em Billing.
 5. Criar um endpoint de webhook:
 
@@ -67,14 +69,12 @@ Eventos recomendados:
 
 1. `src/main.tsx` inicializa `ClerkProvider`.
 2. `src/components/AuthGate.tsx` exige login.
-3. Depois do login, o frontend chama `/api/subscription-status` com token Clerk.
-4. A Function valida o token com `@clerk/backend`.
-5. A Function consulta o `private_metadata` do usuario no Clerk.
-6. Se `stripeSubscriptionStatus` estiver em `STRIPE_ALLOWED_STATUSES`, o manual e liberado.
-7. Sem assinatura ativa, o usuario ve o botao `Assinar mensalmente`.
-8. O checkout e criado por `/api/create-checkout-session`.
-9. O Stripe chama `/api/stripe-webhook`, que atualiza o `private_metadata`.
-10. O usuario pode abrir o Portal Stripe por `/api/create-portal-session`.
+3. Depois do login, o frontend le `user.publicMetadata.subscriptionStatus` e `user.publicMetadata.stripeSubscriptionStatus`.
+4. Se qualquer um estiver como `active`, o manual e liberado.
+5. Sem assinatura ativa, o usuario ve o botao `Assinar agora`.
+6. O botao chama `POST /api/create-checkout-session`, que cria a sessao Stripe usando `STRIPE_PRICE_ID`, `client_reference_id = clerkUserId`, `metadata.clerkUserId` e o email do usuario, e redireciona para o Checkout retornado.
+7. O Stripe chama `/api/stripe-webhook`, que atualiza o `public_metadata`.
+8. O usuario pode abrir o Portal Stripe por `/api/create-portal-session`, quando houver `stripeCustomerId`.
 
 ## Rotas criadas
 

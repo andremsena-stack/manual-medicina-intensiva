@@ -62,7 +62,6 @@
         <li><a href="#especiais">10. Situações especiais</a></li>
         <li><a href="#complicacoes">11. Complicações</a></li>
         <li><a href="#erros">12. Erros frequentes</a></li>
-        <li><a href="#referencias">Referências primárias</a></li>
       </ul>
     </nav>
   </aside>
@@ -785,33 +784,9 @@
       </div></details>
     </section>
 
-    <section id="referencias">
-      <h2>Referências primárias do Módulo 1</h2>
-      
-      <details class="refs-collapsible">
-        <summary>Mostrar/ocultar referências</summary>
-        <div class="detail-body">
-          <ol>
-        <li>Apfelbaum JL, Hagberg CA, Connis RT, et al. <strong>2022 American Society of Anesthesiologists Practice Guidelines for Management of the Difficult Airway</strong>. <em>Anesthesiology</em>. 2022;136(1):31-81. DOI: 10.1097/ALN.0000000000004002. Diretriz.</li>
-        <li>Frerk C, Mitchell VS, McNarry AF, et al. <strong>Difficult Airway Society 2015 guidelines for management of unanticipated difficult intubation in adults</strong>. <em>British Journal of Anaesthesia</em>. 2015;115(6):827-848. DOI: 10.1093/bja/aev371. Diretriz.</li>
-        <li>Higgs A, McGrath BA, Goddard C, et al. <strong>Guidelines for the management of tracheal intubation in critically ill adults</strong>. <em>British Journal of Anaesthesia</em>. 2018;120(2):323-352. DOI: 10.1016/j.bja.2017.10.021. Diretriz.</li>
-        <li>Ahmad I, El-Boghdadly K, Iliff H, et al. <strong>Difficult Airway Society 2025 guidelines for management of unanticipated difficult tracheal intubation in adults</strong>. <em>British Journal of Anaesthesia</em>. 2026;136(1):283-307. DOI: 10.1016/j.bja.2025.10.006. Diretriz.</li>
-        <li>Russotto V, Myatra SN, Laffey JG, et al. <strong>Intubation Practices and Adverse Peri-intubation Events in Critically Ill Patients From 29 Countries</strong>. <em>JAMA</em>. 2021;325(12):1164-1172. DOI: 10.1001/jama.2021.1727. Estudo INTUBE.</li>
-        <li>Devlin JW, Skrobik Y, Gélinas C, et al. <strong>Clinical Practice Guidelines for the Prevention and Management of Pain, Agitation/Sedation, Delirium, Immobility, and Sleep Disruption in Adult Patients in the ICU</strong>. <em>Critical Care Medicine</em>. 2018;46(9):e825-e873. DOI: 10.1097/CCM.0000000000003299. Diretriz SCCM PADIS.</li>
-        <li>Evans L, Rhodes A, Alhazzani W, et al. <strong>Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021</strong>. <em>Intensive Care Medicine</em>. 2021;47:1181-1247. DOI: 10.1007/s00134-021-06506-y. Diretriz GRADE.</li>
-        <li>Jabre P, Combes X, Lapostolle F, et al. <strong>Etomidate versus ketamine for rapid sequence intubation in acutely ill patients: a multicentre randomised controlled trial</strong>. <em>Lancet</em>. 2009;374:293-300. DOI: 10.1016/S0140-6736(09)60949-1. Ensaio clínico randomizado.</li>
-        <li>De Jong A, Molinari N, Terzi N, et al. <strong>Early identification of patients at risk for difficult intubation in the intensive care unit: development and validation of the MACOCHA score</strong>. <em>American Journal of Respiratory and Critical Care Medicine</em>. 2013. Estudo prospectivo multicêntrico observacional.</li>
-      
-        <li>U.S. Food and Drug Administration / DailyMed. <strong>Etomidate Injection Prescribing Information</strong>. Documento regulatório de bula: início de ação geralmente dentro de 1 minuto e duração breve, dose-dependente. Fonte regulatória primária para farmacologia clínica.</li>
-        <li>U.S. Food and Drug Administration. <strong>Rocuronium Bromide Injection Prescribing Information</strong>. Documento regulatório de bula com tabelas de início de bloqueio e duração clínica por dose. Fonte regulatória primária para farmacologia clínica.</li>
-        <li>U.S. Food and Drug Administration / DailyMed. <strong>Propofol, Ketamine, Midazolam, Fentanyl, Remifentanil, Alfentanil, Sufentanil, Morphine, Lidocaine, Succinylcholine, Cisatracurium, Atracurium and Sugammadex Prescribing Information</strong>. Bulas regulatórias usadas como apoio para mecanismo de ação, apresentação, latência/duração aproximada e alertas de segurança farmacológica.</li>
-      </ol>
-        </div>
-      </details>
-    </section>
 
     <div class="footer-sign">
-      <p><strong>André M. Sena - Médico (CRM/RN 12533)</strong></p>
+      <p><strong>Virtus - Clinical Tools</strong></p>
     </div>
   </main>
 </div>
@@ -821,7 +796,7 @@ function initModuleMenu(){
   const toggle=document.getElementById("moduleNavToggle");
   const nav=document.getElementById("moduleNav");
   if(!app || !toggle || !nav) return;
-  const shortLabels=["1","2","3","4","5","6","7","8","8.1","9","10","11","12","Ref"];
+  const shortLabels=["1","2","3","4","5","6","7","8","8.1","9","10","11","12"];
   const links=Array.from(nav.querySelectorAll('a[href^="#"]'));
   links.forEach((link,index)=>{
     if(!link.getAttribute("data-short")) link.setAttribute("data-short", shortLabels[index] || String(index+1));

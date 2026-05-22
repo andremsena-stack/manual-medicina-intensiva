@@ -1,5 +1,114 @@
 # Changelog
 
+## 2026-05-22 — Cards visuais no cenário-resumo (Módulo 6)
+
+### Tipo de alteração
+
+- Interface
+- Apresentação de cálculos
+
+### Alterações realizadas
+
+- Adicionados cards visuais de infusão contínua no `#summaryOut` do Módulo 6, no estilo dark
+  medical-tech (mesmo da landing): por medicação adicionada ao cenário-resumo, um bloco com 4
+  cards mostrando **Peso**, **Diluição** (concentração final extraída de `chartPrep`/`prep`),
+  **Dose** (destacada em ciano) e **Vazão calculada** (destacada em azul).
+- Helpers novos no JS interno: `splitValueUnit(string)` separa número e unidade; `shortPrepLabel(prep)`
+  tenta extrair `X mg/mL` ou `X mg em N mL` do texto de preparo, com fallback de truncamento.
+- `renderSummary()` modificado para inserir `renderInfusionCards()` entre o cabeçalho do cenário e
+  a tabela de registro existente — a tabela completa permanece logo abaixo, sem alterações.
+- CSS inline novo (16 regras `.resumo-card*`) no `<style>` do Módulo 6, scope local — não afeta
+  outros módulos nem o app shell.
+
+### Impacto clínico
+
+- **Sem impacto clínico.** As funções `calcInfusion()`, `addInfusionToSummary()` e os valores
+  armazenados em `state.summary[]` permanecem **intactos**. A mudança é estritamente de
+  apresentação: os mesmos valores já calculados ganham uma visualização adicional.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (hash do Módulo 6 atualizado para `20d565fa…`)
+- `docs/changelog.md`
+
+## 2026-05-21 — Refactor de referências (Módulo 7)
+
+### Tipo de alteração
+
+- Organização de conteúdo
+- Navegação
+
+### Alterações realizadas
+
+- Removida a seção `<section id="referencias">` (bibliografia consolidada de fim de módulo) dos
+  seis módulos clínicos (módulo_01 a módulo_06). Os links `<li><a href="#referencias">…</a></li>`
+  do TOC interno e o rótulo `"Ref"` no array `shortLabels` da navegação JS do Módulo 1 também
+  foram removidos.
+- Criado o **Módulo 7 — Referências consolidadas** em
+  `src/data/modules/modulo_07_referencias.html`. Reúne a bibliografia primária dos seis módulos
+  em subseções (`#refs-modulo-1` a `#refs-modulo-6`) na ordem original, com listas recolhíveis
+  (`<details class="refs-collapsible">`).
+- Os mini-blocos contextuais `<div class="ref"><strong>Referencial:</strong> …</div>` espalhados
+  ao longo dos módulos foram preservados intactos. Eles ancoram diretamente o raciocínio ao
+  texto-fonte e não fazem parte da consolidação.
+- Hashes SHA-256 dos sete arquivos atualizados em `scripts/verify-module-hashes.mjs`.
+- `src/data/moduleSources.ts` e `src/types.ts` ajustados para incluir `modulo-07`.
+
+### Impacto clínico
+
+- **Sem impacto clínico.** Nenhum conteúdo de doses, diluições, fórmulas, limites clínicos ou
+  recomendações médicas foi alterado. As citações foram movidas de localização, mas o texto
+  bibliográfico permanece idêntico ao original.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_01_via_aerea_iot.html`
+- `src/data/modules/modulo_02_pos_intubacao_confirmacao.html`
+- `src/data/modules/modulo_03_ventilacao_mecanica.html`
+- `src/data/modules/modulo_04_manutencao_sedoanalgesia.html`
+- `src/data/modules/modulo_05_drogas_vasoativas.html`
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `src/data/modules/modulo_07_referencias.html` (novo)
+- `src/data/moduleSources.ts`
+- `src/types.ts`
+- `scripts/verify-module-hashes.mjs`
+- `docs/REVISAO_MODULOS.md`
+
+## 2026-05-21
+
+### Tipo de alteracao
+
+- Autenticacao
+- Assinatura
+- Documentacao
+- Organizacao
+
+### Alteracoes realizadas
+
+- Renomeada a variavel de ambiente `STRIPE_MONTHLY_PRICE_ID` para `STRIPE_PRICE_ID` (valor oficial `price_1TZf0zAIon1Sw6HssZDB0ZPO`) em `functions/_shared.ts`, `functions/api/create-checkout-session.ts`, `.env.example` e documentacao.
+- Ajustado `AuthGate` para iniciar a assinatura via `POST /api/create-checkout-session`, mantendo `VITE_STRIPE_CHECKOUT_URL` apenas como fallback de desenvolvimento.
+- Preparado o projeto para migracao de dominio proprio `manualvirtus.com.br`.
+- Adicionado `docs/DEPLOY_MANUALVIRTUS.md` com passos operacionais para Registro.br, Cloudflare, Clerk, DNS, variaveis de ambiente e redeploy.
+- Ajustado o gate de assinatura para liberar o app quando `user.publicMetadata.subscriptionStatus` ou `user.publicMetadata.stripeSubscriptionStatus` estiver como `active`.
+- Mantida tela `SignedOut` com landing de login/cadastro e bloqueio integral do manual fora do gate autenticado.
+- Atualizados `.env.example`, `README.md` e `docs/clerk-auth-billing.md` com variaveis de producao para `manualvirtus.com.br`.
+- Confirmado que o Vite usa `base: "./"` e nao depende de `pages.dev`.
+
+### Impacto clinico
+
+- Sem impacto clinico.
+- Nao houve alteracao de conteudo medico, dose, formula, diluicao, volume calculado, concentracao ou logica das calculadoras.
+
+### Arquivos modificados
+
+- `.env.example`
+- `README.md`
+- `docs/DEPLOY_MANUALVIRTUS.md`
+- `docs/clerk-auth-billing.md`
+- `docs/changelog.md`
+- `src/components/AuthGate.tsx`
+
 ## 2026-05-21
 
 ### Tipo de alteracao
@@ -21,7 +130,9 @@
 - Adicionados estados visuais `ClerkLoading` e `ClerkFailed` para evitar tela em branco quando o Clerk ainda esta carregando ou quando o dominio/DNS ainda nao foi verificado.
 - Adicionadas Cloudflare Pages Functions para consultar status de assinatura, criar checkout mensal, abrir Portal do Cliente Stripe e receber webhook Stripe.
 - Adicionada validacao backend do token Clerk com `@clerk/backend`.
-- Adicionada sincronizacao do status de assinatura Stripe no `private_metadata` do usuario Clerk.
+- Adicionada sincronizacao do status de assinatura Stripe no `public_metadata` do usuario Clerk.
+- Reescrita a Function `/api/stripe-webhook` para validar assinatura pelo SDK oficial Stripe com corpo bruto e `STRIPE_WEBHOOK_SECRET`.
+- Padronizado `publicMetadata.subscriptionStatus` como `active` ou `inactive` conforme eventos de checkout e assinatura.
 - Adicionado botao de gerenciamento de assinatura para usuarios autenticados com acesso ativo.
 - Atualizadas variaveis de ambiente em `.env.example`.
 - Atualizada documentacao de configuracao em `docs/clerk-auth-billing.md` e `README.md`.

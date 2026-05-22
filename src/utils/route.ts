@@ -12,7 +12,8 @@ const MODULE_IDS = new Set<ModuleId>([
   "modulo-03",
   "modulo-04",
   "modulo-05",
-  "modulo-06"
+  "modulo-06",
+  "modulo-07"
 ]);
 
 export function parseHashRoute(hash: string): AppRoute {

@@ -3,7 +3,7 @@ import {
   isSubscriptionActive,
   jsonResponse,
   requireClerkUserId,
-  subscriptionFromMetadata,
+  subscriptionFromUserMetadata,
   type Env
 } from "../_shared";
 
@@ -11,7 +11,7 @@ export const onRequestGet = async ({ request, env }: { request: Request; env: En
   try {
     const userId = await requireClerkUserId(request, env);
     const user = await getClerkUser(env, userId);
-    const subscription = subscriptionFromMetadata(user.private_metadata);
+    const subscription = subscriptionFromUserMetadata(user);
 
     return jsonResponse({
       active: isSubscriptionActive(env, subscription.status),

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ModuleViewer } from "./components/ModuleViewer";
 import { SearchPanel } from "./components/SearchPanel";
 import { Sidebar } from "./components/Sidebar";
@@ -32,6 +32,11 @@ function App() {
         setIsSearchOpen(false);
         setIsSidebarOpen(false);
       }
+      // Cmd/Ctrl+K abre a busca global de qualquer lugar
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setIsSearchOpen((current) => !current);
+      }
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -41,9 +46,14 @@ function App() {
   const activeModule = modules.find((module) => module.id === route.moduleId) ?? modules[0];
   const results = useMemo(() => searchModules(modules, query), [modules, query]);
 
-  const navigateTo = (moduleId: ModuleId, sectionId?: string) => {
+  const navigateTo = useCallback((moduleId: ModuleId, sectionId?: string) => {
     window.location.hash = routeToHash({ moduleId, sectionId });
-  };
+  }, []);
+
+  const navigateToModule = useCallback(
+    (moduleId: ModuleId) => navigateTo(moduleId),
+    [navigateTo]
+  );
 
   const selectModule = (moduleId: ModuleId) => {
     if (moduleId === activeModule.id) {
@@ -68,7 +78,7 @@ function App() {
   };
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${isSidebarOpen ? "app-shell--sidebar-open" : ""}`}>
       <Sidebar
         modules={modules}
         activeModule={activeModule}
@@ -85,17 +95,30 @@ function App() {
 
       <div className="workspace">
         <button
-          className="button button--primary module-menu-trigger"
+          className="module-menu-trigger"
           type="button"
           onClick={openSidebar}
           aria-label="Abrir sumario de modulos"
+          title="Sumário de módulos"
         >
-          Modulos
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="5" cy="6.5" r="1.2" fill="currentColor" />
+            <line x1="9" y1="6.5" x2="19" y2="6.5" />
+            <circle cx="5" cy="12" r="1.2" fill="currentColor" />
+            <line x1="9" y1="12" x2="19" y2="12" />
+            <circle cx="5" cy="17.5" r="1.2" fill="currentColor" />
+            <line x1="9" y1="17.5" x2="19" y2="17.5" />
+          </svg>
         </button>
 
         <main className="content-grid">
           <div className="primary-column">
-            <ModuleViewer module={activeModule} targetSectionId={route.sectionId} />
+            <ModuleViewer
+              module={activeModule}
+              targetSectionId={route.sectionId}
+              modules={modules}
+              onNavigateModule={navigateToModule}
+            />
           </div>
         </main>
 

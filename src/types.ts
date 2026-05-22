@@ -4,7 +4,8 @@ export type ModuleId =
   | "modulo-03"
   | "modulo-04"
   | "modulo-05"
-  | "modulo-06";
+  | "modulo-06"
+  | "modulo-07";
 
 export interface ModuleSection {
   id: string;

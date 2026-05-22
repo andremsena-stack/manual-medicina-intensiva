@@ -4,7 +4,7 @@ import {
   jsonResponse,
   requireClerkUserId,
   stripePost,
-  subscriptionFromMetadata,
+  subscriptionFromUserMetadata,
   type Env
 } from "../_shared";
 
@@ -16,7 +16,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   try {
     const userId = await requireClerkUserId(request, env);
     const user = await getClerkUser(env, userId);
-    const subscription = subscriptionFromMetadata(user.private_metadata);
+    const subscription = subscriptionFromUserMetadata(user);
 
     if (!subscription.customerId) {
       return jsonResponse({ error: "Cliente Stripe ainda nao encontrado para esta conta." }, { status: 400 });
