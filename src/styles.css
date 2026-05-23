@@ -2236,7 +2236,23 @@ body.landing-active {
   }
 
   .workspace {
-    padding: 6px;
+    padding: 0;
+  }
+
+  .content-grid {
+    gap: 0;
+  }
+
+  /* Triggers fixos mais compactos no mobile para liberar área útil sem
+     deixar de ser ergonômicos para tap (≥ 40px alto). */
+  .module-menu-trigger {
+    height: 40px;
+    width: 32px;
+  }
+  .search-trigger {
+    height: 40px;
+    width: 38px;
+    right: 10px;
   }
 }
 

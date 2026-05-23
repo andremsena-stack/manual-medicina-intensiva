@@ -485,8 +485,14 @@ function injectMobileResponsiveStyles(doc: Document): void {
        Primeira <td> da linha vira "titulo" do card.
        =========================================================== */
     @media (max-width: 767px) {
-      body  { font-size: 15px !important; line-height: 1.65 !important; }
-      main  { padding: 14px 16px !important; }
+      body  {
+        font-size: 15px !important;
+        line-height: 1.65 !important;
+        /* Reserva espaço para os triggers fixos do shell parent: TOC à esquerda (32px) + folga 4px = 36px; busca à direita (38px) + folga 12px = 50px */
+        padding-left: 36px !important;
+        padding-right: 50px !important;
+      }
+      main  { padding: 14px 10px !important; }
 
       /* Hero e sections do modulo: padding e fontes reduzidos no mobile */
       .hero { padding: 18px !important; border-radius: 14px !important; }
