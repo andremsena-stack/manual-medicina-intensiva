@@ -1108,11 +1108,19 @@ body.landing-active {
 }
 
 .landing-phone-iframe {
+  /* Renderiza o módulo em viewport "desktop-ish" (~750px de largura interna)
+     e aplica transform: scale para encolher visualmente, cabendo no quadro
+     do celular. Sem isso, o iframe usa o viewport pequeno do celular e o
+     CSS interno do módulo (pensado para desktop) gera fontes gigantes que
+     quebram a leitura. O parent .landing-phone-screen tem overflow: hidden,
+     então o excesso visual é clipado. */
   background: #fff;
   border: 0;
   display: block;
-  height: 100%;
-  width: 100%;
+  width: 222.222%;
+  height: 222.222%;
+  transform: scale(0.45);
+  transform-origin: top left;
 }
 
 .landing-carousel-dots {
