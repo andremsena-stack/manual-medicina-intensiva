@@ -1,5 +1,490 @@
 # Changelog
 
+## 2026-05-22 — Mod 6: renomear categoria "Broncoespasmo grave — ASMA/DPOC" para "Broncodilatadores"
+
+### Tipo de alteração
+
+- Interface — **renomeação de rótulo de categoria de medicação**
+
+### Motivo
+
+"Broncoespasmo grave — ASMA/DPOC" descreve um **cenário clínico**, não uma
+classe farmacológica. Como o dropdown de cenário já contempla isso (no
+painel 1 — Dados do paciente), o rótulo da categoria deve refletir a
+**classe de drogas** que ela agrupa.
+
+### Alterações realizadas
+
+`src/data/modules/modulo_06_calculadoras_interativas.html`:
+
+- `infusionData.broncoespasmo.label`: `"Broncoespasmo grave — ASMA/DPOC"`
+  → **`"Broncodilatadores"`** (linha 891).
+- `INFUSION_GROUPS` grupo `broncoespasmo`: `"Broncoespasmo / asma"`
+  → **`"Broncodilatadores"`** (linha 2652). Mantida a consistência no
+  painel agrupado do cenário-resumo.
+
+### O que **não** foi alterado
+
+- Opção do dropdown de cenário clínico (linha 270:
+  `<option value="broncoespasmo">Broncoespasmo grave — ASMA/DPOC</option>`)
+  — esse continua sendo um cenário, está corretamente nomeado.
+- `scenarioNotes.broncoespasmo` — textos contextuais do cenário mantidos.
+- A chave interna `broncoespasmo` foi preservada — refator apenas de
+  rótulo, sem mudança de lógica/contrato.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `1975fe83829f61fe4198868a0fdcdaf866cf8907dee220b5d7ea7c1b6e029b68`)
+
+## 2026-05-22 — Mod 4 seção 7: widget interativo substituído por exemplo didático estático
+
+### Tipo de alteração
+
+- Interface + conteúdo didático — **reescrita da seção 7 do Mod 4 para
+  apresentar o cálculo de infusão completo, com origem dos números**
+
+### Problema
+
+A seção 7 trazia um conversor interativo (`<input>` de peso, droga, dose,
+concentração) que produzia "Resultado: 210 mcg/h → 5,25 mL/h", mas o
+campo `Concentração final (mcg/mL)` aparecia preenchido com **40 mcg/mL**
+sem nenhum contexto sobre como esse número foi obtido — não havia
+apresentação comercial, preparo da solução, nem faixa terapêutica.
+Faltavam ainda os passos intermediários do cálculo.
+
+### Alterações realizadas
+
+`src/data/modules/modulo_04_manutencao_sedoanalgesia.html`:
+
+- Widget interativo (form + `calc-result`) removido.
+- `<script>` que dirigia o widget (funções `updateDoseAndConcLabels` e
+  `calcInfusao`, listeners de input, presets por droga, ~65 linhas)
+  removido para evitar erros de referência no console.
+- Substituído por **exemplo didático estático** estruturado em 4 passos
+  para o caso Remifentanil / paciente 70 kg / SDRA grave:
+  - **Passo 1 — Apresentação comercial**: frasco-ampola 2 mg liofilizado.
+  - **Passo 2 — Preparo**: reconstituir 2 mg + SF q.s.p. 50 mL → 40 mcg/mL.
+  - **Passo 3 — Faixa terapêutica**: 0,03–0,15 mcg/kg/min; escolha 0,05 mcg/kg/min.
+  - **Passo 4 — Cálculo**: 0,05 × 70 = 3,5 mcg/min → × 60 = 210 mcg/h → ÷ 40 = **5,25 mL/h**.
+- Alert verde final consolida a prescrição.
+- Alert azul de generalização aponta para o Módulo 6 como ferramenta
+  operacional para outras drogas (todas com seleção de presets,
+  apresentação, preparo e faixa).
+
+### Por que essa abordagem é melhor
+
+- Conecta apresentação → preparo → concentração → faixa → cálculo numa
+  única narrativa, eliminando o "Concentração final" órfão.
+- O leitor entende **de onde** vem cada número (40 mcg/mL não cai do céu —
+  vem do preparo 2 mg / 50 mL).
+- A calculadora operacional continua no Módulo 6, sem duplicação aqui.
+- Remove código JS embarcado redundante, sincronizando o Mod 4 com o
+  princípio de calculadora-única.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_04_manutencao_sedoanalgesia.html`
+- `scripts/verify-module-hashes.mjs` (Mod 4:
+  `35d9620e61fefe1c291398860a39fb37d21f2df2d397d389afa0b123f27330f1`)
+
+## 2026-05-22 — Mod 5 SVG eixos vasoativos: β2 com efeito hemodinâmico (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- Conteúdo clínico — **texto de legenda em SVG diagramático**
+
+### Alterações realizadas
+
+- No SVG "Eixos hemodinâmicos das drogas vasoativas"
+  (`src/data/modules/modulo_05_drogas_vasoativas.html` linha 185), a segunda
+  linha do box β2 estava com texto "lactato adrenérgico" — descontextualizado
+  do padrão hemodinâmico dos demais boxes:
+  - α1: vasoconstrição / ↑ RVS / ↑ PAM
+  - β1: ↑ inotropia / ↑ FC / ↑ DC
+  - β2: vasodilatação / **lactato adrenérgico** ← inconsistente
+- Substituído por: **↓ RVS / ↓ PAM** — espelha o padrão de α1 (ambos
+  receptores vasculares afetando RVS/PAM), comunicando o efeito hemodinâmico
+  direto da vasodilatação β2.
+- A informação sobre lactato/glicogenólise β2 permanece preservada no texto
+  da tabela acima do SVG ("Vasodilatação, broncodilatação, glicogenólise,
+  lactato por estímulo adrenérgico") e na coluna "Cuidados/limitações"
+  ("hiperlactatemia adrenérgica"). Não houve perda de conteúdo clínico —
+  apenas reorganização do que cabe no diagrama vs. na tabela.
+
+### **REQUER REVISAO MEDICA**
+
+Validar se a representação resumida `↓ RVS / ↓ PAM` é adequada para o
+efeito β2 puro (sem considerar β1 concomitante em drogas mistas). Em
+contexto isolado de β2 ativo, a vasodilatação periférica reduz RVS e
+secundariamente reduz PAM — está coerente. A pequena elevação eventual
+de DC por redução de pós-carga não é o sinal hemodinâmico dominante
+quando o agonista é β2-seletivo.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_05_drogas_vasoativas.html` (linha 185, SVG)
+- `scripts/verify-module-hashes.mjs` (Mod 5:
+  `6af9dc2b1017c5109ca3976f1b9d18d11469e7748f59765412e198ab435e064d`)
+
+## 2026-05-22 — Tabelas: hierarquia visual, cabeçalho em gradiente, primeira coluna como tópico
+
+### Tipo de alteração
+
+- Interface — **estilização visual das tabelas** (hierarquia, legibilidade,
+  impacto/memorização). Sem alteração de conteúdo clínico.
+
+### Alterações no `injectMobileResponsiveStyles` (`src/utils/iframeSafety.ts`)
+
+**Base estética (qualquer viewport)**:
+
+- Tabela ganha fundo branco, borda externa suave (#d8e2ea), `border-radius`
+  12px, sombra discreta (elevação leve).
+- Cabeçalho `<thead th>` com **gradiente navy** (#1a4d80 → #123c69), texto
+  branco em **MAIÚSCULAS** com `letter-spacing` 0.05em — sinaliza início
+  de linha de leitura.
+- Bordas internas reduzidas a hairlines (#eef2f7) horizontais + verticais
+  finas — preservam alinhamento sem ruído.
+- Zebra striping (`nth-child(even)`) com tom muito claro (#f8fafc).
+- Hover de linha com tinta azul-claro (#eff5fa, 140ms transition) — feedback
+  de leitura ativa.
+- **Primeira coluna** ganha peso 600 + cor navy escura (#0d2438): atua como
+  "tópico" da linha (entidade — droga, estrutura anatômica, etc.).
+- `<strong>` em primeira coluna intensifica para `#123c69` + 700.
+
+**Modo cards (mobile <768px e tabelas largas no tablet 768-1023)**:
+
+- Cada `<tr>` vira card empilhado: fundo branco, borda + **stripe verde
+  esmeralda 4px à esquerda** (cor de acento `--accent` #0b6b5c), sombra
+  mais pronunciada (depth 4-12px).
+- **Primeira `<td>` vira TÍTULO do card**: fonte 16px, peso 700, cor
+  primary, com underline (hairline border-bottom) — corta da seção de
+  dados. O `data-label` da primeira td é suprimido (redundante: "Categoria:
+  Analgésicos opioides" → o título sozinho já comunica).
+- Demais `<td>` recebem rótulo da coluna como caption tipográfico
+  (uppercase 11px, cor `#5f6b7a`) acima do valor — preserva contexto
+  perdido pelo desaparecimento do thead.
+- Hover/zebra desativados no modo cards (não fazem sentido em layout
+  empilhado).
+
+**Tablet 768-1023, tabelas normais (≤4 colunas)**:
+
+- Mantém layout de tabela com fonte/padding reduzidos (11-12px header,
+  13px body, padding 8-10px) — mais densidade onde cabe sem cortar.
+
+### Resultado esperado
+
+- **Hierarquia visual**: cabeçalho navy + maiúsculas → primeira coluna em
+  peso/cor → demais colunas em peso normal. Olho identifica a coluna-chave
+  imediatamente.
+- **Memorização**: cores e estrutura consistentes por viewport. No mobile,
+  a "carteira" de cards com primeira célula como título funciona como
+  flashcard visual.
+- **Leitura ativa**: hover dá feedback de qual linha o olho está varrendo.
+- **Densidade ajustada**: tablet com 6 colunas → cards verticais
+  legíveis; tablet com 3-4 colunas → tabela compacta; desktop → tabela
+  cheia normal.
+
+### Notas técnicas
+
+- Uso de `!important` cirúrgico para sobrescrever a CSS embarcada de cada
+  módulo (cada HTML tem o seu `<style>` próprio com regras de tabela).
+- Nenhum hash de módulo foi alterado — todas as mudanças via injeção
+  runtime em `applyIframeSafetyLayer`.
+
+### Arquivos modificados
+
+- `src/utils/iframeSafety.ts` (apenas `injectMobileResponsiveStyles`)
+
+## 2026-05-22 — Responsividade de tabelas: tablet com cards para tabelas largas
+
+### Tipo de alteração
+
+- Interface — **comportamento responsivo de tabelas no breakpoint tablet
+  (768-1023px)**
+
+### Problema
+
+A CSS injetada no iframe forçava `min-width: 640px` para tabelas no tablet,
+fazendo tabelas com 5-6 colunas (ex.: "Classes de medicamentos por utilidade
+clínica" do Mod 4) estourarem horizontalmente o container, com colunas
+cortadas e visual desalinhado em relação ao texto envolvente.
+
+### Solução
+
+`src/utils/iframeSafety.ts`:
+
+- `applyDataLabelsToTables()` agora também marca tabelas com **≥ 5 colunas**
+  recebendo a classe `codex-wide-table` em runtime.
+- CSS reescrito em `injectMobileResponsiveStyles()`:
+  - **<768px**: todas as tabelas viram cards rotulados (mantido).
+  - **768-1023px**:
+    - Tabelas `codex-wide-table` viram cards rotulados (mesma técnica do
+      mobile) — colunas demais sairiam apertadas demais para layout em
+      grade.
+    - Tabelas com ≤ 4 colunas ganham **layout compacto** (font 13px,
+      padding 6-8px, `vertical-align: top`, `overflow-wrap: anywhere`)
+      respeitando a largura do container, sem `min-width` forçado e sem
+      scroll horizontal — alinha com o texto envolvente.
+  - **≥ 1024px**: layout completo. `.codex-table-scroll` deixa de impor
+    `overflow-x` no desktop.
+
+### Resultado esperado
+
+- Mod 4 seção 5 (6 colunas), 6.1/6.2/6.3/6.4 (6 colunas), 8 (6 colunas),
+  10.5 (6 colunas), 11 (3-4 colunas conforme rev.) — todas tabelas com
+  ≥ 5 colunas viram cards rotulados no tablet.
+- Mod 5 e Mod 6 — análogo.
+- Tabelas curtas (≤ 4 colunas) permanecem como tabela compacta legível
+  no tablet, sem cortar conteúdo.
+
+### Arquivos modificados
+
+- `src/utils/iframeSafety.ts` (CSS + lógica de marcação)
+
+Nenhum hash de módulo foi alterado — todas as mudanças via runtime injection.
+
+## 2026-05-22 — Mod 5: remoção do bloco "5.0 Regra de apresentação medicamentosa"
+
+### Tipo de alteração
+
+- Interface — **remoção do mesmo bloco metainformativo redundante,
+  agora no Mod 5**
+
+### Alterações realizadas
+
+- Removido o `<details>` "5.0 Regra de apresentação medicamentosa" em
+  `src/data/modules/modulo_05_drogas_vasoativas.html` (mesmo padrão da
+  remoção feita no Mod 4 mais cedo). Tabela editorial de convenção de
+  nomenclatura + alerta "Regra prática" — informação para padronização
+  interna, sem valor para o leitor clínico.
+- O `<details>` seguinte "Apresentações comerciais usuais no Brasil — DVA
+  e infusões críticas" permanece, pois traz dado clínico útil.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_05_drogas_vasoativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 5:
+  `30f414d8061313aca06391214314447448f93ae1492a3344a1c20d8609b85448`)
+
+## 2026-05-22 — Mod 4: remoção do bloco "6.0 Regra de apresentação medicamentosa"
+
+### Tipo de alteração
+
+- Interface — **remoção de bloco metainformativo redundante para o leitor**
+
+### Alterações realizadas
+
+- Removido o `<details>` "6.0 Regra de apresentação medicamentosa" em
+  `src/data/modules/modulo_04_manutencao_sedoanalgesia.html`.
+- Esse bloco descrevia para o leitor a convenção interna de nomenclatura
+  (apresentação comercial vs. concentração usada no cálculo vs. solução
+  final/preparo). É informação para padronização editorial, não para
+  uso clínico — não tem motivo de aparecer no conteúdo lido.
+- O bloco seguinte "Apresentações comerciais usuais no Brasil" permanece
+  intacto, pois traz dado clínico útil.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_04_manutencao_sedoanalgesia.html`
+- `scripts/verify-module-hashes.mjs` (Mod 4:
+  `519ed95a6c1b9df6f03410879bfa81edb35b61d2ca737cefc01055ace03a8aa5`)
+
+## 2026-05-22 — Mod 4: tópico de anticonvulsivantes em status epilepticus (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- Conteúdo clínico — **nova subseção narrativa com tabela de anticonvulsivantes**
+
+### Alterações realizadas
+
+- Adicionada subseção **6.5 — Anticonvulsivantes em status epilepticus**
+  no `src/data/modules/modulo_04_manutencao_sedoanalgesia.html`, logo
+  após "6.4 Bloqueadores neuromusculares".
+- Conteúdo:
+  - Parágrafo de abertura descrevendo o algoritmo escalonado (fase 1
+    benzodiazepínico → fase 2 carga IV → fase 3 BIC anestésica) com
+    referência ao NCS 2012 e ESETT 2019.
+  - Tabela única com colunas: **Fármaco | Mecanismo | Faixa / dose |
+    Preparo / exemplo | Cenário preferencial | Cuidados / contraindicações**.
+  - 7 linhas: 3 drogas de carga IV (fenitoína, fenobarbital, levetiracetam)
+    + 4 anestésicas em BIC (midazolam, propofol, tiopental, cetamina).
+  - Cada linha alinhada às faixas codificadas no Módulo 6.
+  - Alert amarelo enfatizando monitorização (EEG contínuo, hemodinâmica
+    invasiva, vasopressor pronto, transição para anticonvulsivantes de
+    manutenção antes do desmame da BIC).
+  - Alert azul cruzando referência operacional para a calculadora do
+    Módulo 6 (categorias *Anticonvulsivante em BIC* e *Anticonvulsivante —
+    dose de carga IV*).
+
+### **REQUER REVISAO MEDICA**
+
+Todas as informações da nova tabela espelham a entrada já validada no
+Módulo 6 (faixas, preparos, cuidados), mas precisam de validação
+clínica institucional final — especialmente:
+
+- Coluna "Cenário preferencial" (preferências contextuais entre 2ª linhas).
+- Linhas de cetamina (1–7 mg/kg/h) — exige protocolo especializado.
+- Mensagens dos alerts (regras de monitorização).
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_04_manutencao_sedoanalgesia.html` (nova subseção 6.5)
+- `scripts/verify-module-hashes.mjs` (hash do Mod 4 atualizado para
+  `216b7a957784ca17e858d60cb86247f92540e84fc35c3daabb4e525202b90be3`)
+
+## 2026-05-22 — Anticonvulsivantes: novos bólus + ajustes em BICs (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- **Conteúdo clínico — adição de drogas, ajuste de faixas posológicas e
+  inclusão de referências bibliográficas**
+
+### Drogas adicionadas em `dvaBolusDrugs.anticonvulsivante_bolus` (Mod 6)
+
+1. **Fenitoína — dose de carga**
+   - Apresentação: 250 mg/5 mL (50 mg/mL)
+   - Dose: **15–20 mg/kg IV** (default 18 mg/kg)
+   - Velocidade máxima: 50 mg/min (25 mg/min em idosos/cardiopatas)
+   - Diluição: **EXCLUSIVAMENTE em SF 0,9%** (incompatível com SG 5%, precipita)
+   - Alerta de purple glove syndrome / preferência por via central
+
+2. **Fenobarbital — dose de carga**
+   - Apresentação: 200 mg/2 mL (100 mg/mL)
+   - Dose: **15–20 mg/kg IV** (default 18 mg/kg), até 30 mg/kg cumulativo
+   - Velocidade: 50–100 mg/min em adultos (1 mg/kg/min em pediatria)
+   - Diluição: 1:9 em SF/SG → 10 mg/mL
+   - Alerta de hipotensão e depressão respiratória
+
+3. **Levetiracetam (Keppra) — dose de carga**
+   - Apresentação: 500 mg/5 mL (100 mg/mL)
+   - Dose: **30–60 mg/kg IV** (default 60 mg/kg), máximo 4500 mg
+   - Tempo de infusão: 15 min
+   - Concentração máxima diluída: 15 mg/mL
+   - Ajuste em insuficiência renal (ClCr < 80 mL/min)
+
+### Drogas ajustadas em `infusionData.anticonvulsivante` (Mod 6)
+
+- **Midazolam — status epilepticus refratário**:
+  - Faixa anterior: "0,1–0,2 mg/kg/h inicial" (subestimava manutenção)
+  - Faixa nova: **0,05–2 mg/kg/h** após bólus de carga **0,2 mg/kg IV**;
+    até **2,9 mg/kg/h** em status super-refratário com EEG (NCS 2012)
+  - `phaseInfo` reescrito para descrever bolus inicial e bólus de
+    pré-titulação (0,1 mg/kg antes de aumentos)
+  - Adicionado `maxInfusionTime` com guidance de desmame
+  - **Correção de confusão clínica relatada pelo usuário**: a proposta
+    inicial "ataque 100–250 mg em 2 min" havia sido confundida com tiopental
+    e foi descartada.
+
+- **Propofol — status epilepticus refratário**:
+  - Faixa atual mantida (30–200 mcg/kg/min)
+  - Adicionada referência explícita ao **bólus de carga 1–2 mg/kg IV lento**
+    e equivalência em mg/kg/h (1,8–12 mg/kg/h)
+  - `phaseInfo` adicionado
+  - `maxInfusionTime` reforça alerta de PRIS com dose > 4 mg/kg/h por > 48h
+
+- **Tiopental — status epilepticus refratário** (NOVO slot em
+  anticonvulsivante; já existia como `tiopental_infusao` em sedativo):
+  - Manutenção 3–5 mg/kg/h (faixa 0,5–5 mg/kg/h conforme protocolo)
+  - Bólus de carga **3–5 mg/kg IV lento** (frequentemente fracionado em
+    100–250 mg conforme PA), vasopressor pronto antes do ataque
+  - Titular para burst-suppression no EEG
+
+### Helpers atualizados
+
+- `brazilAmpouleOptions`: novos entries para fenitoína, fenobarbital e
+  levetiracetam (apresentações comerciais BR + alertas de diluição)
+- `ampouleInfoByName`: novos retornos com `content`/`volume`/`unit` para
+  auto-preenchimento do painel "Ampola/fr. disponível"
+
+### Bibliografia adicionada em `modulo_07_referencias.html`
+
+- **Brophy GM et al.** NCS Status Epilepticus Guidelines (2012). DOI: 10.1007/s12028-012-9695-z
+- **Kapur J et al.** ESETT Trial. *NEJM* 2019;381:2103–2113. DOI: 10.1056/NEJMoa1905795
+- **Glauser T et al.** AES Evidence-Based Guideline (2016). DOI: 10.5698/1535-7597-16.1.48
+- Bulas profissionais (DailyMed/FDA) de fenitoína, fenobarbital e levetiracetam (Keppra) — incluindo alertas de incompatibilidade SG 5%, purple glove syndrome e concentração máxima diluída.
+
+### **REQUER REVISAO MEDICA**
+
+Todas as faixas e velocidades inseridas foram cruzadas com bibliografia
+primária (NCS 2012, ESETT 2019, AES 2016, bulas profissionais), mas
+precisam de validação clínica institucional:
+
+- Confirmar adequação das doses padrão (defaults) para o serviço
+- Confirmar política de via central vs. periférica para fenitoína
+- Confirmar protocolo de monitorização hemodinâmica e EEG para tiopental
+- Confirmar critérios de transição entre fase 2 (levetiracetam/fos-fenitoína/valproato) e fase 3 (anestésicos em BIC) no protocolo do serviço
+- Validar o alerta de PRIS com propofol > 4 mg/kg/h por > 48h
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html` (novos slots, faixas ajustadas, helpers)
+- `src/data/modules/modulo_07_referencias.html` (6 novas referências)
+- `scripts/verify-module-hashes.mjs` (hashes atualizados):
+  - Mod 6: `70f8ced902566db86228a8083357cddeabcd426ea39fadb545372804aa49187f`
+  - Mod 7: `9c323cea1809e84e73efdc03a053dee83392d243bcc5a6761922c6d25b5cbb8d`
+
+### Pendente (próxima rodada)
+
+- Incorporar menção a fenitoína/fenobarbital/levetiracetam no Mod 4 (sedoanalgesia) onde já se cita status epilepticus como indicação de sedação profunda — esperando confirmação do usuário sobre escopo.
+
+## 2026-05-22 — Responsividade mobile (Parte 1)
+
+### Tipo de alteração
+
+- Interface — **responsividade mobile do app shell + conteúdo dos iframes**
+
+### Alterações realizadas
+
+**`src/styles.css`:**
+
+- Removido override que jogava `.module-menu-trigger` para `top:10px; left:10px`
+  no mobile — o botão TOC agora permanece em `top:50%` (mid-height) em todas as
+  resoluções, evitando colisão com o `<h1>` do módulo no topo do iframe.
+- Reduzido `padding` do `.workspace` para `6px` no mobile (≤680px) para liberar
+  largura útil para o conteúdo.
+
+**`src/utils/iframeSafety.ts`:**
+
+- Nova função `injectMobileResponsiveStyles(doc)` que injeta dentro do iframe:
+  - `box-sizing: border-box` global, `img/svg/figure max-width:100%`,
+    `pre/code` com word-wrap, `overflow-wrap: break-word` em textos.
+  - **`@media (max-width: 767px)`**: cada `<table>` vira lista de cards
+    empilhados. `thead` esconde; cada `<tr>` vira card com borda e padding;
+    cada `<td>` mostra o rótulo da coluna (via `data-label`) acima do
+    conteúdo. `body` recebe `padding-inline` (44px à esquerda, 56px à
+    direita) para evitar que o conteúdo do iframe seja coberto pelos
+    botões fixed (TOC à esquerda, busca à direita).
+  - **`@media (min-width: 768px) and (max-width: 1023px)`**: tabela mantém
+    layout original mas é envelopada em `.codex-table-scroll` (overflow-x
+    auto) para evitar estouro horizontal.
+  - SVG dentro de `.svg-box` ganha scroll horizontal quando estoura.
+- Nova função `applyDataLabelsToTables(doc)` que, em runtime, lê os
+  cabeçalhos `<th>` de cada `<table>`, adiciona `data-label` em cada
+  `<td>` correspondente do `<tbody>`, e envelopa a tabela em
+  `.codex-table-scroll`. Sinalizado por `dataset.codexLabelsApplied` para
+  evitar reprocessamento em re-renders.
+- Ambas chamadas a partir de `applyIframeSafetyLayer`, idempotentes.
+
+### Cobertura
+
+- 7 módulos canônicos (`modulo_01` a `modulo_07`) recebem o tratamento
+  automaticamente — **sem edição dos HTMLs canônicos**, portanto os hashes
+  permanecem inalterados (`npm run verify:modules` passou).
+
+### O que **não** foi feito nesta rodada (Parte 2 pendente)
+
+- Componente `<ZoomableContent>` com modal fullscreen para imagens/tabelas
+  (pinch-zoom no mobile, X / ESC / focus trap).
+- Detecção automática de overflow para exibir ícone de lupa só quando
+  fizer sentido.
+
+### Arquivos modificados
+
+- `src/styles.css`
+- `src/utils/iframeSafety.ts`
+
 ## 2026-05-22 — Ampola: input por massa+volume com concentração derivada
 
 ### Tipo de alteração

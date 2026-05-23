@@ -10,10 +10,10 @@ const expectedHashes = {
   "modulo_01_via_aerea_iot.html": "ba6f02e5c99c2902ccaead7a27b6d31f7cab8b31db427f8c0a5b20e19a5eb1ef",
   "modulo_02_pos_intubacao_confirmacao.html": "9d20f129cf31bca24c8bc5319aced3d43b7c2e8b0ffc0260f0f064494b1cfe70",
   "modulo_03_ventilacao_mecanica.html": "5250c4442c9f31727a6ea4983aeacd1b45199b02d899d0e6c6780d96e8d7223e",
-  "modulo_04_manutencao_sedoanalgesia.html": "ba3bdd0941e78dc603f2948a6ea212d60ba5d11abe37a68052ec0fc5adb28bd3",
-  "modulo_05_drogas_vasoativas.html": "a5bf4307858b9c45ac27feb16a72cb362ddf354457d69ff3e751f7a7cc7b5e06",
-  "modulo_06_calculadoras_interativas.html": "e80f7eb90b4b43246e0bc15338db706f944cd01fe94837004076184724031a98",
-  "modulo_07_referencias.html": "536529f10f84f1791ee30f2a1f42095c3001a15da44fc0597a9c5df84b403ecc"
+  "modulo_04_manutencao_sedoanalgesia.html": "35d9620e61fefe1c291398860a39fb37d21f2df2d397d389afa0b123f27330f1",
+  "modulo_05_drogas_vasoativas.html": "6af9dc2b1017c5109ca3976f1b9d18d11469e7748f59765412e198ab435e064d",
+  "modulo_06_calculadoras_interativas.html": "1975fe83829f61fe4198868a0fdcdaf866cf8907dee220b5d7ea7c1b6e029b68",
+  "modulo_07_referencias.html": "9c323cea1809e84e73efdc03a053dee83392d243bcc5a6761922c6d25b5cbb8d"
 };
 
 let failures = 0;

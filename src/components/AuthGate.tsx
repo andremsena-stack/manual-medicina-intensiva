@@ -13,8 +13,14 @@ import {
 import { useEffect, useRef, useState, type PropsWithChildren, type ReactNode } from "react";
 import App from "../App";
 import { useImageWithoutHalo } from "../utils/imageProcessing";
-import modulo06Html from "../data/modules/modulo_06_calculadoras_interativas.html?raw";
 import { moduleSources } from "../data/moduleSources";
+
+// Landing exibe apenas dois módulos representativos em rotação: módulo 1
+// (capítulo clínico — via aérea) e módulo 6 (calculadoras interativas). Cobre
+// os dois formatos do produto sem cansar o visitante. O paywall carousel
+// segue exibindo os 7 módulos completos.
+const LANDING_MODULE_NUMBERS = new Set([1, 6]);
+const landingModuleSources = moduleSources.filter((mod) => LANDING_MODULE_NUMBERS.has(mod.number));
 
 const billingRequired = import.meta.env.VITE_CLERK_BILLING_REQUIRED !== "false";
 const stripeCheckoutFallbackUrl = import.meta.env.VITE_STRIPE_CHECKOUT_URL;
@@ -393,24 +399,117 @@ function FooterBrand() {
   );
 }
 
-function LiveContentPreview() {
+function LandingModuleCarousel() {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const total = landingModuleSources.length;
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    if (paused) {
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      setIndex((current) => (current + 1) % total);
+    }, 12000);
+    return () => window.clearTimeout(timer);
+  }, [index, paused, total]);
+
+  const current = landingModuleSources[index];
+  const goPrev = () => setIndex((c) => (c - 1 + total) % total);
+  const goNext = () => setIndex((c) => (c + 1) % total);
+
+  const handleIframeLoad = () => {
+    const iframe = iframeRef.current;
+    const doc = iframe?.contentDocument;
+    if (!doc || !doc.head) {
+      return;
+    }
+    let style = doc.getElementById("landing-preview-block-style") as HTMLStyleElement | null;
+    if (!style) {
+      style = doc.createElement("style");
+      style.id = "landing-preview-block-style";
+      doc.head.appendChild(style);
+    }
+    style.textContent = PREVIEW_BLOCK_CSS;
+  };
+
   return (
-    <div className="landing-live-preview-frame" role="figure" aria-label="Pré-visualização do módulo 6: Calculadoras interativas">
-      <div className="landing-live-preview-bar" aria-hidden="true">
-        <span className="landing-live-preview-dot landing-live-preview-dot--red" />
-        <span className="landing-live-preview-dot landing-live-preview-dot--yellow" />
-        <span className="landing-live-preview-dot landing-live-preview-dot--green" />
-        <span className="landing-live-preview-url">
-          manualvirtus.com.br · Módulo 6 — Calculadoras interativas
-        </span>
+    <div
+      className="landing-carousel-split"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      <div className="landing-section-copy landing-carousel-copy">
+        <p className="landing-eyebrow">Conteúdo real do Manual</p>
+        <h2 id="livepreview-title" className="landing-section-title">
+          O conteúdo real, exatamente como você vai usar no plantão.
+        </h2>
+        <p className="landing-section-lead">
+          Dois módulos do Manual entram em rotação no celular ao lado — um capítulo clínico e a
+          tela de calculadoras. A prévia é somente leitura; a interação completa é liberada após
+          o pagamento do acesso fundador.
+        </p>
+
+        <div className="landing-carousel-meta">
+          <span className="landing-carousel-eyebrow">
+            Módulo {current.number} de {total}
+          </span>
+          <h3 className="landing-carousel-title">{current.title}</h3>
+        </div>
+
+        <div className="landing-carousel-controls">
+          <div className="landing-carousel-nav" role="group" aria-label="Navegar módulos">
+            <button
+              type="button"
+              className="landing-carousel-arrow"
+              onClick={goPrev}
+              aria-label="Módulo anterior"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              className="landing-carousel-arrow"
+              onClick={goNext}
+              aria-label="Próximo módulo"
+            >
+              ›
+            </button>
+          </div>
+          <div className="landing-carousel-dots" role="tablist" aria-label="Módulo em destaque">
+            {landingModuleSources.map((mod, i) => (
+              <button
+                key={mod.id}
+                type="button"
+                role="tab"
+                aria-selected={i === index}
+                aria-label={`Ver módulo ${mod.number} — ${mod.title}`}
+                className={`landing-carousel-dot ${i === index ? "landing-carousel-dot--active" : ""}`}
+                onClick={() => setIndex(i)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-      <iframe
-        title="Pré-visualização do módulo 6 — Calculadoras interativas"
-        srcDoc={modulo06Html}
-        className="landing-live-preview-iframe"
-        sandbox="allow-same-origin"
-        loading="lazy"
-      />
+
+      <div className="landing-phone" role="figure" aria-label={`Pré-visualização do módulo ${current.number}`}>
+        <span className="landing-phone-speaker" aria-hidden="true" />
+        <div className="landing-phone-screen">
+          <iframe
+            key={current.id}
+            ref={iframeRef}
+            title={`Pré-visualização do módulo ${current.number} — ${current.title}`}
+            srcDoc={current.html}
+            className="landing-phone-iframe"
+            sandbox="allow-same-origin allow-scripts"
+            loading="lazy"
+            onLoad={handleIframeLoad}
+          />
+        </div>
+      </div>
     </div>
   );
 }
@@ -464,6 +563,10 @@ export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean
             <li><span className="dot dot--cyan" aria-hidden="true" /> Seis módulos clínicos e calculadoras integradas</li>
             <li><span className="dot dot--cyan" aria-hidden="true" /> Atualizações inclusas no acesso</li>
           </ul>
+        </section>
+
+        <section className="landing-section landing-section--preview" aria-labelledby="livepreview-title">
+          <LandingModuleCarousel />
         </section>
 
         <section className="landing-section" aria-labelledby="features-title">
@@ -530,14 +633,6 @@ export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean
             Interface pensada para o cuidado intensivo.
           </h2>
           <ScreensShowcase />
-        </section>
-
-        <section className="landing-section" aria-labelledby="livepreview-title">
-          <p className="landing-eyebrow">Conteúdo real</p>
-          <h2 id="livepreview-title" className="landing-section-title">
-            Calculadoras interativas — exatamente como estão no Manual.
-          </h2>
-          <LiveContentPreview />
         </section>
 
         <section className="landing-section" aria-labelledby="refs-title">

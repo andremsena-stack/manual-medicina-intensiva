@@ -988,65 +988,179 @@ body.landing-active {
   padding: 16px 18px;
 }
 
-.landing-live-preview-frame {
-  background: var(--l-card-2);
-  border: 1px solid rgba(48, 241, 230, 0.32);
-  border-radius: 14px;
-  box-shadow:
-    0 30px 80px -30px rgba(0, 0, 0, 0.85),
-    0 0 0 1px rgba(48, 241, 230, 0.08) inset;
+/* Landing carousel: split layout — copy + nav à esquerda, mockup de celular à direita.
+   Compartilha lógica de bloqueio com PREVIEW_BLOCK_CSS (injetado no iframe via JS).
+   Tema dark casa com o restante da landing; o paywall carousel mantém tema claro. */
+.landing-carousel-split {
+  align-items: center;
   display: grid;
+  gap: 28px;
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+@media (min-width: 820px) {
+  .landing-carousel-split {
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 48px;
+    justify-items: stretch;
+  }
+  .landing-carousel-copy {
+    align-self: center;
+  }
+}
+
+.landing-carousel-meta {
+  border-top: 1px solid var(--l-line);
+  margin-top: 8px;
+  padding-top: 16px;
+}
+
+.landing-carousel-eyebrow {
+  color: var(--l-cyan);
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.landing-carousel-title {
+  color: var(--l-ink);
+  font-size: 1.1rem;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.landing-carousel-controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 4px;
+}
+
+.landing-carousel-nav {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.landing-carousel-arrow {
+  align-items: center;
+  background: rgba(11, 37, 52, 0.6);
+  border: 1px solid rgba(48, 241, 230, 0.45);
+  border-radius: 999px;
+  color: var(--l-cyan);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.3rem;
+  height: 38px;
+  justify-content: center;
+  line-height: 1;
+  transition: background 160ms ease, border-color 160ms ease;
+  width: 38px;
+}
+
+.landing-carousel-arrow:hover,
+.landing-carousel-arrow:focus-visible {
+  background: rgba(48, 241, 230, 0.18);
+  border-color: var(--l-cyan);
+  outline: 0;
+}
+
+.landing-phone {
+  aspect-ratio: 9 / 19;
+  background: linear-gradient(160deg, #0e2a3d, #050f17);
+  border-radius: 46px;
+  box-shadow:
+    0 50px 90px -40px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(48, 241, 230, 0.18),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.05);
+  /* Padding superior maior abriga o speaker sem cobrir o iframe.
+     420 outer + 14px laterais = 392px de largura interna ≈ iPhone 14. */
+  padding: 26px 14px 14px;
+  position: relative;
+  width: min(420px, 92vw);
+}
+
+.landing-phone-speaker {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  height: 5px;
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: 11px;
+  transform: translateX(-50%);
+  width: 58px;
+  z-index: 2;
+}
+
+.landing-phone-screen {
+  background: #f6f8fb;
+  border-radius: 30px;
+  inset: 26px 14px 14px;
   overflow: hidden;
+  position: absolute;
+}
+
+.landing-phone-iframe {
+  background: #fff;
+  border: 0;
+  display: block;
+  height: 100%;
   width: 100%;
 }
 
-.landing-live-preview-bar {
-  align-items: center;
-  background: linear-gradient(180deg, rgba(11, 37, 52, 0.95), rgba(7, 24, 36, 0.95));
-  border-bottom: 1px solid var(--l-line);
+.landing-carousel-dots {
   display: flex;
-  gap: 6px;
-  padding: 10px 14px;
+  gap: 10px;
+  justify-content: center;
 }
 
-.landing-live-preview-dot {
+.landing-carousel-dot {
+  background: rgba(48, 241, 230, 0.25);
+  border: 0;
   border-radius: 999px;
-  display: inline-block;
+  cursor: pointer;
   height: 10px;
+  padding: 0;
+  transition: background 160ms ease, transform 160ms ease;
   width: 10px;
 }
 
-.landing-live-preview-dot--red { background: var(--l-danger); }
-.landing-live-preview-dot--yellow { background: var(--l-warning); }
-.landing-live-preview-dot--green { background: var(--l-success); }
-
-.landing-live-preview-url {
-  color: var(--l-ink-muted);
-  font-size: 0.78rem;
-  letter-spacing: 0.02em;
-  margin-left: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.landing-carousel-dot:hover {
+  background: rgba(48, 241, 230, 0.55);
 }
 
-.landing-live-preview-iframe {
-  background: #f6f8fb;
-  border: 0;
-  display: block;
-  height: clamp(420px, 70vh, 680px);
-  width: 100%;
+.landing-carousel-dot--active {
+  background: var(--l-cyan);
+  transform: scale(1.3);
 }
 
-.landing-live-preview-hint {
-  background: rgba(4, 16, 24, 0.85);
-  border-top: 1px solid var(--l-line);
-  color: var(--l-cyan);
-  font-size: 0.78rem;
-  letter-spacing: 0.16em;
-  padding: 8px 14px;
-  text-align: center;
-  text-transform: uppercase;
+@media (max-width: 480px) {
+  .landing-phone {
+    border-radius: 38px;
+    padding: 22px 12px 12px;
+    width: min(360px, 94vw);
+  }
+  .landing-phone-screen {
+    border-radius: 26px;
+    inset: 22px 12px 12px;
+  }
+  .landing-phone-speaker {
+    height: 4px;
+    top: 9px;
+    width: 50px;
+  }
+  .landing-carousel-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 .landing-founder {
@@ -2094,10 +2208,8 @@ body.landing-active {
 }
 
 @media (max-width: 680px) {
-  .module-menu-trigger {
-    left: 10px;
-    top: 10px;
-  }
+  /* TOC trigger permanece em mid-height (top:50%) também no mobile —
+     evita sobrepor o título do módulo no topo do iframe. */
 
   .module-viewer__toolbar,
   .search-panel__header,
@@ -2113,6 +2225,22 @@ body.landing-active {
   .module-viewer__frame-wrap {
     height: 74dvh;
     min-height: 520px;
+  }
+
+  .workspace {
+    padding: 6px;
+  }
+}
+
+/* No mobile, o iframe ocupa quase 100% da viewport e os triggers fixed
+   (TOC à esquerda, busca à direita) sobrepõem suas bordas verticais
+   em mid-height. O padding-inline garante que o conteúdo do iframe
+   não fique escondido atrás dos botões. */
+@media (max-width: 767px) {
+  .module-viewer__frame {
+    /* Reserva 44px à esquerda (TOC 38px + folga) e 60px à direita (search 44px + folga). */
+    /* Aplicado via injectMobileResponsiveStyles dentro do iframe para
+       não afetar background/scrollbar do wrap externo. */
   }
 }
 

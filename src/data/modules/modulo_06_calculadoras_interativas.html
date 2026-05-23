@@ -794,6 +794,53 @@ const dvaBolusDrugs = {
         notes:"Bloqueador β e α1. Útil quando se deseja reduzir FC/dP/dt e PA sem vasodilatador isolado em dissecção aórtica, conforme protocolo. Evitar/cautelar em asma/broncoespasmo, bradicardia, BAV, choque, IC descompensada e hipotensão."
       }
     }
+  },
+  anticonvulsivante_bolus: {
+    label:"Anticonvulsivante — dose de carga IV",
+    drugs:{
+      fenitoina_loading:{
+        name:"Fenitoína — dose de carga",
+        doseUnit:"mg/kg",
+        defaultDose:18,
+        range:"15–20 mg/kg IV em dose de carga; velocidade máxima 50 mg/min (25 mg/min em idosos/cardiopatas) — referência ESETT/NCS 2012",
+        presentations:[
+          {label:"Fenitoína 50 mg/mL — solução em SF 0,9% (incompatível com SG 5%)", conc:50, unit:"mgml", prep:"Fenitoína 250 mg/5 mL (concentração 50 mg/mL). Diluir EXCLUSIVAMENTE em SF 0,9% (precipita em SG 5%). Para 1 g em 100 mL de SF → 10 mg/mL. Administrar em via dedicada com filtro em linha quando disponível; respeitar velocidade máxima 50 mg/min."}
+        ],
+        commercialPresentations:[
+          {label:"Fenitoína 250 mg/5 mL — 50 mg/mL", conc:50, unit:"mgml", volume:5, content:250, contentUnit:"mg"}
+        ],
+        ampoule:"Fenitoína 250 mg/5 mL — concentração 50 mg/mL; conteúdo total 250 mg.",
+        notes:"Antiepiléptico classe Ib. Em status epilepticus: dose de carga 15–20 mg/kg após benzodiazepínico. Risco de hipotensão, bradicardia, prolongamento de QT, BAV e síndrome do dedo púrpura (purple glove syndrome) por extravasamento — usar preferencialmente via central; cautela em idoso, cardiopata, distúrbios eletrolíticos. Monitorar PA, ECG contínuo e local de punção durante a infusão."
+      },
+      fenobarbital_loading:{
+        name:"Fenobarbital — dose de carga",
+        doseUnit:"mg/kg",
+        defaultDose:18,
+        range:"15–20 mg/kg IV em dose de carga (até 30 mg/kg cumulativo); velocidade máxima 50–100 mg/min em adultos (1 mg/kg/min em pediatria) — referência NCS 2012",
+        presentations:[
+          {label:"Fenobarbital 10 mg/mL — diluição 1:9", conc:10, unit:"mgml", prep:"Fenobarbital 200 mg/2 mL (concentração 100 mg/mL). Diluir 1:9 em SF 0,9% ou SG 5% → concentração final 10 mg/mL. Para 1 g, aspirar 10 mL (5 ampolas) + 90 mL de diluente = 100 mL com 10 mg/mL. Administrar IV lento respeitando 50–100 mg/min."}
+        ],
+        commercialPresentations:[
+          {label:"Fenobarbital 200 mg/2 mL — 100 mg/mL", conc:100, unit:"mgml", volume:2, content:200, contentUnit:"mg"}
+        ],
+        ampoule:"Fenobarbital 200 mg/2 mL — concentração 100 mg/mL; conteúdo total 200 mg.",
+        notes:"Barbitúrico de longa duração. Em status epilepticus: dose de carga 15–20 mg/kg, podendo repetir até cumulativo 30 mg/kg. Risco de hipotensão (frequente em alta velocidade), depressão respiratória, sedação prolongada e interações medicamentosas (indutor enzimático potente). Acompanhar PA, oximetria e via aérea — preparar IOT se necessário."
+      },
+      levetiracetam_loading:{
+        name:"Levetiracetam — dose de carga",
+        doseUnit:"mg/kg",
+        defaultDose:60,
+        range:"30–60 mg/kg IV em dose de carga (máximo 4500 mg); infusão em 15 min — referência ESETT 2019/bula Keppra",
+        presentations:[
+          {label:"Levetiracetam 15 mg/mL — concentração máxima diluída", conc:15, unit:"mgml", prep:"Levetiracetam 500 mg/5 mL (concentração 100 mg/mL). Diluir em SF 0,9%, SG 5% ou Ringer lactato para concentração final ≤ 15 mg/mL. Para 4 g em 280 mL (40 mL de Keppra + 240 mL de diluente) = ~14,3 mg/mL. Administrar em 15 min. Solução diluída estável até 4h em temperatura ambiente."}
+        ],
+        commercialPresentations:[
+          {label:"Levetiracetam 500 mg/5 mL — 100 mg/mL", conc:100, unit:"mgml", volume:5, content:500, contentUnit:"mg"}
+        ],
+        ampoule:"Levetiracetam (Keppra) 500 mg/5 mL — concentração 100 mg/mL; conteúdo total 500 mg. Concentração máxima na solução diluída para infusão: 15 mg/mL.",
+        notes:"Antiepiléptico de amplo espectro com perfil hemodinâmico favorável e poucas interações. ESETT 2019 demonstrou equivalência a fos-fenitoína e valproato em status epilepticus estabelecido. Ajuste de dose em insuficiência renal (ClCr < 80 mL/min). Reações usuais: sonolência, irritabilidade, cefaleia; raro: alterações comportamentais e psiquiátricas."
+      }
+    }
   }
 };
 
@@ -826,9 +873,10 @@ const infusionData = {
     procainamida:{name:"Procainamida", doseUnit:"mg/h", defaultDose:240, range:"Manutenção 2–6 mg/min (120–360 mg/h) após dose de ataque; ajustar por PA, QRS/QT, função renal e protocolo", preps:[{label:"1000 mg em 250 mL de SG 5% = 4 mg/mL", conc:4, unit:"mgml", prep:"Procainamida 1000 mg = volume conforme apresentação disponível + SG 5% q.s.p. 250 mL = solução final 250 mL → concentração 4 mg/mL"}], notes:"Antiarrítmico classe IA. Monitorar hipotensão, alargamento de QRS, prolongamento de QT, torsades, bloqueios, função renal e sinais de toxicidade.", phaseInfo:"A dose de ataque é administrada em fase separada e a infusão de manutenção deve ser monitorizada continuamente."}
   }},
   anticonvulsivante: { label:"Anticonvulsivante/anestésico em BIC", drugs:{
-    midazolam_status:{name:"Midazolam — status epilepticus refratário", doseUnit:"mg/kg/h", defaultDose:0.2, range:"0,1–0,2 mg/kg/h inicial em status refratário; titulação superior apenas com EEG/protocolo especializado", preps:[{label:"50 mg em 50 mL = 1 mg/mL", conc:1, unit:"mgml", prep:"Midazolam 50 mg = 10 mL se apresentação 5 mg/mL + diluente 40 mL = solução final 50 mL → concentração 1 mg/mL"}], notes:"Infusão anestésica para status epilepticus refratário em paciente monitorizado/intubado quando indicado. Exige plano de ventilação, vasopressor se necessário e monitorização neurológica/EEG quando disponível.", phaseInfo:"A infusão contínua vem após terapia inicial e drogas de segunda linha; evitar mascarar crise com bloqueador neuromuscular sem EEG."},
-    propofol_status:{name:"Propofol — status epilepticus refratário", doseUnit:"mcg/kg/min", defaultDose:50, range:"30–200 mcg/kg/min em status refratário conforme protocolo, EEG e tolerância hemodinâmica", preps:[{label:"10 mg/mL puro", conc:10, unit:"mgml", prep:"Propofol 10 mg/mL: uso usual puro, sem diluição. Ex.: frasco 50 mL contém 500 mg; concentração final 10 mg/mL"}], notes:"Anestésico hipnótico para status refratário selecionado. Monitorar hipotensão, triglicerídeos, lactato, CK, acidose, hiperpotassemia e risco de síndrome de infusão do propofol.", maxInfusionTime:"Evitar dose alta/prolongada; reavaliar diariamente e seguir limite de dose/duração do protocolo institucional."},
-    cetamina_status:{name:"Cetamina — status epilepticus refratário", doseUnit:"mg/kg/h", defaultDose:1, range:"1–7 mg/kg/h em status refratário/super-refratário conforme protocolo especializado", preps:[{label:"500 mg em 50 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Cetamina 500 mg = 10 mL se apresentação 50 mg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mg/mL"}], notes:"Antagonista NMDA usado como adjuvante em status refratário/super-refratário. Monitorar PA, FC, secreções, dissociação, delirium e interações com sedação concomitante.", phaseInfo:"Geralmente associada a outro sedativo/anestésico e a monitorização especializada; não substitui abordagem escalonada do status epilepticus."}
+    midazolam_status:{name:"Midazolam — status epilepticus refratário", doseUnit:"mg/kg/h", defaultDose:0.2, range:"Manutenção 0,05–2 mg/kg/h após bólus de carga 0,2 mg/kg IV; titulação até 2,9 mg/kg/h em status super-refratário apenas com EEG/protocolo especializado (NCS 2012)", preps:[{label:"50 mg em 50 mL = 1 mg/mL", conc:1, unit:"mgml", prep:"Midazolam 50 mg = 10 mL se apresentação 5 mg/mL + diluente 40 mL = solução final 50 mL → concentração 1 mg/mL"}], notes:"Infusão anestésica para status epilepticus refratário em paciente monitorizado/intubado. Exige plano de ventilação, vasopressor se necessário e monitorização neurológica/EEG quando disponível.", phaseInfo:"Bólus de carga 0,2 mg/kg IV antes de iniciar a infusão; bólus adicionais 0,1 mg/kg podem preceder aumentos de dose. Infusão contínua é terapia anestésica (3ª linha), após benzodiazepínicos e segunda linha. Evitar mascarar crise com bloqueador neuromuscular sem EEG.", maxInfusionTime:"Reavaliar diariamente; desmame após 24–48h de controle eletrográfico, com monitorização para crises de retirada."},
+    propofol_status:{name:"Propofol — status epilepticus refratário", doseUnit:"mcg/kg/min", defaultDose:50, range:"Manutenção 30–200 mcg/kg/min (equivalente 1,8–12 mg/kg/h) após bólus de carga 1–2 mg/kg IV lento; ajustar conforme EEG e tolerância hemodinâmica", preps:[{label:"10 mg/mL puro", conc:10, unit:"mgml", prep:"Propofol 10 mg/mL: uso usual puro, sem diluição. Ex.: frasco 50 mL contém 500 mg; concentração final 10 mg/mL"}], notes:"Anestésico hipnótico para status refratário selecionado. Monitorar hipotensão, triglicerídeos, lactato, CK, acidose, hiperpotassemia e risco de síndrome de infusão do propofol (PRIS) — risco aumentado com dose > 4 mg/kg/h por > 48h.", phaseInfo:"Bólus de carga 1–2 mg/kg IV lento antes de iniciar a infusão; titular pela menor dose efetiva. Acompanhar perfil metabólico, CK e triglicerídeos pelo risco de PRIS.", maxInfusionTime:"Evitar dose > 4 mg/kg/h por > 48h pelo risco de PRIS; reavaliar diariamente e seguir limite institucional."},
+    cetamina_status:{name:"Cetamina — status epilepticus refratário", doseUnit:"mg/kg/h", defaultDose:1, range:"1–7 mg/kg/h em status refratário/super-refratário conforme protocolo especializado", preps:[{label:"500 mg em 50 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Cetamina 500 mg = 10 mL se apresentação 50 mg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mg/mL"}], notes:"Antagonista NMDA usado como adjuvante em status refratário/super-refratário. Monitorar PA, FC, secreções, dissociação, delirium e interações com sedação concomitante.", phaseInfo:"Geralmente associada a outro sedativo/anestésico e a monitorização especializada; não substitui abordagem escalonada do status epilepticus."},
+    tiopental_status:{name:"Tiopental — status epilepticus refratário", doseUnit:"mg/kg/h", defaultDose:3, range:"Manutenção 3–5 mg/kg/h (faixa 0,5–5 mg/kg/h conforme protocolo) após bólus de carga 3–5 mg/kg IV lento; titular para supressão de surto no EEG", preps:[{label:"1000 mg em 250 mL = 4 mg/mL", conc:4, unit:"mgml", prep:"Tiopental 1000 mg = reconstituir conforme bula + diluente q.s.p. 250 mL = solução final 250 mL → concentração 4 mg/mL"}], notes:"Anestésico barbitúrico para status refratário/super-refratário. Alto risco de hipotensão, imunossupressão, íleo, acúmulo e necessidade de ventilação/vasopressor/monitorização contínua com EEG.", phaseInfo:"Bólus de carga 3–5 mg/kg IV lento (frequentemente fracionado em 100–250 mg conforme PA) antes da infusão; titular para burst-suppression no EEG. Vasopressor pronto antes do ataque.", maxInfusionTime:"Acumula em tecido gorduroso; despertar pode ser muito prolongado após 24–72h de infusão. Reavaliar diariamente, manter EEG contínuo e seguir limite institucional."}
   }},
   gastro_hepatologia: { label:"Gastro-hepatologia / hemostático esplâncnico", drugs:{
     octreotida:{name:"Octreotida", doseUnit:"mcg/h", defaultDose:50, range:"Bólus inicial 50 mcg, seguido de 25–50 mcg/h por 2–5 dias em suspeita/confirmada hemorragia varicosa, conforme protocolo", preps:[{label:"500 mcg em 50 mL = 10 mcg/mL", conc:10, unit:"mcgml", prep:"Octreotida 500 mcg = 1 mL se apresentação 500 mcg/mL + SF 0,9% 49 mL = solução final 50 mL → concentração 10 mcg/mL"}], notes:"Análogo da somatostatina com redução do fluxo esplâncnico/portal. Usar como vasoativo em hemorragia varicosa suspeita ou confirmada, idealmente associado à endoscopia e demais medidas do protocolo.", phaseInfo:"Pode haver bólus inicial de 50 mcg antes da infusão; a calculadora estima a BIC da fase contínua.", maxInfusionTime:"Duração usual 2–5 dias em hemorragia varicosa, conforme Baveno/AASLD/protocolo e evolução clínica."}
@@ -840,7 +888,7 @@ const infusionData = {
       {label:"500 mg em 250 mL = 2 mg/mL", conc:2, unit:"mgml", prep:"Furosemida 500 mg = 50 mL se apresentação 10 mg/mL + diluente 200 mL = solução final 250 mL → concentração 2 mg/mL"}
     ], notes:"Útil em congestão refratária/resistência diurética; não há superioridade universal sobre bolus. Monitorar diurese, PA, K, Mg, Na, creatinina, alcalose e ototoxicidade."}
   }},
-  broncoespasmo: { label:"Broncoespasmo grave — ASMA/DPOC", drugs:{
+  broncoespasmo: { label:"Broncodilatadores", drugs:{
     magnesioIV:{name:"Sulfato de magnésio IV — broncoespasmo", doseUnit:"mg/h", defaultDose:6000, range:"2 g IV em 20 min em asma grave/refratária; calculadora usa 6000 mg/h para infundir 2 g em 20 min", preps:[
       {label:"2 g em 100 mL usando MgSO₄ 50% = 20 mg/mL", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 4 mL se apresentação 50% (500 mg/mL) + diluente 96 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 20 min"},
       {label:"2 g em 100 mL usando MgSO₄ 10% = 20 mg/mL", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 20 mL se apresentação 10% (100 mg/mL) + diluente 80 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 20 min"}
@@ -1049,7 +1097,10 @@ function brazilAmpouleOptions(name){
     furosemida: "Furosemida 10 mg/mL: ampola de 2 mL = 20 mg ou 10 mL = 100 mg, conforme fabricante.",
     magnesio: "Sulfato de magnésio: 50% = 500 mg/mL, ampola de 10 mL = 5 g; 10% = 100 mg/mL, ampola de 10 mL = 1 g.",
     salbutamol: "Salbutamol IV: apresentação varia por disponibilidade e protocolo; conferir concentração, volume total e via adequada.",
-    hidromorfona: "Hidromorfona: apresentação hospitalar variável; conferir concentração e volume total."
+    hidromorfona: "Hidromorfona: apresentação hospitalar variável; conferir concentração e volume total.",
+    fenitoina: "Fenitoína 50 mg/mL: ampola de 5 mL = 250 mg, conforme fabricante. INCOMPATÍVEL com SG 5% — diluir apenas em SF 0,9%.",
+    fenobarbital: "Fenobarbital 100 mg/mL: ampola de 2 mL = 200 mg, conforme fabricante. Diluição usual 1:9 em SF 0,9% ou SG 5% para 10 mg/mL.",
+    levetiracetam: "Levetiracetam (Keppra) 100 mg/mL: ampola/frasco de 5 mL = 500 mg, conforme fabricante. Concentração máxima na solução diluída: 15 mg/mL."
   };
   if(n.includes("midazolam")) return options.midazolam;
   if(n.includes("etomidato")) return options.etomidato;
@@ -1090,6 +1141,9 @@ function brazilAmpouleOptions(name){
   if(n.includes("magnésio") || n.includes("magnesio")) return options.magnesio;
   if(n.includes("salbutamol")) return options.salbutamol;
   if(n.includes("hidromorfona")) return options.hidromorfona;
+  if(n.includes("fenitoína") || n.includes("fenitoina")) return options.fenitoina;
+  if(n.includes("fenobarbital")) return options.fenobarbital;
+  if(n.includes("levetiracetam") || n.includes("keppra")) return options.levetiracetam;
   return "Conferir concentração, conteúdo total e volume da ampola/fr. disponível no serviço.";
 }
 function ampoulePresentationLine(name, presentation=null){
@@ -1249,6 +1303,9 @@ function ampouleInfoByName(name){
   if(n.includes("clevidipina")) return {unit:"mg", content:25, volume:50, label:"frasco/seringa 25 mg/50 mL (0,5 mg/mL), pronto para uso"};
   if(n.includes("isoproterenol") || n.includes("isoprenalina")) return {unit:"mcg", content:1000, volume:null, label:"ampola/fraco 1 mg conforme apresentação disponível"};
   if(n.includes("tiopental")) return {unit:"mg", content:1000, volume:null, label:"frasco 1 g; reconstituir conforme bula"};
+  if(n.includes("fenitoína") || n.includes("fenitoina")) return {unit:"mg", content:250, volume:5, label:"ampola 250 mg/5 mL (volume total 5 mL; 50 mg/mL); diluir apenas em SF 0,9%"};
+  if(n.includes("fenobarbital")) return {unit:"mg", content:200, volume:2, label:"ampola 200 mg/2 mL (volume total 2 mL; 100 mg/mL); diluição usual 1:9 → 10 mg/mL"};
+  if(n.includes("levetiracetam") || n.includes("keppra")) return {unit:"mg", content:500, volume:5, label:"ampola 500 mg/5 mL (volume total 5 mL; 100 mg/mL); conc. máx. diluída 15 mg/mL"};
   if(n.includes("furosemida")) return {unit:"mg", content:20, volume:2, label:"ampola 20 mg/2 mL (10 mg/mL)"};
   if(n.includes("sulfato de magnésio") || n.includes("sulfato de magnesio")) return {unit:"mg", content:2000, volume:null, label:"dose alvo 2 g; apresentação 50% ou 10% conforme selecionada"};
   if(n.includes("salbutamol")) return {unit:"mcg", content:5000, volume:null, label:"salbutamol 5 mg conforme apresentação disponível"};
@@ -2592,7 +2649,7 @@ const INFUSION_GROUPS=[
   {id:"antiarritmicos",   label:"Antiarrítmicos",               cats:["antiarritmico"]},
   {id:"anticonvulsivantes",label:"Anticonvulsivantes em BIC",   cats:["anticonvulsivante"]},
   {id:"diureticos",       label:"Diuréticos",                   cats:["diuretico"]},
-  {id:"broncoespasmo",    label:"Broncoespasmo / asma",         cats:["broncoespasmo"]},
+  {id:"broncoespasmo",    label:"Broncodilatadores",            cats:["broncoespasmo"]},
   {id:"anafilaxia",       label:"Anafilaxia",                   cats:["anafilaxia"]},
   {id:"gastro",           label:"Gastro-hepatologia",           cats:["gastro_hepatologia"]},
   {id:"outros",           label:"Outros",                       cats:["vasoativa"]}
