@@ -1,5 +1,78 @@
 # Changelog
 
+## 2026-05-22 — Calc Mod 6: presets visíveis sem `<details>`, preparo manual abaixo (colapsável)
+
+### Tipo de alteração
+
+- Interface — **expor a sugestão de solução como campo principal
+  (visível, não colapsado)**, mantendo o preparo manual abaixo como
+  `<details>` colapsável
+
+### Problema
+
+Após a rodada anterior, a "Sugestão de solução (preset)" estava dentro
+de um `<details>` colapsável em Bólus e IOT. Mesmo aberto por padrão,
+isso obscurecia a informação principal de "com o que estou trabalhando"
+e exigia um clique para o prescritor abrir e ver a solução padrão. Na
+Infusão Contínua, o preset estava aninhado junto com o preparo manual
+em um único `<details>`, o que misturava informação fixa (preset) com
+edição (manual).
+
+### Alterações realizadas
+
+`src/data/modules/modulo_06_calculadoras_interativas.html`:
+
+**Bólus / dose intermitente:**
+- `<details>Sugestão de solução (preset)</details>` removido.
+- `dvaBolusPresentation` agora aparece em um `<div class="calc-grid">`
+  visível direto, label "Solução final sugerida (preset)".
+- `compact-note` curta logo abaixo explica que para customização use
+  o painel de Preparo manual.
+
+**IOT:**
+- Idem: `<details>Sugestão de solução (preset)</details>` removido.
+- `iotPresentation` exposto em `<div class="calc-grid">` visível direto,
+  label "Solução final sugerida (preset)".
+
+**Infusão Contínua:**
+- O `<details>Solução final</details>` consolidado (que continha preset
+  + manual + diluente) foi dividido:
+  - `infPrep` (Solução final sugerida — preset) volta a aparecer em
+    `<div class="calc-grid">` visível direto, ao lado de "Planejar
+    solução para 12h".
+  - O painel `<details>Preparo manual da solução (sobrescreve o
+    preset)</details>` agrupa os campos editáveis: massa + unidade +
+    diluente + volume final + concentração calculada.
+- Resultado: prescritor vê imediatamente a Solução final sugerida sem
+  precisar clicar. Para customizar (preparo manual), abre o details.
+
+### Estrutura final de cada calculadora
+
+```
+Bólus:
+  [Categoria | Medicação | Apresentação comercial | Dose | Unidade]
+  [Solução final sugerida (preset)]   ← visível direto
+  [Intermittent panel (conditional)]
+  <details>Preparo manual da solução (sobrescreve o preset)</details>
+
+IOT:
+  [Categoria | Medicação | Dose | Unidade | Apresentação comercial]
+  [Solução final sugerida (preset)]   ← visível direto
+  <details>Preparo manual da solução (sobrescreve o preset)</details>
+
+Infusão Contínua:
+  [Categoria | Medicação | Dose | Vazão]
+  [Solução final sugerida (preset) | Planejar 12h]   ← visível direto
+  <details open>Ampola/fr. disponível</details>
+  <details>Preparo manual da solução (sobrescreve o preset)</details>
+```
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `c4a7ef356d6f49e03341ef5c9f1f0e48647aee76b8d43626d18709e61b64fdec`)
+
 ## 2026-05-22 — Calc Mod 6: "Ampola sem diluente (puro)" — layout compacto quando preset é uso puro
 
 ### Tipo de alteração

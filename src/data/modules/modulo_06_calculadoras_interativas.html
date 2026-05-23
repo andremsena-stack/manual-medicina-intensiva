@@ -304,15 +304,10 @@
           <div><label for="iotDoseUnitSelect">Unidade da dose</label><select id="iotDoseUnitSelect"></select></div>
           <div><label for="iotAmpPresentation">Apresentação comercial disponível</label><select id="iotAmpPresentation"></select></div>
         </div>
-        <details class="refs-collapsible compact-details" style="margin-top:10px">
-          <summary>Sugestão de solução (preset)</summary>
-          <div class="detail-body">
-            <div class="calc-grid">
-              <div><label for="iotPresentation">Concentração usada no cálculo</label><select id="iotPresentation"></select></div>
-            </div>
-            <div class="compact-note">Preset baseado em apresentações comuns no Brasil. Para reconstituição/diluição customizada, use o preparo manual abaixo.</div>
-          </div>
-        </details>
+        <div class="calc-grid" style="margin-top:12px">
+          <div><label for="iotPresentation">Solução final sugerida (preset)</label><select id="iotPresentation"></select></div>
+        </div>
+        <div class="compact-note" style="margin-top:6px">Preset baseado em apresentações comuns no Brasil. Para reconstituição/diluição customizada, use o preparo manual abaixo.</div>
         <details class="refs-collapsible compact-details" style="margin-top:10px">
           <summary>Preparo manual da solução (sobrescreve o preset)</summary>
           <div class="detail-body">
@@ -353,15 +348,10 @@
           <div><label for="dvaBolusDose">Dose desejada <span id="dvaBolusDoseUnitLabel" class="unit-inline"></span></label><input id="dvaBolusDose" type="number" step="0.01"></div>
           <div><label for="dvaBolusDoseUnitSelect">Unidade da dose</label><select id="dvaBolusDoseUnitSelect"></select></div>
         </div>
-        <details class="refs-collapsible compact-details" style="margin-top:10px">
-          <summary>Sugestão de solução (preset)</summary>
-          <div class="detail-body">
-            <div class="calc-grid">
-              <div><label for="dvaBolusPresentation">Solução pré-definida</label><select id="dvaBolusPresentation"></select></div>
-            </div>
-            <div class="compact-note">Apresentações comerciais e preparos padronizados no Brasil. Para reconstituição/diluição customizada, use o painel de Preparo manual abaixo.</div>
-          </div>
-        </details>
+        <div class="calc-grid" style="margin-top:12px">
+          <div><label for="dvaBolusPresentation">Solução final sugerida (preset)</label><select id="dvaBolusPresentation"></select></div>
+        </div>
+        <div class="compact-note" style="margin-top:6px">Apresentações comerciais e preparos padronizados no Brasil. Para reconstituição/diluição customizada, use o painel de Preparo manual abaixo.</div>
         <div id="dvaBolusIntermittentPanel" class="calc-grid" style="margin-top:12px; display:none;">
           <div><label for="dvaBolusTimeMin">Tempo de administração (min)</label><input id="dvaBolusTimeMin" type="number" step="1" min="1"></div>
           <div><label for="dvaBolusFinalVolume">Volume final da solução (mL)</label><input id="dvaBolusFinalVolume" type="number" step="1" min="1"></div>
@@ -403,6 +393,7 @@
           <div><label for="infRate">Vazão da bomba (mL/h)</label><input id="infRate" type="number" step="0.01" placeholder="preencher mL/h se desejar calcular dose"></div>
         </div>
         <div class="calc-grid" style="margin-top:12px">
+          <div><label for="infPrep">Solução final sugerida (preset)</label><select id="infPrep"></select></div>
           <div><label for="infTargetHours">Planejar solução para</label><select id="infTargetHours"><option value="12" selected>12 horas (padrão)</option><option value="6">6 horas</option><option value="24">24 horas (exige validação)</option></select></div>
         </div>
         <details class="refs-collapsible compact-details" open>
@@ -417,20 +408,17 @@
             <div class="compact-note">A concentração da ampola é calculada automaticamente (massa total ÷ volume total) e é usada para calcular o volume a aspirar.</div>
           </div>
         </details>
-        <details class="refs-collapsible compact-details" open style="margin-top:10px">
-          <summary>Solução final</summary>
+        <details class="refs-collapsible compact-details" style="margin-top:10px">
+          <summary>Preparo manual da solução (sobrescreve o preset)</summary>
           <div class="detail-body">
             <div class="calc-grid">
-              <div><label for="infPrep">Solução final sugerida (preset)</label><select id="infPrep"></select></div>
-            </div>
-            <div class="calc-grid" style="margin-top:8px">
               <div><label for="infFinalMass">Massa do fármaco na solução</label><input id="infFinalMass" type="number" step="0.001" placeholder="ex.: 500"></div>
               <div><label for="infFinalMassUnit">Unidade da massa</label><select id="infFinalMassUnit"><option value="mcg">mcg</option><option value="mg" selected>mg</option><option value="g">g</option><option value="UI">UI</option></select></div>
               <div><label for="infDiluent">Diluente</label><select id="infDiluent"></select></div>
               <div><label for="infFinalVolume">Volume final da solução (mL)</label><input id="infFinalVolume" type="number" step="1" min="1" placeholder="ex.: 50"></div>
               <div><label>Concentração final calculada</label><input id="infFinalConcPreview" type="text" value="—" readonly></div>
             </div>
-            <div class="compact-note">Ao escolher uma solução pré-definida, os campos abaixo são auto-preenchidos. Edite massa, diluente ou volume para montar uma solução personalizada — a concentração final é recalculada automaticamente. O volume final da solução também define o tamanho do frasco/bolsa usado no planejamento de 12h.</div>
+            <div class="compact-note">Ao escolher uma solução pré-definida acima, os campos abaixo são auto-preenchidos. Edite massa, diluente ou volume para montar uma solução personalizada — a concentração final é recalculada automaticamente. O volume final da solução também define o tamanho do frasco/bolsa usado no planejamento de 12h.</div>
           </div>
         </details>
         <!-- Mantido como hidden para retrocompat com planning24h; valor espelha infFinalVolume via JS -->
