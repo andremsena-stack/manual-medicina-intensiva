@@ -353,12 +353,15 @@
           <div><label for="dvaBolusDose">Dose desejada <span id="dvaBolusDoseUnitLabel" class="unit-inline"></span></label><input id="dvaBolusDose" type="number" step="0.01"></div>
           <div><label for="dvaBolusDoseUnitSelect">Unidade da dose</label><select id="dvaBolusDoseUnitSelect"></select></div>
         </div>
-        <div class="compact-note" style="margin-top:10px;color:#dbeafe">
-          Anti-hipertensivos em bólus têm uso restrito por cenário. Nitroglicerina em bólus é reservada a fenótipo SCAPE/EAP hipertensivo grave com VNI e monitorização; nitroprussiato não deve ser administrado em bólus IV direto, apenas em infusão titulada e protegida da luz.
-        </div>
-        <div class="calc-grid" style="margin-top:12px">
-          <div><label for="dvaBolusPresentation">Concentração usada no cálculo</label><select id="dvaBolusPresentation"></select></div>
-        </div>
+        <details class="refs-collapsible compact-details" style="margin-top:10px">
+          <summary>Sugestão de solução (preset)</summary>
+          <div class="detail-body">
+            <div class="calc-grid">
+              <div><label for="dvaBolusPresentation">Solução pré-definida</label><select id="dvaBolusPresentation"></select></div>
+            </div>
+            <div class="compact-note">Apresentações comerciais e preparos padronizados no Brasil. Para reconstituição/diluição customizada, use o painel de Preparo manual abaixo.</div>
+          </div>
+        </details>
         <div id="dvaBolusIntermittentPanel" class="calc-grid" style="margin-top:12px; display:none;">
           <div><label for="dvaBolusTimeMin">Tempo de administração (min)</label><input id="dvaBolusTimeMin" type="number" step="1" min="1"></div>
           <div><label for="dvaBolusFinalVolume">Volume final da solução (mL)</label><input id="dvaBolusFinalVolume" type="number" step="1" min="1"></div>
@@ -396,14 +399,11 @@
         <div class="calc-grid">
           <div><label for="infCat">Categoria</label><select id="infCat"></select></div>
           <div><label for="infDrug">Medicação</label><select id="infDrug"></select></div>
-          <div><label for="infPrep">Solução final sugerida</label><select id="infPrep"></select></div>
           <div><label for="infDose">Dose desejada <span id="infDoseUnitLabel" class="unit-inline"></span></label><input id="infDose" type="number" step="0.001" placeholder="preencher valor numérico"></div>
+          <div><label for="infRate">Vazão da bomba (mL/h)</label><input id="infRate" type="number" step="0.01" placeholder="preencher mL/h se desejar calcular dose"></div>
         </div>
         <div class="calc-grid" style="margin-top:12px">
-          <div><label for="infRate">Vazão da bomba (mL/h)</label><input id="infRate" type="number" step="0.01" placeholder="preencher mL/h se desejar calcular dose"></div>
           <div><label for="infTargetHours">Planejar solução para</label><select id="infTargetHours"><option value="12" selected>12 horas (padrão)</option><option value="6">6 horas</option><option value="24">24 horas (exige validação)</option></select></div>
-          <div><label for="infBagVolume">Frasco/bolsa final</label><select id="infBagVolume"><option value="100">100 mL</option><option value="250" selected>250 mL</option><option value="500">500 mL</option><option value="1000">1000 mL</option></select></div>
-          <div><label for="infDiluent">Diluente</label><select id="infDiluent"><option value="SF 0,9%">SF 0,9%</option><option value="SG 5%">SG 5%</option><option value="conforme protocolo">Conforme protocolo</option></select></div>
         </div>
         <details class="refs-collapsible compact-details" open>
           <summary>Ampola/fr. disponível</summary>
@@ -418,17 +418,23 @@
           </div>
         </details>
         <details class="refs-collapsible compact-details" open style="margin-top:10px">
-          <summary>Solução final montada (editável)</summary>
+          <summary>Solução final</summary>
           <div class="detail-body">
             <div class="calc-grid">
-              <div><label for="infFinalMass">Quantidade do fármaco na solução final</label><input id="infFinalMass" type="number" step="0.001" placeholder="ex.: 500"></div>
+              <div><label for="infPrep">Solução final sugerida (preset)</label><select id="infPrep"></select></div>
+            </div>
+            <div class="calc-grid" style="margin-top:8px">
+              <div><label for="infFinalMass">Massa do fármaco na solução</label><input id="infFinalMass" type="number" step="0.001" placeholder="ex.: 500"></div>
               <div><label for="infFinalMassUnit">Unidade da massa</label><select id="infFinalMassUnit"><option value="mcg">mcg</option><option value="mg" selected>mg</option><option value="g">g</option><option value="UI">UI</option></select></div>
+              <div><label for="infDiluent">Diluente</label><select id="infDiluent"></select></div>
               <div><label for="infFinalVolume">Volume final da solução (mL)</label><input id="infFinalVolume" type="number" step="1" min="1" placeholder="ex.: 50"></div>
               <div><label>Concentração final calculada</label><input id="infFinalConcPreview" type="text" value="—" readonly></div>
             </div>
-            <div class="compact-note">Ao selecionar uma solução pré-definida acima, os campos são auto-preenchidos. Edite massa e/ou volume para montar uma solução personalizada — a concentração final é recalculada automaticamente e usada na vazão da bomba.</div>
+            <div class="compact-note">Ao escolher uma solução pré-definida, os campos abaixo são auto-preenchidos. Edite massa, diluente ou volume para montar uma solução personalizada — a concentração final é recalculada automaticamente. O volume final da solução também define o tamanho do frasco/bolsa usado no planejamento de 12h.</div>
           </div>
         </details>
+        <!-- Mantido como hidden para retrocompat com planning24h; valor espelha infFinalVolume via JS -->
+        <input id="infBagVolume" type="hidden" value="250">
         <div class="btnrow">
           <button class="action" onclick="calcInfusion()">Calcular infusão</button>
           <button class="action" onclick="addInfusionToSummary()">Adicionar ao cenário-resumo</button>
@@ -1312,6 +1318,11 @@ function updateFinalSolutionPreview(){
   const out = document.getElementById("infFinalConcPreview");
   if(!out) return;
   const r = getEditableSolutionConc();
+  // Sincroniza infBagVolume hidden com o volume final (planning24h depende dele)
+  const bagVolumeEl = document.getElementById("infBagVolume");
+  if(bagVolumeEl && Number.isFinite(r.volMl) && r.volMl > 0){
+    bagVolumeEl.value = String(r.volMl);
+  }
   if(!Number.isFinite(r.conc)){ out.value = "—"; return; }
   out.value = `${fmt(r.conc, 3)} ${unitLabel(r.concUnit)} | Massa: ${fmt(r.massVal, 2)} ${r.massUnit} em ${fmt(r.volMl, 0)} mL`;
 }
@@ -1412,6 +1423,11 @@ function ampoulePresentationLine(name, presentation=null){
   return brazilAmpouleOptions(name);
 }
 
+function isPurePrep(prep){
+  if(!prep) return false;
+  const text = `${prep.label || ""} ${prep.prep || ""}`.toLowerCase();
+  return /não diluir|nao diluir|sem diluição|sem diluicao|uso usual puro|pronta para uso|pronto para uso|emulsão lipídica pronta|emulsao lipidica pronta|\bpuro\b/.test(text);
+}
 function diluentGuidance(name, prepText="", context="", selectedDiluent=""){
   const n=(name || "").toLowerCase();
   const source=`${prepText || ""} ${selectedDiluent || ""}`.toLowerCase();
@@ -1571,7 +1587,7 @@ function ampouleInfoByName(name){
   if(n.includes("aminofilina")) return {unit:"mg", content:240, volume:10, label:"ampola 24 mg/mL (volume total 10 mL = 240 mg); janela terapêutica 10–20 mcg/mL"};
   if(n.includes("furosemida")) return {unit:"mg", content:20, volume:2, label:"ampola 20 mg/2 mL (10 mg/mL)"};
   if(n.includes("sulfato de magnésio") || n.includes("sulfato de magnesio")) return {unit:"mg", content:2000, volume:null, label:"dose alvo 2 g; apresentação 50% ou 10% conforme selecionada"};
-  if(n.includes("salbutamol")) return {unit:"mcg", content:5000, volume:null, label:"salbutamol 5 mg conforme apresentação disponível"};
+  if(n.includes("salbutamol")) return {unit:"mcg", content:500, volume:1, label:"ampola salbutamol 500 mcg/1 mL (0,5 mg/mL); conferir disponibilidade local — algumas instituições usam 5 mg/5 mL"};
   return null;
 }
 function convertMassToAmpUnit(amount, amountUnit, ampUnit){
@@ -2500,7 +2516,17 @@ function calcDVABolus(){
         <span>${dvaBolusDrugs[x.cat].label} · dose ${fmt(x.rawDose,4)} ${x.selectedDoseUnit}${x.selectedDoseUnit !== x.d.doseUnit ? ` (= ${fmt(x.dose,4)} ${x.d.doseUnit})` : ""} · faixa ${x.d.range}</span>
       </div>
       <div class="med-grid">
-        ${medCard("Solução preparada", [
+        ${medCard("Solução preparada", isPurePrep(x.presentation) ? [
+          // Ampola pura — exibicao compacta
+          medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
+          medKv("Solução final", `<strong>Ampola sem diluente (puro)</strong> — concentração ${fmt(x.conc,3)} ${unitLabel(x.concUnit)}`),
+          (function(){
+            const ampLabel = ampoulesNeededLabel(x.volume, x.ampoule);
+            return medKv("Volume a administrar", `${fmt(x.volume,2)} mL${ampLabel ? ` (${ampLabel})` : ""}`);
+          })(),
+          medKv("Massa total", `${fmt(x.amount.amount,2)} ${x.amount.unit}`)
+        ] : [
+          // Diluicao padrao
           medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
           medKv("Diluente/uso", diluentGuidance(x.d.name, x.presentation.prep, "bolus")),
           medKv("Preparo da solução", x.presentation.prep),
@@ -2841,9 +2867,17 @@ function calcInfusion(){
         <span>${infusionData[cat].label} · ${modeLabel} · faixa ${d.range}</span>
       </div>
       <div class="med-grid">
-        ${medCard("Solução preparada", [
-          medKv("Apresentação do fármaco", ampoulePresentationLine(d.name)),
-          informedAmpouleLine() ? medKv("Apresentação disponível informada", informedAmpouleLine().replace("Apresentação informada: ","")) : "",
+        ${medCard("Solução preparada", isPurePrep(prep) ? [
+          // Ampola pura — exibicao compacta
+          informedAmpouleLine()
+            ? medKv("Apresentação disponível informada", informedAmpouleLine().replace("Apresentação informada: ",""))
+            : medKv("Apresentação do fármaco", ampoulePresentationLine(d.name)),
+          medKv("Solução final", `<strong>Ampola sem diluente (puro)</strong> — concentração ${fmt(conc,3)} ${unitLabel(concUnit)}`)
+        ] : [
+          // Diluicao padrao
+          informedAmpouleLine()
+            ? medKv("Apresentação disponível informada", informedAmpouleLine().replace("Apresentação informada: ",""))
+            : medKv("Apresentação do fármaco", ampoulePresentationLine(d.name)),
           medKv("Diluente/uso", diluentGuidance(d.name, prep.prep, "infusion", diluent)),
           medKv("Volume total da solução", `${bagVolume} mL`),
           (Number.isFinite(conc) ? medKv("Massa total na solução", `${fmt(conc*bagVolume,2)} ${unitLabel(concUnit).replace("/mL","")}`) : ""),

@@ -1,5 +1,190 @@
 # Changelog
 
+## 2026-05-22 — Calc Mod 6: "Ampola sem diluente (puro)" — layout compacto quando preset é uso puro
+
+### Tipo de alteração
+
+- Interface — **simplificação da exibição quando o preset selecionado é
+  a própria ampola sem diluição** (propofol, clevidipina, labetalol pronto
+  para uso, etc.)
+
+### Alterações realizadas
+
+`src/data/modules/modulo_06_calculadoras_interativas.html`:
+
+**1. Novo helper `isPurePrep(prep)`** — verifica se o objeto preset
+indica uso puro/pronta para uso, via regex em `prep.label + prep.prep`:
+
+```js
+/não diluir|nao diluir|sem diluição|sem diluicao|uso usual puro|
+ pronta para uso|pronto para uso|emulsão lipídica pronta|\bpuro\b/i
+```
+
+Retorna `true` para entries como:
+- Propofol: "10 mg/mL puro" → ✓
+- Clevidipina: "emulsão lipídica pronta para uso" → ✓
+- Metoprolol/Labetalol: "solução pronta para uso" → ✓
+
+Retorna `false` para presets com diluição (ex.: Fentanil "500 mcg em
+50 mL").
+
+**2. `calcInfusion` — card "Solução preparada" com 2 layouts:**
+
+**Layout puro (isPurePrep === true):**
+```
+Apresentação: ...
+Solução final: **Ampola sem diluente (puro)** — concentração X mg/mL
+```
+(Linhas de Diluente/uso, Volume total, Massa total suprimidas — eram
+redundantes com o próprio uso da ampola.)
+
+**Layout padrão (preset com diluição):**
+```
+Apresentação: ...
+Diluente/uso: ...
+Volume total da solução: ...
+Massa total na solução: ...
+Concentração final: ...
+```
+
+**3. `calcDVABolus` — card "Solução preparada" com 2 layouts:**
+
+**Layout puro:**
+```
+Apresentação: ...
+Solução final: **Ampola sem diluente (puro)** — concentração X mg/mL
+Volume a administrar: X mL (Y ampolas)
+Massa total: X mg
+```
+
+**Layout padrão (com diluição):**
+Inclui Diluente/uso + Preparo da solução + Volume + Massa + Concentração.
+
+**4. IOT calc não recebeu o branching nesta rodada** — os presets de IOT
+são todos `{label, conc, unit}` sem campo `prep` com texto descritivo,
+então `isPurePrep` retorna sempre `false` para IOT. Quase todas as
+drogas IOT são pure-push por natureza (sem texto explícito), o que pode
+ser endereçado em rodada futura adicionando flag `isPureBolus: true` às
+entries IOT se necessário.
+
+### Validação runtime
+
+```
+isPurePrep:
+  Propofol "10 mg/mL puro"                → true  ✓
+  Clevidipina "emulsão pronta para uso"   → true  ✓
+  Fentanil "500 mcg em 50 mL"             → false ✓
+
+Render Propofol em infusão contínua:
+  "Solução final: Ampola sem diluente (puro) — concentração 10 mg/mL" ✓
+  Linhas de diluente/volume/massa total suprimidas ✓
+
+Render Fentanil em infusão contínua:
+  Layout padrão mantido ✓
+```
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `f15c0a5c3e4f106227df3dbe65ea7dee585228bf89044076eda551b65af4c685`)
+
+## 2026-05-22 — Calc Mod 6: boxes reorganizados, redundâncias removidas, salbutamol IV com apresentação BR
+
+### Tipo de alteração
+
+- Interface — **consolidação de boxes da calculadora, eliminação de
+  redundâncias visuais e correção de label técnico**
+
+### Alterações no Mod 6 (`src/data/modules/modulo_06_calculadoras_interativas.html`)
+
+**1. Calculadora de Bólus / dose intermitente:**
+
+- Removida a `<div class="compact-note">` com texto genérico sobre
+  anti-hipertensivos em bólus (era warning generalista que duplica
+  alertas drug-specific já presentes no `notes` de cada entrada).
+- O `<select id="dvaBolusPresentation">` (antes label "Concentração
+  usada no cálculo" — terminologia técnica confusa para leitor
+  clínico) foi **colapsado em um `<details>Sugestão de solução
+  (preset)</details>`** com label interno "Solução pré-definida"
+  + compact-note explicando que para reconstituição/diluição
+  customizada deve-se usar o painel de Preparo manual.
+- Padrão agora idêntico ao da calculadora IOT.
+
+**2. Calculadora de Infusão Contínua — boxes consolidados:**
+
+Estrutura anterior:
+```
+[Categoria | Medicação | Solução final sugerida | Dose desejada]
+[Vazão | Planejar | Frasco/bolsa | Diluente]
+<details>Ampola/fr. disponível</details>
+<details>Solução final montada (editável)</details>
+```
+
+Estrutura nova:
+```
+[Categoria | Medicação | Dose desejada | Vazão]
+[Planejar 12h]
+<details>Ampola/fr. disponível</details>
+<details>Solução final
+  [Solução final sugerida (preset)]
+  [Massa | Unidade | Diluente | Volume final]
+  [Concentração final calculada]
+</details>
+<input id="infBagVolume" type="hidden">   <!-- compat planning24h -->
+```
+
+Justificativa: o usuário identificou que "Solução final sugerida" e
+"Solução final montada" estavam em locais distintos e o diluente em
+um terceiro lugar, causando confusão. Agora tudo que fundamenta a
+solução final está em um único box: preset + edição + diluente +
+volume final + concentração calculada.
+
+`infBagVolume` (antes select 100/250/500/1000 mL) virou hidden e é
+sincronizado automaticamente com `infFinalVolume` pela função
+`updateFinalSolutionPreview()` — preserva o cálculo `planning24h`
+sem duplicar inputs visuais.
+
+**3. Resultado da Infusão Contínua — apresentação única:**
+
+Antes: duas linhas no card "Solução preparada" — "Apresentação do
+fármaco" (genérica) + "Apresentação disponível informada" (manual)
+apareciam SIMULTANEAMENTE quando o usuário preenchia a ampola
+manualmente.
+
+Depois: a **manual prevalece**. Se `informedAmpouleLine()` retorna
+valor, mostra apenas "Apresentação disponível informada"; caso
+contrário, mostra apenas "Apresentação do fármaco".
+
+**4. Salbutamol IV — ampoule auto-preenchida:**
+
+`ampouleInfoByName` atualizada para salbutamol:
+- Antes: `{content:5000, volume:null}` (label genérico, sem volume → no
+  auto-fill do painel de ampola)
+- Depois: `{content:500, volume:1, label:"ampola 500 mcg/1 mL (0,5
+  mg/mL); conferir disponibilidade local — algumas instituições usam
+  5 mg/5 mL"}`
+
+Resultado: ao selecionar Salbutamol IV em Infusão Contínua, o painel
+"Ampola/fr. disponível" auto-preenche 500 mcg em 1 mL.
+
+### Validação runtime
+
+```
+Fentanil → preset auto-fill: 500 mcg em 50 mL → 10 mcg/mL ✓
+  Diluente preferred: SF 0,9% ✓
+  infBagVolume hidden sincronizado: 50 ✓
+
+Salbutamol IV → ampoule auto-fill: 500 mcg em 1 mL ✓
+  Solução final auto-fill: 5 mg em 50 mL ✓
+```
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `9a788c1ffca9ae220a7adc78b57c2c8e5c52cbddfd27660ea1f765529c3e3de4`)
+
 ## 2026-05-22 — Auditoria pós-refator: categoria "Broncodilatadores" → "Broncoespasmo refratário"; notas de cetamina clarificadas
 
 ### Tipo de alteração
