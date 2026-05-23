@@ -1,5 +1,946 @@
 # Changelog
 
+## 2026-05-22 — Auditoria pós-refator: categoria "Broncodilatadores" → "Broncoespasmo refratário"; notas de cetamina clarificadas
+
+### Tipo de alteração
+
+- Interface + nomenclatura — **alinhamento de títulos com conteúdo**
+  após auditoria de integração entre módulos
+
+### Achados da auditoria (delegada a agente Explore)
+
+| Aspecto | Status | Decisão |
+|---|---|---|
+| Mod 4 §6.5 anticonvulsivantes (7 drogas) | ✓ Completo | Nenhuma ação |
+| Mod 5 narrativa de broncoespasmo | Lacuna (fora de escopo) | Nenhuma ação — Mod 5 é DVA, broncoespasmo cabe no Mod 6 + Mod 4 |
+| Magnésio: 2 entries em dvaBolusDrugs (broncoesp/eclâmpsia) | Justificado | Nenhuma ação |
+| Adrenalina: 4 entries (push/DVA/broncoesp/anafilaxia) | Justificado | Nenhuma ação |
+| Cetamina: 4 entries (IOT/analgésico/sedativo/status/broncoesp) | Categorização justificada por findability | **Notas clarificadas** |
+| Seção 3 Mod 6 (Bólus/intermitente) | ✓ Coerente | Nenhuma ação |
+| Categoria "Broncodilatadores" do Mod 6 | ✗ Inadequado (aminofilina e cetamina não são broncodilatadores) | **Renomeado** |
+| Referências Mod 7 | ✓ Sem órfãs ou duplicações críticas | Nenhuma ação |
+
+### Alterações aplicadas
+
+**1. `infusionData.broncoespasmo.label`:**
+- Antes: `"Broncodilatadores"`
+- Depois: `"Broncoespasmo refratário — terapia IV"`
+- Motivo: aminofilina (metilxantina) e cetamina (antagonista NMDA) não são
+  broncodilatadores estricto sensu. A categoria agrupa a armamentaria IV
+  para broncoespasmo crítico refratário — o título agora reflete o uso
+  clínico real.
+
+**2. `INFUSION_GROUPS` grupo `broncoespasmo`:**
+- Antes: `label:"Broncodilatadores"`
+- Depois: `label:"Broncoespasmo refratário"`
+- Consistência no painel agrupado do cenário-resumo.
+
+**3. `cetamina_analgesia` (categoria Analgésico) — notas reescritas:**
+- Indicação primária explicitada: **ANALGESIA POUPADORA DE OPIOIDE**.
+- Cross-reference para as outras entradas de cetamina (sedativo,
+  anticonvulsivante, broncoespasmo).
+- Orientação: "Escolher a entrada conforme o OBJETIVO TERAPÊUTICO PRIMÁRIO".
+
+**4. `cetamina` (categoria Sedativo) — notas reescritas:**
+- Nome ampliado: "Cetamina — sedação dissociativa".
+- Indicação primária explicitada: **SEDAÇÃO DISSOCIATIVA**, especialmente
+  quando hipotensão limita outros sedativos (cetamina preserva PA).
+- Cross-reference para Analgésico (mesma dose), Anticonvulsivante (faixa
+  mais alta) e Broncoespasmo (faixa mais alta).
+
+### Justificativa para manter cetamina em múltiplas categorias
+
+Doses são idênticas em sub-anestésico (0,05–0,3 mg/kg/h) — analgesia,
+poupador de opioide e sedação são INDICAÇÕES, não doses distintas. A
+categorização dual em Analgésico e Sedativo facilita findability: o
+clínico que busca "qual droga para sedação dissociativa" encontra na
+categoria Sedativo; quem busca "qual adjuvante poupador de opioide"
+encontra em Analgésico. As notas agora deixam claro que é a MESMA droga
+com mesma dose, escolhendo a entrada pelo objetivo terapêutico.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `c368da8cf02aa4a51734ea6ce7cbb43aa23b150660130192e8fbb59f46b182e5`)
+
+## 2026-05-22 — Broncoespasmo refratário: adrenalina IV + aminofilina + cetamina + protocolo (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- Conteúdo clínico — **expansão da categoria Broncodilatadores no Mod 6
+  com 3 novas drogas + atualização do protocolo do salbutamol IV**
+
+### Drogas adicionadas em `infusionData.broncoespasmo.drugs`
+
+1. **Adrenalina IV — broncoespasmo refratário**
+   - administrationType: continuous_infusion
+   - doseUnit: mcg/kg/min, defaultDose 0,05
+   - Faixa: 0,05–2 mcg/kg/min titulada por resposta + hemodinâmica
+   - Bólus alternativo (via calculadora intermitente): 50–100 mcg/min, 0,01 mg/kg, máx 0,1 mg/bólus, máx total 1 mg
+   - Preps: 1 mg em 100 mL = 10 mcg/mL (adulto); 1 mg em 1000 mL = 1 mcg/mL (neonato/criança)
+   - Indicação: refratariedade a salbutamol, taquifilaxia a β2 seletivos, broncoespasmo associado a anafilaxia
+   - phaseInfo + notes com sequência prática (ACR 2025, WMS 2022)
+   - Cautela: ECG contínuo, PA invasiva, FC, SpO2, lactato
+
+2. **Aminofilina IV — adjuvante em broncoespasmo ventilado**
+   - administrationType: continuous_infusion
+   - doseUnit: mg/kg/h, defaultDose 0,5
+   - Carga: 5–6 mg/kg em 20–30 min (omitir se uso prévio de teofilina)
+   - Manutenção: 0,5–0,7 mg/kg/h adulto; 0,2–0,4 mg/kg/h idoso/hepatopata/IC
+   - Janela terapêutica estreita: 10–20 mcg/mL
+   - Preps: 500 mg em 500 mL = 1 mg/mL
+   - Indicação: evidência limitada; considerar em ventilado quando outras opções falharam (Craig 2020, Abdelgadir 2025)
+   - phaseInfo + notes com alertas (interações cimetidina/fluoroquinolona/macrolídeo, toxicidade arrítmica/convulsão)
+   - Lookup de diluente: SF 0,9% preferred + SG aceitável
+   - `ampouleInfoByName` registrado: ampola 24 mg/mL × 10 mL = 240 mg
+
+3. **Cetamina IV — adjuvante em broncoespasmo grave**
+   - administrationType: continuous_infusion
+   - doseUnit: mg/kg/h, defaultDose 1
+   - Faixa: 0,5–2 mg/kg/h em infusão adjuvante; bólus prévio 0,5–1 mg/kg
+   - Preps: 500 mg em 50 mL = 10 mg/mL
+   - Indicação: broncoespasmo crítico refratário, especialmente com indicação de IOT (Medar 2020)
+   - Notes: monitorar PA, FC, secreções, fenômenos emergentes, PIC
+
+### Salbutamol IV atualizado
+
+- Nome: "Salbutamol IV — broncoespasmo crítico"
+- Faixa expandida: 5–20 mcg/min (titulação a partir de 5 → 20; máximo 25 mcg/min)
+- Novo `phaseInfo`: protocolo escalonado GINA 2024–2025
+  1. Terapia inicial intensiva (SABA + corticoide + ipratrópio + O2)
+  2. Magnésio IV 2 g em 20–30 min (categoria Bólus)
+  3. Salbutamol IV E/OU adrenalina IV em refratários com monitorização cardíaca
+- Notes ampliado: alerta de sinergia cardiovascular com adrenalina IV
+
+### Referências adicionadas ao Mod 7 (seção 6 - Calculadoras)
+
+1. **GINA 2024–2025 Global Strategy for Asthma** (Reddel, Bacharier, Bateman)
+2. **Abdelgadir 2025** Arch Dis Child — metanálise pediátrica segunda linha
+3. **Abu-Sultaneh 2025** Pediatric Pulmonology — network meta-analysis
+4. **Craig 2020** Cochrane — overview de escalada em crianças
+5. **Baggott 2022** Thorax — adrenalina vs SABA, metanálise
+6. **Gaudio 2022** WMS — protocolo adrenalina IV
+7. **Adrenalin FDA prescribing info** (02 jun 2022)
+8. **Albuterol Sulfate FDA prescribing info** (21 mar 2025)
+9. **ACR Manual on Contrast Media 2025** — protocolo β2 + adrenalina IV
+
+### **REQUER REVISAO MEDICA**
+
+Validar antes de uso em produção:
+- Dose default da adrenalina IV (0,05 mcg/kg/min) — alguns serviços preferem iniciar mais conservador
+- Dose default da aminofilina (0,5 mg/kg/h) e tabela de manutenção por idade/comorbidade
+- Cetamina 0,5–2 mg/kg/h adjuvante — confirmar protocolo institucional
+- Faixa máxima do salbutamol IV (25 mcg/min) — varia por serviço
+- Sequência escalonada do protocolo refratário (corresponde ao GINA 2024–2025)
+- Monitorização obrigatória durante uso combinado β2 IV + adrenalina IV
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html` (novas drogas, lookup diluente, `ampouleInfoByName`, `brazilAmpouleOptions`)
+- `src/data/modules/modulo_07_referencias.html` (9 novas referências)
+- `scripts/verify-module-hashes.mjs`:
+  - Mod 6: `950d9addd8563b8f3197a72d438049c54e6613d4cdbadf6eba785b488b98383a`
+  - Mod 7: `9ce3ba35cc56e2bcd1ab00752c1de3ed2045827151b4d4efe6f5923db8e3eda9`
+
+## 2026-05-22 — Furosemida: dose por função renal + fases de ataque/escalada + monitorização ampliada (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- Conteúdo clínico — **estruturação avançada da entrada da furosemida**
+  em campos `range` / `phaseInfo` / `maxInfusionTime` / `notes`, conforme
+  protocolo de dosagem por função renal e estratégia de escalada
+
+### Mudanças no Mod 6 — entrada `furosemida`
+
+**`range`** atualizado com tiers por função renal:
+- Função renal normal: 5–10 mg/h
+- Insuficiência renal moderada: 10–20 mg/h
+- Insuficiência renal grave: 20–40 mg/h
+- Taxa máxima FDA: 4 mg/min (240 mg/h)
+- Dose diária usual ≤ 400–500 mg, máximo 600 mg/dia
+
+**`phaseInfo`** (NOVO) — protocolo de ataque + escalada:
+- Dose de ataque OBRIGATÓRIA antes da infusão (sem ataque: 6–20 h
+  para atingir equilíbrio)
+- Pré-uso oral: ataque IV = 1–2,5× dose oral domiciliar
+- Virgem de terapia: limite inferior do intervalo
+- Reavaliação após 1 h: se inadequado, repetir bólus e aumentar
+  taxa em 50–100%
+- Reajuste a cada 4–6 h conforme balanço hídrico, função renal,
+  hemodinâmica e eletrólitos
+
+**`maxInfusionTime`** (NOVO):
+- Dose diária usual ≤ 400–500 mg; máx 600 mg/dia em protocolos
+  específicos
+- Reavaliar transição para via oral em 24–48 h
+
+**`notes`** ampliado com monitorização e populações especiais:
+- Monitorização frequente: K, Na, Mg, Ca, CO₂/bicarbonato (alcalose),
+  ureia, creatinina, glicemia, ácido úrico
+- Avaliação com **sódio urinário** no início da terapia
+- Aumento de Cr > 0,3 mg/dL em 72 h: comum em dose alta, mas análise
+  post hoc do DOSE mostrou que elevação inicial se associa a melhores
+  desfechos a longo prazo
+- Riscos: ototoxicidade (minimizada pela taxa máx 4 mg/min), retenção
+  urinária aguda (HPB), encefalopatia em cirrose por mudanças bruscas
+  de volume
+- Cautela em idosos (iniciar dose inferior; risco renal)
+
+### Mod 7 — atualização da bula FDA Furosemide
+
+- Data atualizada de **10 mar 2025** → **13 mai 2026** (com nota da
+  revisão intermediária em 03 nov 2025).
+- Texto da referência ampliado para incluir os pontos de monitorização
+  e cautelas em populações especiais.
+
+### Referências citadas (já existentes no Mod 7)
+
+Todos os 6 itens referenciados pelo usuário já estavam no Mod 7
+(Brater 1998, Hollenberg 2024, Hollenberg 2019, Felker 2020) e o item
+3/5 (FDA Furosemide) foi atualizado para a versão mais recente.
+
+### **REQUER REVISAO MEDICA**
+
+Pontos para validação institucional:
+- Tiers de dose por função renal (5–10 / 10–20 / 20–40 mg/h).
+- Estratégia "ataque IV = 1–2,5× dose oral domiciliar".
+- Reavaliação após 1 h com escalada 50–100%.
+- Dose máxima 600 mg/dia em protocolos específicos.
+- Avaliação de resposta com sódio urinário precoce.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `src/data/modules/modulo_07_referencias.html`
+- `scripts/verify-module-hashes.mjs`:
+  - Mod 6: `0aeb043a03ff6b3d8dce8fb54ba09153e3431cab771762e20375bdeeaabcf53e`
+  - Mod 7: `0f6e19607359a0fa3c5c0ee893e4683c725e31929962503c9fac27c7c2912070`
+
+## 2026-05-22 — Furosemida: indicações da infusão contínua expandidas + 10 referências bibliográficas (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- Conteúdo clínico — **revisão substancial das notas da furosemida na
+  calculadora + adição de bibliografia primária ao Módulo 7**
+
+### Mudanças no Mod 6 — entrada `furosemida` em `infusionData.diuretico`
+
+`range` atualizado:
+- Antes: `"5–20 mg/h; doses maiores apenas com protocolo e monitorização"`
+- Depois: `"5–20 mg/h; doses maiores apenas com protocolo e monitorização. Taxa máxima conforme bula FDA: 4 mg/min"`
+
+`notes` expandido para cobrir as indicações específicas da infusão
+contínua em insuficiência cardíaca aguda descompensada:
+
+> Indicações específicas para infusão contínua em insuficiência cardíaca
+> aguda descompensada: (a) resistência diurética com resposta inadequada
+> a bólus intermitentes; (b) doses crônicas > 240 mg/dia de furosemida
+> equivalente (excluídos do DOSE trial); (c) resposta diurética vigorosa
+> mas transitória; (d) insuficiência renal com resposta inadequada a
+> intermitentes; (e) síndrome cardiorrenal; (f) disfunção ventricular
+> direita grave. O estudo DOSE não demonstrou superioridade em desfechos
+> primários, mas metanálises mostram maior débito urinário em 24h, maior
+> redução de peso/BNP e menor necessidade de escalada terapêutica.
+> Administrar dose de ataque antes da infusão (estado de equilíbrio sem
+> ataque: 6–20 h). Monitorar diurese, PA, K, Mg, Na, creatinina, alcalose
+> metabólica e ototoxicidade.
+
+### 10 referências adicionadas ao Mod 7, seção 6 (Calculadoras)
+
+A DOSE trial (Felker 2011) já estava no Mod 7. Adicionadas:
+
+1. **Hollenberg SM, et al.** 2024 ACC Expert Consensus on Heart Failure
+   Focused Update. *JACC*. 2024;84(13):1241-1267.
+2. **Felker GM, et al.** Diuretic Therapy for Patients With Heart Failure:
+   JACC State-of-the-Art Review. *JACC*. 2020;75(10):1178-1195.
+3. **Ellison DH, Felker GM.** Diuretic Treatment in Heart Failure.
+   *NEJM*. 2017;377(20):1964-1975.
+4. **Heidenreich PA, et al.** 2022 AHA/ACC/HFSA Guideline for the
+   Management of Heart Failure. *JACC*. 2022;79(17):e263-e421.
+5. **Jentzer JC, et al.** Contemporary Management of Severe Acute Kidney
+   Injury and Refractory Cardiorenal Syndrome. *JACC*. 2020;76(9):1084-1101.
+6. **Hollenberg SM, et al.** 2019 ACC Expert Consensus on HF.
+   *JACC*. 2019;74(15):1966-2011.
+7. **Brater DC.** Diuretic Therapy. *NEJM*. 1998;339(6):387-395.
+8. **Rasoul D, et al.** Continuous Infusion Versus Bolus Injection of Loop
+   Diuretics for Acute Heart Failure. *Cochrane Database*. 2024;5:CD014811.
+9. **Ng KT, Yap JLL.** Continuous Infusion vs. Intermittent Bolus
+   Injection of Furosemide in Acute Decompensated Heart Failure:
+   Systematic Review and Meta-Analysis. *Anaesthesia*. 2018;73(2):238-247.
+10. **Furosemide — FDA prescribing information**. U.S. Food and Drug
+    Administration. Atualizado em 10 mar 2025.
+
+### **REQUER REVISAO MEDICA**
+
+- Confirmar as 6 indicações específicas para infusão contínua (a-f).
+- Confirmar a citação dos achados das metanálises (maior débito
+  urinário em 24h, redução de peso/BNP).
+- Confirmar a taxa máxima de 4 mg/min conforme bula FDA.
+- Confirmar a recomendação de dose de ataque antes da infusão.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `src/data/modules/modulo_07_referencias.html`
+- `scripts/verify-module-hashes.mjs`:
+  - Mod 6: `d96efd1966260e1b77d13e89158237f76ea2d098a56819562f797732a2e2d852`
+  - Mod 7: `4ffca79062f9b86542b5bfab4393022a5ecdff95888bc77a9502799133e1a9a5`
+
+## 2026-05-22 — Nitroprussiato: restrição reativada a SG 5% (FDA categórica) + 2 referências FDA
+
+### Tipo de alteração
+
+- Conteúdo clínico — **correção de regressão**: nitroprussiato volta a
+  ser restrito a SG 5% (dextrose 5%) conforme bula FDA, anulando a
+  flexibilização introduzida na rodada anterior.
+
+### Motivo
+
+A bula FDA do nitroprussiato (atualizada 2021-07-22) é categórica:
+- Diluente OBRIGATÓRIO: dextrose 5% em água
+- Concentração: 50 mg em 250–1000 mL
+- Proteção da luz: manga opaca/papel alumínio (não cobrir equipo/câmara)
+- Estabilidade da solução recém-diluída: 24 h protegida da luz
+- Nenhuma outra droga deve compartilhar a mesma solução
+
+Nitroglicerina, por outro lado, **aceita ambos** SF 0,9% e SG 5% pela
+bula FDA (concentração máxima 400 mcg/mL, sem mistura com outras
+drogas; risco de adsorção em PVC e pseudoaglutinação se mesmo equipo
+de sangue).
+
+### Mudanças aplicadas em `DILUENT_INFO_BY_NAME`
+
+| Droga | Antes | Depois | Status select |
+|---|---|---|---|
+| **Nitroprussiato** | `[SF 0,9%, SG 5%]` (preferred SF) | `[SG 5%]` (restrito) | **bloqueado** |
+| Nitroglicerina | `[SF 0,9%, SG 5%]` (preferred SF) | `[SF 0,9%, SG 5%]` (preferred SF) | sem mudança |
+
+Entrada duplicada de nitroprussiato no bloco "Vasoativas preferred SF"
+removida — agora aparece apenas no bloco de restritas.
+
+### Referências FDA adicionadas ao Mod 7, seção 5
+
+`src/data/modules/modulo_07_referencias.html`:
+
+1. **Sodium Nitroprusside — FDA prescribing information** (2021-07-22).
+   Diluente obrigatório SG 5%; proteção da luz; estabilidade 24 h;
+   não compartilhar solução.
+
+2. **Nitroglycerin — FDA prescribing information** (2021-07-22).
+   Diluentes aprovados SG 5% OU SF 0,9%; concentração máxima
+   400 mcg/mL; risco de adsorção em PVC; risco de pseudoaglutinação
+   se equipo compartilhado com hemoderivado.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `src/data/modules/modulo_07_referencias.html`
+- `scripts/verify-module-hashes.mjs`:
+  - Mod 6: `9bb6095ebd2f4558f9b8bd422db311ceb46c28b225342b59481279f03a30db0a`
+  - Mod 7: `9c696c9a2b1ab6cb78d6e152b417d3467c63ccc5581c78a85473a0b3366bed10`
+
+## 2026-05-22 — Mod 7: nova referência — Stability Study of Common Vasoactive Drugs
+
+### Tipo de alteração
+
+- Conteúdo bibliográfico — **adição de referência primária que embasa a
+  tabela de compatibilidades de diluente do Módulo 6**
+
+### Alteração
+
+`src/data/modules/modulo_07_referencias.html`, seção 5 (Drogas vasoativas):
+adicionada como última referência da lista:
+
+> Yang H, Xiang B, Gong D, Zhao G, Zhang W. **Stability Study of Common
+> Vasoactive Drugs Diluted in Five Types of Solutions**. *Frontiers in
+> Pharmacology*. 2025.
+
+Anotação contextual: "Estudo de estabilidade físico-química de
+noradrenalina, adrenalina, dopamina, dobutamina, nitroglicerina e
+nitroprussiato em cinco diluentes (SF 0,9%, SG 5%, Ringer lactato e
+demais soluções comuns). Base para a tabela de compatibilidades de
+diluente adotada na calculadora do Módulo 6."
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_07_referencias.html`
+- `scripts/verify-module-hashes.mjs` (Mod 7:
+  `17a46055d5982e7ab7edd2bfa5a949935b8fb191eca42842155b83d4b55d7178`)
+
+## 2026-05-22 — Mod 6: ajuste de diluentes conforme tabela de referência (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- Conteúdo clínico — **revisão de compatibilidades de diluente em
+  vasoativas baseada em tabela de referência fornecida pelo usuário**
+
+### Tabela de referência fornecida
+
+| Droga | Diluentes Preferenciais | Restrições/Observações |
+|---|---|---|
+| Dobutamina | Dextrose 5%, NaCl 0,9%, **Ringer lactato** | Contraindicado: bicarbonato 5%, alcalinas, bissulfito + etanol |
+| Norepinefrina | Dextrose 5%, NaCl 0,9% | Preferir acesso central |
+| Epinefrina | Dextrose 5%, NaCl 0,9% | Preferir acesso central em doses altas |
+| Dopamina | Dextrose 5%, NaCl 0,9% | Preferir acesso central em doses altas (>3 mcg/kg/min) |
+| Nitroglicerina | **NaCl 0,9% (preferencial)** | Degrada em dextrose c/ nitroprussiato; adsorção em PVC |
+| Nitroprussiato | **NaCl 0,9% (preferencial)** | Compatível c/ NaCl; evitar mistura prolongada em dextrose c/ nitroglicerina |
+
+### Mudanças aplicadas em `DILUENT_INFO_BY_NAME`
+
+1. **Dobutamina** — adicionado **Ringer lactato** como diluente aceitável.
+   - Antes: `["SF 0,9%", "SG 5%"]`
+   - Depois: `["SF 0,9%", "SG 5%", "Ringer lactato"]` (preferred SF 0,9%)
+
+2. **Nitroprussiato** — removida restrição a SG 5%.
+   - Antes: `preferred:"SG 5%", allowed:["SG 5%"]` (select bloqueado)
+   - Depois: `preferred:"SF 0,9%", allowed:["SF 0,9%", "SG 5%"]` (select livre)
+   - Conforme tabela de referência: NaCl 0,9% é o preferencial; SG aceitável
+     mas com restrição de mistura prolongada com nitroglicerina.
+
+### Mantidas (já estavam corretas)
+
+- **Noradrenalina/Norepinefrina, Adrenalina, Dopamina**: SF 0,9%
+  (preferred) + SG 5% aceitável. ✓
+- **Nitroglicerina**: SF 0,9% (preferred) + SG 5% aceitável. ✓
+  Observação sobre adsorção em PVC e degradação com nitroprussiato
+  permanece como nota clínica no campo `notes` da droga.
+
+### **REQUER REVISAO MEDICA**
+
+A tabela aplicada altera as restrições anteriores em duas drogas:
+
+1. **Nitroprussiato deixa de ser restrito a SG 5%**. Validar com o
+   protocolo do serviço se a permissão a SF 0,9% é aceitável.
+2. **Dobutamina ganha Ringer lactato como opção**. Validar se há
+   restrição local (compatibilidade com outros fluidos da linha).
+
+### Observações clínicas adicionais (não codificadas como UI restrita)
+
+Dessas observações da tabela, algumas já estão no campo `notes` de cada
+droga; outras podem ser incorporadas em rodada futura:
+
+- Dobutamina: contraindicação com bicarbonato 5%, soluções alcalinas e
+  bissulfito + etanol.
+- Norepinefrina, Epinefrina, Dopamina (>3 mcg/kg/min): preferência por
+  acesso central.
+- Nitroglicerina: adsorção em PVC; degradação em dextrose quando
+  misturada com nitroprussiato.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `fbd4b4f09f47ee7f7529fc8842a92b4ed49dc67ab0149b0894504bef96cc9f4f`)
+
+## 2026-05-22 — Mod 6: vasoativas com preferred SF 0,9% (padrão institucional confirmado)
+
+### Tipo de alteração
+
+- Conteúdo clínico — **inversão de preferred de diluente em vasoativas
+  contínuas**, conforme confirmação do usuário
+
+### Alterações realizadas
+
+Em `DILUENT_INFO_BY_NAME` (`src/data/modules/modulo_06_calculadoras_interativas.html`):
+
+| Droga | Antes (preferred) | Depois (preferred) | Alternativa |
+|---|---|---|---|
+| Noradrenalina | SG 5% | **SF 0,9%** | SG 5% |
+| Norepinefrina | SG 5% | **SF 0,9%** | SG 5% |
+| Adrenalina | SG 5% | **SF 0,9%** | SG 5% |
+| Dobutamina | SG 5% | **SF 0,9%** | SG 5% |
+| Dopamina | SG 5% | **SF 0,9%** | SG 5% |
+| Nitroglicerina | SG 5% | **SF 0,9%** | SG 5% |
+| Isoproterenol | SG 5% | **SF 0,9%** | SG 5% |
+| Isoprenalina | SG 5% | **SF 0,9%** | SG 5% |
+
+A literatura aceita ambos os diluentes para essas drogas — a escolha de
+SF 0,9% como preferencial reflete o padrão institucional confirmado pelo
+usuário (revisor clínico).
+
+### O que **não** mudou
+
+- **Amiodarona** segue restrita a SG 5% (precipita em SF) — confirmado.
+- **Fenitoína** segue restrita a SF 0,9% (precipita em SG) — confirmado.
+- **Nitroprussiato** segue restrito a SG 5% (bula + fotoproteção) — confirmado.
+- **Tiopental** segue restrito a SF 0,9% — confirmado.
+- **Succinilcolina** segue restrita a SF 0,9% — confirmado.
+- **Clevidipina/Propofol** seguem "uso puro (não diluir)".
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html` (lookup)
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `9de1003c313ef776b14e68f630e0e518094e2abfb39e4bfcdfdf78eb8b747180`)
+
+## 2026-05-22 — Mod 6: lookup central de diluentes para todas as drogas + bloqueio em restrições (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- **Conteúdo clínico (segurança) + interface** — extensão dos
+  metadados de diluente a todas as drogas com informação conhecida e
+  bloqueio do select quando a diluição é restrita por compatibilidade
+
+### Alterações realizadas
+
+`src/data/modules/modulo_06_calculadoras_interativas.html`:
+
+**1. Lookup central `DILUENT_INFO_BY_NAME`**
+
+Tabela `[substring(lowercase), preferredDiluent, allowedDiluents[]]` com
+~50 entradas cobrindo:
+
+**Restritas (allowedDiluents.length = 1, select bloqueado):**
+
+| Droga | Diluente único | Motivo |
+|---|---|---|
+| Fenitoína | SF 0,9% | Precipita em SG 5% |
+| Amiodarona | SG 5% | Precipita em SF 0,9% |
+| Nitroprussiato | SG 5% | Padrão de bula + proteção da luz |
+| Clevidipina | uso puro (não diluir) | Emulsão lipídica pronta |
+| Propofol | uso puro (não diluir) | Apresentação pronta |
+| Tiopental | SF 0,9% | Estabilidade após reconstituição |
+| Succinilcolina/Suxametônio | SF 0,9% | Estabilidade |
+| Atropina | SF 0,9% | Bólus simples |
+| Furosemida | SF 0,9% | Estabilidade em SG reduz potência |
+
+**Preferred SG 5% (vasoativas, estabilidade):**
+- Noradrenalina, Adrenalina, Dobutamina, Dopamina, Nitroglicerina, Isoproterenol
+
+**Preferred SF 0,9% (com SG aceitável):**
+- Vasopressina, Fenilefrina, Milrinona, Hidralazina, Nicardipina, Esmolol, Labetalol, Procainamida, Octreotida
+- Fenobarbital, Levetiracetam (+ Ringer lactato), Lidocaína
+- Etomidato, Cetamina, Midazolam, Fentanil, Remifentanil, Sufentanil, Alfentanil, Morfina, Hidromorfona, Dexmedetomidina
+- Rocurônio, Cisatracúrio, Atracúrio, Sugammadex, Neostigmina
+- Sulfato de magnésio, Salbutamol
+
+**2. Função `getDrugDiluentInfo(drug)` com 3-níveis de precedência:**
+
+1. Campo direto na droga (`drug.preferredDiluent` + `drug.allowedDiluents`)
+2. Lookup central por substring do nome (`lookupDiluentByName`)
+3. Default genérico (SF 0,9% / SG 5% / conforme protocolo)
+
+**3. `populateDiluentSelect` agora bloqueia o `<select>`** quando
+`info.allowed.length <= 1`:
+- `sel.disabled = true`
+- Classe CSS `.diluent-restricted` aplicada (fundo âmbar suave, cursor not-allowed)
+- Tooltip: "Diluição restrita por compatibilidade — não permitido alterar."
+
+**4. Estilo CSS no `<head>` do HTML:**
+```css
+.diluent-restricted{background:#fff7ed !important;border-color:#fdba74 !important;color:#7c2d12 !important;cursor:not-allowed;font-weight:600}
+```
+
+### Validação runtime (10 drogas testadas)
+
+```
+RESTRITAS (disabled=true, 1 opção):
+  Fenitoína       → [SF 0,9%]
+  Amiodarona      → [SG 5%]
+  Nitroprussiato  → [SG 5%]
+  Clevidipina     → [uso puro (não diluir)]
+  Propofol        → [uso puro (não diluir)]
+  Atropina        → [SF 0,9%]
+
+LIVRES (múltiplas opções com preferred):
+  Noradrenalina   → [SG 5%, SF 0,9%] default SG 5%
+  Dobutamina      → [SG 5%, SF 0,9%] default SG 5%
+  Fentanil        → [SF 0,9%, SG 5%] default SF 0,9%
+  Midazolam       → [SF 0,9%, SG 5%] default SF 0,9%
+```
+
+### **REQUER REVISAO MEDICA**
+
+A tabela `DILUENT_INFO_BY_NAME` carrega informações clínicas sobre
+compatibilidade de diluentes baseadas em bulas profissionais e padrões
+institucionais comuns. Cada entrada precisa ser validada antes do uso
+em produção:
+
+- Confirmar a restrição estrita da Amiodarona ao SG 5% (incompatibilidade
+  com SF 0,9% — precipitação).
+- Confirmar Fenitoína exclusivamente em SF 0,9% (precipita em SG 5%).
+- Confirmar Nitroprussiato em SG 5% (protocolo institucional).
+- Confirmar Clevidipina/Propofol como "uso puro (não diluir)".
+- Confirmar preferências de vasoativas (Noradrenalina/Dobutamina em SG 5%
+  vs SF 0,9% — varia por serviço).
+- Validar Tiopental restrito a SF 0,9% após reconstituição (algumas
+  fontes aceitam SG).
+- Validar Succinilcolina restrita a SF 0,9% (preferência forte por
+  estabilidade).
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `4e4a9b0869a903d892aa2750c210b605f898e588e0d49112f118a70d1d9d0541`)
+
+## 2026-05-22 — Mod 6: uniformização Bólus + IOT + Infusão Contínua (preparo manual + diluente por droga)
+
+### Tipo de alteração
+
+- Interface + arquitetura — **padrão unificado de preparo manual em
+  todas as calculadoras com diluente preferencial por droga**
+
+### Estrutura comum implementada nas 3 calculadoras
+
+```
+Categoria | Droga
+Apresentação comercial (preset BR)
+Preparo de solução:
+  ├ Sugestão de solução (preset padronizado)
+  └ Preparo manual: massa + unidade + diluente + volume → conc calculada (precedência sobre preset)
+Dose desejada
+[Vazão / Volume / Tempo conforme tipo de administração]
+```
+
+### Alterações realizadas
+
+**1. Novos helpers globais** em `src/data/modules/modulo_06_calculadoras_interativas.html`:
+
+- `DEFAULT_ALLOWED_DILUENTS = ["SF 0,9%", "SG 5%", "conforme protocolo"]`
+- `getDrugDiluentInfo(drug)` → `{ preferred, allowed }` lendo
+  `drug.preferredDiluent` e `drug.allowedDiluents`; fallback ao default.
+- `populateDiluentSelect(selectId, drug)` repopula o `<select>` com as
+  opções permitidas para a droga, selecionando a preferred.
+
+**2. Metadados clínicos em drogas-chave** (`preferredDiluent` + `allowedDiluents`):
+
+- **Fenitoína** (loading): `preferredDiluent:"SF 0,9%"`, `allowedDiluents:["SF 0,9%"]` — incompatível com SG 5% (precipita).
+- **Fenobarbital** (loading): preferred SF 0,9%; allowed SF + SG.
+- **Levetiracetam** (loading): preferred SF 0,9%; allowed SF + SG + Ringer lactato.
+- **Magnésio (eclâmpsia)**: preferred SF 0,9%; allowed SF + SG.
+- **Magnésio (broncoespasmo)**: preferred SF 0,9%; allowed SF + SG.
+- **Amiodarona**: preferred SG 5%; allowed `["SG 5%"]` — precipita em SF 0,9%.
+
+Demais drogas usam o fallback (SF/SG/protocolo).
+
+**3. Calculadora de Bólus / Dose Intermitente** — painel "Ajustes
+avançados de concentração" substituído por **"Preparo manual da solução"**:
+- Campos: `dvaBolusManMass` + `dvaBolusManMassUnit` (mcg/mg/g/UI) +
+  `dvaBolusManDiluent` (select populado pela droga) + `dvaBolusManVolume` (mL) +
+  `dvaBolusManConcPreview` (readonly).
+- `getBolusManualSolutionConc()` retorna `{conc, concUnit, filled}`.
+- `currentDVABolus` agora consulta manual primeiro; se preenchido,
+  sobrescreve `presentation.conc` e `presentation.unit` no cálculo do
+  volume a aspirar.
+- `updateDVABolusDefaults` repopula o diluente com `populateDiluentSelect`
+  e limpa os campos manuais ao trocar de droga.
+- Listeners de input incluem todos os campos manuais novos.
+- Toggle `dvaBolusUseCustom` removido (precedência automática).
+
+**4. Calculadora de IOT** — análogo:
+- "Ajustes avançados de concentração" reorganizado em **duas
+  `<details>`**: (a) "Sugestão de solução (preset)" (já existia, agora
+  mais conciso) e (b) **"Preparo manual da solução"**.
+- Campos: `iotManMass` + `iotManMassUnit` + `iotManDiluent` +
+  `iotManVolume` + `iotManConcPreview`.
+- `getIOTManualSolutionConc()` + `updateIOTManualConcPreview()` análogos
+  ao bólus.
+- `currentIOT` ramificado: manual filled → precedência sobre preset.
+- `updateIOTDrugDefaults` chama `populateDiluentSelect("iotManDiluent", d)`.
+- Campos antigos `iotUseCustom`, `iotCustomConc`, `iotCustomUnit`
+  preservados como `<input type="hidden">` para retrocompatibilidade com
+  referências residuais.
+
+**5. Calculadora de Infusão Contínua** — `updateInfPrep` agora chama
+`populateDiluentSelect("infDiluent", d)`, fazendo o select de diluente
+respeitar o preferencial da droga (ex.: Amiodarona pré-seleciona SG 5%
+e oculta SF 0,9%). Solução final editável já estava implementada
+(Fase 2).
+
+### Validação runtime
+
+```
+Fenitoína     → diluentes: ["SF 0,9%"]                            (restrito) ✓
+Fenobarbital  → diluentes: ["SF 0,9%", "SG 5%"]                                ✓
+Levetiracetam → diluentes: ["SF 0,9%", "SG 5%", "Ringer lactato"]               ✓
+Amiodarona    → diluentes: ["SG 5%"]                              (restrito) ✓
+Fentanil      → diluentes: ["SF 0,9%", "SG 5%", "conforme protocolo"] (fallback) ✓
+
+Override manual em fenitoína:
+  preset:  50 mg/mL → 1260 mg = 25.2 mL ✓
+  manual:  10 mg/mL → 1260 mg = 126 mL  ✓ (precedência)
+  preview: "10 mg/mL | 1000 mg em 100 mL de SF 0,9%" ✓
+```
+
+### Por que importa clinicamente
+
+- **Segurança de incompatibilidades**: drogas com diluente único (fenitoína
+  só SF, amiodarona só SG) deixam de oferecer alternativa perigosa no
+  dropdown — só aparecem opções safe.
+- **Flexibilidade controlada**: drogas com múltiplos diluentes permitidos
+  (levetiracetam) mostram todas as opções, com o preferred já selecionado.
+- **Preparo manual uniforme** nas 3 calculadoras: o mesmo padrão
+  cognitivo (massa + unidade + diluente + volume → conc) vale para
+  qualquer droga.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `c4b5b7452c0ea8d48f9d2be244401533536aac37f7d2dd63a07f35eecc249937`)
+
+### Pendente / próximas iterações
+
+- Estender `preferredDiluent`/`allowedDiluents` a mais drogas conforme
+  padronização institucional (atualmente só nas drogas com regra crítica
+  explícita).
+- Pode-se adicionar alertas visuais (ex.: badge âmbar) quando o usuário
+  escolhe um diluente que NÃO é o preferred — pendente.
+
+## 2026-05-22 — Mod 6: separação clara entre Calculadora de Bólus e Calculadora de Infusão Contínua
+
+### Tipo de alteração
+
+- Interface — **reestruturação da seção 3 para eliminar redundância
+  e simplificar navegação**
+
+### Problema
+
+A seção 3 "Calculadora de droga vasoativa" continha DOIS painéis:
+1. "DVA contínua — dose ↔ bomba" (calcDVA)
+2. "Bólus / push-dose" (calcDVABolus)
+
+O painel 1 era redundante com a seção 4 "Drogas em infusão contínua", já
+que `infusionData.vasoativa.drugs` é populado dinamicamente com o spread
+de `dvaDrugs.{vasopressor,inotropico,vasodilatador,cronotropico}`. Resultado:
+mesmo conjunto de drogas (noradrenalina, dobutamina, milrinona, etc.) aparece
+em DOIS lugares com cálculos paralelos, gerando confusão de navegação e risco
+de divergência futura.
+
+### Alterações realizadas
+
+`src/data/modules/modulo_06_calculadoras_interativas.html`:
+
+**1. Painel "DVA contínua" removido** da seção 3. Todo conteúdo de DVA em
+infusão contínua segue disponível na seção 4 (Drogas em infusão contínua)
+ao escolher a categoria "Droga vasoativa", que mostra o catálogo completo
+de vasopressores, inotrópicos, vasodilatadores e cronotrópicos.
+
+**2. Seção 3 renomeada** para **"3. Calculadora de bólus / dose intermitente"**.
+Foco exclusivo:
+- Bólus único / push-dose (atropina, adrenalina/fenilefrina push, etc.)
+- Anti-hipertensivos em bólus (esmolol, labetalol, etc.)
+- Anticonvulsivantes em dose de carga (fenitoína, fenobarbital, levetiracetam, magnésio eclâmpsia)
+- Broncodilatador adjuvante intermitente (magnésio broncoespasmo)
+- Outros bólus
+
+**3. Parágrafo de orientação** logo abaixo do título, com link interno
+para a calculadora de infusão contínua, explicando que drogas vasoativas
+em infusão contínua titulada usam a calculadora dedicada (categoria
+"Droga vasoativa").
+
+**4. Subtítulo do painel** atualizado: "Bólus / push-dose / intermitente".
+
+**5. Navegação interna** (TOC original do HTML) atualizada:
+"3. Calculadora de DVA" → "3. Calculadora de bólus / intermitente".
+
+**6. Funções JS defensivas**
+- `initDVA()`, `updateDVADrugs()`, `calcDVA()`, `addDVAToSummary()` recebem
+  early return `if(!document.getElementById("dvaCat")) return;`
+- Listeners de `peso/cenário` que chamam `calcDVA()` continuam funcionando
+  sem erro de console pois a função retorna cedo agora.
+- As funções permanecem definidas no escopo do script para retrocompatibilidade
+  com `dvaScenarioMeta`, `dvaScenarioFit` e demais helpers que ainda são
+  referenciados pelo `infusionScenarioMeta` (que usa essas funções para
+  drogas vasoativas em infusão contínua).
+
+### Validação runtime
+
+```
+sec3 título:    "3. Calculadora de bólus / dose intermitente" ✓
+sec3 painéis:   1 (apenas Bólus / push-dose / intermitente) ✓
+dvaCat:         removido ✓
+dvaBolusCat:    presente ✓ (bólus calc OK)
+infCat:         presente ✓ (infusão contínua OK)
+Erros runtime:  0 ✓
+Peso change:    não crasha (defensivos OK) ✓
+```
+
+### Drogas afetadas
+
+- Vasopressores, inotrópicos, vasodilatadores, cronotrópicos em infusão
+  contínua: **acesso pela seção 4** → Categoria "Droga vasoativa".
+- Bólus puros e intermitentes: **acesso pela seção 3** (calculadora dedicada).
+
+Sem alteração de dose, faixa terapêutica ou diluição em nenhum item.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `7426dc60da44f316783071a4dd7f096d91cb0932e65c671c88ac08f53f2d4250`)
+
+## 2026-05-22 — Mod 6 Fase 2: solução final editável no painel de infusão contínua
+
+### Tipo de alteração
+
+- Interface + lógica de cálculo — **flexibilidade para montar solução
+  personalizada além dos presets** (item 3 do refator de segurança/UX)
+
+### Alterações realizadas
+
+`src/data/modules/modulo_06_calculadoras_interativas.html`:
+
+**1. Novo painel "Solução final montada (editável)"** logo após o painel
+da ampola, no `<section id="continua">`. 4 campos:
+- `infFinalMass` (number) — quantidade do fármaco
+- `infFinalMassUnit` (select mcg/mg/g/UI)
+- `infFinalVolume` (number, mL) — volume final
+- `infFinalConcPreview` (readonly) — concentração calculada
+
+**2. Auto-fill ao selecionar preset** (`updateInfPrep`):
+- `extractSolutionDefaultsFromPrep()` faz parse de `prep.label` com regex
+  `/(\d+(?:[.,]\d+)?)\s*(mcg|mg|g|UI)\s+em\s+(\d+(?:[.,]\d+)?)\s*mL/i`
+- Quando o label segue o padrão "X mcg/mg/g/UI em Y mL", massa e volume
+  são extraídos diretamente.
+- Quando não bate (ex.: "10 mg/mL puro" do propofol), fallback usa
+  `prep.conc × infBagVolume` (default 250 mL) para derivar massa.
+- A unidade de massa é inferida de `prep.unit` (mcgml → mcg, etc).
+
+**3. Concentração editável tem precedência no cálculo**
+(`calcInfusion`, `addInfusionToSummary`):
+- `getEditableSolutionConc()` lê massa+unidade+volume e devolve
+  `{conc, concUnit}`.
+- Se a leitura é válida (massa>0 e volume>0), substitui `prep.conc`
+  e `prep.unit` no cálculo da vazão; senão, fallback ao preset.
+- Suporte a unidade "g" (converte para mg internamente para o cálculo).
+
+**4. Live preview da concentração**
+- `updateFinalSolutionPreview()` formata em tempo real:
+  `"X mg/mL | Massa: Y mg em Z mL"` no campo readonly.
+- Listeners de input em `infFinalMass`, `infFinalMassUnit`,
+  `infFinalVolume` chamam `updateFinalSolutionPreview()` + `calcInfusion()`.
+
+### Validação runtime
+
+| Droga | Auto-fill | Edição | Vazão recalcula |
+|---|---|---|---|
+| Fentanil "500 mcg em 50 mL" | 500 mcg / 50 mL → 10 mcg/mL ✓ | mass → 1000 mcg | 20 mcg/mL → 3,5 mL/h (era 7,0) ✓ |
+| Noradrenalina "16 mg em 250 mL" | 16000 mcg / 250 mL → 64 mcg/mL ✓ | — | — |
+| Propofol "10 mg/mL puro" | fallback 2500 mg em 250 mL → 10 mg/mL ✓ | — | — |
+
+### Casos não-clínicos abrangidos
+
+- O preset "Solução final sugerida" continua existindo e funciona como
+  ponto de partida — o usuário pode aceitar a sugestão ou editar.
+- O painel da ampola permanece independente — é apenas para calcular
+  quanto aspirar (massa/volume da fonte).
+- O usuário pode criar uma solução não-padronizada (ex.: noradrenalina
+  32 mg em 250 mL = 128 mcg/mL ao invés do preset 64) e a calculadora
+  responde com a vazão ajustada.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `4392627b27785bdc50283c5b48baffaca6e087ce7c7743f6fa0ce3fa6569e587`)
+
+### Status do refator de 8 itens
+
+- ✅ Item 1: Magnésio fora de infusão contínua (Fase 1)
+- ✅ Item 2: `administrationType` field (Fase 1)
+- ✅ Item 3: Solução final editável (Fase 2 — esta entrada)
+- ✅ Item 4: Ampola separada de solução final (já existia, agora explícito)
+- ✅ Item 5: Fórmulas confirmadas
+- ✅ Item 6: UI condicional por tipo (Fase 1)
+- ✅ Item 7: Magnésio cadastrado em 2 categorias (Fase 1)
+- ✅ Item 8: Alert de segurança (Fase 1)
+
+Refator de calculadora interativa completo.
+
+## 2026-05-22 — Mod 6: tipo de administração + magnésio movido para intermitente (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- **Conteúdo clínico (correção de risco) + arquitetura da calculadora**
+
+### Problema corrigido
+
+Sulfato de magnésio IV para broncoespasmo estava cadastrado em
+`infusionData.broncoespasmo` (categoria de infusão contínua) com
+`defaultDose:6000 mg/h` — o que representava o RATE necessário para
+infundir 2 g em 20 min, MAS o campo era apresentado como "dose desejada
+em mg/h". Um clínico que aceitasse o default poderia, na pior leitura,
+configurar uma infusão contínua de 6000 mg/h — dose perigosa.
+
+### Alterações realizadas
+
+`src/data/modules/modulo_06_calculadoras_interativas.html`:
+
+**1. Magnésio removido de `infusionData.broncoespasmo`**
+- A categoria mantém apenas Salbutamol IV (legitimamente continuous_infusion 5–20 mcg/min).
+
+**2. Magnésio re-cadastrado em DOIS slots na calculadora de bólus** (com `administrationType:"intermittent_infusion"`):
+- **`broncodilatador_adjuvante.magnesio_broncoespasmo`** — nova categoria:
+  - Dose: 2 g IV em 20–30 min (adjuvante em asma grave/DPOC refratária)
+  - Solução: 2 g em 100 mL SF 0,9% → 20 mg/mL
+  - Apresentações: MgSO₄ 50% (500 mg/mL) ou 10% (100 mg/mL)
+- **`anticonvulsivante_bolus.magnesio_anticonvulsivante`** — junto aos demais loadings:
+  - Dose: 4–6 g IV em 15–20 min (eclâmpsia/pré-eclâmpsia grave)
+  - Solução: 4 g em 100 mL → 40 mg/mL
+  - Apresentações: idem
+  - Nota explícita: NÃO é a manutenção contínua (que seria 1–2 g/h em bomba separada).
+
+**3. Novo campo `administrationType`** com valores:
+- `"continuous_infusion"` (infusão contínua titulada)
+- `"bolus"` (existente; bólus único)
+- `"intermittent_infusion"` (NOVO; dose total em tempo definido)
+
+Aplicado em Salbutamol IV (continuous_infusion) e nas duas entradas
+novas de magnésio. Demais drogas continuam funcionando pelo
+comportamento padrão (sem o campo = bolus em `dvaBolusDrugs`; sem o
+campo = continuous_infusion em `infusionData`).
+
+**4. UI condicional por administrationType**
+- Novo painel `#dvaBolusIntermittentPanel` (display:none por padrão) com inputs:
+  - `dvaBolusTimeMin` (tempo em min)
+  - `dvaBolusFinalVolume` (volume final em mL)
+- Quando a droga selecionada tem `administrationType==="intermittent_infusion"`:
+  - Painel é exibido (display:grid)
+  - Valores default preenchidos a partir de `defaultTimeMin` e `defaultFinalVolume` da droga
+  - Alert âmbar visível sob o painel: "Administração intermitente — não é infusão contínua. Atenção à dose total em gramas, NÃO em mg/h"
+- Quando não é intermittent: painel e alert ocultos.
+
+**5. Branching no `currentDVABolus` + `calcDVABolus`**
+- Para intermittent: calcula `doseInMg → volumeAspirar (massa/conc. ampola) → vazão = volumeFinal / (tempo/60)`.
+- Headline mostra "X g em Y min → vazão Z mL/h" em vez de "X mg → V mL".
+- Card "Solução preparada" mostra: apresentação comercial, volume a aspirar da ampola, volume final, massa total (em g e mg), concentração final calculada.
+- Card "Posologia e farmacodinâmica" mostra: dose total, tempo de administração, vazão na bomba.
+- Card "Cuidados e segurança" inclui linha extra: "Administração intermitente em bomba — NÃO é infusão contínua. A vazão calculada vale apenas pelos minutos definidos."
+
+**6. `addDVABolusToSummary` ramificado**
+- Para intermittent: item entra no cenário-resumo com `type:"Intermitente"`, dose formatada como "X g em Y min", volume como "Z mL/h por Y min".
+
+**7. Suporte a unidade "g"** em `baseMassUnitFromDoseUnit`. Nova helper `toMilligrams()` para converter g/mg/mcg → mg.
+
+**8. Notes de segurança em ambas entradas de magnésio**
+- "NÃO CONFUNDIR a dose total em gramas com taxa em mg/h"
+- Recomendação de monitorização (PA, reflexos patelares, FR, função renal, ECG)
+- Antagonista: gluconato de cálcio
+- Em eclâmpsia: lembrete de que essa é a dose de ATAQUE, não a manutenção contínua
+
+### **REQUER REVISAO MEDICA**
+
+Toda nomenclatura/faixa cruzada com referências (GINA 2024, ACOG eclampsia,
+EMCrit IBCC). Validações pendentes:
+- Confirmar protocolo institucional para a dose de ataque em eclâmpsia (4 vs 6 g).
+- Confirmar tempo de infusão (20 vs 30 min) para broncoespasmo no serviço.
+- Validar os textos de alerta para o cenário local.
+- A manutenção contínua de magnésio em eclâmpsia (1–2 g/h) **ainda não foi cadastrada**.
+  Pode ser adicionada à `infusionData` em rodada futura se desejado.
+
+### Itens pendentes para Fase 2 (próxima rodada)
+
+- **Item 3**: solução final totalmente editável (inputs massa desejada + volume final + concentração calculada) no painel de infusão contínua. Hoje, o preset de `prep.conc` é fixo.
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html`
+- `scripts/verify-module-hashes.mjs` (Mod 6:
+  `e1c9c4f908faf259dca83bd0fd395cf1ebfa68b93543e7d7ed64d6687d480485`)
+
 ## 2026-05-22 — Mod 6: renomear categoria "Broncoespasmo grave — ASMA/DPOC" para "Broncodilatadores"
 
 ### Tipo de alteração

@@ -84,6 +84,7 @@
     .med-card--scenario-caution{border-left-color:#b54708;background:#fffbeb}
     .med-card--scenario-neutral{border-left-color:#123c69;background:#eef3f8}
     .compact-note{font-size:11px;line-height:1.3;opacity:.92}
+    .diluent-restricted{background:#fff7ed !important;border-color:#fdba74 !important;color:#7c2d12 !important;cursor:not-allowed;font-weight:600}
     .strategy-box{background:#fff;border:1px solid #d8e0ea;border-left:5px solid #123c69;border-radius:12px;padding:10px;margin:10px 0;color:#172033}
     .strategy-box strong{color:#123c69}
     .strategy-box div{font-size:12px;line-height:1.35;margin:3px 0}
@@ -235,7 +236,7 @@
       <ul>
         <li><a href="#paciente" data-short="1"><span class="nav-label">1. Dados do paciente</span></a></li>
         <li><a href="#iot" data-short="2"><span class="nav-label">2. Calculadora para Intubação</span></a></li>
-        <li><a href="#dva" data-short="3"><span class="nav-label">3. Calculadora de DVA</span></a></li>
+        <li><a href="#dva" data-short="3"><span class="nav-label">3. Calculadora de bólus / intermitente</span></a></li>
         <li><a href="#continua" data-short="4"><span class="nav-label">4. Drogas em infusão contínua</span></a></li>
         <li><a href="#resumo" data-short="5"><span class="nav-label">5. Cenário-resumo</span></a></li>
         <li><a href="#leituras" data-short="Ler"><span class="nav-label">Sugestão de leitura</span></a></li>
@@ -303,18 +304,32 @@
           <div><label for="iotDoseUnitSelect">Unidade da dose</label><select id="iotDoseUnitSelect"></select></div>
           <div><label for="iotAmpPresentation">Apresentação comercial disponível</label><select id="iotAmpPresentation"></select></div>
         </div>
-        <details class="refs-collapsible" style="margin-top:10px">
-          <summary>Ajustes avançados de concentração</summary>
+        <details class="refs-collapsible compact-details" style="margin-top:10px">
+          <summary>Sugestão de solução (preset)</summary>
           <div class="detail-body">
             <div class="calc-grid">
               <div><label for="iotPresentation">Concentração usada no cálculo</label><select id="iotPresentation"></select></div>
-              <div><label for="iotUseCustom">Usar concentração manual?</label><select id="iotUseCustom"><option value="nao">Não</option><option value="sim">Sim</option></select></div>
-              <div><label for="iotCustomConc">Concentração manual</label><input id="iotCustomConc" type="number" step="0.01" placeholder="opcional"></div>
-              <div><label for="iotCustomUnit">Unidade</label><select id="iotCustomUnit"><option value="mgml">mg/mL</option><option value="mcgml">mcg/mL</option><option value="uiml">UI/mL</option></select></div>
             </div>
-            <div class="compact-note">Use apenas quando a concentração administrada for diferente da apresentação comercial selecionada, por reconstituição ou diluição local.</div>
+            <div class="compact-note">Preset baseado em apresentações comuns no Brasil. Para reconstituição/diluição customizada, use o preparo manual abaixo.</div>
           </div>
         </details>
+        <details class="refs-collapsible compact-details" style="margin-top:10px">
+          <summary>Preparo manual da solução (sobrescreve o preset)</summary>
+          <div class="detail-body">
+            <div class="calc-grid">
+              <div><label for="iotManMass">Massa do fármaco na solução</label><input id="iotManMass" type="number" step="0.001" placeholder="ex.: 200"></div>
+              <div><label for="iotManMassUnit">Unidade</label><select id="iotManMassUnit"><option value="mcg">mcg</option><option value="mg" selected>mg</option><option value="g">g</option><option value="UI">UI</option></select></div>
+              <div><label for="iotManDiluent">Diluente</label><select id="iotManDiluent"></select></div>
+              <div><label for="iotManVolume">Volume final (mL)</label><input id="iotManVolume" type="number" step="1" min="1" placeholder="ex.: 20"></div>
+              <div><label>Concentração calculada</label><input id="iotManConcPreview" type="text" value="—" readonly></div>
+            </div>
+            <div class="compact-note">Use quando reconstituir ou diluir localmente. Massa + volume preenchidos têm precedência sobre o preset acima.</div>
+          </div>
+        </details>
+        <!-- Compat: campos antigos preservados como hidden para nao quebrar referencias residuais -->
+        <input id="iotUseCustom" type="hidden" value="nao">
+        <input id="iotCustomConc" type="hidden" value="">
+        <input id="iotCustomUnit" type="hidden" value="mgml">
         <input id="iotAddLabel" type="hidden" value="">
         <div class="btnrow">
           <button class="action" onclick="calcIOT()">Calcular bólus</button>
@@ -326,39 +341,11 @@
     </section>
 
     <section id="dva">
-      <h2>3. Calculadora de droga vasoativa</h2>
-      <div class="calc-panel">
-        <h3>DVA — dose ↔ bomba</h3>
-        <input id="dvaAutoMode" type="hidden" value="">
-        <div class="calc-grid">
-          <div><label for="dvaCat">Categoria</label><select id="dvaCat"></select></div>
-          <div><label for="dvaDrug">Medicação</label><select id="dvaDrug"></select></div>
-          <div><label for="dvaPrep">Solução final/diluição sugerida</label><select id="dvaPrep"></select></div>
-          <div><label for="dvaDose">Dose desejada <span id="dvaDoseUnitLabel" class="unit-inline"></span></label><input id="dvaDose" type="number" step="0.001" value="0.1" placeholder="preencher valor numérico"></div>
-        </div>
-        <div class="calc-grid" style="margin-top:12px">
-          <div><label for="dvaRate">Vazão da bomba (mL/h)</label><input id="dvaRate" type="number" step="0.01" placeholder="preencher mL/h se desejar calcular dose"></div>
-        </div>
-        <details class="refs-collapsible" style="margin-top:10px">
-          <summary>Ajustes avançados da solução final</summary>
-          <div class="detail-body">
-            <div class="calc-grid">
-              <div><label for="dvaConc">Concentração final</label><input id="dvaConc" type="number" step="0.01"></div>
-              <div><label for="dvaConcUnit">Unidade</label><select id="dvaConcUnit"><option value="mcgml">mcg/mL</option><option value="uiml">UI/mL</option><option value="mgml">mg/mL</option></select></div>
-            </div>
-            <div class="compact-note">Use apenas quando a solução final preparada for diferente da opção selecionada.</div>
-          </div>
-        </details>
-        <div class="btnrow">
-          <button class="action" onclick="calcDVA()">Calcular DVA</button>
-          <button class="action" onclick="addDVAToSummary()">Adicionar ao cenário-resumo</button>
-          <span class="summary-counter" aria-live="polite">Itens adicionados: 0</span>
-        </div>
-        <div class="calc-result" id="dvaOut"><strong>Resultado: —</strong><span>—</span></div>
-      </div>
+      <h2>3. Calculadora de bólus / dose intermitente</h2>
+      <p>Drogas administradas em bólus único (push-dose) ou em infusão intermitente programada por tempo. Para drogas vasoativas em infusão contínua titulada (noradrenalina, adrenalina, dobutamina, etc.), use a calculadora <a href="#continua">Drogas em infusão contínua</a> com a categoria <strong>Droga vasoativa</strong>.</p>
 
       <div class="calc-panel">
-        <h3>Bólus / push-dose</h3>
+        <h3>Bólus / push-dose / intermitente</h3>
         <div class="calc-grid">
           <div><label for="dvaBolusCat">Categoria</label><select id="dvaBolusCat"></select></div>
           <div><label for="dvaBolusDrug">Medicação</label><select id="dvaBolusDrug"></select></div>
@@ -372,14 +359,24 @@
         <div class="calc-grid" style="margin-top:12px">
           <div><label for="dvaBolusPresentation">Concentração usada no cálculo</label><select id="dvaBolusPresentation"></select></div>
         </div>
-        <details class="refs-collapsible" style="margin-top:10px">
-          <summary>Ajustes avançados de concentração</summary>
+        <div id="dvaBolusIntermittentPanel" class="calc-grid" style="margin-top:12px; display:none;">
+          <div><label for="dvaBolusTimeMin">Tempo de administração (min)</label><input id="dvaBolusTimeMin" type="number" step="1" min="1"></div>
+          <div><label for="dvaBolusFinalVolume">Volume final da solução (mL)</label><input id="dvaBolusFinalVolume" type="number" step="1" min="1"></div>
+        </div>
+        <div id="dvaBolusIntermittentNote" class="compact-note" style="display:none; margin-top:8px; padding:10px 12px; border-left:4px solid #b54708; background:#fffbeb; border-radius:8px; color:#3b2206;">
+          <strong>Administração intermitente:</strong> esta medicação é prescrita como dose total infundida em um tempo definido — não como infusão contínua. O sistema calcula a vazão (mL/h) necessária para entregar o volume final no tempo escolhido. Atenção à dose total em gramas, NÃO em mg/h.
+        </div>
+        <details class="refs-collapsible compact-details" style="margin-top:10px">
+          <summary>Preparo manual da solução (sobrescreve o preset)</summary>
           <div class="detail-body">
             <div class="calc-grid">
-              <div><label for="dvaBolusCustomConc">Concentração manual</label><input id="dvaBolusCustomConc" type="number" step="0.01" placeholder="opcional"></div>
-              <div><label for="dvaBolusCustomUnit">Unidade</label><select id="dvaBolusCustomUnit"><option value="mcgml">mcg/mL</option><option value="mgml">mg/mL</option><option value="uiml">UI/mL</option></select></div>
-              <div><label for="dvaBolusUseCustom">Usar concentração manual?</label><select id="dvaBolusUseCustom"><option value="nao">Não</option><option value="sim">Sim</option></select></div>
+              <div><label for="dvaBolusManMass">Massa do fármaco na solução</label><input id="dvaBolusManMass" type="number" step="0.001" placeholder="ex.: 100"></div>
+              <div><label for="dvaBolusManMassUnit">Unidade</label><select id="dvaBolusManMassUnit"><option value="mcg">mcg</option><option value="mg" selected>mg</option><option value="g">g</option><option value="UI">UI</option></select></div>
+              <div><label for="dvaBolusManDiluent">Diluente</label><select id="dvaBolusManDiluent"></select></div>
+              <div><label for="dvaBolusManVolume">Volume final da solução (mL)</label><input id="dvaBolusManVolume" type="number" step="1" min="1" placeholder="ex.: 100"></div>
+              <div><label>Concentração calculada</label><input id="dvaBolusManConcPreview" type="text" value="—" readonly></div>
             </div>
+            <div class="compact-note">Quando massa e volume estiverem preenchidos, este preparo manual tem precedência sobre o preset selecionado acima. O diluente pré-selecionado segue o preferencial da droga; outras opções aparecem apenas quando seguras.</div>
           </div>
         </details>
         <div class="btnrow">
@@ -418,6 +415,18 @@
               <div><label>Concentração calculada</label><input id="infAmpConcPreview" type="text" value="—" readonly></div>
             </div>
             <div class="compact-note">A concentração da ampola é calculada automaticamente (massa total ÷ volume total) e é usada para calcular o volume a aspirar.</div>
+          </div>
+        </details>
+        <details class="refs-collapsible compact-details" open style="margin-top:10px">
+          <summary>Solução final montada (editável)</summary>
+          <div class="detail-body">
+            <div class="calc-grid">
+              <div><label for="infFinalMass">Quantidade do fármaco na solução final</label><input id="infFinalMass" type="number" step="0.001" placeholder="ex.: 500"></div>
+              <div><label for="infFinalMassUnit">Unidade da massa</label><select id="infFinalMassUnit"><option value="mcg">mcg</option><option value="mg" selected>mg</option><option value="g">g</option><option value="UI">UI</option></select></div>
+              <div><label for="infFinalVolume">Volume final da solução (mL)</label><input id="infFinalVolume" type="number" step="1" min="1" placeholder="ex.: 50"></div>
+              <div><label>Concentração final calculada</label><input id="infFinalConcPreview" type="text" value="—" readonly></div>
+            </div>
+            <div class="compact-note">Ao selecionar uma solução pré-definida acima, os campos são auto-preenchidos. Edite massa e/ou volume para montar uma solução personalizada — a concentração final é recalculada automaticamente e usada na vazão da bomba.</div>
           </div>
         </details>
         <div class="btnrow">
@@ -802,6 +811,8 @@ const dvaBolusDrugs = {
         name:"Fenitoína — dose de carga",
         doseUnit:"mg/kg",
         defaultDose:18,
+        preferredDiluent:"SF 0,9%",
+        allowedDiluents:["SF 0,9%"],
         range:"15–20 mg/kg IV em dose de carga; velocidade máxima 50 mg/min (25 mg/min em idosos/cardiopatas) — referência ESETT/NCS 2012",
         presentations:[
           {label:"Fenitoína 50 mg/mL — solução em SF 0,9% (incompatível com SG 5%)", conc:50, unit:"mgml", prep:"Fenitoína 250 mg/5 mL (concentração 50 mg/mL). Diluir EXCLUSIVAMENTE em SF 0,9% (precipita em SG 5%). Para 1 g em 100 mL de SF → 10 mg/mL. Administrar em via dedicada com filtro em linha quando disponível; respeitar velocidade máxima 50 mg/min."}
@@ -816,6 +827,8 @@ const dvaBolusDrugs = {
         name:"Fenobarbital — dose de carga",
         doseUnit:"mg/kg",
         defaultDose:18,
+        preferredDiluent:"SF 0,9%",
+        allowedDiluents:["SF 0,9%","SG 5%"],
         range:"15–20 mg/kg IV em dose de carga (até 30 mg/kg cumulativo); velocidade máxima 50–100 mg/min em adultos (1 mg/kg/min em pediatria) — referência NCS 2012",
         presentations:[
           {label:"Fenobarbital 10 mg/mL — diluição 1:9", conc:10, unit:"mgml", prep:"Fenobarbital 200 mg/2 mL (concentração 100 mg/mL). Diluir 1:9 em SF 0,9% ou SG 5% → concentração final 10 mg/mL. Para 1 g, aspirar 10 mL (5 ampolas) + 90 mL de diluente = 100 mL com 10 mg/mL. Administrar IV lento respeitando 50–100 mg/min."}
@@ -830,6 +843,8 @@ const dvaBolusDrugs = {
         name:"Levetiracetam — dose de carga",
         doseUnit:"mg/kg",
         defaultDose:60,
+        preferredDiluent:"SF 0,9%",
+        allowedDiluents:["SF 0,9%","SG 5%","Ringer lactato"],
         range:"30–60 mg/kg IV em dose de carga (máximo 4500 mg); infusão em 15 min — referência ESETT 2019/bula Keppra",
         presentations:[
           {label:"Levetiracetam 15 mg/mL — concentração máxima diluída", conc:15, unit:"mgml", prep:"Levetiracetam 500 mg/5 mL (concentração 100 mg/mL). Diluir em SF 0,9%, SG 5% ou Ringer lactato para concentração final ≤ 15 mg/mL. Para 4 g em 280 mL (40 mL de Keppra + 240 mL de diluente) = ~14,3 mg/mL. Administrar em 15 min. Solução diluída estável até 4h em temperatura ambiente."}
@@ -839,6 +854,55 @@ const dvaBolusDrugs = {
         ],
         ampoule:"Levetiracetam (Keppra) 500 mg/5 mL — concentração 100 mg/mL; conteúdo total 500 mg. Concentração máxima na solução diluída para infusão: 15 mg/mL.",
         notes:"Antiepiléptico de amplo espectro com perfil hemodinâmico favorável e poucas interações. ESETT 2019 demonstrou equivalência a fos-fenitoína e valproato em status epilepticus estabelecido. Ajuste de dose em insuficiência renal (ClCr < 80 mL/min). Reações usuais: sonolência, irritabilidade, cefaleia; raro: alterações comportamentais e psiquiátricas."
+      },
+      magnesio_anticonvulsivante:{
+        name:"Sulfato de magnésio IV — eclâmpsia / adjuvante anticonvulsivante",
+        administrationType:"intermittent_infusion",
+        doseUnit:"g",
+        defaultDose:4,
+        defaultTimeMin:20,
+        timeMinRange:[15,20],
+        defaultFinalVolume:100,
+        preferredDiluent:"SF 0,9%",
+        allowedDiluents:["SF 0,9%","SG 5%"],
+        range:"Eclâmpsia/pré-eclâmpsia grave: dose de ataque 4–6 g IV em 15–20 min; manutenção 1–2 g/h em infusão contínua separada. Adjuvante em status refratário selecionado: 2 g em 20 min, conforme protocolo institucional.",
+        presentations:[
+          {label:"4 g em 100 mL — MgSO₄ 50%", conc:40, unit:"mgml", prep:"Sulfato de magnésio 4 g = 8 mL se apresentação 50% (500 mg/mL) + diluente 92 mL = solução final 100 mL → concentração 40 mg/mL; infundir em 15–20 min."},
+          {label:"6 g em 150 mL — MgSO₄ 50%", conc:40, unit:"mgml", prep:"Sulfato de magnésio 6 g = 12 mL se apresentação 50% (500 mg/mL) + diluente 138 mL = solução final 150 mL → concentração 40 mg/mL; infundir em 15–20 min."}
+        ],
+        commercialPresentations:[
+          {label:"MgSO₄ 50% — 500 mg/mL", conc:500, unit:"mgml", volume:10, content:5000, contentUnit:"mg"},
+          {label:"MgSO₄ 10% — 100 mg/mL", conc:100, unit:"mgml", volume:10, content:1000, contentUnit:"mg"}
+        ],
+        ampoule:"Sulfato de magnésio: 50% = 500 mg/mL (ampola 10 mL = 5 g); 10% = 100 mg/mL (ampola 10 mL = 1 g).",
+        notes:"ATENÇÃO: este cadastro é para a DOSE DE ATAQUE em eclâmpsia/pré-eclâmpsia grave ou adjuvante em status refratário selecionado — NÃO é manutenção. A manutenção contínua (1–2 g/h em eclâmpsia) deve ser prescrita em bomba separada. Monitorar PA, reflexos patelares (sinal precoce de hipermagnesemia), frequência respiratória, ECG e função renal. Antagonista: gluconato de cálcio 1 g IV lento se sinais de toxicidade. NÃO CONFUNDIR dose total em gramas com taxa em mg/h."
+      }
+    }
+  },
+  broncodilatador_adjuvante: {
+    label:"Broncodilatador — adjuvante intermitente",
+    drugs:{
+      magnesio_broncoespasmo:{
+        name:"Sulfato de magnésio IV — broncoespasmo (asma/DPOC)",
+        administrationType:"intermittent_infusion",
+        doseUnit:"g",
+        defaultDose:2,
+        defaultTimeMin:20,
+        timeMinRange:[20,30],
+        defaultFinalVolume:100,
+        preferredDiluent:"SF 0,9%",
+        allowedDiluents:["SF 0,9%","SG 5%"],
+        range:"Asma grave/refratária ou DPOC exacerbada grave: 2 g IV em 20–30 min como adjuvante. NÃO é infusão contínua. Repetir conforme protocolo institucional.",
+        presentations:[
+          {label:"2 g em 100 mL — MgSO₄ 50%", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 4 mL se apresentação 50% (500 mg/mL) + diluente 96 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 20–30 min."},
+          {label:"2 g em 100 mL — MgSO₄ 10%", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 20 mL se apresentação 10% (100 mg/mL) + diluente 80 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 20–30 min."}
+        ],
+        commercialPresentations:[
+          {label:"MgSO₄ 50% — 500 mg/mL", conc:500, unit:"mgml", volume:10, content:5000, contentUnit:"mg"},
+          {label:"MgSO₄ 10% — 100 mg/mL", conc:100, unit:"mgml", volume:10, content:1000, contentUnit:"mg"}
+        ],
+        ampoule:"Sulfato de magnésio: 50% = 500 mg/mL (ampola 10 mL = 5 g); 10% = 100 mg/mL (ampola 10 mL = 1 g).",
+        notes:"ATENÇÃO: uso como ADJUVANTE em broncoespasmo grave/refratário (GINA: exacerbação asmática que não responde ao tratamento inicial intensivo com β2 + corticoide + ipratrópio). NÃO usar como infusão contínua. Monitorar PA, reflexos, frequência respiratória e função renal. Atenção a hipermagnesemia em insuficiência renal. NÃO CONFUNDIR a dose total em gramas com taxa em mg/h — este é um bólus lento, não uma infusão contínua de manutenção."
       }
     }
   }
@@ -852,14 +916,14 @@ const infusionData = {
     sufentanil:{name:"Sufentanil", doseUnit:"mcg/kg/h", defaultDose:0.2, range:"0,1–0,5 mcg/kg/h", preps:[{label:"250 mcg em 50 mL = 5 mcg/mL", conc:5, unit:"mcgml", prep:"Sufentanil 250 mcg = 5 mL se apresentação 50 mcg/mL + diluente 45 mL = solução final 50 mL → concentração 5 mcg/mL"}], notes:"Opioide muito potente; exige atenção extrema à concentração e dupla checagem."},
     alfentanil:{name:"Alfentanil", doseUnit:"mcg/kg/min", defaultDose:0.5, range:"0,25–1 mcg/kg/min", preps:[{label:"5 mg em 50 mL = 100 mcg/mL", conc:100, unit:"mcgml", prep:"Alfentanil 5 mg = 10 mL se apresentação 500 mcg/mL + diluente 40 mL = solução final 50 mL → concentração 100 mcg/mL"}], notes:"Opioide de início rápido; disponibilidade e faixas variam por protocolo institucional."},
     hidromorfona:{name:"Hidromorfona", doseUnit:"mg/h", defaultDose:0.4, range:"0,2–1 mg/h", preps:[{label:"10 mg em 50 mL = 0,2 mg/mL", conc:0.2, unit:"mgml", prep:"Hidromorfona 10 mg = volume conforme apresentação disponível + diluente q.s.p. 50 mL = solução final 50 mL → concentração 0,2 mg/mL"}], notes:"Disponibilidade hospitalar variável no Brasil; usar apenas com protocolo institucional."},
-    cetamina_analgesia:{name:"Cetamina — analgesia adjuvante", doseUnit:"mg/kg/h", defaultDose:0.1, range:"0,05–0,3 mg/kg/h", preps:[{label:"500 mg em 50 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Cetamina 500 mg = 10 mL se apresentação 50 mg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mg/mL"}], notes:"Adjuvante poupador de opioide; útil em hiperalgesia/dor refratária/broncoespasmo; monitorar efeitos simpaticomiméticos."},
+    cetamina_analgesia:{name:"Cetamina — analgesia adjuvante", doseUnit:"mg/kg/h", defaultDose:0.1, range:"0,05–0,3 mg/kg/h em dose subanestésica (mesma faixa terapêutica para analgesia e sedação leve)", preps:[{label:"500 mg em 50 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Cetamina 500 mg = 10 mL se apresentação 50 mg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mg/mL"}], notes:"Indicação aqui: ANALGESIA POUPADORA DE OPIOIDE — dor refratária, hiperalgesia, tolerância opioide, dor neuropática em UTI. A mesma molécula com a mesma faixa de dose aparece também em Sedativo/hipnótico com objetivo de sedação dissociativa primária; e em Anticonvulsivante/anestésico em BIC e Broncoespasmo refratário em faixas mais altas. Escolher a entrada conforme o OBJETIVO TERAPÊUTICO PRIMÁRIO. Monitorar PA, FC, salivação, fenômenos emergentes."},
     lidocaina:{name:"Lidocaína IV — adjuvante selecionado", doseUnit:"mg/kg/h", defaultDose:1, range:"0,5–1,5 mg/kg/h", preps:[{label:"1000 mg em 100 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Lidocaína 1000 mg = 50 mL se apresentação 20 mg/mL (2%) + diluente 50 mL = solução final 100 mL → concentração 10 mg/mL"}], notes:"Uso selecionado; evitar em BAV importante, arritmias relevantes, toxicidade por anestésico local, epilepsia não controlada e hepatopatia grave."}
   }},
   sedativo: { label:"Sedativo/hipnótico", drugs:{
     propofol:{name:"Propofol", doseUnit:"mcg/kg/min", defaultDose:20, range:"5–50 mcg/kg/min", preps:[{label:"10 mg/mL puro", conc:10, unit:"mgml", prep:"Propofol 10 mg/mL: uso usual puro, sem diluição. Ex.: frasco 50 mL contém 500 mg; concentração final 10 mg/mL"}]},
     midazolam:{name:"Midazolam", doseUnit:"mg/kg/h", defaultDose:0.05, range:"0,02–0,1 mg/kg/h", preps:[{label:"50 mg em 50 mL = 1 mg/mL", conc:1, unit:"mgml", prep:"Morfina 50 mg = 5 mL se apresentação 10 mg/mL + diluente 45 mL = solução final 50 mL → concentração 1 mg/mL"}]},
     dexmedetomidina:{name:"Dexmedetomidina", doseUnit:"mcg/kg/h", defaultDose:0.5, range:"0,2–0,7 mcg/kg/h", preps:[{label:"200 mcg em 50 mL = 4 mcg/mL", conc:4, unit:"mcgml", prep:"Dexmedetomidina 200 mcg = 2 mL se apresentação 100 mcg/mL + diluente 48 mL = solução final 50 mL → concentração 4 mcg/mL"}]},
-    cetamina:{name:"Cetamina", doseUnit:"mg/kg/h", defaultDose:0.1, range:"0,05–0,3 mg/kg/h", preps:[{label:"500 mg em 50 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Cetamina 500 mg = 10 mL se apresentação 50 mg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mg/mL"}], notes:"Sedação dissociativa/adjuvante; monitorar PA, FC, salivação e fenômenos emergentes."},
+    cetamina:{name:"Cetamina — sedação dissociativa", doseUnit:"mg/kg/h", defaultDose:0.1, range:"0,05–0,3 mg/kg/h em dose subanestésica (mesma faixa terapêutica usada em analgesia poupadora de opioide)", preps:[{label:"500 mg em 50 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Cetamina 500 mg = 10 mL se apresentação 50 mg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mg/mL"}], notes:"Indicação aqui: SEDAÇÃO DISSOCIATIVA como adjuvante quando outros sedativos limitam por hipotensão (cetamina preserva PA por efeito simpaticomimético). A mesma molécula com a mesma faixa de dose aparece também em Analgésico com objetivo de poupar opioide; e em faixas mais altas em Anticonvulsivante (1–7 mg/kg/h) e Broncoespasmo refratário (0,5–2 mg/kg/h). Escolher a entrada conforme o OBJETIVO TERAPÊUTICO PRIMÁRIO. Monitorar PA, FC, salivação, fenômenos emergentes, PIC."},
     tiopental_infusao:{name:"Tiopental — sedação neurocrítica/status", doseUnit:"mg/kg/h", defaultDose:3, range:"3–5 mg/kg/h; doses maiores apenas em protocolo especializado com EEG/BIS/hemodinâmica", preps:[{label:"1000 mg em 250 mL = 4 mg/mL", conc:4, unit:"mgml", prep:"Tiopental 1000 mg = reconstituir conforme bula + diluente q.s.p. 250 mL = solução final 250 mL → concentração 4 mg/mL"}], notes:"Uso especializado em hipertensão intracraniana refratária ou status epilepticus refratário. Alto risco de hipotensão, imunossupressão, íleo, acúmulo e necessidade de ventilação/vasopressor/monitorização contínua."}
   }},
   bloqueador: { label:"Bloqueador neuromuscular", drugs:{
@@ -868,7 +932,7 @@ const infusionData = {
     atracurio:{name:"Atracúrio", doseUnit:"mcg/kg/min", defaultDose:5, range:"5–10 mcg/kg/min", preps:[{label:"100 mg em 50 mL = 2 mg/mL", conc:2, unit:"mgml", prep:"Atracúrio 100 mg = 10 mL se apresentação 10 mg/mL + diluente 40 mL = solução final 50 mL → concentração 2 mg/mL"}], notes:"Alternativa ao cisatracúrio; metabolismo por Hofmann/esterases; risco de histamina, hipotensão e broncoespasmo."}
   }},
   antiarritmico: { label:"Antiarrítmico em infusão contínua", drugs:{
-    amiodarona:{name:"Amiodarona", doseUnit:"mg/h", defaultDose:60, range:"Fase 1: 150 mg em 10 min; fase 2: 1 mg/min por 6h (60 mg/h); fase 3: 0,5 mg/min por 18h (30 mg/h); ajustar conforme ritmo, PA e protocolo", preps:[{label:"900 mg em 500 mL de SG 5% = 1,8 mg/mL", conc:1.8, unit:"mgml", prep:"Amiodarona 900 mg = 6 ampolas 150 mg/3 mL (volume aspirado 18 mL) + SG 5% q.s.p. 500 mL = solução final 500 mL → concentração 1,8 mg/mL"}], notes:"Antiarrítmico classe III com efeitos multicanais. Para taquiarritmias selecionadas conforme protocolo; monitorar PA, QT, bradicardia, BAV, hepatotoxicidade e interação medicamentosa.", phaseInfo:"Vazões de referência para a solução padrão 900 mg/500 mL (1,8 mg/mL): Fase 1 (ataque 150 mg em 10 min) → ≈ 500 mL/h durante 10 min; Fase 2 (manutenção 60 mg/h por 6 h) → ≈ 33 mL/h; Fase 3 (manutenção 30 mg/h por 18 h) → ≈ 17 mL/h. Selecionar a fase na calculadora ou ajustar a vazão conforme ritmo, PA e protocolo institucional.", maxInfusionTime:"Regime inicial usual de 24h: cerca de 1000 mg no primeiro dia. Doses diárias acima de 2100 mg foram associadas a maior risco de hipotensão em estudos de bula."},
+    amiodarona:{name:"Amiodarona", preferredDiluent:"SG 5%", allowedDiluents:["SG 5%"], doseUnit:"mg/h", defaultDose:60, range:"Fase 1: 150 mg em 10 min; fase 2: 1 mg/min por 6h (60 mg/h); fase 3: 0,5 mg/min por 18h (30 mg/h); ajustar conforme ritmo, PA e protocolo", preps:[{label:"900 mg em 500 mL de SG 5% = 1,8 mg/mL", conc:1.8, unit:"mgml", prep:"Amiodarona 900 mg = 6 ampolas 150 mg/3 mL (volume aspirado 18 mL) + SG 5% q.s.p. 500 mL = solução final 500 mL → concentração 1,8 mg/mL"}], notes:"Antiarrítmico classe III com efeitos multicanais. Para taquiarritmias selecionadas conforme protocolo; monitorar PA, QT, bradicardia, BAV, hepatotoxicidade e interação medicamentosa.", phaseInfo:"Vazões de referência para a solução padrão 900 mg/500 mL (1,8 mg/mL): Fase 1 (ataque 150 mg em 10 min) → ≈ 500 mL/h durante 10 min; Fase 2 (manutenção 60 mg/h por 6 h) → ≈ 33 mL/h; Fase 3 (manutenção 30 mg/h por 18 h) → ≈ 17 mL/h. Selecionar a fase na calculadora ou ajustar a vazão conforme ritmo, PA e protocolo institucional.", maxInfusionTime:"Regime inicial usual de 24h: cerca de 1000 mg no primeiro dia. Doses diárias acima de 2100 mg foram associadas a maior risco de hipotensão em estudos de bula."},
     lidocaina_arritmia:{name:"Lidocaína IV — antiarrítmico", doseUnit:"mg/h", defaultDose:120, range:"1–4 mg/min (60–240 mg/h) após bólus conforme protocolo; reduzir em idosos, IC, choque ou hepatopatia", preps:[{label:"2000 mg em 500 mL = 4 mg/mL", conc:4, unit:"mgml", prep:"Lidocaína 2000 mg = 100 mL se apresentação 20 mg/mL (2%) + diluente 400 mL = solução final 500 mL → concentração 4 mg/mL"}], notes:"Antiarrítmico classe IB. Uso em arritmias ventriculares selecionadas; monitorar sonolência, parestesias, convulsão, BAV, bradicardia, hipotensão e toxicidade por anestésico local.", phaseInfo:"Após bólus inicial conforme protocolo, manter infusão contínua na menor dose efetiva e reavaliar necessidade."},
     procainamida:{name:"Procainamida", doseUnit:"mg/h", defaultDose:240, range:"Manutenção 2–6 mg/min (120–360 mg/h) após dose de ataque; ajustar por PA, QRS/QT, função renal e protocolo", preps:[{label:"1000 mg em 250 mL de SG 5% = 4 mg/mL", conc:4, unit:"mgml", prep:"Procainamida 1000 mg = volume conforme apresentação disponível + SG 5% q.s.p. 250 mL = solução final 250 mL → concentração 4 mg/mL"}], notes:"Antiarrítmico classe IA. Monitorar hipotensão, alargamento de QRS, prolongamento de QT, torsades, bloqueios, função renal e sinais de toxicidade.", phaseInfo:"A dose de ataque é administrada em fase separada e a infusão de manutenção deve ser monitorizada continuamente."}
   }},
@@ -883,19 +947,25 @@ const infusionData = {
   }},
   vasoativa: { label:"Droga vasoativa", drugs:{}},
   diuretico: { label:"Diurético em infusão contínua", drugs:{
-    furosemida:{name:"Furosemida", doseUnit:"mg/h", defaultDose:10, range:"5–20 mg/h; doses maiores apenas com protocolo e monitorização", preps:[
+    furosemida:{name:"Furosemida", doseUnit:"mg/h", defaultDose:10, range:"Função renal normal: 5–10 mg/h. Insuficiência renal moderada: 10–20 mg/h. Insuficiência renal grave: 20–40 mg/h. Taxa máxima conforme bula FDA: 4 mg/min (240 mg/h); dose total diária usual ≤ 400–500 mg, máximo 600 mg/dia conforme protocolo.", preps:[
       {label:"250 mg em 250 mL = 1 mg/mL", conc:1, unit:"mgml", prep:"Furosemida 250 mg = 25 mL se apresentação 10 mg/mL + diluente 225 mL = solução final 250 mL → concentração 1 mg/mL"},
       {label:"500 mg em 250 mL = 2 mg/mL", conc:2, unit:"mgml", prep:"Furosemida 500 mg = 50 mL se apresentação 10 mg/mL + diluente 200 mL = solução final 250 mL → concentração 2 mg/mL"}
-    ], notes:"Útil em congestão refratária/resistência diurética; não há superioridade universal sobre bolus. Monitorar diurese, PA, K, Mg, Na, creatinina, alcalose e ototoxicidade."}
+    ], phaseInfo:"Dose de ataque OBRIGATÓRIA antes da infusão contínua (sem ataque: 6–20 h para atingir estado de equilíbrio). Para paciente em uso prévio de diurético de alça oral: dose IV de ataque = 1–2,5× a dose oral domiciliar. Para paciente virgem de terapia: limite inferior do intervalo. Reavaliação após 1 h: se resposta inadequada, repetir bólus de ataque e aumentar a taxa em 50–100%. Ajustar a cada 4–6 h conforme balanço hídrico desejado, função renal, hemodinâmica e eletrólitos.", maxInfusionTime:"Dose total diária usual ≤ 400–500 mg; máximo 600 mg/dia em protocolos específicos. Reavaliar transição para via oral em 24–48 h conforme estabilização clínica.", notes:"Indicações específicas para infusão contínua em IC aguda descompensada: (a) resistência diurética com resposta inadequada a bólus intermitentes; (b) doses crônicas > 240 mg/dia de furosemida equivalente (excluídos do DOSE trial); (c) resposta diurética vigorosa mas transitória; (d) insuficiência renal com resposta inadequada a intermitentes; (e) síndrome cardiorrenal; (f) disfunção ventricular direita grave. Estudo DOSE não demonstrou superioridade em desfecho primário; metanálises (Rasoul 2024 Cochrane, Ng 2018) mostram maior débito urinário em 24h, maior redução de peso/BNP e menor escalada terapêutica. Monitorização frequente: eletrólitos (K, Na, Mg, Ca), CO₂/bicarbonato (alcalose hipoclorêmica), função renal (ureia, Cr), glicemia, ácido úrico. Avaliar resposta com sódio urinário no início da terapia. Aumento de Cr > 0,3 mg/dL em 72 h é comum em dose alta, mas análise post hoc do DOSE mostrou que elevação inicial se associa a melhores desfechos a longo prazo. Riscos: ototoxicidade (minimizada pela taxa máx 4 mg/min), retenção urinária aguda (HPB), encefalopatia em cirrose com mudanças bruscas de volume. Cautela em idosos (iniciar dose inferior; risco renal)."}
   }},
-  broncoespasmo: { label:"Broncodilatadores", drugs:{
-    magnesioIV:{name:"Sulfato de magnésio IV — broncoespasmo", doseUnit:"mg/h", defaultDose:6000, range:"2 g IV em 20 min em asma grave/refratária; calculadora usa 6000 mg/h para infundir 2 g em 20 min", preps:[
-      {label:"2 g em 100 mL usando MgSO₄ 50% = 20 mg/mL", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 4 mL se apresentação 50% (500 mg/mL) + diluente 96 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 20 min"},
-      {label:"2 g em 100 mL usando MgSO₄ 10% = 20 mg/mL", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 20 mL se apresentação 10% (100 mg/mL) + diluente 80 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 20 min"}
-    ], notes:"Adjuvante em broncoespasmo grave/refratário. Monitorar PA, reflexos, FR e risco de depressão respiratória/hipotensão, especialmente em insuficiência renal. Não é infusão contínua prolongada."},
-    salbutamolIV:{name:"Salbutamol IV", doseUnit:"mcg/min", defaultDose:5, range:"5–20 mcg/min conforme protocolo em broncoespasmo crítico", preps:[
+  broncoespasmo: { label:"Broncoespasmo refratário — terapia IV", drugs:{
+    salbutamolIV:{name:"Salbutamol IV — broncoespasmo crítico", administrationType:"continuous_infusion", doseUnit:"mcg/min", defaultDose:5, range:"5–20 mcg/min em adultos (titulação a partir de 5 mcg/min até 20 mcg/min; máximo 25 mcg/min conforme protocolo)", preps:[
       {label:"5 mg em 50 mL = 100 mcg/mL", conc:100, unit:"mcgml", prep:"Salbutamol 5 mg = volume conforme apresentação disponível + diluente q.s.p. 50 mL = solução final 50 mL → concentração 100 mcg/mL"}
-    ], notes:"Uso selecionado em asma crítica refratária; monitorar FC, arritmia, K, lactato, tremor e isquemia."}
+    ], phaseInfo:"Protocolo escalonado para broncoespasmo refratário (GINA 2024–2025): (1) terapia inicial intensiva: SABA inalado em alta dose + corticoide sistêmico + ipratrópio nebulizado 20/20 min na primeira hora + O2; (2) se não responde com VEF₁ < 50% ou SpO₂ < 92%: sulfato de magnésio IV 2 g em 20–30 min (categoria Bólus/intermitente); (3) se ainda refratário com risco de IOT: salbutamol IV 5–20 mcg/min E/OU adrenalina IV (entrada própria) com monitorização cardíaca rigorosa.", notes:"β2-agonista seletivo em uso EV restrito a broncoespasmo crítico refratário. Atenção a sinergia com adrenalina IV: ambos β-agonistas podem somar efeitos cardiovasculares — monitorização ECG, PA invasiva (quando possível), FC contínua. Monitorar K (hipocalemia), lactato (elevação por estímulo β2), tremor, arritmia, isquemia miocárdica."},
+    adrenalina_broncoespasmo:{name:"Adrenalina IV — broncoespasmo refratário", administrationType:"continuous_infusion", doseUnit:"mcg/kg/min", defaultDose:0.05, range:"Infusão contínua: 0,05–2 mcg/kg/min titulada conforme resposta clínica e hemodinâmica. Alternativa em bólus lento: 50–100 mcg/min (0,01 mg/kg, máx 0,1 mg/bólus, máx 1 mg total, repetir cada 5–15 min) — usar a calculadora de Bólus/intermitente para essa via.", preps:[
+      {label:"1 mg em 100 mL = 10 mcg/mL", conc:10, unit:"mcgml", prep:"Adrenalina 1 mg = 1 ampola 1 mg/1 mL + diluente q.s.p. 100 mL = solução final 100 mL → concentração 10 mcg/mL"},
+      {label:"1 mg em 1000 mL = 1 mcg/mL (solução diluída para neonato/criança)", conc:1, unit:"mcgml", prep:"Adrenalina 1 mg = 1 ampola 1 mg/1 mL + SG 5% ou SF 0,9% q.s.p. 1000 mL = solução final 1000 mL → concentração 1 mcg/mL"}
+    ], phaseInfo:"Indicação: broncoespasmo refratário a salbutamol em dose máxima, taquifilaxia a β2-agonistas seletivos por uso crônico, ou broncoespasmo associado a anafilaxia. Sequência prática: após salbutamol IV titulado, iniciar adrenalina IV em monitorização cardíaca rigorosa (ACR 2025; Wilderness Medical Society 2022).", notes:"Agonista não-seletivo α + β. Eficácia equivalente ao β2 seletivo em metanálise (Baggott 2022, Thorax), mas com perfil cardiovascular mais agressivo. Monitorização obrigatória: ECG contínuo, PA invasiva quando disponível, FC, SpO2, lactato. Risco de taquiarritmia, isquemia miocárdica, hipertensão, ansiedade. Cautela em DAC conhecida, idoso, gestante. NÃO confundir com a dose de PCR. Para anafilaxia refratária ver entrada própria em Anafilaxia."},
+    aminofilina:{name:"Aminofilina IV — adjuvante em broncoespasmo ventilado", administrationType:"continuous_infusion", doseUnit:"mg/kg/h", defaultDose:0.5, range:"Dose de carga (se sem teofilina prévia): 5–6 mg/kg IV em 20–30 min. Manutenção: 0,5–0,7 mg/kg/h em adultos; 0,2–0,4 mg/kg/h em idosos/hepatopatas/IC. Manter nível sérico-alvo 10–20 mcg/mL (janela terapêutica estreita).", preps:[
+      {label:"500 mg em 500 mL = 1 mg/mL", conc:1, unit:"mgml", prep:"Aminofilina 500 mg = volume conforme apresentação disponível + SF 0,9% q.s.p. 500 mL = solução final 500 mL → concentração 1 mg/mL"}
+    ], phaseInfo:"Evidência limitada (Cochrane). Considerar em paciente ventilado mecanicamente quando todas as outras medidas falharam (Craig 2020, Cochrane Database). Metanálise pediátrica (Abdelgadir 2025) sugere redução de tempo de internação em ventilados (média -13 h), sem outro benefício consistente.", notes:"Janela terapêutica estreita (10–20 mcg/mL). Dose de carga deve ser omitida ou reduzida em pacientes em uso prévio de teofilina/aminofilina oral. Toxicidade: arritmia (taquiarritmia supraventricular/ventricular), convulsão, vômitos, agitação. Monitorar nível sérico, ECG e função hepática. Interações: cimetidina, fluoroquinolonas, macrolídeos (↑ nível); fenitoína, rifampicina, tabagismo (↓ nível)."},
+    cetamina_broncoespasmo:{name:"Cetamina IV — adjuvante em broncoespasmo grave", administrationType:"continuous_infusion", doseUnit:"mg/kg/h", defaultDose:1, range:"0,5–2 mg/kg/h em infusão contínua adjuvante; bólus prévio 0,5–1 mg/kg IV lento quando indicado", preps:[
+      {label:"500 mg em 50 mL = 10 mg/mL", conc:10, unit:"mgml", prep:"Cetamina 500 mg = 10 mL se apresentação 50 mg/mL + diluente 40 mL = solução final 50 mL → concentração 10 mg/mL"}
+    ], phaseInfo:"Indicação: broncoespasmo crítico refratário a todas as outras medidas, especialmente quando há indicação de IOT/ventilação mecânica (Medar 2020). Mecanismo: antagonismo NMDA + relaxamento de musculatura lisa brônquica + simpaticomimético indireto.", notes:"Antagonista NMDA com broncodilatação. Evidência limitada em ensaios randomizados, mas amplamente usado em ASMA grave/quase-fatal em UTI. Monitorar PA, FC (taquicardia/hipertensão), secreções (sialorreia), fenômenos emergentes (delirium), pressão intracraniana. Útil quando há hipotensão limitando outras opções."}
   }},
   anafilaxia: { label:"Anafilaxia grave/refratária", drugs:{
     adrenalinaAnafilaxia:{name:"Adrenalina — infusão contínua na anafilaxia", doseUnit:"mcg/kg/min", defaultDose:0.05, range:"0,05–0,5 mcg/kg/min em anafilaxia refratária, titulada em ambiente monitorizado", preps:[
@@ -1056,6 +1126,196 @@ function updateAmpContentPreview(){
     : "—";
 }
 
+/* Diluentes — preferred + allowed por droga, com fallback razoável.
+   Ordem de resolução:
+   1) Campo `preferredDiluent`/`allowedDiluents` na própria droga (prioridade).
+   2) Lookup central por substring do nome da droga (DILUENT_INFO_BY_NAME).
+   3) Default genérico (SF 0,9%, SG 5%, conforme protocolo). */
+const DEFAULT_ALLOWED_DILUENTS = ["SF 0,9%", "SG 5%", "conforme protocolo"];
+const DILUENT_INFO_BY_NAME = [
+  // [substring(lowercase), preferred, allowed[]]
+  // RESTRITAS por compatibilidade (allowed.length=1 → select bloqueado)
+  ["fenitoína",         "SF 0,9%",            ["SF 0,9%"]],
+  ["fenitoina",         "SF 0,9%",            ["SF 0,9%"]],
+  ["amiodarona",        "SG 5%",              ["SG 5%"]],
+  ["nitroprussiato",    "SG 5%",              ["SG 5%"]],
+  ["clevidipina",       "uso puro (não diluir)", ["uso puro (não diluir)"]],
+  ["propofol",          "uso puro (não diluir)", ["uso puro (não diluir)"]],
+  // Vasoativas — preferred SF 0,9%, SG aceitável (padrão institucional)
+  ["noradrenalina",     "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["norepinefrina",     "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["adrenalina",        "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["dobutamina",        "SF 0,9%",            ["SF 0,9%", "SG 5%", "Ringer lactato"]],
+  ["dopamina",          "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["nitroglicerina",    "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["isoproterenol",     "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["isoprenalina",      "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  // Vasoativas — preferred SF 0,9%, SG aceitável
+  ["vasopressina",      "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["fenilefrina",       "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["milrinona",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["hidralazina",       "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["nicardipina",       "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["esmolol",           "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["labetalol",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["procainamida",      "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["octreotida",        "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  // Antiarritmico/anticonvulsivante
+  ["fenobarbital",      "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["levetiracetam",     "SF 0,9%",            ["SF 0,9%", "SG 5%", "Ringer lactato"]],
+  ["keppra",            "SF 0,9%",            ["SF 0,9%", "SG 5%", "Ringer lactato"]],
+  ["lidocaína",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["lidocaina",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  // Sedativos/opioides/IOT
+  ["etomidato",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["cetamina",          "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["midazolam",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["tiopental",         "SF 0,9%",            ["SF 0,9%"]],
+  ["fentanil",          "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["remifentanil",      "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["sufentanil",        "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["alfentanil",        "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["morfina",           "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["hidromorfona",      "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["dexmedetomidina",   "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  // Bloqueadores neuromusculares
+  ["succinilcolina",    "SF 0,9%",            ["SF 0,9%"]],
+  ["suxametônio",       "SF 0,9%",            ["SF 0,9%"]],
+  ["suxametonio",       "SF 0,9%",            ["SF 0,9%"]],
+  ["rocurônio",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["rocuronio",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["cisatracúrio",      "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["cisatracurio",      "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["atracúrio",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["atracurio",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["sugamadex",         "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["sugammadex",        "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["neostigmina",       "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  // Diurético / outros
+  ["furosemida",        "SF 0,9%",            ["SF 0,9%"]],
+  ["sulfato de magnésio","SF 0,9%",           ["SF 0,9%", "SG 5%"]],
+  ["sulfato de magnesio","SF 0,9%",           ["SF 0,9%", "SG 5%"]],
+  // Broncodilatador / outros
+  ["salbutamol",        "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["aminofilina",       "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  // Bolus simples
+  ["atropina",          "SF 0,9%",            ["SF 0,9%"]]
+];
+function lookupDiluentByName(name){
+  if(!name) return null;
+  const n = String(name).toLowerCase();
+  for(const [substr, preferred, allowed] of DILUENT_INFO_BY_NAME){
+    if(n.includes(substr)) return { preferred, allowed: allowed.slice() };
+  }
+  return null;
+}
+function getDrugDiluentInfo(drug){
+  // 1) Campo direto na droga (prioridade)
+  if(drug && drug.preferredDiluent && Array.isArray(drug.allowedDiluents) && drug.allowedDiluents.length > 0){
+    const allowed = drug.allowedDiluents.slice();
+    if(!allowed.includes(drug.preferredDiluent)) allowed.unshift(drug.preferredDiluent);
+    return { preferred: drug.preferredDiluent, allowed };
+  }
+  // 2) Lookup central por nome
+  const fromName = lookupDiluentByName(drug?.name);
+  if(fromName){
+    if(!fromName.allowed.includes(fromName.preferred)) fromName.allowed.unshift(fromName.preferred);
+    return fromName;
+  }
+  // 3) Default genérico
+  return { preferred: "SF 0,9%", allowed: DEFAULT_ALLOWED_DILUENTS.slice() };
+}
+function populateDiluentSelect(selectId, drug){
+  const sel = document.getElementById(selectId);
+  if(!sel) return;
+  const info = getDrugDiluentInfo(drug);
+  sel.innerHTML = "";
+  info.allowed.forEach(d => {
+    const opt = document.createElement("option");
+    opt.value = d;
+    opt.textContent = d;
+    if(d === info.preferred) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  // Bloqueia o select quando ha apenas 1 opcao (diluicao clinicamente restrita)
+  const restricted = info.allowed.length <= 1;
+  sel.disabled = restricted;
+  sel.classList.toggle("diluent-restricted", restricted);
+  // Tooltip e marca visual no rotulo
+  if(restricted){
+    sel.title = "Diluição restrita por compatibilidade — não permitido alterar.";
+  } else {
+    sel.removeAttribute("title");
+  }
+}
+function getBolusManualSolutionConc(){
+  const massEl=document.getElementById("dvaBolusManMass");
+  const volEl=document.getElementById("dvaBolusManVolume");
+  if(!massEl || !volEl) return { conc: NaN, concUnit: "mgml", filled: false };
+  const massVal=parseFloat(massEl.value);
+  const massUnit=document.getElementById("dvaBolusManMassUnit")?.value || "mg";
+  const volMl=parseFloat(volEl.value);
+  if(!Number.isFinite(massVal) || massVal<=0 || !Number.isFinite(volMl) || volMl<=0){
+    return { conc: NaN, concUnit: "mgml", filled: false, massVal, massUnit, volMl };
+  }
+  let effMass=massVal, effUnit=massUnit;
+  if(massUnit==="g"){ effMass=massVal*1000; effUnit="mg"; }
+  const conc=effMass/volMl;
+  const concUnit = effUnit==="mcg" ? "mcgml" : effUnit==="UI" ? "uiml" : "mgml";
+  return { conc, concUnit, filled: true, massVal, massUnit, volMl, effMass };
+}
+function updateBolusManualConcPreview(){
+  const out=document.getElementById("dvaBolusManConcPreview");
+  if(!out) return;
+  const r=getBolusManualSolutionConc();
+  if(!r.filled){ out.value="—"; return; }
+  const dil=document.getElementById("dvaBolusManDiluent")?.value || "";
+  out.value = `${fmt(r.conc,3)} ${unitLabel(r.concUnit)} | ${fmt(r.massVal,2)} ${r.massUnit} em ${fmt(r.volMl,0)} mL${dil?` de ${dil}`:""}`;
+}
+
+/* Solução final editável — helpers */
+function extractSolutionDefaultsFromPrep(prep){
+  if(!prep) return {mass:NaN, massUnit:"mg", volume:NaN};
+  const label = prep.label || "";
+  // Padrão "X mcg|mg|g|UI em Y mL"
+  let m = label.match(/(\d+(?:[.,]\d+)?)\s*(mcg|mg|g|UI)\s+em\s+(\d+(?:[.,]\d+)?)\s*mL/i);
+  if(m) return {
+    mass: parseFloat(m[1].replace(',','.')),
+    massUnit: m[2].toLowerCase() === "ui" ? "UI" : m[2].toLowerCase(),
+    volume: parseFloat(m[3].replace(',','.'))
+  };
+  // Padrão "puro" — usa conc x volume padrão (frasco 50 mL ou bagVolume)
+  const volDefault = parseFloat(document.getElementById("infBagVolume")?.value || 50);
+  const concUnit = prep.unit || "mgml";
+  const massUnit = concUnit === "mcgml" ? "mcg" : concUnit === "uiml" ? "UI" : "mg";
+  if(Number.isFinite(prep.conc)){
+    return { mass: prep.conc * volDefault, massUnit, volume: volDefault };
+  }
+  return {mass:NaN, massUnit:"mg", volume:NaN};
+}
+function getEditableSolutionConc(){
+  const massVal = parseFloat(document.getElementById("infFinalMass")?.value);
+  const massUnit = document.getElementById("infFinalMassUnit")?.value || "mg";
+  const volMl = parseFloat(document.getElementById("infFinalVolume")?.value);
+  if(!Number.isFinite(massVal) || massVal <= 0 || !Number.isFinite(volMl) || volMl <= 0){
+    return { conc: NaN, concUnit: "mgml", massVal, massUnit, volMl };
+  }
+  // Para "g", normalizar a "mg" para o cálculo
+  let effMass = massVal;
+  let effUnit = massUnit;
+  if(massUnit === "g"){ effMass = massVal * 1000; effUnit = "mg"; }
+  const conc = effMass / volMl;
+  const concUnit = effUnit === "mcg" ? "mcgml" : effUnit === "UI" ? "uiml" : "mgml";
+  return { conc, concUnit, massVal, massUnit, volMl };
+}
+function updateFinalSolutionPreview(){
+  const out = document.getElementById("infFinalConcPreview");
+  if(!out) return;
+  const r = getEditableSolutionConc();
+  if(!Number.isFinite(r.conc)){ out.value = "—"; return; }
+  out.value = `${fmt(r.conc, 3)} ${unitLabel(r.concUnit)} | Massa: ${fmt(r.massVal, 2)} ${r.massUnit} em ${fmt(r.volMl, 0)} mL`;
+}
+
 function brazilAmpouleOptions(name){
   const n=(name||"").toLowerCase();
   const options = {
@@ -1100,7 +1360,8 @@ function brazilAmpouleOptions(name){
     hidromorfona: "Hidromorfona: apresentação hospitalar variável; conferir concentração e volume total.",
     fenitoina: "Fenitoína 50 mg/mL: ampola de 5 mL = 250 mg, conforme fabricante. INCOMPATÍVEL com SG 5% — diluir apenas em SF 0,9%.",
     fenobarbital: "Fenobarbital 100 mg/mL: ampola de 2 mL = 200 mg, conforme fabricante. Diluição usual 1:9 em SF 0,9% ou SG 5% para 10 mg/mL.",
-    levetiracetam: "Levetiracetam (Keppra) 100 mg/mL: ampola/frasco de 5 mL = 500 mg, conforme fabricante. Concentração máxima na solução diluída: 15 mg/mL."
+    levetiracetam: "Levetiracetam (Keppra) 100 mg/mL: ampola/frasco de 5 mL = 500 mg, conforme fabricante. Concentração máxima na solução diluída: 15 mg/mL.",
+    aminofilina: "Aminofilina 24 mg/mL: ampola/frasco de 10 mL = 240 mg, conforme fabricante. Janela terapêutica estreita 10–20 mcg/mL; uso restrito em UTI com monitorização sérica."
   };
   if(n.includes("midazolam")) return options.midazolam;
   if(n.includes("etomidato")) return options.etomidato;
@@ -1144,6 +1405,7 @@ function brazilAmpouleOptions(name){
   if(n.includes("fenitoína") || n.includes("fenitoina")) return options.fenitoina;
   if(n.includes("fenobarbital")) return options.fenobarbital;
   if(n.includes("levetiracetam") || n.includes("keppra")) return options.levetiracetam;
+  if(n.includes("aminofilina")) return options.aminofilina;
   return "Conferir concentração, conteúdo total e volume da ampola/fr. disponível no serviço.";
 }
 function ampoulePresentationLine(name, presentation=null){
@@ -1306,6 +1568,7 @@ function ampouleInfoByName(name){
   if(n.includes("fenitoína") || n.includes("fenitoina")) return {unit:"mg", content:250, volume:5, label:"ampola 250 mg/5 mL (volume total 5 mL; 50 mg/mL); diluir apenas em SF 0,9%"};
   if(n.includes("fenobarbital")) return {unit:"mg", content:200, volume:2, label:"ampola 200 mg/2 mL (volume total 2 mL; 100 mg/mL); diluição usual 1:9 → 10 mg/mL"};
   if(n.includes("levetiracetam") || n.includes("keppra")) return {unit:"mg", content:500, volume:5, label:"ampola 500 mg/5 mL (volume total 5 mL; 100 mg/mL); conc. máx. diluída 15 mg/mL"};
+  if(n.includes("aminofilina")) return {unit:"mg", content:240, volume:10, label:"ampola 24 mg/mL (volume total 10 mL = 240 mg); janela terapêutica 10–20 mcg/mL"};
   if(n.includes("furosemida")) return {unit:"mg", content:20, volume:2, label:"ampola 20 mg/2 mL (10 mg/mL)"};
   if(n.includes("sulfato de magnésio") || n.includes("sulfato de magnesio")) return {unit:"mg", content:2000, volume:null, label:"dose alvo 2 g; apresentação 50% ou 10% conforme selecionada"};
   if(n.includes("salbutamol")) return {unit:"mcg", content:5000, volume:null, label:"salbutamol 5 mg conforme apresentação disponível"};
@@ -1470,7 +1733,16 @@ function baseMassUnitFromDoseUnit(unit){
   if(unit.includes("mcg")) return "mcg";
   if(unit.includes("mg")) return "mg";
   if(unit.includes("UI")) return "UI";
+  if(/(^|[^a-z])g($|[^a-z])/i.test(unit)) return "g";
   return unit;
+}
+function toMilligrams(value, unit){
+  const base = baseMassUnitFromDoseUnit(unit);
+  if(!Number.isFinite(value)) return NaN;
+  if(base === "g") return value * 1000;
+  if(base === "mcg") return value / 1000;
+  if(base === "mg") return value;
+  return NaN;
 }
 function doseUnitOptionsFor(unit){
   const base = baseMassUnitFromDoseUnit(unit);
@@ -1612,7 +1884,10 @@ function initIOT(){
   document.getElementById("iotPresentation").addEventListener("change", calcIOT);
   document.getElementById("iotDoseUnitSelect").addEventListener("change", function(){ setDoseUnitLabel("iotDoseUnitLabel", this.value); calcIOT(); });
   document.getElementById("iotAmpPresentation").addEventListener("change", function(){ updateIOTAmpPreview(); calcIOT(); });
-  ["iotDose","iotCustomConc","iotCustomUnit","iotUseCustom","peso","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", calcIOT));
+  ["iotDose","iotManMass","iotManMassUnit","iotManDiluent","iotManVolume","peso","cenario"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener("input", ()=>{updateIOTManualConcPreview(); calcIOT();});
+  });
   updateIOTStrategy();
   updateIOTDrugs();
 }
@@ -1748,7 +2023,43 @@ function updateIOTDrugDefaults(){
     opt.value=i; opt.textContent=p.label; pres.appendChild(opt);
   });
   updateIOTAmpPresentation();
+  // Diluente preferencial (lista default quando droga nao especifica)
+  populateDiluentSelect("iotManDiluent", d);
+  // Limpar campos manuais (usuario opta por preencher para sobrescrever preset)
+  if(document.getElementById("iotManMass")) document.getElementById("iotManMass").value = "";
+  if(document.getElementById("iotManVolume")) document.getElementById("iotManVolume").value = "";
+  const baseMass = baseMassUnitFromDoseUnit(d.unit) || "mg";
+  const massUnitSel=document.getElementById("iotManMassUnit");
+  if(massUnitSel){
+    const valid=["mcg","mg","g","UI"].includes(baseMass) ? baseMass : "mg";
+    massUnitSel.value = valid;
+  }
+  updateIOTManualConcPreview();
   calcIOT();
+}
+function getIOTManualSolutionConc(){
+  const massEl=document.getElementById("iotManMass");
+  const volEl=document.getElementById("iotManVolume");
+  if(!massEl || !volEl) return { conc: NaN, concUnit: "mgml", filled: false };
+  const massVal=parseFloat(massEl.value);
+  const massUnit=document.getElementById("iotManMassUnit")?.value || "mg";
+  const volMl=parseFloat(volEl.value);
+  if(!Number.isFinite(massVal) || massVal<=0 || !Number.isFinite(volMl) || volMl<=0){
+    return { conc: NaN, concUnit: "mgml", filled: false, massVal, massUnit, volMl };
+  }
+  let effMass=massVal, effUnit=massUnit;
+  if(massUnit==="g"){ effMass=massVal*1000; effUnit="mg"; }
+  const conc=effMass/volMl;
+  const concUnit = effUnit==="mcg" ? "mcgml" : effUnit==="UI" ? "uiml" : "mgml";
+  return { conc, concUnit, filled: true, massVal, massUnit, volMl };
+}
+function updateIOTManualConcPreview(){
+  const out=document.getElementById("iotManConcPreview");
+  if(!out) return;
+  const r=getIOTManualSolutionConc();
+  if(!r.filled){ out.value="—"; return; }
+  const dil=document.getElementById("iotManDiluent")?.value || "";
+  out.value = `${fmt(r.conc,3)} ${unitLabel(r.concUnit)} | ${fmt(r.massVal,2)} ${r.massUnit} em ${fmt(r.volMl,0)} mL${dil?` de ${dil}`:""}`;
 }
 function currentIOT(){
   const cat=document.getElementById("iotCat").value, drug=document.getElementById("iotDrug").value;
@@ -1757,14 +2068,15 @@ function currentIOT(){
   const selectedDoseUnit=document.getElementById("iotDoseUnitSelect")?.value || baseMassUnitFromDoseUnit(d.unit);
   setDoseUnitLabel("iotDoseUnitLabel", selectedDoseUnit);
   const dose=convertWeightBasedDose(rawDose, selectedDoseUnit, d.unit);
-  const useCustom=document.getElementById("iotUseCustom").value === "sim";
   const presentation=d.presentations[parseInt(document.getElementById("iotPresentation").value || 0)];
-  const conc=useCustom ? parseFloat(document.getElementById("iotCustomConc").value || presentation.conc) : presentation.conc;
-  const concUnit=useCustom ? document.getElementById("iotCustomUnit").value : presentation.unit;
+  // Manual prep tem precedencia quando preenchido
+  const manual=getIOTManualSolutionConc();
+  const conc=manual.filled ? manual.conc : presentation.conc;
+  const concUnit=manual.filled ? manual.concUnit : presentation.unit;
   const calc=doseAmountPerHour(dose, d.unit, getPeso());
   const volume=rateFromAmount(calc.amount, calc.unit, conc, concUnit);
   const ampoule=selectedIOTAmpoule();
-  return {cat, drug, d, dose, rawDose, selectedDoseUnit, conc, concUnit, calc, volume, presentation, ampoule};
+  return {cat, drug, d, dose, rawDose, selectedDoseUnit, conc, concUnit, calc, volume, presentation, ampoule, manualPrep:manual};
 }
 
 
@@ -2037,7 +2349,10 @@ function initDVABolus(){
   document.getElementById("dvaBolusAmpPresentation").addEventListener("change", calcDVABolus);
   document.getElementById("dvaBolusPresentation").addEventListener("change", calcDVABolus);
   document.getElementById("dvaBolusDoseUnitSelect").addEventListener("change", function(){ setDoseUnitLabel("dvaBolusDoseUnitLabel", this.value); calcDVABolus(); });
-  ["dvaBolusDose","dvaBolusCustomConc","dvaBolusCustomUnit","dvaBolusUseCustom","peso","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", calcDVABolus));
+  ["dvaBolusDose","dvaBolusManMass","dvaBolusManMassUnit","dvaBolusManDiluent","dvaBolusManVolume","dvaBolusTimeMin","dvaBolusFinalVolume","peso","cenario"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener("input", ()=>{updateBolusManualConcPreview(); calcDVABolus();});
+  });
   updateDVABolusDrugs();
 }
 function updateDVABolusDrugs(){
@@ -2063,6 +2378,29 @@ function updateDVABolusDefaults(){
     const opt=document.createElement("option");
     opt.value=i; opt.textContent=p.label; pres.appendChild(opt);
   });
+  // Mostrar/esconder painel intermitente conforme administrationType
+  const isIntermittent = d.administrationType === "intermittent_infusion";
+  const panel = document.getElementById("dvaBolusIntermittentPanel");
+  const note = document.getElementById("dvaBolusIntermittentNote");
+  if(panel) panel.style.display = isIntermittent ? "grid" : "none";
+  if(note) note.style.display = isIntermittent ? "block" : "none";
+  if(isIntermittent){
+    document.getElementById("dvaBolusTimeMin").value = d.defaultTimeMin || 20;
+    document.getElementById("dvaBolusFinalVolume").value = d.defaultFinalVolume || 100;
+  }
+  // Diluente preferencial da droga; lista de opcoes da droga
+  populateDiluentSelect("dvaBolusManDiluent", d);
+  // Limpar campos manuais ao trocar de droga (usuario opta por preencher para sobrescrever)
+  if(document.getElementById("dvaBolusManMass")) document.getElementById("dvaBolusManMass").value = "";
+  if(document.getElementById("dvaBolusManVolume")) document.getElementById("dvaBolusManVolume").value = "";
+  // Unidade da massa default: bate com a unidade base da droga (mg/mcg/UI/g)
+  const baseMass = baseMassUnitFromDoseUnit(d.doseUnit) || "mg";
+  const massUnitSel=document.getElementById("dvaBolusManMassUnit");
+  if(massUnitSel){
+    const valid=["mcg","mg","g","UI"].includes(baseMass) ? baseMass : "mg";
+    massUnitSel.value = valid;
+  }
+  updateBolusManualConcPreview();
   calcDVABolus();
 }
 function currentDVABolus(){
@@ -2072,21 +2410,89 @@ function currentDVABolus(){
   const selectedDoseUnit=document.getElementById("dvaBolusDoseUnitSelect")?.value || d.doseUnit;
   setDoseUnitLabel("dvaBolusDoseUnitLabel", selectedDoseUnit);
   const dose=convertMassDose(rawDose, selectedDoseUnit, d.doseUnit);
-  const useCustom=document.getElementById("dvaBolusUseCustom").value === "sim";
   const ampoule=(d.commercialPresentations || [])[parseInt(document.getElementById("dvaBolusAmpPresentation").value || 0)] || null;
   const presentation=d.presentations[parseInt(document.getElementById("dvaBolusPresentation").value || 0)];
-  const conc=useCustom ? parseFloat(document.getElementById("dvaBolusCustomConc").value || presentation.conc) : presentation.conc;
-  const concUnit=useCustom ? document.getElementById("dvaBolusCustomUnit").value : presentation.unit;
+  // Manual prep tem precedencia quando preenchido
+  const manual=getBolusManualSolutionConc();
+  const conc=manual.filled ? manual.conc : presentation.conc;
+  const concUnit=manual.filled ? manual.concUnit : presentation.unit;
+  const diluent=document.getElementById("dvaBolusManDiluent")?.value || null;
   const doseMassUnit=baseMassUnitFromDoseUnit(d.doseUnit);
+
+  // Branching por tipo de administracao
+  const isIntermittent = d.administrationType === "intermittent_infusion";
+
+  if(isIntermittent){
+    const timeMin = parseFloat(document.getElementById("dvaBolusTimeMin")?.value || d.defaultTimeMin || 20);
+    const finalVolume = parseFloat(document.getElementById("dvaBolusFinalVolume")?.value || d.defaultFinalVolume || 100);
+    // Massa total em mg (para uniformizar com apresentacao da ampola)
+    const doseInMg = toMilligrams(dose, d.doseUnit);
+    // Volume a aspirar da ampola comercial (massa em mg / conc da ampola em mg/mL)
+    const ampouleConcMgPerML = ampoule ? ampoule.conc : null;
+    const volumeAspirar = (Number.isFinite(doseInMg) && Number.isFinite(ampouleConcMgPerML) && ampouleConcMgPerML > 0)
+      ? doseInMg / ampouleConcMgPerML
+      : NaN;
+    // Concentracao final calculada
+    const concFinal = Number.isFinite(finalVolume) && finalVolume > 0 ? doseInMg / finalVolume : NaN; // mg/mL
+    // Vazao para entregar o volume final no tempo escolhido
+    const vazao = Number.isFinite(timeMin) && timeMin > 0 ? finalVolume / (timeMin / 60) : NaN; // mL/h
+    return {
+      cat, drug, d, dose, rawDose, selectedDoseUnit,
+      conc:concFinal, concUnit:"mgml",
+      amount:{amount:dose, unit:d.doseUnit, concUnit:"mgml"},
+      volume:volumeAspirar,
+      presentation, ampoule,
+      isIntermittent:true,
+      timeMin, finalVolume, doseInMg, concFinal, vazao, volumeAspirar
+    };
+  }
+
+  // Caminho original para bolus puro
   const isWeightBased=(d.doseUnit || "").includes("/kg");
   const totalAmount=isWeightBased ? dose*getPeso() : dose;
   const amount={amount:totalAmount, unit:doseMassUnit, concUnit: doseMassUnit==="mcg" ? "mcgml" : (doseMassUnit==="mg" ? "mgml" : "uiml")};
   const volume=rateFromAmount(amount.amount, amount.unit, conc, concUnit);
-  return {cat, drug, d, dose, rawDose, selectedDoseUnit, conc, concUnit, amount, volume, presentation, ampoule};
+  return {cat, drug, d, dose, rawDose, selectedDoseUnit, conc, concUnit, amount, volume, presentation, ampoule, isIntermittent:false};
 }
 function calcDVABolus(){
   const x=currentDVABolus();
   const scenario=dvaScenarioMeta(x.d.name, getCenario());
+  if(x.isIntermittent){
+    const headline = `${fmt(x.rawDose,2)} ${x.selectedDoseUnit} em ${fmt(x.timeMin,0)} min → vazão ${fmt(x.vazao,1)} mL/h`;
+    const ampLabel = ampoulesNeededLabel(x.volumeAspirar, x.ampoule);
+    document.getElementById("dvaBolusOut").innerHTML =
+      `<div class="med-result">
+        <div class="med-result__headline">
+          <strong>${x.d.name}: ${headline}</strong>
+          <span>${dvaBolusDrugs[x.cat].label} · administração intermitente · faixa ${x.d.range}</span>
+        </div>
+        <div class="med-grid">
+          ${medCard("Solução preparada", [
+            medKv("Apresentação comercial", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
+            medKv("Diluente/uso", diluentGuidance(x.d.name, x.presentation.prep, "intermittent")),
+            medKv("Preparo da solução", x.presentation.prep),
+            medKv("Volume a aspirar da ampola", `${fmt(x.volumeAspirar,2)} mL${ampLabel ? ` (${ampLabel})` : ""}`),
+            medKv("Volume final da solução", `${fmt(x.finalVolume,0)} mL`),
+            medKv("Massa total", `${fmt(x.rawDose,2)} ${x.selectedDoseUnit} (= ${fmt(x.doseInMg,0)} mg)`),
+            medKv("Concentração final calculada", `${fmt(x.concFinal,2)} mg/mL`)
+          ], "med-card--primary")}
+          ${medCard("Posologia e farmacodinâmica", [
+            medKv("Categoria", dvaBolusDrugs[x.cat].label),
+            medKv("Dose total", `${fmt(x.rawDose,2)} ${x.selectedDoseUnit}`),
+            medKv("Tempo de administração", `${fmt(x.timeMin,0)} min`),
+            medKv("Vazão na bomba", `${fmt(x.vazao,1)} mL/h por ${fmt(x.timeMin,0)} min`),
+            medKv("Faixa terapêutica", x.d.range)
+          ], "med-card--pk")}
+          ${scenarioCard(scenario)}
+          ${medCard("Cuidados e segurança", [
+            medKv("Cuidados", x.d.notes),
+            medKv("Modo de administração", "Administração intermitente em bomba — NÃO é infusão contínua. A vazão calculada vale apenas pelos minutos definidos."),
+            medKv("Estabilidade/validade", solutionStabilityGuidance(x.d.name, x.presentation.prep, "intermittent"))
+          ], "med-card--safety")}
+        </div>
+      </div>`;
+    return;
+  }
   document.getElementById("dvaBolusOut").innerHTML =
     `<div class="med-result">
       <div class="med-result__headline">
@@ -2121,6 +2527,31 @@ function calcDVABolus(){
 function addDVABolusToSummary(){
   const x=currentDVABolus();
   const dvaBolusCat=document.getElementById("dvaBolusCat").value;
+  if(x.isIntermittent){
+    state.summary.push({
+      type:"Intermitente",
+      categoryKey:dvaBolusCat,
+      categoryLabel:dvaBolusDrugs[dvaBolusCat]?.label || "",
+      name:x.d.name,
+      dose:`${fmt(x.rawDose,2)} ${x.selectedDoseUnit} em ${fmt(x.timeMin,0)} min`,
+      mass:`${fmt(x.rawDose,2)} ${x.selectedDoseUnit}`,
+      volume:`${fmt(x.vazao,1)} mL/h por ${fmt(x.timeMin,0)} min`,
+      range:x.d.range,
+      result:`${fmt(x.rawDose,2)} ${x.selectedDoseUnit} em ${fmt(x.finalVolume,0)} mL infundido em ${fmt(x.timeMin,0)} min (vazão ${fmt(x.vazao,1)} mL/h)`,
+      shortResult:`dose ${fmt(x.rawDose,2)} ${x.selectedDoseUnit} em ${fmt(x.timeMin,0)} min; vazão ${fmt(x.vazao,1)} mL/h`,
+      prep:`${bolusAmpouleLine(x.ampoule)} ${x.presentation.prep}. Aspirar ${fmt(x.volumeAspirar,2)} mL da ampola, diluir até volume final ${fmt(x.finalVolume,0)} mL, infundir em ${fmt(x.timeMin,0)} min na vazão ${fmt(x.vazao,1)} mL/h.`,
+      notes:x.d.notes,
+      chartKind:"intermittent",
+      chartDose:`${fmt(x.rawDose,2)} ${x.selectedDoseUnit}`,
+      chartMass:`${fmt(x.rawDose,2)} ${x.selectedDoseUnit}`,
+      chartVolume:`${fmt(x.finalVolume,0)} mL em ${fmt(x.timeMin,0)} min (vazão ${fmt(x.vazao,1)} mL/h)`,
+      diluentInfo:diluentGuidance(x.d.name, x.presentation.prep, "intermittent"),
+      stabilityInfo:solutionStabilityGuidance(x.d.name, x.presentation.prep, "intermittent")
+    });
+    renderSummary();
+    confirmSummaryAdd(x.d.name);
+    return;
+  }
   state.summary.push({
     type:"DVA bólus",
     categoryKey:dvaBolusCat,
@@ -2146,16 +2577,23 @@ function addDVABolusToSummary(){
 }
 
 function initDVA(){
+  // Painel DVA continua foi removido — calc continua disponivel via Drogas em Infusao Continua (categoria vasoativa).
+  // Mantemos a funcao definida (defensiva) para retrocompat: nao ha mais elementos no DOM.
+  if(!document.getElementById("dvaCat")) return;
   populateSelect(document.getElementById("dvaCat"), dvaDrugs);
   document.getElementById("dvaCat").addEventListener("change", updateDVADrugs);
   document.getElementById("dvaDrug").addEventListener("change", updateDVADefaults);
   document.getElementById("dvaPrep").addEventListener("change", updateDVAPrep);
-  ["dvaDose","dvaRate","dvaConc","dvaConcUnit","peso","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", calcDVA));
+  ["dvaDose","dvaRate","dvaConc","dvaConcUnit","peso","cenario"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener("input", calcDVA);
+  });
   document.getElementById("dvaDose").addEventListener("input", function(){ if(this.value !== "") document.getElementById("dvaRate").value = ""; calcDVA(); });
   document.getElementById("dvaRate").addEventListener("input", function(){ if(this.value !== "") document.getElementById("dvaDose").value = ""; calcDVA(); });
   updateDVADrugs();
 }
 function updateDVADrugs(){
+  if(!document.getElementById("dvaCat")) return;
   const cat=document.getElementById("dvaCat").value;
   populateSelect(document.getElementById("dvaDrug"), dvaDrugs[cat].drugs, "name");
   updateDVADefaults();
@@ -2191,6 +2629,7 @@ function getAutoMode(doseId, rateId){
   return "empty";
 }
 function calcDVA(){
+  if(!document.getElementById("dvaCat")) return;
   const {cat,d,prep}=currentDVA();
   const mode=getAutoMode("dvaDose","dvaRate");
   const dose=parseFloat(document.getElementById("dvaDose").value);
@@ -2258,6 +2697,7 @@ function calcDVA(){
     </div>`;
 }
 function addDVAToSummary(){
+  if(!document.getElementById("dvaCat")) return;
   const {d,prep}=currentDVA();
   const mode=getAutoMode("dvaDose","dvaRate");
   const conc=parseFloat(document.getElementById("dvaConc").value || prep.conc);
@@ -2302,7 +2742,10 @@ function initInfusion(){
   document.getElementById("infCat").addEventListener("change", updateInfDrugs);
   document.getElementById("infDrug").addEventListener("change", updateInfDefaults);
   document.getElementById("infPrep").addEventListener("change", updateInfPrep);
-  ["infDose","infRate","infAmpMass","infAmpMassUnit","infAmpVolume","infTargetHours","infBagVolume","infDiluent","peso","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", ()=>{updateAmpContentPreview(); calcInfusion();}));
+  ["infDose","infRate","infAmpMass","infAmpMassUnit","infAmpVolume","infFinalMass","infFinalMassUnit","infFinalVolume","infTargetHours","infBagVolume","infDiluent","peso","cenario"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener("input", ()=>{updateAmpContentPreview(); updateFinalSolutionPreview(); calcInfusion();});
+  });
   document.getElementById("infDose").addEventListener("input", function(){ if(this.value !== "") document.getElementById("infRate").value = ""; calcInfusion(); });
   document.getElementById("infRate").addEventListener("input", function(){ if(this.value !== "") document.getElementById("infDose").value = ""; calcInfusion(); });
   updateInfDrugs();
@@ -2328,7 +2771,7 @@ function currentInf(){
   return {cat, drug, d, prep};
 }
 function updateInfPrep(){
-  const {d}=currentInf();
+  const {d, prep}=currentInf();
   const amp=ampouleInfoByName(d.name);
   if(amp && amp.volume && amp.content){
     document.getElementById("infAmpVolume").value=amp.volume;
@@ -2338,7 +2781,15 @@ function updateInfPrep(){
     document.getElementById("infAmpVolume").value="";
     document.getElementById("infAmpMass").value="";
   }
+  // Auto-preenche solução final montada a partir do preset
+  const sol = extractSolutionDefaultsFromPrep(prep);
+  if(Number.isFinite(sol.mass)) document.getElementById("infFinalMass").value = fmt(sol.mass, 2);
+  if(sol.massUnit) document.getElementById("infFinalMassUnit").value = sol.massUnit;
+  if(Number.isFinite(sol.volume)) document.getElementById("infFinalVolume").value = fmt(sol.volume, 0);
+  // Diluente preferencial da droga (mantém valor se já é compatível)
+  populateDiluentSelect("infDiluent", d);
   updateAmpContentPreview();
+  updateFinalSolutionPreview();
   calcInfusion();
 }
 function calcInfusion(){
@@ -2346,7 +2797,11 @@ function calcInfusion(){
   const mode=getAutoMode("infDose","infRate");
   let dose=parseFloat(document.getElementById("infDose").value);
   const rate=parseFloat(document.getElementById("infRate").value);
-  const conc=prep.conc, concUnit=prep.unit;
+  // Solução final editável tem precedência; fallback para o preset
+  const editableSol = getEditableSolutionConc();
+  const conc = Number.isFinite(editableSol.conc) ? editableSol.conc : prep.conc;
+  const concUnit = Number.isFinite(editableSol.conc) ? editableSol.concUnit : prep.unit;
+  updateFinalSolutionPreview();
   const hours=parseFloat(document.getElementById("infTargetHours")?.value || 12);
   const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
   const diluent=document.getElementById("infDiluent")?.value || "diluente";
@@ -2416,8 +2871,9 @@ function addInfusionToSummary(){
   const {d,prep}=currentInf();
   {
   const mode=getAutoMode("infDose","infRate");
-  const conc=prep.conc;
-  const concUnit=prep.unit;
+  const editableSol = getEditableSolutionConc();
+  const conc = Number.isFinite(editableSol.conc) ? editableSol.conc : prep.conc;
+  const concUnit = Number.isFinite(editableSol.conc) ? editableSol.concUnit : prep.unit;
   const hours=parseFloat(document.getElementById("infTargetHours")?.value || 12);
   const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
   const diluent=document.getElementById("infDiluent")?.value || "diluente";
@@ -2649,7 +3105,7 @@ const INFUSION_GROUPS=[
   {id:"antiarritmicos",   label:"Antiarrítmicos",               cats:["antiarritmico"]},
   {id:"anticonvulsivantes",label:"Anticonvulsivantes em BIC",   cats:["anticonvulsivante"]},
   {id:"diureticos",       label:"Diuréticos",                   cats:["diuretico"]},
-  {id:"broncoespasmo",    label:"Broncodilatadores",            cats:["broncoespasmo"]},
+  {id:"broncoespasmo",    label:"Broncoespasmo refratário",     cats:["broncoespasmo"]},
   {id:"anafilaxia",       label:"Anafilaxia",                   cats:["anafilaxia"]},
   {id:"gastro",           label:"Gastro-hepatologia",           cats:["gastro_hepatologia"]},
   {id:"outros",           label:"Outros",                       cats:["vasoativa"]}
