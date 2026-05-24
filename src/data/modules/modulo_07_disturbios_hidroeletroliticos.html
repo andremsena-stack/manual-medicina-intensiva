@@ -425,17 +425,20 @@
 
     <section id="calc-link">
       <h2>7. Calculadora operacional</h2>
-      <p>O preparo de soluções, cálculo de volume a aspirar e vazão de infusão para reposição/depleção de eletrólitos será automatizado em rodada subsequente na <strong>Calculadora interativa do Módulo 6</strong>, com nova categoria <em>Distúrbio eletrolítico</em> contendo:</p>
+      <p>O preparo de soluções, cálculo de volume a aspirar e vazão de infusão para reposição de eletrólitos está automatizado na <strong>Calculadora interativa do Módulo 6</strong>, categoria <em>Eletrólitos — reposição IV</em>, com as seguintes medicações:</p>
       <ul>
-        <li><strong>Hiponatremia</strong>: NaCl 3% (cálculo de bólus e infusão contínua) com alvo de Δ Na em 24 h.</li>
-        <li><strong>Hipernatremia</strong>: SG 5% / água livre (estimativa de déficit pela fórmula de Adrogué).</li>
-        <li><strong>Hipocalemia</strong>: KCl 19,1% — apresentação BR; cálculo por via periférica (≤ 10 mEq/h) e central (≤ 20–40 mEq/h).</li>
-        <li><strong>Hipercalemia</strong>: protocolo escalonado (gluconato Ca, insulina+SG, salbutamol, furosemida).</li>
-        <li><strong>Hipofosfatemia</strong>: fosfato de potássio com cálculo individualizado (Bech 2013).</li>
-        <li><strong>Hipomagnesemia</strong>: MgSO₄ 50% / 10% com diferentes diluições.</li>
-        <li><strong>Hipocalcemia</strong>: gluconato 10% (periférica) e cloreto 10% (central, vesicante).</li>
+        <li><strong>Hipocalemia</strong> — KCl 19,1% (apresentação BR; ampola 10 mL = 25,6 mEq). Modo intermitente: dose total em mEq + tempo + volume final → vazão. Limite de concentração por via (periférica vs central) embutido nas notas.</li>
+        <li><strong>Hipomagnesemia</strong> — MgSO₄ 50% / 10%. Doses por cenário (sintomática grave em 5–20 min; manutenção 4 g em 4 h). Sobreposto à entrada de eclâmpsia/broncoespasmo em outras categorias do Módulo 6.</li>
+        <li><strong>Hipocalcemia</strong> — Gluconato de cálcio 10% (periférica, padrão) e Cloreto de cálcio 10% (central apenas, vesicante). Equivalência elemental no cálculo automático.</li>
+        <li><strong>Hipofosfatemia</strong> — Fosfato de potássio (3 mmol P + 4,4 mmol K/mL). Dose individualizada por fórmula de Bech 2013; taxa máxima 7 mmol/h.</li>
       </ul>
-      <div class="alert alert-info"><strong>Pendente para próxima rodada:</strong> integrar essas medicações ao Módulo 6 com a UI já uniformizada (apresentação + preset + preparo manual + diluente + concentração calculada + dose desejada/vazão). A seleção do <em>distúrbio</em> filtra as medicações disponíveis e ajusta o protocolo escalonado quando aplicável (hipercalemia).</div>
+      <div class="alert alert-info"><strong>Não automatizadas nesta versão:</strong>
+        <ul style="margin:6px 0 0 18px">
+          <li><strong>NaCl 3% (hiponatremia)</strong> e <strong>SG 5%/água livre (hipernatremia)</strong>: são fluidoterapia (não medicação com ampola). Cálculo do delta de Na exige fórmula de Adrogué — fica como próxima rodada de calculadoras de fluidos.</li>
+          <li><strong>Protocolo escalonado de hipercalemia</strong>: combina gluconato de cálcio (já no Módulo 6, categoria Bólus/push-dose), insulina + SG (não é dose isolada), salbutamol (já no Módulo 6) e furosemida (já no Módulo 6, infusão contínua). A sequência operacional segue as regras descritas em §3.6 deste módulo.</li>
+          <li><strong>Hipercalcemia</strong>: hidratação com SF 0,9% + calcitonina SC + bisfosfonato IV (zoledronato/pamidronato). Doses fixas, sem cálculo de vazão da bomba.</li>
+        </ul>
+      </div>
     </section>
 
     <div class="footer-sign">

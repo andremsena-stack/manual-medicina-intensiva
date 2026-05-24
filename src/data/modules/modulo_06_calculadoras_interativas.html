@@ -899,6 +899,118 @@ const dvaBolusDrugs = {
         notes:"ATENÇÃO: uso como ADJUVANTE em broncoespasmo grave/refratário (GINA: exacerbação asmática que não responde ao tratamento inicial intensivo com β2 + corticoide + ipratrópio). NÃO usar como infusão contínua. Monitorar PA, reflexos, frequência respiratória e função renal. Atenção a hipermagnesemia em insuficiência renal. NÃO CONFUNDIR a dose total em gramas com taxa em mg/h — este é um bólus lento, não uma infusão contínua de manutenção."
       }
     }
+  },
+  eletrolito_reposicao: {
+    label:"Eletrólitos — reposição IV",
+    drugs:{
+      kcl_hipocalemia:{
+        name:"KCl 19,1% — reposição em hipocalemia",
+        administrationType:"intermittent_infusion",
+        doseUnit:"mEq",
+        defaultDose:20,
+        defaultTimeMin:120,
+        timeMinRange:[60,180],
+        defaultFinalVolume:200,
+        preferredDiluent:"SF 0,9%",
+        allowedDiluents:["SF 0,9%","SG 5%"],
+        range:"Periférica: ≤ 10 mEq/h e ≤ 40 mEq/L de concentração. Central: até 20–40 mEq/h e 60–100 mEq/L, sempre com ECG contínuo. Apresentação BR: KCl 19,1% — ampola 10 mL = 1,91 g = 25,6 mEq.",
+        presentations:[
+          {label:"20 mEq em 200 mL — periférica (100 mEq/L)", conc:0.5, unit:"mEqml", prep:"KCl 20 mEq = ~7,8 mL de KCl 19,1% (1 ampola contém 25,6 mEq) + diluente q.s.p. 200 mL → 0,1 mEq/mL (100 mEq/L). NÃO ULTRAPASSAR 40 mEq/L em periférica — diluir mais se necessário."},
+          {label:"20 mEq em 500 mL — periférica diluída (40 mEq/L)", conc:0.04, unit:"mEqml", prep:"KCl 20 mEq = ~7,8 mL de KCl 19,1% + SF 0,9% q.s.p. 500 mL → 0,04 mEq/mL (40 mEq/L) — concentração máxima recomendada para via periférica."},
+          {label:"40 mEq em 100 mL — central com ECG (400 mEq/L)", conc:0.4, unit:"mEqml", prep:"KCl 40 mEq = ~15,6 mL de KCl 19,1% + SF 0,9% q.s.p. 100 mL → 0,4 mEq/mL. APENAS VIA CENTRAL com ECG contínuo e bomba de infusão. NÃO use concentração ≥ 60 mEq/L em periférica."}
+        ],
+        commercialPresentations:[
+          {label:"KCl 19,1% — ampola 10 mL = 25,6 mEq", conc:25.6, unit:"mEqml", volume:10, content:25.6, contentUnit:"mEq"}
+        ],
+        ampoule:"KCl 19,1% — ampola de 10 mL = 1,91 g = 25,6 mEq de potássio (concentração de íon K+ ≈ 2,56 mEq/mL).",
+        notes:"REGRA DE OURO: corrigir hipomagnesemia ANTES — sem Mg adequado, a reposição de K é refratária. Periférica: máx 10 mEq/h e 40 mEq/L. Central: até 20 mEq/h sem ECG dedicado e até 40 mEq/h em UTI com ECG contínuo. NUNCA push IV — risco de PCR. Monitorar K sérico a cada 2–4 h durante reposição IV; ECG contínuo. Suspender se K > 5,0 mEq/L."
+      },
+      magnesio_hipomagnesemia:{
+        name:"Sulfato de magnésio IV — reposição em hipomagnesemia",
+        administrationType:"intermittent_infusion",
+        doseUnit:"g",
+        defaultDose:2,
+        defaultTimeMin:20,
+        timeMinRange:[5,20],
+        defaultFinalVolume:100,
+        preferredDiluent:"SF 0,9%",
+        allowedDiluents:["SF 0,9%","SG 5%"],
+        range:"Sintomática grave (TdP/convulsão/espasmo coronariano): 2 g IV em 5–20 min (bólus rápido em TdP: 2 g em 2 min). Moderada/assintomática: 4 g em 4 h ou 1 g/h × 4 h. Manutenção (perda contínua, CRRT): 1–2 g/h conforme nível sérico-alvo 1,8–2,5 mg/dL.",
+        presentations:[
+          {label:"2 g em 100 mL — MgSO₄ 50%", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 4 mL da apresentação 50% (500 mg/mL) + diluente 96 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 5–20 min conforme cenário."},
+          {label:"4 g em 250 mL — MgSO₄ 50% (manutenção 4 h)", conc:16, unit:"mgml", prep:"Sulfato de magnésio 4 g = 8 mL da apresentação 50% + diluente 242 mL = solução final 250 mL → 16 mg/mL; infundir em 4 h (1 g/h)."}
+        ],
+        commercialPresentations:[
+          {label:"MgSO₄ 50% — 500 mg/mL", conc:500, unit:"mgml", volume:10, content:5000, contentUnit:"mg"},
+          {label:"MgSO₄ 10% — 100 mg/mL", conc:100, unit:"mgml", volume:10, content:1000, contentUnit:"mg"}
+        ],
+        ampoule:"Sulfato de magnésio: 50% = 500 mg/mL (ampola 10 mL = 5 g); 10% = 100 mg/mL (ampola 10 mL = 1 g).",
+        notes:"Mg sérico reflete só 1% do estoque corporal — em paciente com hipoK/hipoCa refratárias, considerar reposição empírica mesmo com Mg sérico normal. Reduzir dose em 50% se ClCr < 30 mL/min. Monitorar reflexos patelares (sinal precoce de hipermagnesemia), PA, FR e função renal. Cessar se arreflexia ou Mg > 4 mg/dL (fora de indicação obstétrica)."
+      },
+      gluconato_calcio_hipocalcemia:{
+        name:"Gluconato de cálcio 10% — reposição em hipocalcemia",
+        administrationType:"intermittent_infusion",
+        doseUnit:"g",
+        defaultDose:1,
+        defaultTimeMin:10,
+        timeMinRange:[5,15],
+        defaultFinalVolume:100,
+        preferredDiluent:"SG 5%",
+        allowedDiluents:["SG 5%","SF 0,9%"],
+        range:"Sintomática grave (tetania, convulsão, laringoespasmo): 1–2 g (10–20 mL gluconato 10%) diluídos em 50–100 mL SG 5% em 5–10 min sob ECG. Moderada/assintomática: 1–2 g em 1–2 h. Manutenção em UTI: 0,5–2 mg Ca elementar/kg/h em infusão contínua.",
+        presentations:[
+          {label:"1 g (10 mL) em 100 mL SG 5%", conc:9, unit:"mgml", prep:"Gluconato de cálcio 10% 10 mL (= 1 g de gluconato = 90 mg de Ca elementar = 2,2 mmol Ca) + SG 5% q.s.p. 100 mL → 0,9 mg de Ca elementar/mL. Administrar em 5–10 min sob ECG."},
+          {label:"2 g (20 mL) em 100 mL SG 5%", conc:18, unit:"mgml", prep:"Gluconato de cálcio 10% 20 mL (= 2 g = 180 mg Ca elementar) + SG 5% q.s.p. 100 mL → 1,8 mg Ca elementar/mL. Para refratários ou pancreatite/transfusão maciça com hipoCa documentada."}
+        ],
+        commercialPresentations:[
+          {label:"Gluconato de cálcio 10% — ampola 10 mL = 1 g de gluconato (90 mg Ca elementar)", conc:100, unit:"mgml", volume:10, content:1000, contentUnit:"mg"}
+        ],
+        ampoule:"Gluconato de cálcio 10% — ampola 10 mL = 1 g de gluconato (concentração 100 mg/mL) = 90 mg de cálcio elementar = 2,2 mmol Ca.",
+        notes:"PREFERIR gluconato sobre cloreto em via periférica — gluconato é menos vesicante. Sempre dosar e CORRIGIR hipomagnesemia antes (sem Mg, reposição de Ca é refratária). Monitorar ECG durante infusão (risco de arritmia se infusão rápida). Cuidado em digitalizados — infusão rápida pode precipitar toxicidade digital. Equivalência: 1 g gluconato (10 mL) = 90 mg Ca elementar."
+      },
+      cloreto_calcio_hipocalcemia:{
+        name:"Cloreto de cálcio 10% — reposição em hipocalcemia (via central)",
+        administrationType:"intermittent_infusion",
+        doseUnit:"g",
+        defaultDose:0.5,
+        defaultTimeMin:10,
+        timeMinRange:[5,15],
+        defaultFinalVolume:100,
+        preferredDiluent:"SG 5%",
+        allowedDiluents:["SG 5%","SF 0,9%"],
+        range:"Sintomática refratária ou parada cardiorrespiratória: 5–10 mL de CaCl₂ 10% (= 136–272 mg Ca elementar) em 50–100 mL SG 5% em 5–10 min sob ECG. APENAS VIA CENTRAL — extravasamento periférico causa necrose tecidual grave.",
+        presentations:[
+          {label:"0,5 g (5 mL) em 100 mL SG 5%", conc:5, unit:"mgml", prep:"Cloreto de cálcio 10% 5 mL (= 0,5 g = 136 mg Ca elementar = 3,4 mmol Ca) + SG 5% q.s.p. 100 mL → 1,36 mg Ca elementar/mL. APENAS VIA CENTRAL com ECG contínuo."},
+          {label:"1 g (10 mL) em 100 mL SG 5%", conc:10, unit:"mgml", prep:"Cloreto de cálcio 10% 10 mL (= 1 g = 272 mg Ca elementar) + SG 5% q.s.p. 100 mL → 2,72 mg Ca elementar/mL. Para refratários — APENAS VIA CENTRAL."}
+        ],
+        commercialPresentations:[
+          {label:"Cloreto de cálcio 10% — ampola 10 mL = 1 g (272 mg Ca elementar)", conc:100, unit:"mgml", volume:10, content:1000, contentUnit:"mg"}
+        ],
+        ampoule:"Cloreto de cálcio 10% — ampola 10 mL = 1 g (concentração 100 mg/mL) = 272 mg de cálcio elementar = 6,8 mmol Ca. 3× MAIS cálcio elementar por mL que gluconato.",
+        notes:"VESICANTE — extravasamento periférico causa NECROSE GRAVE de pele e tecido subcutâneo. RESERVAR para via central garantida ou parada cardiorrespiratória (quando acesso periférico calibroso é aceitável). Em paciente com acesso periférico apenas, SEMPRE usar gluconato. ECG contínuo obrigatório. Cuidado em digitalizados. Equivalência: 10 mL CaCl₂ 10% = 272 mg Ca elementar (3× a dose de Ca elementar do gluconato)."
+      },
+      fosfato_potassio_hipofosfatemia:{
+        name:"Fosfato de potássio — reposição em hipofosfatemia",
+        administrationType:"intermittent_infusion",
+        doseUnit:"mmol",
+        defaultDose:30,
+        defaultTimeMin:360,
+        timeMinRange:[240,480],
+        defaultFinalVolume:250,
+        preferredDiluent:"SF 0,9%",
+        allowedDiluents:["SF 0,9%","SG 5%"],
+        range:"Moderada (P 1,0–1,9 mg/dL): 15–30 mmol em 6 h. Grave (P < 1,0): 0,5 mmol/kg em 4–6 h (dose total ~30–45 mmol). Cálculo individualizado (Bech 2013): 0,5 × peso × (1,25 − P sérico em mmol/L) mmol total. TAXA MÁXIMA: 7 mmol/h.",
+        presentations:[
+          {label:"30 mmol P em 250 mL SF 0,9%", conc:0.12, unit:"mmolml", prep:"Fosfato de potássio 30 mmol = 10 mL da apresentação 3 mmol P + 4,4 mmol K/mL + SF 0,9% q.s.p. 250 mL → 0,12 mmol P/mL. Carrega ~44 mmol de K — atenção em IR/hipercalemia. Infundir em 6 h (5 mmol/h)."},
+          {label:"45 mmol P em 250 mL SF 0,9% (grave)", conc:0.18, unit:"mmolml", prep:"Fosfato de potássio 45 mmol = 15 mL da apresentação 3 mmol P/mL + SF 0,9% q.s.p. 250 mL → 0,18 mmol P/mL. Carrega ~66 mmol de K. Infundir em 6–8 h (≤ 7 mmol/h)."}
+        ],
+        commercialPresentations:[
+          {label:"Fosfato de potássio — apresentação 3 mmol P + 4,4 mmol K /mL", conc:3, unit:"mmolml", volume:10, content:30, contentUnit:"mmol"}
+        ],
+        ampoule:"Fosfato de potássio: ampola/frasco 10 mL contém 30 mmol P + 44 mmol K (apresentação varia por fabricante; conferir bula). 1 mL = 3 mmol P + 4,4 mmol K.",
+        notes:"Carrega POTÁSSIO — em paciente com IR, hipercalemia, lise tumoral, considerar fosfato de SÓDIO. Evitar em hipercalcemia (precipitação de fosfato cálcio). Monitorar P, Ca, K e função renal a cada 6 h durante reposição. Taxa máxima 7 mmol/h. Em CRRT com perda contínua de P, considerar reposição contínua via solução de reposição com fosfato (e.g., Phoxilium®)."
+      }
+    }
   }
 };
 
@@ -1192,6 +1304,12 @@ const DILUENT_INFO_BY_NAME = [
   // Broncodilatador / outros
   ["salbutamol",        "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
   ["aminofilina",       "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  // Eletrolitos
+  ["kcl",               "SF 0,9%",            ["SF 0,9%", "SG 5%"]],
+  ["cloreto de potássio","SF 0,9%",           ["SF 0,9%", "SG 5%"]],
+  ["gluconato de cálcio","SG 5%",             ["SG 5%", "SF 0,9%"]],
+  ["cloreto de cálcio", "SG 5%",              ["SG 5%", "SF 0,9%"]],
+  ["fosfato de potássio","SF 0,9%",           ["SF 0,9%", "SG 5%"]],
   // Bolus simples
   ["atropina",          "SF 0,9%",            ["SF 0,9%"]]
 ];
@@ -2429,25 +2547,33 @@ function currentDVABolus(){
   if(isIntermittent){
     const timeMin = parseFloat(document.getElementById("dvaBolusTimeMin")?.value || d.defaultTimeMin || 20);
     const finalVolume = parseFloat(document.getElementById("dvaBolusFinalVolume")?.value || d.defaultFinalVolume || 100);
-    // Massa total em mg (para uniformizar com apresentacao da ampola)
-    const doseInMg = toMilligrams(dose, d.doseUnit);
-    // Volume a aspirar da ampola comercial (massa em mg / conc da ampola em mg/mL)
-    const ampouleConcMgPerML = ampoule ? ampoule.conc : null;
-    const volumeAspirar = (Number.isFinite(doseInMg) && Number.isFinite(ampouleConcMgPerML) && ampouleConcMgPerML > 0)
-      ? doseInMg / ampouleConcMgPerML
+    // Suporte a unidades de massa (mcg/mg/g convertidas para mg) e nao-massa (mEq, mmol, UI passam diretas)
+    const doseUnitBase = baseMassUnitFromDoseUnit(d.doseUnit);
+    const isMassUnit = ["mcg","mg","g"].includes(doseUnitBase);
+    const doseConverted = isMassUnit ? toMilligrams(dose, d.doseUnit) : dose;
+    const convertedUnit = isMassUnit ? "mg" : doseUnitBase; // "mEq"|"mmol"|"UI"|"mg"
+    const concPerMLUnitLabel = `${convertedUnit}/mL`;
+    // Volume a aspirar da ampola comercial: ampoule.conc esta na mesma unidade que doseConverted
+    const ampouleConcPerML = ampoule ? ampoule.conc : null;
+    const volumeAspirar = (Number.isFinite(doseConverted) && Number.isFinite(ampouleConcPerML) && ampouleConcPerML > 0)
+      ? doseConverted / ampouleConcPerML
       : NaN;
     // Concentracao final calculada
-    const concFinal = Number.isFinite(finalVolume) && finalVolume > 0 ? doseInMg / finalVolume : NaN; // mg/mL
+    const concFinal = Number.isFinite(finalVolume) && finalVolume > 0 ? doseConverted / finalVolume : NaN;
     // Vazao para entregar o volume final no tempo escolhido
     const vazao = Number.isFinite(timeMin) && timeMin > 0 ? finalVolume / (timeMin / 60) : NaN; // mL/h
     return {
       cat, drug, d, dose, rawDose, selectedDoseUnit,
-      conc:concFinal, concUnit:"mgml",
-      amount:{amount:dose, unit:d.doseUnit, concUnit:"mgml"},
+      conc:concFinal, concUnit: isMassUnit ? "mgml" : (convertedUnit === "UI" ? "uiml" : convertedUnit + "ml"),
+      amount:{amount:dose, unit:d.doseUnit, concUnit: isMassUnit ? "mgml" : (convertedUnit + "ml")},
       volume:volumeAspirar,
       presentation, ampoule,
       isIntermittent:true,
-      timeMin, finalVolume, doseInMg, concFinal, vazao, volumeAspirar
+      timeMin, finalVolume,
+      doseInMg: doseConverted, // mantido por retrocompat; agora pode ser mEq/mmol também
+      doseConvertedUnit: convertedUnit,
+      concFinalUnitLabel: concPerMLUnitLabel,
+      concFinal, vazao, volumeAspirar
     };
   }
 
@@ -2477,8 +2603,8 @@ function calcDVABolus(){
             medKv("Preparo da solução", x.presentation.prep),
             medKv("Volume a aspirar da ampola", `${fmt(x.volumeAspirar,2)} mL${ampLabel ? ` (${ampLabel})` : ""}`),
             medKv("Volume final da solução", `${fmt(x.finalVolume,0)} mL`),
-            medKv("Massa total", `${fmt(x.rawDose,2)} ${x.selectedDoseUnit} (= ${fmt(x.doseInMg,0)} mg)`),
-            medKv("Concentração final calculada", `${fmt(x.concFinal,2)} mg/mL`)
+            medKv("Massa total", `${fmt(x.rawDose,2)} ${x.selectedDoseUnit}${x.doseConvertedUnit && x.doseConvertedUnit !== x.selectedDoseUnit ? ` (= ${fmt(x.doseInMg,2)} ${x.doseConvertedUnit})` : ""}`),
+            medKv("Concentração final calculada", `${fmt(x.concFinal,3)} ${x.concFinalUnitLabel || "mg/mL"}`)
           ], "med-card--primary")}
           ${medCard("Posologia e farmacodinâmica", [
             medKv("Categoria", dvaBolusDrugs[x.cat].label),

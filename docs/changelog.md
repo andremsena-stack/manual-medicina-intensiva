@@ -1,5 +1,84 @@
 # Changelog
 
+## 2026-05-22 — Calculadora de eletrólitos no Mod 6 + remover disclaimer do Mod 7 §7 (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- Conteúdo clínico — **nova categoria operacional "Eletrólitos — reposição IV"** na calculadora do Módulo 6, integrando 5 medicações descritas no Módulo 7
+
+### Nova categoria `eletrolito_reposicao` em `dvaBolusDrugs` (Mod 6)
+
+5 medicações, todas `administrationType: "intermittent_infusion"`:
+
+| Droga | Default | Unidade | Via |
+|---|---|---|---|
+| **KCl 19,1%** (hipocalemia) | 20 mEq em 200 mL em 120 min | mEq | Periférica ≤ 10 mEq/h, ≤ 40 mEq/L; central até 20–40 mEq/h |
+| **MgSO₄** (hipomagnesemia) | 2 g em 100 mL em 5–20 min | g | Periférica aceita; central em conc altas |
+| **Gluconato de cálcio 10%** (hipocalcemia) | 1 g em 100 mL em 10 min | g | Periférica (menos vesicante) |
+| **Cloreto de cálcio 10%** (hipocalcemia) | 0,5 g em 100 mL em 10 min | g | **CENTRAL apenas** (vesicante grave) |
+| **Fosfato de potássio** (hipofosfatemia) | 30 mmol em 250 mL em 6 h | mmol | Central; taxa máx 7 mmol/h |
+
+Cada entrada com:
+- `range` descrevendo cenários (sintomática grave vs assintomática vs manutenção)
+- `presentations` com 1–2 preparos pré-definidos
+- `commercialPresentations` com apresentação BR
+- `ampoule` com descrição comercial
+- `notes` extensa com regras de monitorização + alerta de vesicância (CaCl₂) + necessidade de corrigir Mg antes de K/Ca
+- `preferredDiluent`/`allowedDiluents` para diluente seguro
+
+### Suporte a unidades mEq/mmol
+
+`currentDVABolus` foi estendida para distinguir unidades de massa (mcg/mg/g — convertidas para mg) de não-massa (mEq, mmol, UI — passam diretas). A função `baseMassUnitFromDoseUnit` já retornava "mEq"/"mmol" como base; a calc agora usa essa unidade como denominador no cálculo de volume a aspirar (sem conversão para mg, que faria zerar).
+
+Novo campo `concFinalUnitLabel` no return de `currentDVABolus` (ex.: "mEq/mL", "mmol/mL", "mg/mL"). Render `calcDVABolus` usa esse label dinâmico em "Concentração final calculada".
+
+### Lookup de diluentes — adicionadas 5 entradas em `DILUENT_INFO_BY_NAME`
+
+- KCl / Cloreto de potássio: SF 0,9% (preferred) + SG 5%
+- Gluconato de cálcio: SG 5% (preferred) + SF 0,9%
+- Cloreto de cálcio: SG 5% (preferred) + SF 0,9%
+- Fosfato de potássio: SF 0,9% (preferred) + SG 5%
+
+### Mod 7 §7 — disclaimer removido, vira link operacional
+
+`modulo_07_disturbios_hidroeletroliticos.html`, seção 7 (Calculadora operacional):
+- Removida a frase "será automatizado em rodada subsequente"
+- Texto reescrito para descrever as 5 medicações JÁ DISPONÍVEIS no Módulo 6
+- Mantida observação sobre o que NÃO foi automatizado nesta versão (NaCl 3%, SG 5%/água livre, protocolo escalonado de hipercalemia, hipercalcemia) com justificativa
+
+### Validação runtime
+
+```
+Categoria "Eletrólitos — reposição IV" → 5 drogas listadas ✓
+KCl 19,1% → 20 mEq em 120 min → vazão 100 mL/h ✓
+Cloreto de cálcio 10% → 0,5 g em 10 min → vazão 600 mL/h ✓
+Fosfato de potássio → 30 mmol em 360 min → vazão 41,7 mL/h ✓
+```
+
+### **REQUER REVISAO MEDICA**
+
+Validar antes do uso em produção:
+- Doses default (20 mEq KCl, 1 g gluconato, 0,5 g CaCl₂, 30 mmol fosfato)
+- Tempos default (120 min KCl, 10 min Ca, 360 min fosfato)
+- Volumes finais default (200 / 100 / 250 mL)
+- Limites de concentração por via (periférica vs central) nos `notes`
+- Alerta de vesicância do CaCl₂ (uso APENAS central)
+- Regra "corrigir Mg antes de K/Ca refratários" registrada nos `notes`
+
+### Não automatizado nesta versão (registrado no Mod 7 §7)
+
+- **NaCl 3% / SG 5% / água livre** — fluidoterapia, requer fórmula de Adrogué; fica para calculadora de fluidos futura
+- **Protocolo escalonado de hipercalemia** — combinação de drogas já disponíveis no Mod 6 individualmente (gluconato em Bólus, salbutamol em Broncoespasmo, furosemida em Diurético); sequência operacional descrita em §3.6 do Mod 7
+- **Hipercalcemia** — hidratação + calcitonina + bisfosfonato; doses fixas sem cálculo de vazão
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_06_calculadoras_interativas.html` (nova categoria + suporte mEq/mmol + diluentes)
+- `src/data/modules/modulo_07_disturbios_hidroeletroliticos.html` (§7 reescrita)
+- `scripts/verify-module-hashes.mjs`:
+  - Mod 6: `66bc13d6569b0cfc1389403ebb5e700640a01d6aaa1412ea0405fc661b807524`
+  - Mod 7: `47d5bdb9bb3e481de6414c7656bbb3088b50554d507b185d2bea3938d9a26c11`
+
 ## 2026-05-22 — Renumeração: Distúrbios → Mod 7, Referências → Mod 8 (regra final)
 
 ### Tipo de alteração
