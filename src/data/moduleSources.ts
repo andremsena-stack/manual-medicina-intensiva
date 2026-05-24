@@ -6,8 +6,8 @@ import modulo03 from "./modules/modulo_03_ventilacao_mecanica.html?raw";
 import modulo04 from "./modules/modulo_04_manutencao_sedoanalgesia.html?raw";
 import modulo05 from "./modules/modulo_05_drogas_vasoativas.html?raw";
 import modulo06 from "./modules/modulo_06_calculadoras_interativas.html?raw";
-import modulo07 from "./modules/modulo_07_referencias.html?raw";
-import modulo08 from "./modules/modulo_08_disturbios_hidroeletroliticos.html?raw";
+import modulo07 from "./modules/modulo_07_disturbios_hidroeletroliticos.html?raw";
+import modulo08 from "./modules/modulo_08_referencias.html?raw";
 
 export const moduleSources: ModuleSource[] = [
   {
@@ -55,15 +55,15 @@ export const moduleSources: ModuleSource[] = [
   {
     id: "modulo-07",
     number: 7,
-    title: "Referências consolidadas",
-    fileName: "modulo_07_referencias.html",
+    title: "Distúrbios hidroeletrolíticos",
+    fileName: "modulo_07_disturbios_hidroeletroliticos.html",
     html: modulo07
   },
   {
     id: "modulo-08",
     number: 8,
-    title: "Distúrbios hidroeletrolíticos",
-    fileName: "modulo_08_disturbios_hidroeletroliticos.html",
+    title: "Referências consolidadas",
+    fileName: "modulo_08_referencias.html",
     html: modulo08
   }
 ];

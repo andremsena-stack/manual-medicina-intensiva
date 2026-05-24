@@ -1,5 +1,69 @@
 # Changelog
 
+## 2026-05-22 — Renumeração: Distúrbios → Mod 7, Referências → Mod 8 (regra final)
+
+### Tipo de alteração
+
+- Arquitetura/convenção — **regra estabelecida**: módulo de Referências
+  consolidadas sempre fica como ÚLTIMO módulo. Cada novo módulo clínico
+  adicionado empurra Referências para o final e renumera tudo.
+
+### Alterações realizadas
+
+**1. Arquivos renomeados** (via `git mv` — preserva histórico):
+- `modulo_07_referencias.html` → `modulo_08_referencias.html`
+- `modulo_08_disturbios_hidroeletroliticos.html` → `modulo_07_disturbios_hidroeletroliticos.html`
+
+**2. `src/data/moduleSources.ts`** — ordem e atribuições atualizadas:
+- `id: "modulo-07"` agora aponta para Distúrbios (number 7)
+- `id: "modulo-08"` agora aponta para Referências (number 8)
+
+**3. Conteúdo HTML atualizado**:
+
+`modulo_07_disturbios_hidroeletroliticos.html`:
+- `<title>`: "Módulo 8: Distúrbios..." → "Módulo 7: Distúrbios..."
+- Hero h2: "Módulo 8 — Distúrbios..." → "Módulo 7 — Distúrbios..."
+
+`modulo_08_referencias.html`:
+- `<title>`: "Módulo 7: Referências" → "Módulo 8: Referências"
+- Aside brand h1: "Módulo 7" → "Módulo 8"
+- Aside brand parágrafo: "seis módulos clínicos" → "sete módulos clínicos"
+- Hero parágrafo: "Bibliografia primária dos seis módulos" → "dos sete módulos clínicos"
+- Nav item: `#refs-modulo-8` "8. Módulo 8 - Distúrbios..." → `#refs-modulo-7` "7. Módulo 7 - Distúrbios..."
+- Section `id="refs-modulo-8"` → `id="refs-modulo-7"` com h2 atualizado
+
+**4. `scripts/verify-module-hashes.mjs`** — entradas trocadas + hashes recomputados:
+- Mod 7: `e2799041d4316ded672f25c73995b253092d65e977d9b08f2bc6eec371f1528c`
+- Mod 8: `a3212900a6088ca84edc241564d88326e793018240c8ed77d82e936058d53e0c`
+
+### Regra estabelecida para futuros módulos
+
+Toda vez que um novo módulo clínico for adicionado:
+
+1. O novo módulo recebe o próximo número disponível antes do de Referências (ex.: se hoje há Mod 1–7 clínicos + Mod 8 refs, o próximo seria Mod 8 clínico, renumerando Refs para Mod 9).
+2. O arquivo de Referências é renomeado (`modulo_NN_referencias.html`).
+3. O conteúdo do Mod Referências é atualizado:
+   - `<title>`, brand h1, parágrafos contam o novo total de módulos clínicos
+   - Nova seção de refs do novo módulo é inserida na ordem correta (`#refs-modulo-N`)
+4. `moduleSources.ts`, `verify-module-hashes.mjs` atualizados.
+5. URLs com `modulo-07` continuam apontando para "o módulo de número 7", seja qual for. Bookmarks antigos podem mudar de conteúdo — é uma quebra documentada.
+
+### Validação runtime
+
+```
+/modulo-07 → "Módulo 7 — Distúrbios hidroeletrolíticos" ✓
+/modulo-08 → "Módulo 8: Referências"
+  Brand h1: "Módulo 8" ✓
+  Seções de refs: 7 (Mod 1, 2, 3, 4, 5, 6, 7-Distúrbios) ✓
+```
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_07_disturbios_hidroeletroliticos.html` (renomeado)
+- `src/data/modules/modulo_08_referencias.html` (renomeado + conteúdo)
+- `src/data/moduleSources.ts`
+- `scripts/verify-module-hashes.mjs`
+
 ## 2026-05-22 — Novo Módulo 8: Distúrbios hidroeletrolíticos (REQUER REVISAO MEDICA)
 
 ### Tipo de alteração
