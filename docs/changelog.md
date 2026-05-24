@@ -1,5 +1,110 @@
 # Changelog
 
+## 2026-05-22 — Novo Módulo 8: Distúrbios hidroeletrolíticos (REQUER REVISAO MEDICA)
+
+### Tipo de alteração
+
+- **Conteúdo clínico novo — adição de módulo completo** sobre distúrbios
+  de sódio, potássio, fósforo, magnésio e cálcio em UTI/emergência
+
+### Estrutura do Mod 8 (`src/data/modules/modulo_08_disturbios_hidroeletroliticos.html`)
+
+Layout idêntico aos demais módulos (aside com nav + main com hero + sections), com 7 seções:
+
+1. **Princípios gerais** — 3 perguntas-chave (aguda × crônica, sintoma, causa) + pré-requisitos
+2. **Distúrbios do sódio** — hipoNa/hiperNa
+3. **Distúrbios do potássio** — hipoK/hiperK
+4. **Distúrbios do fósforo** — hipoP/hiperP
+5. **Reposição de magnésio** — hipomagnesemia
+6. **Reposição de cálcio** — hipoCa/hiperCa
+7. **Calculadora operacional** — placeholder com lista de medicações que serão integradas ao Mod 6 em rodada futura
+
+### Cada seção tem (padronizado)
+
+- **Valores de referência e classificação** (leve/moderado/grave + cronicidade quando aplicável)
+- **Etiologias** em grid 2×2: clínicas vs medicamentosas
+- **Quando o tratamento está indicado** (regras objetivas com gatilhos)
+- **Consequências do distúrbio** (neuro, cardio, sistêmico)
+- **Regras de reposição em tabela**: cenário | dose | diluição/velocidade | via (periférica/central)
+- **Alerts** específicos para riscos (SDM em hiponatremia, vesicância de CaCl₂, hipoMg precede reposição de K/Ca, etc.)
+- **Citação de fontes primárias** ao final de cada seção
+
+### Conteúdo destacado
+
+**Sódio:**
+- SF 3% bólus 100–150 mL em 10 min para sintomático grave; alvo Δ Na 4–6 mEq/L
+- Crônica: ≤ 8 mEq/L em 24 h, ≤ 18 em 48 h (≤ 6 em alto risco — alcoolismo/desnutrição/hipoK/hepatopatia)
+- Cálculo prático: 1 mL/kg de SF 3% ≈ ↑ Na 1 mEq/L
+- Hipernatremia crônica: queda ≤ 10 mEq/L em 24 h
+
+**Potássio:**
+- Hipocalemia: oral até 40 mEq 2–3×/dia; IV periférica ≤ 10 mEq/h e ≤ 40 mEq/L; central até 20–40 mEq/h com ECG
+- Apresentação BR: KCl 19,1% — ampola 10 mL = 25,6 mEq
+- Hipercalemia: protocolo escalonado de 6 passos (gluconato Ca → insulina+SG → β2 → furosemida → resina → diálise)
+- "Sempre antes": dosar e corrigir Mg
+
+**Fósforo:**
+- IV se P < 1,0 mg/dL ou sintomas (insuf respiratória, hemólise, IC)
+- Fórmula individualizada (Bech 2013): 0,5 × peso × (1,25 − P mmol/L) mmol; máx 7 mmol/h
+- Fosfato de potássio: 3 mmol P + 4,4 mmol K/mL
+
+**Magnésio:**
+- TdP / sintomático grave: MgSO₄ 2 g em 5–20 min
+- Eclâmpsia: 4–6 g em 15–20 min + manut 1–2 g/h
+- Apresentação BR: MgSO₄ 50% (500 mg/mL) e 10% (100 mg/mL)
+- Mg sérico reflete só 1% do estoque corporal — reposição empírica em hipoK/hipoCa refratárias
+
+**Cálcio:**
+- Hipocalcemia sintomática: gluconato 10% 10–20 mL em 10 min (periférica) ou cloreto 10% 5–10 mL (CENTRAL apenas — vesicante)
+- Equivalência: 10 mL gluconato = 90 mg Ca elementar; 10 mL CaCl₂ = 272 mg
+- Hipercalcemia: SF 0,9% 200–300 mL/h + calcitonina 4 UI/kg SC + zoledronato 4 mg ou pamidronato 60–90 mg
+
+### Wiring no app
+
+- `src/types.ts`: `ModuleId` inclui `"modulo-08"`
+- `src/utils/route.ts`: `MODULE_IDS` inclui `"modulo-08"`
+- `src/data/moduleSources.ts`: importa e registra modulo08 com `id: "modulo-08", number: 8, title: "Distúrbios hidroeletrolíticos"`
+- `scripts/verify-module-hashes.mjs`: novo hash `9d50c53590d36b59fa3a5204462f93136b84cc0d390c00ed419b38f93f51cdec`
+
+### Mod 7 — nova seção de referências (#refs-modulo-8)
+
+19 referências citadas:
+- Refardt 2024 NDT (hyponatraemia standard)
+- Verbalis 2017 JASN, Sterns 2015 NEJM, Adrogué 2000 NEJM
+- Lindner 2020 EJEM (KDIGO conference), UK Renal 2022, Weisberg 2008 CCM, Allon 1996 AJKD (hipercalemia)
+- Geerse 2010 CritCare, Bech 2013 JCC, Charron 2003 CCM (fósforo)
+- Hansen 2018 JIC, Tong 2005 JICM (magnésio)
+- Cooper 2008 BMJ, Bilezikian 2003 Mayo, Wagner 2022 Transfusion (cálcio)
+- EMCrit IBCC, U. Michigan Trauma ICU Protocol, Saudi MOH Adult Electrolyte Protocol (recursos operacionais)
+
+### **REQUER REVISAO MEDICA**
+
+Como módulo clínico novo, todo o conteúdo precisa de validação institucional antes do uso em produção:
+
+- Valores de referência (variam por laboratório)
+- Pontos de corte para tratamento (variam por protocolo)
+- Doses, velocidades e concentrações em cada tabela
+- Sequência do protocolo escalonado de hipercalemia
+- Indicações de via central vs periférica para cada solução
+- Regras do delta máximo de correção em 24 h e 48 h
+- Cálculos individualizados (Bech para fósforo, fórmula de Adrogué)
+- Mensagens dos alerts de segurança
+
+### Pendente (próxima rodada)
+
+- **Calculadora operacional no Mod 6** com nova categoria *Distúrbio eletrolítico* — preparo das soluções, cálculo de volume a aspirar, vazão de infusão por via (periférica/central), com seleção do distúrbio que filtra as medicações apropriadas
+
+### Arquivos modificados/novos
+
+- `src/data/modules/modulo_08_disturbios_hidroeletroliticos.html` (NOVO)
+- `src/data/modules/modulo_07_referencias.html` (nova seção #refs-modulo-8 com 19 refs)
+- `src/data/moduleSources.ts` (importa modulo08)
+- `src/types.ts` (`ModuleId` extendido)
+- `src/utils/route.ts` (`MODULE_IDS` extendido)
+- `scripts/verify-module-hashes.mjs`:
+  - Mod 7: `d44303010150359880d65fa6ef6efd1a93722bef59e4082e30bedd62be5666c7`
+  - Mod 8: `9d50c53590d36b59fa3a5204462f93136b84cc0d390c00ed419b38f93f51cdec`
+
 ## 2026-05-22 — Calc Mod 6: presets visíveis sem `<details>`, preparo manual abaixo (colapsável)
 
 ### Tipo de alteração

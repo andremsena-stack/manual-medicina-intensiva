@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Interativo de Medicina Intensiva — Módulo 8: Distúrbios hidroeletrolíticos</title>
+  <style>
+    :root{
+      --bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;
+      --primary:#123c69;--primary-soft:#dce9f6;--accent:#0b6b5c;--danger:#b42318;
+      --warning:#b54708;--success:#067647;--border:#d8e0ea;--shadow:0 8px 24px rgba(16,24,40,.08);
+      --radius:16px
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+    a{color:inherit;text-decoration:none}
+    .app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+    aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d2438;color:#fff;padding:24px 18px}
+    .brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}
+    .brand h1{font-size:19px;margin:0 0 8px;line-height:1.25}
+    .brand p{margin:0;font-size:13px;color:rgba(255,255,255,.75)}
+    nav ul{list-style:none;padding:0;margin:0}
+    nav li{margin:5px 0}
+    nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88)}
+    nav a:hover{background:rgba(255,255,255,.10)}
+    main{padding:34px;max-width:1380px;width:100%}
+    .hero{background:linear-gradient(135deg,#123c69,#0b6b5c);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);margin-bottom:28px}
+    .hero h2{font-size:34px;margin:0 0 10px}.hero p{max-width:1040px;color:rgba(255,255,255,.9);margin:0}
+    section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}
+    section h2{margin:0 0 14px;color:var(--primary);font-size:25px}
+    section h3{margin:22px 0 10px;color:#243b53;font-size:19px}
+    section h4{margin:18px 0 8px;color:#243b53;font-size:16px}
+    .grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .card{background:var(--surface-soft);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .card h4{margin:0 0 8px;color:var(--primary)}.card p{margin:0;color:var(--muted)}
+    .alert{border-radius:14px;padding:14px 16px;margin:16px 0;border-left:6px solid}
+    .alert-danger{background:#fff1f0;border-color:var(--danger)}.alert-warning{background:#fff7ed;border-color:var(--warning)}
+    .alert-info{background:var(--primary-soft);border-color:var(--primary)}.alert-success{background:#ecfdf3;border-color:var(--success)}
+    table{width:100%;border-collapse:collapse;margin:14px 0;overflow:hidden;border-radius:12px}
+    th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;font-size:14px}
+    th{background:var(--primary);color:#fff}tbody tr:nth-child(even){background:#f8fafc}
+    details{border:1px solid var(--border);border-radius:14px;background:#fff;margin:12px 0;overflow:hidden}
+    summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--primary);background:#eef3f8}
+    summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}
+    .pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700;background:#dce9f6;color:#123c69;margin:2px}
+    .pill-danger{background:#fee4e2;color:#912018}.pill-warning{background:#fef0c7;color:#93370d}.pill-success{background:#dcfae6;color:#067647}
+    .ref{font-size:12px;color:#485568;border-top:1px solid var(--border);margin-top:12px;padding-top:10px}
+    .small{font-size:12px;color:var(--muted)}
+    .footer-sign{margin-top:40px;text-align:right;color:#344054}
+    @media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}.grid-2,.grid-3{grid-template-columns:1fr}main{padding:18px}.hero h2{font-size:26px}}
+    @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}}
+  </style>
+  <style>
+    .brand__row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .brand__content{min-width:0}
+    .nav-toggle{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+    .nav-toggle:hover{background:rgba(255,255,255,.18)}
+    nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
+  </style>
+</head>
+<body>
+<div class="app" id="moduleApp">
+  <aside>
+    <div class="brand">
+      <div class="brand__row">
+        <div class="brand__content">
+          <h1>Manual Interativo de Medicina Intensiva</h1>
+          <p>Módulo 8 — Distúrbios hidroeletrolíticos</p>
+          <div class="small" style="color:rgba(255,255,255,.65);margin-top:12px">Sódio, potássio, fósforo, magnésio e cálcio: diagnóstico, indicação de tratamento e regras de reposição.</div>
+        </div>
+        <button class="nav-toggle" id="moduleNavToggle" type="button" aria-controls="moduleNav" aria-expanded="true">Minimizar</button>
+      </div>
+    </div>
+    <nav id="moduleNav" aria-label="Secoes do modulo">
+      <ul>
+        <li><a href="#intro">1. Princípios gerais</a></li>
+        <li><a href="#sodio">2. Distúrbios do sódio</a></li>
+        <li><a href="#potassio">3. Distúrbios do potássio</a></li>
+        <li><a href="#fosforo">4. Distúrbios do fósforo</a></li>
+        <li><a href="#magnesio">5. Reposição de magnésio</a></li>
+        <li><a href="#calcio">6. Reposição de cálcio</a></li>
+        <li><a href="#calc-link">7. Calculadora operacional</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h2>Módulo 8 — Distúrbios hidroeletrolíticos</h2>
+      <p>Abordagem objetiva dos distúrbios mais comuns na UTI/emergência: valores de referência, etiologias clínicas e medicamentosas, indicação formal de tratamento, consequências e regras de reposição (delta seguro, concentração máxima, via periférica vs. central). Cada seção remete à calculadora operacional para preparo da solução.</p>
+    </div>
+
+    <section id="intro">
+      <h2>1. Princípios gerais</h2>
+      <p>Distúrbio hidroeletrolítico é alteração de concentração sérica de eletrólitos que pode ser causa OU consequência de doença crítica. Tratar exige resposta a três perguntas:</p>
+      <ol>
+        <li><strong>O distúrbio é agudo (&lt; 48 h) ou crônico?</strong> Define a velocidade segura de correção. Crônicos exigem correção lenta; agudos toleram correção mais rápida.</li>
+        <li><strong>Há sintomas neurológicos ou cardíacos?</strong> Sintomas indicam correção urgente (bólus inicial), assintomáticos toleram reposição programada.</li>
+        <li><strong>A causa é reversível?</strong> Suspender a medicação ofensora, corrigir causa de base; a reposição sem remover gatilho leva a recorrência.</li>
+      </ol>
+      <div class="alert alert-warning"><strong>Regra de ouro:</strong> em distúrbios crônicos, a velocidade de correção máxima é mais importante que o valor final. Correção rápida de hiponatremia crônica causa síndrome de desmielinização osmótica; correção rápida de hipocalemia/hipomagnesemia raramente causa dano (ao contrário do que se pensa).</div>
+      <h3>Pré-requisitos para reposição segura</h3>
+      <ul>
+        <li><strong>Sódio</strong>: confirmar com nova coleta antes de bólus de SF 3%. Excluir pseudo-hiponatremia (hiperglicemia, hipertrigliceridemia).</li>
+        <li><strong>Potássio</strong>: confirmar excluindo pseudo-hipercalemia (hemólise da coleta). ECG é mandatório antes de reposição IV ou tratamento agressivo de hipercalemia.</li>
+        <li><strong>Magnésio</strong>: dosar JUNTO com potássio. Hipomagnesemia bloqueia a reposição efetiva de K e Ca. Corrigir Mg primeiro.</li>
+        <li><strong>Cálcio</strong>: usar cálcio ionizado quando disponível. Total deve ser corrigido pela albumina: Ca corrigido = Ca total + 0,8 × (4 − albumina).</li>
+      </ul>
+    </section>
+
+    <section id="sodio">
+      <h2>2. Distúrbios do sódio</h2>
+
+      <h3>2.1 Valores de referência e classificação</h3>
+      <table>
+        <thead><tr><th>Distúrbio</th><th>Faixa</th><th>Classificação</th><th>Cronicidade</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Hiponatremia</strong></td><td>Na &lt; 135 mEq/L</td><td>Leve 130–134 · Moderada 125–129 · Grave &lt; 125</td><td>Aguda &lt; 48 h · Crônica ≥ 48 h ou duração desconhecida</td></tr>
+          <tr><td><strong>Hipernatremia</strong></td><td>Na &gt; 145 mEq/L</td><td>Leve 146–149 · Moderada 150–155 · Grave &gt; 155</td><td>Aguda &lt; 48 h · Crônica ≥ 48 h</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2.2 Etiologias</h3>
+      <div class="grid grid-2">
+        <div class="card"><h4>Hiponatremia — clínicas</h4>
+          <p>SIADH (neoplasia pulmonar/SNC, pneumonia, AVC), insuficiência cardíaca, cirrose, síndrome nefrótica, hipotireoidismo grave, insuficiência adrenal (Addison), polidipsia psicogênica, perda gastrointestinal/renal de Na com reposição inadequada.</p>
+        </div>
+        <div class="card"><h4>Hiponatremia — medicamentosas</h4>
+          <p>Tiazídicos (causa mais comum em ambulatório), ISRS (especialmente em idosos), carbamazepina/oxcarbazepina, ciclofosfamida, vincristina, IECA, AINE, MDMA/ecstasy, desmopressina, opioides.</p>
+        </div>
+        <div class="card"><h4>Hipernatremia — clínicas</h4>
+          <p>Perda de água livre por sede comprometida (idoso, demência, AVC), diabetes insipidus central ou nefrogênico, diarreia osmótica, diurese pós-obstrutiva, queimadura extensa, hiperventilação prolongada, hiperaldosteronismo primário.</p>
+        </div>
+        <div class="card"><h4>Hipernatremia — medicamentosas</h4>
+          <p>Lítio (DI nefrogênico), anfotericina B, demeclociclina, foscarnete, manitol, lactulose, salina hipertônica iatrogênica, NaHCO₃ em parada cardíaca.</p>
+        </div>
+      </div>
+
+      <h3>2.3 Quando o tratamento está indicado</h3>
+      <ul>
+        <li><strong>Hiponatremia sintomática grave</strong> (convulsão, rebaixamento, herniação iminente) — independente da cronicidade.</li>
+        <li><strong>Hiponatremia aguda</strong> (&lt; 48 h documentado) — risco de edema cerebral; tratamento mesmo se moderado.</li>
+        <li><strong>Hiponatremia crônica</strong> com Na &lt; 125 ou com sintomas leves persistentes.</li>
+        <li><strong>Hipernatremia sintomática</strong> (alteração de consciência, fraqueza, convulsão) ou Na &gt; 155 mesmo assintomática.</li>
+        <li>Suspender ou substituir a medicação causadora sempre que possível.</li>
+      </ul>
+
+      <h3>2.4 Consequências do distúrbio</h3>
+      <ul>
+        <li><strong>Hiponatremia</strong>: edema cerebral, cefaleia, náusea, letargia, convulsão, coma, herniação. Mortalidade até 30% em casos graves não tratados.</li>
+        <li><strong>Hipernatremia</strong>: desidratação celular cerebral, encolhimento neuronal, hemorragia subdural por tração de veias-ponte, convulsão, coma. Mortalidade até 60% em idosos com Na &gt; 160.</li>
+      </ul>
+
+      <h3>2.5 Regras de reposição</h3>
+      <table>
+        <thead><tr><th>Cenário</th><th>Alvo</th><th>Velocidade máxima</th><th>Via</th></tr></thead>
+        <tbody>
+          <tr><td><strong>HipoNa aguda sintomática grave</strong> (convulsão/herniação)</td><td>↑ Na 4–6 mEq/L</td><td>SF 3% 100–150 mL IV em 10 min, repetir até 2× se persistir sintoma</td><td>Preferir central; periférica aceita em bólus único curto</td></tr>
+          <tr><td><strong>HipoNa crônica</strong></td><td>↑ Na ≤ 8 mEq/L em 24 h e ≤ 18 mEq/L em 48 h</td><td>SF 3% 0,5–2 mL/kg/h em infusão contínua titulada</td><td>Central preferida</td></tr>
+          <tr><td><strong>HipoNa crônica de alto risco</strong> (alcoolismo, hipocalemia, desnutrição, hepatopatia)</td><td>↑ Na ≤ 6 mEq/L em 24 h</td><td>SF 3% titulada; considerar dessmopressina profilática</td><td>Central preferida</td></tr>
+          <tr><td><strong>HiperNa aguda</strong></td><td>↓ Na rapidamente até &lt; 145</td><td>SG 5% IV; água livre por SNG/VO se possível</td><td>Periférica para SG 5%; central se necessário</td></tr>
+          <tr><td><strong>HiperNa crônica</strong></td><td>↓ Na ≤ 10 mEq/L em 24 h</td><td>SG 5% IV infusão controlada</td><td>Periférica para SG 5%</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-danger"><strong>Síndrome de desmielinização osmótica (SDM):</strong> correção rápida de hiponatremia crônica (&gt; 10 mEq/L em 24 h ou &gt; 18 mEq/L em 48 h) pode causar lesão neurológica grave irreversível 2–6 dias após. Pacientes de alto risco: alcoolismo, desnutrição, hipocalemia, hepatopatia. Use dessmopressina (1–2 mcg IV) como freio se a correção estiver rápida demais.</div>
+      <div class="alert alert-info"><strong>Cálculo prático SF 3%:</strong> 1 mL/kg de SF 3% eleva Na sérico em ~1 mEq/L. Para correção emergencial, bólus de 100–150 mL eleva o Na em ~2–3 mEq/L em paciente de 60–70 kg.</div>
+      <div class="ref"><strong>Fontes primárias:</strong> Refardt J et al. <em>Hyponatraemia—treatment standard 2024</em>. NDT 2024;39(10):1583. Verbalis JG et al. <em>Diagnosis and Treatment of Hyponatremia: Compilation of the Guidelines</em>. J Am Soc Nephrol 2017. Sterns RH. <em>Disorders of Plasma Sodium</em>. NEJM 2015;372:55–65.</div>
+    </section>
+
+    <section id="potassio">
+      <h2>3. Distúrbios do potássio</h2>
+
+      <h3>3.1 Valores de referência e classificação</h3>
+      <table>
+        <thead><tr><th>Distúrbio</th><th>Faixa</th><th>Classificação</th><th>Risco arrítmico</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Hipocalemia</strong></td><td>K &lt; 3,5 mEq/L</td><td>Leve 3,0–3,4 · Moderada 2,5–2,9 · Grave &lt; 2,5</td><td>Alto se cardiopatia, digital, QT longo, infarto recente</td></tr>
+          <tr><td><strong>Hipercalemia</strong></td><td>K &gt; 5,0 mEq/L</td><td>Leve 5,1–6,0 · Moderada 6,1–6,9 · Grave ≥ 7,0 ou alteração ECG</td><td>Alto a partir de 6,5; emergência se ECG alterado</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-warning"><strong>Antes de tratar:</strong> sempre confirmar com nova coleta (pseudo-hipercalemia por hemólise da coleta é comum) e fazer ECG. Investigar e tratar hipomagnesemia concomitante — sem isso a reposição de K é inefetiva.</div>
+
+      <h3>3.2 Etiologias</h3>
+      <div class="grid grid-2">
+        <div class="card"><h4>Hipocalemia — clínicas</h4>
+          <p>Vômitos persistentes, diarreia, sucção gástrica, fístulas, síndrome de Cushing/hiperaldosteronismo primário, síndrome de Bartter/Gitelman, hipomagnesemia, alcalose metabólica, paralisia periódica hipocalêmica, refeeding syndrome.</p>
+        </div>
+        <div class="card"><h4>Hipocalemia — medicamentosas</h4>
+          <p>Diuréticos de alça e tiazídicos, β2-agonistas (salbutamol em alta dose ou IV), insulina, corticoide, anfotericina B, aminoglicosídeos, cisplatina, laxantes em abuso.</p>
+        </div>
+        <div class="card"><h4>Hipercalemia — clínicas</h4>
+          <p>Insuficiência renal aguda/crônica, rabdomiólise, lise tumoral, hemólise massiva, acidose metabólica, doença de Addison, hipoaldosteronismo hiporreninêmico, sangramento gastrointestinal alto, transfusão maciça de hemoderivados.</p>
+        </div>
+        <div class="card"><h4>Hipercalemia — medicamentosas</h4>
+          <p>IECA/BRA, espironolactona/eplerenona, amilorida, AINE, heparina, β-bloqueador não seletivo, suplemento de K, sal de potássio, trimetoprim, ciclosporina/tacrolimo, succinilcolina (em queimado/desnervação).</p>
+        </div>
+      </div>
+
+      <h3>3.3 Quando o tratamento está indicado</h3>
+      <ul>
+        <li><strong>Hipocalemia</strong>: K &lt; 3,5 com sintomas (fraqueza, arritmia, íleo) ou cardiopata/digitalizado/QT longo; K &lt; 3,0 sempre, independente de sintomas.</li>
+        <li><strong>Hipercalemia</strong>: K ≥ 6,0 com alteração de ECG, ou K ≥ 6,5 sempre (mesmo com ECG normal). Tratar emergência se onda T apiculada, alargamento de QRS, perda de onda P, sine wave.</li>
+      </ul>
+
+      <h3>3.4 Consequências do distúrbio</h3>
+      <ul>
+        <li><strong>Hipocalemia</strong>: fraqueza muscular, íleo paralítico, retenção urinária, rabdomiólise, extrassístoles, torsades de pointes (especialmente com QT longo), parada em assistolia. Potencializa toxicidade digitálica.</li>
+        <li><strong>Hipercalemia</strong>: fraqueza ascendente, paralisia flácida, ECG progressivo — T apiculada → PR longo → P achatada → QRS alargado → sine wave → FV/assistolia. Risco letal a partir de 7,0 mEq/L.</li>
+      </ul>
+
+      <h3>3.5 Regras de reposição — Hipocalemia</h3>
+      <table>
+        <thead><tr><th>Cenário</th><th>Via</th><th>Dose</th><th>Concentração máxima</th><th>Velocidade máxima</th></tr></thead>
+        <tbody>
+          <tr><td>Leve, sem sintoma, GI intacto</td><td>Oral (KCl xarope 6% ou comprimidos)</td><td>20–40 mEq 2–3×/dia</td><td>—</td><td>—</td></tr>
+          <tr><td>Moderada/grave, sintomática ou intolerância oral</td><td>IV periférica</td><td>10 mEq/h</td><td>≤ 40 mEq/L (≤ 4 mEq por 100 mL)</td><td>10 mEq/h</td></tr>
+          <tr><td>Arritmia/parada iminente</td><td>IV central</td><td>20 mEq/h (até 40 mEq/h em UTI com ECG contínuo)</td><td>60–100 mEq/L</td><td>20–40 mEq/h sob ECG contínuo</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info"><strong>Apresentação BR:</strong> KCl 19,1% — ampola 10 mL = 1,91 g = 25,6 mEq de K. Em SF 0,9% 1000 mL com 1 ampola → ~25,6 mEq/L (apropriado para periférica). Para concentrações maiores use bomba e via central.</div>
+
+      <h3>3.6 Regras de reposição — Hipercalemia (protocolo escalonado)</h3>
+      <table>
+        <thead><tr><th>Passo</th><th>Mecanismo</th><th>Droga e dose</th><th>Início / Duração</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1</strong></td><td>Estabilização de membrana</td><td>Gluconato de cálcio 10% 10–20 mL IV em 5–10 min (ou cloreto de cálcio 10% 5–10 mL se acesso central)</td><td>1–3 min · 30–60 min</td></tr>
+          <tr><td><strong>2</strong></td><td>Shift intracelular</td><td>Insulina regular 10 UI IV + SG 50% 50 mL (ou SG 10% 250 mL) — verificar glicemia antes</td><td>10–20 min · 4–6 h</td></tr>
+          <tr><td><strong>3</strong></td><td>Shift intracelular (adjuvante)</td><td>Salbutamol nebulização 10–20 mg (ou 0,5 mg IV em 15 min se disponível)</td><td>15–30 min · 2–4 h</td></tr>
+          <tr><td><strong>4</strong></td><td>Eliminação renal</td><td>Furosemida 40–80 mg IV (se diurese conservada)</td><td>30 min · 2–6 h</td></tr>
+          <tr><td><strong>5</strong></td><td>Eliminação gastrointestinal</td><td>Patiromer 8,4 g VO ou poliestireno sulfonato de Na/Ca 15–60 g VO/retal</td><td>4–6 h · sustentado</td></tr>
+          <tr><td><strong>6</strong></td><td>Eliminação renal substitutiva</td><td>Hemodiálise — único método que REMOVE K do corpo de forma efetiva</td><td>15–30 min após início · sustentado</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-danger"><strong>Atenção:</strong> os passos 2–5 SHIFTAM ou ELIMINAM K em horas. Em paciente com função renal grave/anúria, a diálise é mandatória — sem ela, o K volta a subir após o término do efeito da insulina/β2. Beta-2-agonista NÃO substitui a insulina; é adjuvante.</div>
+      <div class="ref"><strong>Fontes primárias:</strong> Lindner G et al. <em>Acute Hyperkalemia in the Emergency Department: Recommendations</em>. European Journal of Emergency Medicine 2020. UK Renal Association. <em>Treatment of Acute Hyperkalaemia in Adults</em>. 2022. Allon M, Shanklin N. <em>Effect of Bicarbonate Administration on Plasma Potassium in Dialysis Patients</em>. AJKD 1996. Weisberg LS. <em>Management of severe hyperkalemia</em>. Crit Care Med 2008;36:3246.</div>
+    </section>
+
+    <section id="fosforo">
+      <h2>4. Distúrbios do fósforo</h2>
+
+      <h3>4.1 Valores de referência e classificação</h3>
+      <table>
+        <thead><tr><th>Distúrbio</th><th>Faixa</th><th>Classificação</th><th>Reposição IV indicada</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Hipofosfatemia</strong></td><td>P &lt; 2,5 mg/dL (&lt; 0,8 mmol/L)</td><td>Leve 2,0–2,4 · Moderada 1,0–1,9 · Grave &lt; 1,0</td><td>Sim, se &lt; 1,0 mg/dL ou sintomas (insuficiência respiratória, hemólise, IC)</td></tr>
+          <tr><td><strong>Hiperfosfatemia</strong></td><td>P &gt; 4,5 mg/dL (&gt; 1,45 mmol/L)</td><td>Leve 4,6–6,0 · Moderada 6,1–7,5 · Grave &gt; 7,5</td><td>Sem reposição IV — tratamento é restrição + quelante + diálise</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info"><strong>Frequência em UTI:</strong> hipofosfatemia ocorre em ~25% dos pacientes internados em UTI. Etiologias mais comuns no crítico: sepse, refeeding syndrome após jejum prolongado, alcalose respiratória, hemodiálise/CRRT com dialisato pobre em fosfato.</div>
+
+      <h3>4.2 Etiologias</h3>
+      <div class="grid grid-2">
+        <div class="card"><h4>Hipofosfatemia — clínicas</h4>
+          <p>Alcoolismo crônico, refeeding syndrome, cetoacidose diabética (durante tratamento), sepse, queimadura extensa, hiperparatireoidismo, deficiência de vitamina D, hiperventilação prolongada (alcalose respiratória), CRRT prolongada.</p>
+        </div>
+        <div class="card"><h4>Hipofosfatemia — medicamentosas</h4>
+          <p>Antiácidos com alumínio/magnésio em uso crônico, sucralfato, glicose IV em alta dose (shift intracelular), insulina, ferro IV (deferoxamina), antiviral (tenofovir, foscarnete), pamidronato, denosumab.</p>
+        </div>
+        <div class="card"><h4>Hiperfosfatemia — clínicas</h4>
+          <p>Insuficiência renal aguda/crônica (causa mais comum), lise tumoral, rabdomiólise, hipoparatireoidismo, acromegalia, acidose metabólica/diabética (shift extracelular), pseudo-hiperfosfatemia (hiperglobulinemia).</p>
+        </div>
+        <div class="card"><h4>Hiperfosfatemia — medicamentosas</h4>
+          <p>Suplementos orais/IV de fosfato em excesso, enemas com fosfato, vitamina D em dose alta, bisfosfonatos (uso prolongado), tetraciclinas, lactulose por DRC, contraste com gadolínio em DRC avançada.</p>
+        </div>
+      </div>
+
+      <h3>4.3 Quando o tratamento está indicado</h3>
+      <ul>
+        <li><strong>Hipofosfatemia</strong>: IV se P &lt; 1,0 mg/dL OU sintomas (insuficiência respiratória aguda com fadiga muscular ventilatória, hemólise, disfunção cardíaca, rabdomiólise). VO/SNG para moderada (1,0–1,9) com intestino funcionante.</li>
+        <li><strong>Hiperfosfatemia</strong>: restrição dietética + quelante oral nas refeições; diálise se P &gt; 7,0 com sintomas (hipocalcemia secundária) ou se IRA com oligúria.</li>
+      </ul>
+
+      <h3>4.4 Consequências do distúrbio</h3>
+      <ul>
+        <li><strong>Hipofosfatemia grave</strong> (&lt; 1,0): rabdomiólise, hemólise (raro), insuficiência respiratória por fraqueza diafragmática (importante em desmame de VM), disfunção miocárdica, encefalopatia, fraqueza muscular generalizada, alterações de fagocitose com ↑ infecções.</li>
+        <li><strong>Hiperfosfatemia</strong>: hipocalcemia secundária (tetania, convulsão, prolongamento de QT), calcificação metastática (córnea, vasos, pele), prurido em DRC.</li>
+      </ul>
+
+      <h3>4.5 Regras de reposição — Hipofosfatemia IV</h3>
+      <table>
+        <thead><tr><th>Cenário</th><th>Apresentação</th><th>Dose</th><th>Diluição / Velocidade</th><th>Via</th></tr></thead>
+        <tbody>
+          <tr><td>Moderada (P 1,0–1,9 mg/dL) com intolerância oral</td><td>Fosfato de potássio (3 mmol P + 4,4 mmol K/mL) ou fosfato de sódio</td><td>15–30 mmol em 6 h</td><td>Em 100–250 mL SF 0,9% ou SG 5%; ≤ 7 mmol/h</td><td>Periférica aceita</td></tr>
+          <tr><td>Grave (P &lt; 1,0 mg/dL)</td><td>Fosfato de potássio</td><td>0,5 mmol/kg em 4–6 h (dose total ~30–45 mmol)</td><td>Em 100–250 mL SF; ≤ 7 mmol/h</td><td>Central preferida (concentração alta de K)</td></tr>
+          <tr><td>Cálculo individualizado (Bech, 2013)</td><td>Fosfato de potássio</td><td>0,5 × peso × (1,25 − P sérico mmol/L) mmol total</td><td>Infundir em 6 h; ≤ 7 mmol/h</td><td>Central</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-warning"><strong>Atenção:</strong> fosfato de potássio carrega K — em paciente com insuficiência renal/hipercalemia, considerar fosfato de sódio. Monitorar K, Ca, fosfato sérico e ECG durante e após a infusão. Evitar em paciente com hipercalcemia (risco de calcificação metastática).</div>
+      <div class="ref"><strong>Fontes primárias:</strong> Geerse DA et al. <em>Treatment of hypophosphatemia in the intensive care unit: a review</em>. Crit Care 2010;14:R147. Bech A et al. <em>Hypophosphatemia on the intensive care unit: individualized phosphate replacement based on serum levels and distribution volume</em>. J Crit Care 2013;28:838–43. Charron T et al. <em>Intravenous phosphate in the intensive care unit: more aggressive repletion regimens</em>. Crit Care Med 2003;31:1083.</div>
+    </section>
+
+    <section id="magnesio">
+      <h2>5. Reposição de magnésio</h2>
+
+      <h3>5.1 Valores de referência</h3>
+      <table>
+        <thead><tr><th>Faixa</th><th>Valor sérico</th><th>Interpretação</th></tr></thead>
+        <tbody>
+          <tr><td>Normal</td><td>1,7–2,4 mg/dL (0,7–1,0 mmol/L)</td><td>—</td></tr>
+          <tr><td>Hipomagnesemia leve</td><td>1,4–1,6 mg/dL</td><td>Geralmente assintomática; tratar se contexto clínico (hipoK, hipoCa, QT longo)</td></tr>
+          <tr><td>Hipomagnesemia moderada</td><td>1,0–1,3 mg/dL</td><td>Indicação clara de reposição</td></tr>
+          <tr><td>Hipomagnesemia grave</td><td>&lt; 1,0 mg/dL</td><td>Risco de torsades de pointes, tetania, convulsão — reposição IV imediata</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info"><strong>Lembre-se:</strong> magnésio sérico reflete apenas 1% do estoque corporal (intracelular e ósseo predominam). Um Mg sérico "normal" em paciente com hipoK/hipoCa refratárias ainda pode justificar reposição empírica.</div>
+
+      <h3>5.2 Etiologias da hipomagnesemia</h3>
+      <div class="grid grid-2">
+        <div class="card"><h4>Clínicas</h4>
+          <p>Diarreia crônica, malabsorção, alcoolismo (causa mais comum no adulto), pancreatite aguda, queimadura, sepse, hipoparatireoidismo, hipertireoidismo, transfusão maciça (citrato).</p>
+        </div>
+        <div class="card"><h4>Medicamentosas</h4>
+          <p>Diuréticos de alça (furosemida) e tiazídicos, IBP em uso prolongado (≥ 1 ano), aminoglicosídeos, anfotericina B, cisplatina, ciclosporina, cetuximabe/panitumumabe, foscarnete, pentamidina, laxantes em abuso.</p>
+        </div>
+      </div>
+
+      <h3>5.3 Quando o tratamento está indicado</h3>
+      <ul>
+        <li>Mg &lt; 1,5 mg/dL sempre — mesmo assintomático.</li>
+        <li>Sintomas sugestivos: tetania, convulsão, fraqueza, arritmia (torsades, FV refratária), espasmo coronariano, hipoK/hipoCa refratárias.</li>
+        <li><strong>Eclâmpsia/pré-eclâmpsia grave</strong>: indicação obstétrica específica (dose de ataque + manutenção).</li>
+        <li><strong>Broncoespasmo grave/asma</strong>: indicação adjuvante (ver Mod 5/Mod 6).</li>
+        <li><strong>Torsades de pointes</strong>: indicação antiarrítmica (bólus rápido).</li>
+      </ul>
+
+      <h3>5.4 Consequências da hipomagnesemia</h3>
+      <ul>
+        <li>Arritmia ventricular incluindo torsades de pointes, FV refratária.</li>
+        <li>Tetania, espasmo carpopedal, sinal de Chvostek e Trousseau (idêntico à hipoCa).</li>
+        <li>Hipocalemia refratária (Mg é cofator da Na/K-ATPase).</li>
+        <li>Hipocalcemia refratária (Mg é necessário para liberação e ação do PTH).</li>
+        <li>Convulsão, alteração de consciência, fraqueza, parkinsonismo.</li>
+      </ul>
+
+      <h3>5.5 Regras de reposição — Hipomagnesemia</h3>
+      <table>
+        <thead><tr><th>Cenário</th><th>Dose</th><th>Diluição / Velocidade</th><th>Via</th></tr></thead>
+        <tbody>
+          <tr><td>Sintomática grave (TdP, convulsão, espasmo coronariano)</td><td>MgSO₄ 2 g IV em 5–20 min</td><td>2 g em 100 mL SF/SG; bólus rápido se TdP (2 g em 2 min)</td><td>Periférica aceita; central se concentrações maiores</td></tr>
+          <tr><td>Moderada/assintomática</td><td>MgSO₄ 4 g em 4 h ou 1 g/h × 4 h</td><td>4 g em 250 mL SF/SG</td><td>Periférica</td></tr>
+          <tr><td>Manutenção em UTI (perda contínua, CRRT)</td><td>1–2 g/h em infusão contínua conforme nível</td><td>Concentração alvo &lt; 20 mg/mL (≈ 8 mEq/mL)</td><td>Central</td></tr>
+          <tr><td>Eclâmpsia/pré-eclâmpsia grave (obstétrico)</td><td>Ataque 4–6 g em 15–20 min + manutenção 1–2 g/h × 24 h</td><td>Ver Mod 6 — categoria Anticonvulsivante (dose de carga IV)</td><td>Central preferida</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-warning"><strong>Atenção em IRC/IRA:</strong> reduzir dose em 50% se ClCr &lt; 30 mL/min e monitorar reflexos patelares (sinal precoce de hipermagnesemia). Suspender se arreflexia ou Mg &gt; 4 mg/dL sem indicação obstétrica.</div>
+      <div class="alert alert-info"><strong>Apresentação BR:</strong> MgSO₄ 50% — ampola 10 mL = 5 g de sulfato (= 500 mg/mL). MgSO₄ 10% — ampola 10 mL = 1 g (= 100 mg/mL). Diluir conforme protocolo da calculadora Mod 6.</div>
+      <div class="ref"><strong>Fontes primárias:</strong> Hansen BA, Bruserud Ø. <em>Hypomagnesemia in critically ill patients</em>. J Intensive Care 2018;6:21. Vincent JL et al. <em>Magnesium for cardiac arrhythmia</em>. Crit Care Med 2002. Tong GM, Rude RK. <em>Magnesium deficiency in critical illness</em>. J Intensive Care Med 2005;20:3–17.</div>
+    </section>
+
+    <section id="calcio">
+      <h2>6. Reposição de cálcio</h2>
+
+      <h3>6.1 Valores de referência</h3>
+      <table>
+        <thead><tr><th>Medida</th><th>Faixa normal</th><th>Comentário</th></tr></thead>
+        <tbody>
+          <tr><td>Cálcio total</td><td>8,6–10,2 mg/dL (2,15–2,55 mmol/L)</td><td>Depende da albumina — corrigir: Ca corr = Ca + 0,8 × (4 − alb)</td></tr>
+          <tr><td>Cálcio ionizado</td><td>1,15–1,30 mmol/L (4,6–5,2 mg/dL)</td><td>Forma biologicamente ativa; preferida em UTI</td></tr>
+          <tr><td>Hipocalcemia leve</td><td>Ca total 8,0–8,5 ou ionizado 1,0–1,15</td><td>Geralmente assintomática</td></tr>
+          <tr><td>Hipocalcemia moderada/grave</td><td>Ca total &lt; 8,0 ou ionizado &lt; 1,0</td><td>Risco de tetania, convulsão, arritmia — reposição indicada</td></tr>
+          <tr><td>Hipercalcemia leve</td><td>Ca total 10,3–12,0</td><td>Hidratação + tratar causa</td></tr>
+          <tr><td>Hipercalcemia moderada/grave</td><td>Ca total &gt; 12,0 ou ionizado &gt; 1,4</td><td>Tratamento intensivo: SF + calcitonina + bisfosfonato</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6.2 Etiologias</h3>
+      <div class="grid grid-2">
+        <div class="card"><h4>Hipocalcemia — clínicas</h4>
+          <p>Hipoparatireoidismo (pós-tireoidectomia), deficiência de vitamina D, doença renal crônica, pancreatite aguda grave, sepse, transfusão maciça (citrato), hipomagnesemia, hiperfosfatemia aguda (lise tumoral, rabdomiólise), choque hemorrágico, queimadura extensa.</p>
+        </div>
+        <div class="card"><h4>Hipocalcemia — medicamentosas</h4>
+          <p>Bisfosfonatos (zoledronato, pamidronato — risco aumentado em deficiência de vit D), denosumab, cinacalcete, foscarnete, fenitoína/fenobarbital (deficiência de vit D), citrato em hemodiálise/aférese, antimicrobianos contaminantes com flúor.</p>
+        </div>
+        <div class="card"><h4>Hipercalcemia — clínicas</h4>
+          <p>Hiperparatireoidismo primário, malignidade (mieloma múltiplo, ca de mama, ca renal, ca pulmonar, linfoma — secreção de PTHrP), sarcoidose e doenças granulomatosas, imobilização prolongada, tireotoxicose, insuficiência adrenal, doença de Paget.</p>
+        </div>
+        <div class="card"><h4>Hipercalcemia — medicamentosas</h4>
+          <p>Tiazídicos, lítio, vitamina D em dose alta, vitamina A em dose alta, antiácidos cálcicos (síndrome leite-álcali), suplementos de cálcio em excesso, teriparatida, theofilina, andrógenos/estrógenos em mama metastática.</p>
+        </div>
+      </div>
+
+      <h3>6.3 Quando o tratamento está indicado</h3>
+      <ul>
+        <li><strong>Hipocalcemia sintomática</strong>: tetania, convulsão, laringoespasmo, sinais de Chvostek/Trousseau, prolongamento de QT, hipotensão refratária — reposição IV imediata.</li>
+        <li><strong>Hipocalcemia assintomática</strong>: ionizado &lt; 1,0 mmol/L sempre; corrigir hipomagnesemia primeiro se presente.</li>
+        <li><strong>Hipercalcemia grave</strong>: Ca total &gt; 14 sempre; entre 12–14 com sintomas (alteração mental, desidratação, vômitos).</li>
+        <li><strong>Pré-tratamento</strong> em casos selecionados: pancreatite grave com hipoCa documentada, transfusão maciça (anteriormente sem dor) após cada 4–6 unidades de hemoderivado.</li>
+      </ul>
+
+      <h3>6.4 Consequências do distúrbio</h3>
+      <ul>
+        <li><strong>Hipocalcemia</strong>: tetania, espasmo carpopedal, laringoespasmo, convulsão, irritabilidade neuromuscular, prolongamento de QT, torsades, hipotensão refratária, IC.</li>
+        <li><strong>Hipercalcemia</strong>: poliúria → desidratação, constipação, fraqueza, alteração mental, encurtamento de QT, arritmia, pancreatite, nefrolitíase, calcificação metastática.</li>
+      </ul>
+
+      <h3>6.5 Regras de reposição — Hipocalcemia</h3>
+      <table>
+        <thead><tr><th>Cenário</th><th>Apresentação</th><th>Dose</th><th>Diluição / Velocidade</th><th>Via</th></tr></thead>
+        <tbody>
+          <tr><td>Sintomática grave (tetania, convulsão, laringoespasmo)</td><td>Gluconato de cálcio 10% (10 mL = 90 mg Ca elementar = 2,2 mmol Ca)</td><td>10–20 mL em bólus</td><td>Em 50–100 mL SG 5% em 10 min sob ECG</td><td>Periférica aceita (menos vesicante que CaCl₂)</td></tr>
+          <tr><td>Sintomática refratária ou PCR</td><td>Cloreto de cálcio 10% (10 mL = 272 mg Ca elementar = 6,8 mmol Ca)</td><td>5–10 mL em bólus</td><td>Em 50–100 mL SG 5% em 10 min sob ECG</td><td>Central — extravasamento causa necrose tecidual grave</td></tr>
+          <tr><td>Moderada/assintomática</td><td>Gluconato de cálcio 10%</td><td>1–2 g (10–20 mL) em 1–2 h</td><td>Em 100 mL SG 5%</td><td>Periférica</td></tr>
+          <tr><td>Manutenção em UTI</td><td>Gluconato de cálcio</td><td>0,5–2 mg Ca elementar/kg/h em infusão contínua</td><td>1 g (10 mL) em 100 mL SG 5% — concentração final 9 mg Ca elementar/mL</td><td>Periférica preferida</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-danger"><strong>Cloreto de cálcio:</strong> 3× mais cálcio elementar por mL que gluconato, mas é VESICANTE. Extravasamento periférico pode causar necrose extensa de pele/tecido subcutâneo. Reservar para via central ou para PCR (acesso disponível). Em paciente com acesso periférico, sempre preferir gluconato.</div>
+      <div class="alert alert-warning"><strong>Sempre antes:</strong> dosar e corrigir magnésio. Hipomagnesemia bloqueia a liberação de PTH e a ação periférica → reposição de Ca fica refratária se Mg baixo.</div>
+
+      <h3>6.6 Regras de reposição — Hipercalcemia (não é reposição, é depleção)</h3>
+      <table>
+        <thead><tr><th>Passo</th><th>Medida</th><th>Dose / detalhe</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Hidratação salina</td><td>SF 0,9% 200–300 mL/h até diurese ≥ 100–150 mL/h; reduz Ca em ~1–2 mg/dL nas primeiras 24 h</td></tr>
+          <tr><td>2</td><td>Calcitonina (efeito rápido, ~6 h)</td><td>4 UI/kg SC ou IM a cada 12 h — taquifilaxia após 48–72 h</td></tr>
+          <tr><td>3</td><td>Bisfosfonato IV (efeito sustentado, 48–96 h)</td><td>Zoledronato 4 mg IV em 15 min OU pamidronato 60–90 mg IV em 2–4 h</td></tr>
+          <tr><td>4</td><td>Denosumab (em malignidade refratária ou DRC)</td><td>120 mg SC; útil quando bisfosfonato contraindicado por função renal</td></tr>
+          <tr><td>5</td><td>Glicocorticoide (em doenças granulomatosas/mieloma)</td><td>Prednisona 20–60 mg/dia VO ou hidrocortisona 100 mg IV 8/8 h</td></tr>
+          <tr><td>6</td><td>Hemodiálise</td><td>Para Ca &gt; 18 mg/dL, refratário ou IC/IRA limitando volume</td></tr>
+        </tbody>
+      </table>
+      <div class="ref"><strong>Fontes primárias:</strong> Cooper MS, Gittoes NJL. <em>Diagnosis and management of hypocalcaemia</em>. BMJ 2008;336:1298. Bilezikian JP et al. <em>Hypercalcemia</em>. Mayo Clin Proc 2003;78:777. Maxwell SR. <em>Calcium Replacement</em>. Time of Care 2024 (clinical reference). Wagner S et al. <em>Calcium and trauma resuscitation</em>. Transfusion 2022.</div>
+    </section>
+
+    <section id="calc-link">
+      <h2>7. Calculadora operacional</h2>
+      <p>O preparo de soluções, cálculo de volume a aspirar e vazão de infusão para reposição/depleção de eletrólitos será automatizado em rodada subsequente na <strong>Calculadora interativa do Módulo 6</strong>, com nova categoria <em>Distúrbio eletrolítico</em> contendo:</p>
+      <ul>
+        <li><strong>Hiponatremia</strong>: NaCl 3% (cálculo de bólus e infusão contínua) com alvo de Δ Na em 24 h.</li>
+        <li><strong>Hipernatremia</strong>: SG 5% / água livre (estimativa de déficit pela fórmula de Adrogué).</li>
+        <li><strong>Hipocalemia</strong>: KCl 19,1% — apresentação BR; cálculo por via periférica (≤ 10 mEq/h) e central (≤ 20–40 mEq/h).</li>
+        <li><strong>Hipercalemia</strong>: protocolo escalonado (gluconato Ca, insulina+SG, salbutamol, furosemida).</li>
+        <li><strong>Hipofosfatemia</strong>: fosfato de potássio com cálculo individualizado (Bech 2013).</li>
+        <li><strong>Hipomagnesemia</strong>: MgSO₄ 50% / 10% com diferentes diluições.</li>
+        <li><strong>Hipocalcemia</strong>: gluconato 10% (periférica) e cloreto 10% (central, vesicante).</li>
+      </ul>
+      <div class="alert alert-info"><strong>Pendente para próxima rodada:</strong> integrar essas medicações ao Módulo 6 com a UI já uniformizada (apresentação + preset + preparo manual + diluente + concentração calculada + dose desejada/vazão). A seleção do <em>distúrbio</em> filtra as medicações disponíveis e ajusta o protocolo escalonado quando aplicável (hipercalemia).</div>
+    </section>
+
+    <div class="footer-sign">
+      <p><strong>Virtus - Clinical Tools</strong></p>
+    </div>
+  </main>
+</div>
+</body>
+</html>
