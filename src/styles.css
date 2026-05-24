@@ -2231,12 +2231,15 @@ body.landing-active {
   }
 
   .module-viewer__frame-wrap {
-    height: 74dvh;
-    min-height: 520px;
+    /* Ocupa toda a altura disponível da viewport — evita gap visual
+       embaixo do iframe no smartphone. */
+    height: 100dvh;
+    min-height: 100dvh;
   }
 
   .workspace {
     padding: 0;
+    min-height: 100dvh;
   }
 
   .content-grid {
