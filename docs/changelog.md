@@ -1,5 +1,71 @@
 # Changelog
 
+## 2026-05-24 — Capa/home page antes do Módulo 1
+
+### Tipo de alteração
+
+- **Técnica/UX** (interface, navegação, marca). Não toca em conteúdo clínico.
+
+### O que mudou
+
+Adicionada uma **capa** que vira a primeira tela do app logado (`#/home`, ou hash vazio). Antes, o usuário caía direto no Mod 1 ao logar; agora vê uma capa com:
+
+- **Hero** (esquerda, ~38% da largura): fundo escuro `#0d2438 → #123c69` com glow ciano, logo Virtus horizontal, eyebrow "MANUAL DE MEDICINA INTENSIVA", título "Decisões à beira do leito, com a precisão da literatura.", lead "Ferramentas práticas de cabeceira para o cenário de cuidados intensivos — protocolos clínicos e calculadoras operacionais para tomada de decisão." e CTA gradiente ciano "Começar pelo Módulo 1 →".
+- **Grid** (direita, ~62%): painel escuro `#081726 → #0a1d2e` com 8 cards (icone SVG custom + label "MÓDULO N" + título). Tarja lateral colorida por família (clínico/calc/ref).
+- **CTA no sidebar**: novo botão "Início" no topo da TOC. Ativo quando a view atual é home.
+
+A capa ocupa todo o viewport (`calc(100dvh - 20px)` em desktop, `100dvh` em mobile). No mobile vira coluna única (hero em cima, grid 2 colunas embaixo).
+
+### Roteamento
+
+- `src/utils/route.ts`: novo `AppRoute.view: "home" | "module"`. Hash vazio agora resolve para `view: "home"` (antes resolvia para Mod 1). Rota explícita `#/home`.
+- `src/App.tsx`: branch entre `<ModuleHome />` e `<ModuleViewer />` baseado em `route.view`.
+
+### Arquivos
+
+- **Novo**: `src/components/ModuleHome.tsx` (componente da capa + 8 SVGs custom).
+- **Editados**: `src/App.tsx`, `src/components/Sidebar.tsx`, `src/utils/route.ts`, `src/styles.css` (bloco `.module-home*` ~290 linhas + `.module-nav__home*`).
+
+### Impacto em hashes
+
+Nenhum — não toca em HTMLs canônicos. `npm run verify:modules` passa.
+
+---
+
+## 2026-05-24 — Fix: links internos no iframe abriam "módulo sobreposto"
+
+### Tipo de alteração
+
+- **Técnica** (UX/navegação). Não toca em conteúdo clínico.
+
+### Sintoma
+
+Clicar em qualquer link interno `<a href="#secao">` dentro de um módulo (ex: cards de "Via aérea anatômica" / "Via aérea fisiológica" no Mod 1) abria o módulo "sobreposto" — visualmente, um segundo render do conteúdo aparecia por cima do primeiro, em vez de simplesmente rolar até a seção alvo.
+
+### Causa raiz
+
+O iframe usa `srcDoc` (URL efetiva `about:srcdoc`). Quando um `<a href="#anatomia">` é clicado, o navegador tenta navegar o iframe para `about:srcdoc#anatomia`. Em alguns motores isso recarrega o srcDoc inteiro e dispara `onLoad` de novo, que reaplica a camada de segurança e produz o efeito de conteúdo duplicado/empilhado.
+
+### Correção
+
+Adicionada `interceptInternalLinks(doc)` em `src/utils/iframeSafety.ts`. Em vez de deixar o browser navegar o iframe, captura cliques em `a[href^="#"]`, `preventDefault`/`stopPropagation`, encontra o elemento alvo no MESMO documento e rola até ele via `scrollIntoView({ block: "start", behavior: "smooth" })`. Lida com três casos extras:
+
+1. Alvo é uma `section` colapsada (modo acordeão do Mod 7): clica programaticamente no `h2` para abrir (e fechar as irmãs, mantendo o acordeão).
+2. Alvo é um subelemento (h3/p/li com id) dentro de uma section colapsada: idem para o `h2` da section pai.
+3. Alvo está dentro de um `<details>` nativo fechado (Mod 6/Mod 8): seta `details.open = true`.
+
+Liga ao `body` via `dataset.codexInternalLinksWired` para evitar wiring duplo. Links com `target="_blank"` são respeitados (não interceptados).
+
+### Arquivos
+
+- `src/utils/iframeSafety.ts` (nova função `interceptInternalLinks` + chamada no `applyIframeSafetyLayer` após `injectSectionCollapse`).
+
+### Impacto em hashes
+
+Nenhum — a correção está em código TypeScript do shell React, fora dos HTMLs canônicos. `npm run verify:modules` continua passando.
+
+---
+
 ## 2026-05-24 — Deploy consolidado: reordenação Mod 6↔7, calc Δ-based, NaCl 3%/KCl/Fosfato, cenário-resumo (REQUER REVISAO MEDICA)
 
 ### Resumo executivo desta entrega

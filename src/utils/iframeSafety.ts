@@ -902,6 +902,71 @@ function injectMobileTableInteraction(doc: Document): void {
   });
 }
 
+/**
+ * Intercepta cliques em links internos (`<a href="#xxx">`) dentro do iframe e os
+ * converte em scroll direto para o elemento alvo no MESMO documento, abrindo
+ * automaticamente sections colapsadas (modo acordeao).
+ *
+ * Sem essa intercepcao, o iframe (com `srcDoc`) tenta navegar para
+ * `about:srcdoc#xxx`, o que em alguns navegadores recarrega o srcDoc inteiro e
+ * dispara `onLoad` de novo, causando o efeito de "modulo sobreposto" relatado
+ * pelo usuario. Tambem evita borbulhar para a janela top e causar troca de rota
+ * no shell React.
+ */
+function interceptInternalLinks(doc: Document): void {
+  const flag = "codexInternalLinksWired";
+  const bodyDataset = doc.body.dataset as DOMStringMap;
+  if (bodyDataset[flag] === "true") return;
+  bodyDataset[flag] = "true";
+
+  doc.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const anchor = target.closest("a");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (!href || href.charAt(0) !== "#" || href.length < 2) return;
+
+      // Link com target=_blank/_top/_parent: deixar o browser cuidar (provavelmente
+      // intencional para abrir em nova aba).
+      const linkTarget = anchor.getAttribute("target");
+      if (linkTarget === "_blank") return;
+
+      const id = decodeURIComponent(href.slice(1));
+      const dest = doc.getElementById(id);
+      if (!dest) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      // Auto-abre section colapsada (e fecha as irmas se estiver em acordeao).
+      if (dest.classList.contains(COLLAPSE_COLLAPSED_CLASS)) {
+        const h2 = dest.querySelector<HTMLElement>(`:scope > h2.${COLLAPSE_TOGGLE_CLASS}`);
+        if (h2) h2.click();
+      } else {
+        // Pode ser um subelemento (h3, p, li com id) dentro de uma section colapsada.
+        const parentSection = dest.closest<HTMLElement>(`section.${COLLAPSE_COLLAPSED_CLASS}`);
+        if (parentSection) {
+          const h2 = parentSection.querySelector<HTMLElement>(`:scope > h2.${COLLAPSE_TOGGLE_CLASS}`);
+          if (h2) h2.click();
+        }
+        // Pode estar dentro de um <details> nativo recolhido.
+        const parentDetails = dest.closest<HTMLDetailsElement>("details");
+        if (parentDetails && !parentDetails.open) {
+          parentDetails.open = true;
+        }
+      }
+
+      dest.scrollIntoView({ block: "start", behavior: "smooth" });
+    },
+    true
+  );
+}
+
 export function applyIframeSafetyLayer(document: Document, opts?: SafetyLayerOptions): void {
   injectGuardStyles(document);
   injectMobileResponsiveStyles(document);
@@ -913,6 +978,10 @@ export function applyIframeSafetyLayer(document: Document, opts?: SafetyLayerOpt
   if (opts?.collapse) {
     injectSectionCollapse(document, opts.collapse);
   }
+
+  // Intercepta cliques de links internos APOS o collapse estar configurado, para
+  // que a logica de auto-abrir section recolhida funcione.
+  interceptInternalLinks(document);
 
   if (opts?.pager) {
     injectPagerStyles(document);

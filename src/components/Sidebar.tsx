@@ -6,7 +6,9 @@ interface SidebarProps {
   activeSectionId?: string;
   expandedModuleId?: ModuleId | null;
   isOpen: boolean;
+  isHomeActive: boolean;
   onCollapse: () => void;
+  onSelectHome: () => void;
   onSelectModule: (moduleId: ModuleId) => void;
   onSelectSection: (moduleId: ModuleId, sectionId: string) => void;
 }
@@ -17,7 +19,9 @@ export function Sidebar({
   activeSectionId,
   expandedModuleId,
   isOpen,
+  isHomeActive,
   onCollapse,
+  onSelectHome,
   onSelectModule,
   onSelectSection
 }: SidebarProps) {
@@ -41,9 +45,23 @@ export function Sidebar({
       </button>
 
       <nav className="module-nav" aria-label="Modulos">
+        <button
+          className={`module-nav__home ${isHomeActive ? "module-nav__home--active" : ""}`}
+          type="button"
+          onClick={onSelectHome}
+          aria-current={isHomeActive ? "page" : undefined}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" className="module-nav__home-icon">
+            <path d="M4 11l8-7 8 7" />
+            <path d="M6 10v9h12v-9" />
+            <path d="M10 19v-5h4v5" />
+          </svg>
+          <span>Início</span>
+        </button>
+
         {modules.map((module) => {
-          const isActiveModule = module.id === activeModule.id;
-          const isExpandedModule = module.id === expandedModuleId;
+          const isActiveModule = !isHomeActive && module.id === activeModule.id;
+          const isExpandedModule = !isHomeActive && module.id === expandedModuleId;
 
           return (
             <div key={module.id} className="module-nav__group">

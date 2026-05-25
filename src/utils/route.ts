@@ -1,6 +1,11 @@
 import type { ModuleId } from "../types";
 
+export type AppView = "home" | "module";
+
 export interface AppRoute {
+  view: AppView;
+  /** Sempre presente: usado como modulo "ativo" mesmo quando view=home, para
+   *  manter sidebar consistente e permitir back/forward. */
   moduleId: ModuleId;
   sectionId?: string;
 }
@@ -21,8 +26,14 @@ export function parseHashRoute(hash: string): AppRoute {
   const clean = hash.replace(/^#\/?/, "");
   const parts = clean.split("/").filter(Boolean);
 
+  // Rota explicita de home: "#/home" ou "#home"
+  if (parts[0] === "home") {
+    return { view: "home", moduleId: DEFAULT_MODULE };
+  }
+
   if (parts[0] === "module" && MODULE_IDS.has(parts[1] as ModuleId)) {
     return {
+      view: "module",
       moduleId: parts[1] as ModuleId,
       sectionId: parts[2]
     };
@@ -30,15 +41,18 @@ export function parseHashRoute(hash: string): AppRoute {
 
   if (MODULE_IDS.has(parts[0] as ModuleId)) {
     return {
+      view: "module",
       moduleId: parts[0] as ModuleId,
       sectionId: parts[1]
     };
   }
 
-  return { moduleId: DEFAULT_MODULE };
+  // Hash vazio = home (primeira impressao do usuario logado).
+  return { view: "home", moduleId: DEFAULT_MODULE };
 }
 
 export function routeToHash(route: AppRoute): string {
+  if (route.view === "home") return "#/home";
   return route.sectionId
     ? `#/module/${route.moduleId}/${route.sectionId}`
     : `#/module/${route.moduleId}`;

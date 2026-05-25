@@ -112,6 +112,20 @@ manter conexão `slug ↔ posição` ao renomear.
 - Modo `?preview=landing` (em `src/main.tsx`) bypass a `ClerkProvider` para preview local
   sem precisar do Clerk Live. Útil para iterar a landing no `localhost:5173`.
 
+## 5b. Capa/Home interna (pós-login)
+
+- Componente: `src/components/ModuleHome.tsx`. Primeira tela do usuário logado.
+- Rota: `#/home` (ou hash vazio). Implementado em `src/utils/route.ts` via
+  `AppRoute.view: "home" | "module"`. Em `src/App.tsx`, branch entre `<ModuleHome />` e
+  `<ModuleViewer />`.
+- Layout: hero à esquerda (~38%) com logo + título + lead + CTA "Começar pelo Módulo 1",
+  grid à direita (~62%) com 8 cards compactos (ícone SVG custom + label "MÓDULO N" + título).
+  Tema dark uniforme (paleta `#081726` → `#0a1d2e` no grid; `#0d2438` → `#123c69` no hero;
+  acentos `#12bed1` / `#30f1e6`).
+- Ao adicionar novo módulo, atualizar `MODULE_ICONS` em `ModuleHome.tsx` (novo SVG) e
+  `familyOf()` se a posição mudar a categoria visual (clinico/calc/ref).
+- Sidebar tem botão **"Início"** no topo (estado ativo quando `route.view === "home"`).
+
 ## 6. Permissões / segurança
 
 - Não commitar sem pedido explícito.

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ModuleHome } from "./components/ModuleHome";
 import { ModuleViewer } from "./components/ModuleViewer";
 import { SearchPanel } from "./components/SearchPanel";
 import { Sidebar } from "./components/Sidebar";
@@ -47,7 +48,11 @@ function App() {
   const results = useMemo(() => searchModules(modules, query), [modules, query]);
 
   const navigateTo = useCallback((moduleId: ModuleId, sectionId?: string) => {
-    window.location.hash = routeToHash({ moduleId, sectionId });
+    window.location.hash = routeToHash({ view: "module", moduleId, sectionId });
+  }, []);
+
+  const navigateHome = useCallback(() => {
+    window.location.hash = routeToHash({ view: "home", moduleId: "modulo-01" });
   }, []);
 
   const navigateToModule = useCallback(
@@ -56,7 +61,7 @@ function App() {
   );
 
   const selectModule = (moduleId: ModuleId) => {
-    if (moduleId === activeModule.id) {
+    if (route.view === "module" && moduleId === activeModule.id) {
       setExpandedModuleId((current) => (current === moduleId ? null : moduleId));
       return;
     }
@@ -77,6 +82,8 @@ function App() {
     }
   };
 
+  const isHome = route.view === "home";
+
   return (
     <div className={`app-shell ${isSidebarOpen ? "app-shell--sidebar-open" : ""}`}>
       <Sidebar
@@ -85,11 +92,20 @@ function App() {
         activeSectionId={route.sectionId}
         expandedModuleId={expandedModuleId}
         isOpen={isSidebarOpen}
+        isHomeActive={isHome}
         onCollapse={() => setIsSidebarOpen(false)}
-        onSelectModule={selectModule}
+        onSelectHome={() => {
+          navigateHome();
+          setIsSidebarOpen(false);
+        }}
+        onSelectModule={(moduleId) => {
+          selectModule(moduleId);
+          setIsSidebarOpen(false);
+        }}
         onSelectSection={(moduleId, sectionId) => {
           setExpandedModuleId(moduleId);
           navigateTo(moduleId, sectionId);
+          setIsSidebarOpen(false);
         }}
       />
 
@@ -113,12 +129,16 @@ function App() {
 
         <main className="content-grid">
           <div className="primary-column">
-            <ModuleViewer
-              module={activeModule}
-              targetSectionId={route.sectionId}
-              modules={modules}
-              onNavigateModule={navigateToModule}
-            />
+            {isHome ? (
+              <ModuleHome modules={modules} onSelectModule={navigateToModule} />
+            ) : (
+              <ModuleViewer
+                module={activeModule}
+                targetSectionId={route.sectionId}
+                modules={modules}
+                onNavigateModule={navigateToModule}
+              />
+            )}
           </div>
         </main>
 
