@@ -20,6 +20,19 @@ const COLLAPSE_BY_MODULE: Partial<Record<ModuleId, CollapseConfig | undefined>> 
   "modulo-08": undefined
 };
 
+// Modulos clinicos densos em texto que se beneficiam de compactacao tipografica
+// para reduzir o scroll vertical. Mod 7 (calculadoras) e Mod 8 (referencias) NAO
+// entram — paineis de calculadora precisam dos tamanhos atuais; referencias tem
+// estrutura propria com <details>/<summary>.
+const COMPACT_READING_MODULES = new Set<ModuleId>([
+  "modulo-01",
+  "modulo-02",
+  "modulo-03",
+  "modulo-04",
+  "modulo-05",
+  "modulo-06"
+]);
+
 interface ModuleViewerProps {
   module: ModuleRecord;
   targetSectionId?: string;
@@ -69,10 +82,12 @@ export function ModuleViewer({ module, targetSectionId, modules, onNavigateModul
     }
 
     const collapse = COLLAPSE_BY_MODULE[module.id];
+    const compactReading = COMPACT_READING_MODULES.has(module.id);
 
     applyIframeSafetyLayer(document, {
       ...(pager ? { pager } : {}),
-      ...(collapse ? { collapse } : {})
+      ...(collapse ? { collapse } : {}),
+      ...(compactReading ? { compactReading: true } : {})
     });
     scrollToSection(document, targetSectionId);
   }, [module.id, modules, onNavigateModule, targetSectionId]);

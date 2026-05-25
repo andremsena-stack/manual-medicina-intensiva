@@ -34,6 +34,10 @@ export interface CollapseConfig {
 export interface SafetyLayerOptions {
   pager?: PagerConfig;
   collapse?: CollapseConfig;
+  /** Aplica passada de compactacao tipografica (corpo do texto, sections, headings)
+   *  para reduzir scroll em modulos clinicos densos. Nao tocar em tabelas (que ja
+   *  tem estilo proprio) nem em paineis de calculadora. */
+  compactReading?: boolean;
 }
 
 const PAGER_ID = "codex-module-pager";
@@ -43,6 +47,7 @@ const COLLAPSE_BODY_CLASS = "codex-section-body";
 const COLLAPSE_TOGGLE_CLASS = "codex-section-toggle";
 const COLLAPSE_COLLAPSED_CLASS = "codex-section-collapsed";
 const MOBILE_STYLE_ID = "codex-mobile-responsive-style";
+const COMPACT_READING_STYLE_ID = "codex-compact-reading-style";
 const TABLE_MODAL_ID = "codex-table-modal";
 const TABLE_MODAL_STYLE_ID = "codex-table-modal-style";
 const TABLE_LABELS_FLAG = "codexLabelsApplied";
@@ -903,6 +908,129 @@ function injectMobileTableInteraction(doc: Document): void {
 }
 
 /**
+ * Compactacao tipografica para modulos clinicos densos (Mod 1-6).
+ *
+ * Reduz cerca de 15% do scroll total por meio de:
+ * - body font-size 16->15px, line-height 1.55->1.50
+ * - main padding 34->22px (desktop), max-width restrito ja existente
+ * - hero padding 34->22px, margin-bottom 28->18px, h2 34->28px
+ * - section padding 26->18px (desktop), margin-bottom 22->14px
+ * - section h2 25->21px (margens menores), h3 19->17px (margens menores)
+ * - paragrafos, listas e bordas inter-blocos compactados
+ *
+ * NAO toca em:
+ * - Tabelas (tem layout proprio em injectMobileResponsiveStyles)
+ * - Inputs/labels/cards de calculadora (`.calc-*`, `.med-*`, `.dva-*`)
+ * - Mobile (<=767px) — ja e compacto via outras regras
+ *
+ * Injetado DEPOIS dos estilos do modulo, ganha por ordem de cascata.
+ */
+function injectReadabilityCompactionStyles(doc: Document): void {
+  if (doc.getElementById(COMPACT_READING_STYLE_ID)) return;
+  const style = doc.createElement("style");
+  style.id = COMPACT_READING_STYLE_ID;
+  style.textContent = `
+    /* Aplicado apenas em viewports >=768px. Mobile mantem o que ja existe. */
+    @media (min-width: 768px) {
+      body {
+        font-size: 15px;
+        line-height: 1.5;
+      }
+
+      main {
+        padding: 22px 26px;
+        max-width: 1180px;
+      }
+
+      .hero {
+        padding: 22px 26px;
+        margin-bottom: 18px;
+        border-radius: 18px;
+      }
+      .hero h2 {
+        font-size: 28px;
+        line-height: 1.2;
+        margin-bottom: 8px;
+      }
+      .hero p {
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      .badge-row { margin-top: 12px; gap: 8px; }
+      .badge { font-size: 11px; padding: 5px 9px; }
+      .toc-note { font-size: 11px; margin-top: 8px; }
+
+      section {
+        padding: 18px 22px;
+        margin-bottom: 14px;
+        border-radius: 14px;
+      }
+      section h2 {
+        font-size: 21px;
+        line-height: 1.25;
+        margin: 0 0 10px;
+      }
+      section h3 {
+        font-size: 17px;
+        line-height: 1.3;
+        margin: 16px 0 8px;
+      }
+      section h4 {
+        font-size: 14.5px;
+        margin: 12px 0 6px;
+      }
+
+      /* Quando a section esta colapsada via .codex-section-collapsed, o h2 vira
+         botao e ja tem padding proprio — nao mexer. */
+      section.codex-section-collapsed {
+        padding-bottom: 10px;
+      }
+
+      p {
+        margin: 0 0 10px;
+      }
+      ul, ol {
+        margin: 0 0 10px;
+        padding-left: 22px;
+      }
+      li {
+        margin-bottom: 4px;
+      }
+      ul ul, ol ol, ul ol, ol ul { margin: 4px 0 4px; }
+
+      /* Cards e metricas no corpo do texto: compactar padding. */
+      .card { padding: 12px 14px; }
+      .card h4 { margin: 0 0 6px; }
+      .metric { padding: 10px 12px; }
+      .metric strong { font-size: 18px; }
+
+      /* Alertas: compactar mas manter destaque. */
+      .alert {
+        padding: 10px 14px;
+        margin: 10px 0;
+        border-left-width: 4px;
+      }
+
+      /* Timeline (passo a passo) compactada. */
+      .timeline { padding-left: 14px; }
+      .timeline .step { margin: 0 0 12px; }
+
+      /* Figure-card (radiologia/diagramas) compactada. */
+      .figure-card { padding: 10px; margin: 10px 0; }
+      .figure-card figcaption { font-size: 11.5px; margin-top: 6px; }
+
+      /* Pager entre modulos: ja tem estilo proprio do iframeSafety, so reduzir margens. */
+      .codex-pager { margin: 24px 0 16px; }
+      .codex-pager__btn { padding: 14px 18px; }
+
+      /* Footer de assinatura no fim do modulo. */
+      .footer-sign { margin-top: 22px; }
+    }
+  `;
+  doc.head.appendChild(style);
+}
+
+/**
  * Intercepta cliques em links internos (`<a href="#xxx">`) dentro do iframe e os
  * converte em scroll direto para o elemento alvo no MESMO documento, abrindo
  * automaticamente sections colapsadas (modo acordeao).
@@ -974,6 +1102,10 @@ export function applyIframeSafetyLayer(document: Document, opts?: SafetyLayerOpt
   DOSE_RATE_PAIRS.forEach((pair) => wirePair(document, pair));
   applyDataLabelsToTables(document);
   injectMobileTableInteraction(document);
+
+  if (opts?.compactReading) {
+    injectReadabilityCompactionStyles(document);
+  }
 
   if (opts?.collapse) {
     injectSectionCollapse(document, opts.collapse);

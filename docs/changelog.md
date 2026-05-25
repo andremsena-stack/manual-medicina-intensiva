@@ -1,5 +1,55 @@
 # Changelog
 
+## 2026-05-24 — Ciclo de revisão Mod 1/2/7: layout, fisiologia, UX (REQUER REVISAO MEDICA em 3 trechos)
+
+### Resumo
+
+Ciclo grande de refinamentos pedagógicos e de UX em Mod 1, Mod 2 e Mod 7. Sem alterações em doses, diluições, limites clínicos. Três trechos novos de fisiologia/física foram autorados (marcados como **REQUER REVISAO MEDICA**) abaixo.
+
+### Mod 1 (Via aérea e IOT) — hash final `cf4d07d8…3bfb1e33`
+
+#### Layout / leitura
+
+- **§2 Anatomia aplicada à via aérea**: figura sagital + tabela "Estrutura/Importância/Falha" agora lado a lado via `.figure-split` (imagem priorizada 60% / tabela 40%, para favorecer memória fotográfica).
+- **§3.1 Oxigenação e dessaturação**: SVG da curva flutua à esquerda (44% width, max 460px) via `.svg-float-left`; §3.2 + §3.3 heading fluem ao redor; tabela §3.3 limpa float via `.clear-floats`.
+- **§4.1 Mallampati** e **§4.2 Cormack-Lehane**: figura à esquerda (~32%), grid de cards à direita via `.figure-split--narrow`. Alert "Limitação" do §4.1 movido para dentro da coluna direita (abaixo dos cards Classe I-IV) via `.figure-split__stack`.
+- **§5.3 → §5.4**: `<h3>Estratégia A/B/C/D</h3>` standalone removido; conteúdo realocado para dentro de §5.4 (que virou "5.4 Estratégia A/B/C/D — como usar o algoritmo"). SVG reduzido (max-h 200px) e alinhado **à direita** da tabela via `.algo-split` (tabela 60% / SVG 40%).
+- **§6 Posicionamento**: figure + tabela em `.figure-split` (imagem priorizada).
+
+#### Conteúdo (REQUER REVISAO MEDICA)
+
+- **§3.1 Pré-oxigenação**: frase de abertura em negrito + novo parágrafo de fisiologia (CRF como reservatório ≈ 2-3 L; lavagem do N₂ 78%→1%; reserva pulmonar de O₂ sobe de ≈ 450 mL para > 2 L; tempo seguro de apneia 1 min → 8 min em saudável; segundos em crítico). **REQUER REVISAO MEDICA**.
+- **§5.2 Monitorização**: linha "Acesso venoso" removida da tabela. Adicionada lista de fisiologia das variáveis restantes (ECG — vetor elétrico, hipercalemia; SpO₂ — curva sigmoide de Severinghaus; PA/PAM — autorregulação, alvo 65 mmHg; ETCO₂ — confirmação, vigilância, guia hemodinâmico em PCR). **REQUER REVISAO MEDICA**.
+- **§5.3 Material**: adicionado alert info com **Hagen-Poiseuille**: `R = 8ηL/(πr⁴)`, dependência da 4ª potência do raio (8→7 mm = 1,7× resistência; 8→6 mm ≈ 3×); regime turbulento Fanning (1/r⁵); consequências práticas. **REQUER REVISAO MEDICA**.
+
+#### Outros ajustes
+
+- **§8 Sequências de intubação**: siglas em inglês ganham tradução em parênteses (RSI clássica → Rapid Sequence Intubation — Sequência Rápida de Intubação; Delayed sequence intubation → DSI — Sequência Atrasada; Awake intubation → Intubação Acordada; Ketamine-only breathing intubation → Intubação com Cetamina Mantendo Respiração Espontânea; Crash airway → Via Aérea de Emergência).
+- **§9 Farmacologia resumida orientada à IOT**: cards Etomidato e Fentanil recolhidos por padrão (`<details open>` → `<details>`); demais já estavam recolhidos.
+- **§11 Complicações peri-intubação**: removida a coluna "Resposta detalhada" da tabela (referências cruzadas pro Mod 2/3 que redirecionavam o leitor prematuramente). Mantido o alert de regra prática Mod 1 vs Mod 2 logo abaixo.
+
+### Mod 2 (Pós-intubação e confirmação) — hash `afa5be1a…d67b80e`
+
+- **§4 Capnografia**: tabela "Fases da onda capnográfica" de §4.1 (estava em `<details open>`) realocada para dentro de §4.2 (renomeado para "4.2 Forma de onda normal e suas fases"), agora lado a lado com o SVG do capnograma via novo `.figure-split` adicionado ao CSS do Mod 2 (SVG 58% / tabela 42%).
+
+### Mod 7 (Calculadoras interativas) — hash `91ee212f…4eed98ab8`
+
+- **Botão "Calcular bólus" removido** das calculadoras de IOT (§2) e DVA bólus (§3) — eram redundantes pois `calcIOT()` / `calcDVABolus()` já são disparadas automaticamente em todo `oninput` / `onchange` dos campos do paciente, droga e ampola. Funções JS preservadas (continuam rodando via listeners).
+- **Botões "Adicionar ao cenário-resumo"** das 4 calculadoras (IOT, DVA bólus, eletrólito, infusão) renomeados para **"Prescreva (adicionar ao cenário-resumo)"** com disclaimer abaixo em fonte 11px itálico cinza-claro: *"Todas as medicações serão adicionadas ao fim do módulo, elaborando um cenário esquematizado de todas as medicações prescritas."* Texto-placeholder do `#summaryOut` atualizado consistentemente.
+- **§4 Eletrólitos — KCl (hipocalemia)**: campos "Dose desejada" + "Unidade da dose" ocultados (`#eletDoseWrap` recebe `display:none` quando `drug === "kcl_hipocalemia"`), pois a reposição é por mEq/ciclo derivado do Δ e a estimativa de déficit corporal é uma **faixa** (200-300 mEq × ΔK, Medicina Intensiva USP) — um único campo "Dose desejada" gerava confusão. Demais eletrólitos (Mg, Ca, NaCl 3%, Fosfato) mantêm o campo visível. Inputs continuam no DOM para `calcElet()` e `currentElet()` lerem/escreverem normalmente.
+
+### Runtime / shell React
+
+- **`src/utils/iframeSafety.ts`**: nova função `injectReadabilityCompactionStyles(doc)` aplica passada de compactação tipográfica (body 16→15px, line-height 1.55→1.50, padding de sections 26→18px, margens de h2/h3/p compactadas, alertas e cards reduzidos) — apenas em viewports ≥ 768px, ativada via flag `compactReading: true` no `SafetyLayerOptions`. Não toca tabelas (têm estilo próprio) nem em paineis de calculadora.
+- **`src/components/ModuleViewer.tsx`**: novo Set `COMPACT_READING_MODULES = {modulo-01 … modulo-06}` — apenas módulos clínicos densos em texto recebem a compactação. Mod 7 (calculadoras) e Mod 8 (referências) ficam de fora.
+
+### Verificação
+
+- `npm run verify:modules` ✅ (Mod 1, Mod 2 e Mod 7 com hashes atualizados em `scripts/verify-module-hashes.mjs`).
+- `npx tsc --noEmit` ✅.
+
+---
+
 ## 2026-05-24 — Capa/home page antes do Módulo 1
 
 ### Tipo de alteração

@@ -24,6 +24,11 @@
     .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
     .app.nav-collapsed nav a::before{content:attr(data-short);font-size:12px;font-weight:800}
     @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{padding:12px 14px}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}.app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}.app.nav-collapsed .brand__content{display:block}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .toc-note,.app.nav-collapsed .brand .small{display:none}}
+    /* Layout lado-a-lado: figura/SVG à esquerda + conteúdo (tabela ou texto) à direita.
+       Imagem priorizada (1.4fr) para memória visual. Empilha em mobile. */
+    .figure-split{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start;margin:14px 0}
+    .figure-split>.svg-box,.figure-split>table{margin:0}
+    @media(max-width:980px){.figure-split{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -123,19 +128,8 @@
         <div class="card"><h4>Perfusão</h4><p>O débito cardíaco leva CO₂ ao capilar pulmonar. Choque, TEP e PCR reduzem ETCO₂.</p></div>
         <div class="card"><h4>Ventilação</h4><p>A ventilação alveolar remove CO₂. Hipoventilação aumenta ETCO₂; hiperventilação reduz.</p></div>
       </div>
-      <details open><summary>Fases da onda capnográfica</summary><div class="detail-body">
-        <table>
-          <thead><tr><th>Fase</th><th>Origem do gás</th><th>Interpretação</th></tr></thead>
-          <tbody>
-            <tr><td>Fase I</td><td>Espaço morto anatômico, sem CO₂ significativo.</td><td>Linha de base próxima de zero; se não zera, pensar em reinalação.</td></tr>
-            <tr><td>Fase II</td><td>Mistura de espaço morto com gás alveolar.</td><td>Subida rápida; lentificação sugere obstrução.</td></tr>
-            <tr><td>Fase III</td><td>Platô alveolar.</td><td>O final do platô corresponde ao ETCO₂.</td></tr>
-            <tr><td>Fase 0</td><td>Inspiração.</td><td>Queda para linha de base; falha sugere reinalação, válvula/circuito ou fluxo inadequado.</td></tr>
-          </tbody>
-        </table>
-      </div></details>
-
-      <h3>4.2 Forma de onda normal</h3>
+      <h3>4.2 Forma de onda normal e suas fases</h3>
+      <div class="figure-split">
       <div class="svg-box">
         <svg viewBox="0 0 900 330" role="img" aria-label="Capnograma normal">
           <rect width="900" height="330" rx="18" fill="#f8fbff"/>
@@ -150,6 +144,16 @@
           <text x="760" y="285" font-size="15" fill="#344054">Tempo</text>
           <circle cx="455" cy="115" r="6" fill="#b42318"/>
         </svg>
+      </div>
+      <table>
+        <thead><tr><th>Fase</th><th>Origem do gás</th><th>Interpretação</th></tr></thead>
+        <tbody>
+          <tr><td>Fase I</td><td>Espaço morto anatômico, sem CO₂ significativo.</td><td>Linha de base próxima de zero; se não zera, pensar em reinalação.</td></tr>
+          <tr><td>Fase II</td><td>Mistura de espaço morto com gás alveolar.</td><td>Subida rápida; lentificação sugere obstrução.</td></tr>
+          <tr><td>Fase III</td><td>Platô alveolar.</td><td>O final do platô corresponde ao ETCO₂.</td></tr>
+          <tr><td>Fase 0</td><td>Inspiração.</td><td>Queda para linha de base; falha sugere reinalação, válvula/circuito ou fluxo inadequado.</td></tr>
+        </tbody>
+      </table>
       </div>
 
       <h3>4.3 Formas de onda anormais</h3>
