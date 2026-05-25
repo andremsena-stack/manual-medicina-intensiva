@@ -16,10 +16,10 @@ import { useImageWithoutHalo } from "../utils/imageProcessing";
 import { moduleSources } from "../data/moduleSources";
 
 // Landing exibe apenas dois módulos representativos em rotação: módulo 1
-// (capítulo clínico — via aérea) e módulo 6 (calculadoras interativas). Cobre
+// (capítulo clínico — via aérea) e módulo 7 (calculadoras interativas). Cobre
 // os dois formatos do produto sem cansar o visitante. O paywall carousel
-// segue exibindo os 7 módulos completos.
-const LANDING_MODULE_NUMBERS = new Set([1, 6]);
+// segue exibindo os 8 módulos completos.
+const LANDING_MODULE_NUMBERS = new Set([1, 7]);
 const landingModuleSources = moduleSources.filter((mod) => LANDING_MODULE_NUMBERS.has(mod.number));
 
 const billingRequired = import.meta.env.VITE_CLERK_BILLING_REQUIRED !== "false";
@@ -747,7 +747,8 @@ function AuthProviderFailed() {
 // 3) Banner sticky "somente leitura" no topo do iframe.
 const PREVIEW_BLOCK_CSS = `
   /* Esconde o aside/menu lateral e força o main a ocupar toda a largura.
-     Cobre os módulos 1-6 (usam .app grid 310px 1fr) e o módulo 7 (sem aside). */
+     Todos os módulos usam .app#moduleApp (grid 310px 1fr) — a regra abaixo cobre
+     também o caso histórico de módulos sem aside ou com estruturas alternativas. */
   .app, #moduleApp {
     display: block !important;
     grid-template-columns: 1fr !important;

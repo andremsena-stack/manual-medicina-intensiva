@@ -1,5 +1,627 @@
 # Changelog
 
+## 2026-05-24 — Deploy consolidado: reordenação Mod 6↔7, calc Δ-based, NaCl 3%/KCl/Fosfato, cenário-resumo (REQUER REVISAO MEDICA)
+
+### Resumo executivo desta entrega
+
+Sessão extensa de refator no Módulo 7 (Calculadoras interativas) e na regra de ordenação dos módulos. Mudanças listadas em detalhe nos changelogs subsequentes deste dia. Pontos principais:
+
+1. **Reordenação dos módulos** (regra registrada em CLAUDE.md §4b): Mod 6 = Distúrbios hidroeletrolíticos; Mod 7 = Calculadoras interativas; Mod 8 = Referências (sempre último). Renomeação via `git mv`.
+2. **Mod 6** (Distúrbios): seções colapsíveis com Hiper/Hipo subdivididos.
+3. **Mod 7 §4** (Reposição de eletrólitos): calculadora dedicada com fórmulas Δ-based — KCl (déficit USP), NaCl 3% (Adrogué-Madias), Fosfato (Bech 2013) — com mini-painel de paciente sincronizado a §1, accordion, presets de tempo proporcionais, citações com valores aplicados.
+4. **Mod 7 §6** (Cenário-resumo): reordenação para Cenário → Infusões contínuas (recolhível) → Preparo operacional (recolhível). Texto do prontuário com formatação por tipo (eletrólito com Δ + via + vazão; bólus com dose/kg).
+5. **REQUER REVISAO MEDICA**: receita NaCl 20%→3% (0,11×V); fórmulas Adrogué/Bech/USP; presets de Δ-Na proporcionais; alvo Bech 1,25 mmol/L; conversões mg/dL↔mmol/L para fosfato.
+
+### Auditoria pós-reordenação
+
+Cross-references em todos os módulos clínicos atualizadas para o novo numbering. Detalhes nas entradas individuais abaixo.
+
+### Hashes finais
+
+- Mod 2: `cc0c94dc…6a10303392`
+- Mod 4: `16aa3ad9…ceb41e9e9ce`
+- Mod 5: `f1aca64d…7e9430aa85675a`
+- Mod 6: `0d4e9841…702dad137440db`
+- Mod 7: `4fb7f14f…85f0f1ee6e3e0f49`
+- Mod 8: `2b5ab718…6631bbb532`
+
+---
+
+## 2026-05-24 — Mod 7: preparo manual de NaCl 3% (NaCl 20%/10%/17,7% + SF 0,9%)
+
+### Tipo de alteração
+
+- **Conteúdo clínico**: substituição do preparo manual genérico (massa + volume + diluente) por painel **específico para NaCl 3%** com seleção de concentrado e frasco de SF 0,9%.
+
+### Por quê
+
+Para NaCl 3% não faz sentido perguntar "massa do eletrólito" — na prática hospitalar, o preparo é feito sempre diluindo uma solução de NaCl concentrado (mais comumente NaCl 20%) em frascos de SF 0,9%.
+
+### Apresentações de NaCl concentrado disponíveis (BR)
+
+Pesquisadas e cadastradas as três apresentações relevantes:
+
+| Apresentação | Concentração | Conteúdo por ampola 10 mL | mEq Na⁺ |
+|---|---|---|---|
+| **NaCl 20%** (mais comum no BR) | 200 mg/mL | 2,0 g NaCl | **34,2 mEq** |
+| **NaCl 17,7%** (USA / alguns serviços BR) | 177 mg/mL | 1,77 g NaCl | 30,3 mEq |
+| **NaCl 10%** (alternativa BR) | 100 mg/mL | 1,0 g NaCl | 17,1 mEq |
+
+Fontes: bulas Halex Istar, Cristália, Roche (NaCl 20%); USP Pharmacopeia NaCl Injection USP 23,4% / 14,6%.
+
+### Receita gerada automaticamente
+
+Fórmula: `Vol_concentrado = (21 × V_final) / (10 × C% − 9)`, com C em % (20 = NaCl 20%). Inclui contribuição de Na do SF 0,9% (9 mg/mL).
+
+**Inputs**:
+1. **Apresentação de NaCl concentrado** (NaCl 20% / 17,7% / 10%).
+2. **Volume final** (= frasco de SF 0,9%, presets 100 / 250 / 500 / 1000 mL).
+
+**Output** (dinâmico): mL de concentrado a aspirar, ampolas necessárias, mL de SF a descartar, massa de Na⁺ total entregue.
+
+#### Exemplo: 500 mL final com NaCl 20%
+
+- Aspirar **55 mL** de NaCl 20% (≈ 5,5 ampolas de 10 mL — cada ampola contém 2 g = 34,2 mEq Na⁺).
+- Descartar 55 mL de SF 0,9% do frasco de 500 mL e adicionar o NaCl concentrado.
+- Massa de Na⁺ entregue: 11 g ≈ 188 mEq em 500 mL → concentração final 3% (513 mEq/L).
+
+#### Exemplo: 250 mL final com NaCl 10%
+
+- Aspirar **57,7 mL** de NaCl 10% (≈ 5,8 ampolas — 1 g = 17,1 mEq Na⁺/ampola).
+- Descartar 57,7 mL de SF 0,9% e adicionar o NaCl 10%.
+
+### Implementação
+
+- HTML: novo `<details id="eletNaClPrepPanel">` com selects `eletNaClConcentrate` e `eletNaClFinalVol`. O panel genérico `eletManualPrepPanel` é ocultado quando NaCl 3% está selecionado, e vice-versa.
+- JS: `NACL_CONCENTRATES[]`, `initEletNaClPrep()`, `updateEletNaClRecipe()`.
+- `updateEletDefaults()` agora alterna entre os dois panels conforme `drug === "nacl3_hiponatremia"`.
+
+### Hash novo
+
+- Mod 7: `764031bf…6e121950c0b28a`
+
+### REQUER REVISAO MEDICA
+
+- Apresentações NaCl 17,7% e 10% — confirmar disponibilidade institucional (Halex/Cristália/Roche listam apenas NaCl 20% para algumas regiões).
+
+---
+
+## 2026-05-24 — Mod 7: fosfato (Bech) Δ-based + fórmulas com valores aplicados + CSS contraste
+
+### Tipo de alteração
+
+- **Conteúdo clínico novo**: fórmula de Bech 2013 implementada para fosfato de potássio em Δ-panel completo. **REQUER REVISAO MEDICA**.
+- **UX**: citações de fórmulas agora exibem os valores do paciente substituídos (não só a fórmula abstrata).
+- **Bugfix CSS**: caixas Δ-panel (semântica, déficit corporal) agora têm `color` explícito; antes herdavam `#fff` do `.calc-panel` e ficavam invisíveis sobre fundo claro.
+
+### CSS bug — texto invisível nas caixas do Δ-panel
+
+`.calc-panel` define `color:#fff` (texto branco) por causa do fundo azul-escuro. As caixas `eletDeltaSemantic` (fundo azul claro) e `eletBodyDeficit` (fundo verde claro) herdavam essa cor, ficando ilegíveis.
+
+Fix: adicionado `color:#0d2438` (azul-escuro) ao `eletDeltaSemantic` e `color:#053f1f` (verde-escuro) ao `eletBodyDeficit` no inline style. As outras duas caixas (`eletFormulaCitation` em cinza, `eletFormulaAlert` em marrom) já tinham `color` explícito e estavam legíveis.
+
+### Citação dinâmica — fórmulas com valores aplicados
+
+`formulaCitation` agora pode ser **string** (estática) **ou função** que recebe `{peso, sexo, atual, delta}` e retorna HTML.
+
+Quando função, é renderizada em `applyEletDeltaIfReady()` sempre que algum input muda. Mostra a fórmula genérica + "Substituindo valores:" com as substituições + resultado parcial.
+
+#### Adrogué para NaCl 3% — exemplo dinâmico
+
+Para peso 70 kg, sexo M, Na atual 120, Δ alvo 8:
+
+> TBW = 70 × 0,6 (homem) = **42 L**; (TBW + 1) = 43 L; (513 − 120) = **393 mEq/L**.
+>
+> *Em palavras:* cada litro de NaCl 3% eleva o Na sérico deste paciente em **9,14 mEq/L**.
+>
+> **Aplicado a este paciente:** Volume = 8 × 43 / (513 − 120) = 8 × 0,109 = **0,876 L** ≈ **876 mL** de NaCl 3%.
+
+#### KCl USP — exemplo dinâmico
+
+Para K atual 2,8, K alvo 4,0:
+
+> Δ = 4,00 − 2,80 = **1,20 mEq/L**. Déficit corporal estimado = 1,20 × 200 a 300 = **240–360 mEq**.
+
+### Fosfato de potássio — Δ-panel (Bech 2013)
+
+Novo `deltaModel` em `fosfato_potassio_hipofosfatemia`:
+
+- **Input unit**: mg/dL (mais familiar no BR para P sérico).
+- **Conversão interna**: P mmol/L = P mg/dL × 0,3229 (1 mmol P = 30,97 mg).
+- **Fórmula Bech**: dose total (mmol P) = 0,5 × peso × (P alvo − P atual em mmol/L). Alvo Bech sugerido: 1,25 mmol/L (≈ 3,87 mg/dL).
+- **Time presets**: 4 h (grave), 6 h (moderada padrão), 8 h (conservador). Taxa máxima 7 mmol/h.
+- **Conc máx por via**: 0,18 mmol/mL.
+
+Citação dinâmica mostra: P atual em mg/dL → mmol/L, P alvo em mg/dL → mmol/L, dose computada.
+
+### Alerta clínico do fosfato
+
+> Taxa máxima: 7 mmol/h (Bech/Charron 2003). Em pacientes com IR/hipercalemia, considerar fosfato de SÓDIO (mesma posologia, sem K). Monitorar P, Ca, K e função renal a cada 6 h. CRRT com perda contínua de P pode exigir reposição via solução com fosfato (Phoxilium®).
+
+### Hash novo
+
+- Mod 7: `b27e75e6…7bd8ca5fd60088`
+
+### REQUER REVISAO MEDICA
+
+- Implementação da fórmula Bech 2013 para fosfato (validar contra original do J Crit Care 2013).
+- Fator de conversão 0,3229 mmol/mg para P (matematicamente correto: 1/30,97).
+- Alvo Bech 1,25 mmol/L como sugestão (alvo individualizado pelo prescritor).
+
+---
+
+## 2026-05-24 — Mod 7: KCl 10%, déficit corporal USP, Adrogué citado, semântica do Δ [REQUER REVISAO MEDICA]
+
+### Tipo de alteração
+
+- **Conteúdo clínico novo**: adicionada apresentação KCl 10% (13,4 mEq/10 mL = 1,34 mEq/mL); citação da estimativa de déficit corporal de K (200–300 mEq/L) atribuída ao livro Medicina Intensiva USP; explicitação da fórmula Adrogué-Madias para NaCl 3% com tradução em palavras.
+- **UX clínico**: descrição inline esclarecendo que o Δ é o aumento desejado no exame do paciente (mEq por L de plasma) — NÃO a quantidade de K na solução IV.
+
+### KCl 10% — ampola alternativa
+
+Adicionada em `kcl_hipocalemia.commercialPresentations`:
+
+- `KCl 10% — ampola 10 mL = 13,4 mEq (1,34 mEq/mL)`.
+
+A ampola principal segue sendo KCl 19,1% (25,6 mEq/ampola, 2,56 mEq/mL — apresentação BR mais comum). KCl 10% disponível como alternativa em alguns serviços.
+
+Texto do `ampoule` atualizado para descrever ambas.
+
+### Δ explicado — semântica + fórmula + alerta
+
+Quatro caixas informativas adicionadas ao Δ-panel, populadas dinamicamente conforme o eletrólito:
+
+1. **Semântica do Δ** (caixa azul): "O Δ aqui representa o aumento desejado no exame de K/Na sérico do paciente — NÃO a quantidade de K/Na que será adicionada à solução IV."
+2. **Déficit corporal estimado** (caixa verde clara): para KCl, calcula a faixa 200–300 mEq × Δ e exibe (ex.: Δ 1,2 → 240–360 mEq).
+3. **Citação da fórmula** (caixa branca pequena): fonte da literatura.
+4. **Alerta clínico** (caixa amarela): orientação de uso seguro.
+
+### KCl — citação Medicina Intensiva USP
+
+Conforme livro Medicina Intensiva USP: *"não há correlação definitiva entre K plasmático e déficit corporal, mas a queda de K de 4 → 3 mEq/L costuma representar déficit corporal de 200–300 mEq"*.
+
+Estimativa didática implementada: `Déficit K ≈ Δ × 200 a 300 mEq` exibida como informativa **separada** da dose-do-ciclo (`0,3 × peso × Δ`). Alerta sempre presente:
+
+> Este valor é estimativa de estoque corporal, NÃO prescrição imediata. Repor em etapas, reavaliando K sérico, ECG, função renal, diurese e magnésio antes de cada ciclo.
+
+### NaCl 3% — fórmula Adrogué-Madias citada e traduzida
+
+Citação completa (NEJM 2000;342:1581–9):
+
+> ΔNa por 1 L de infusato = (Na_infusato + K_infusato − Na_sérico) / (TBW + 1).
+>
+> Para NaCl 3% (Na = 513 mEq/L, K = 0), invertendo: **Volume (L) = Δ × (TBW + 1) / (513 − Na_atual)**, com TBW = peso × 0,6 (homem) ou 0,5 (mulher).
+>
+> *Em palavras: cada litro de NaCl 3% eleva o Na sérico em (513 − Na atual) / (TBW + 1) mEq/L.*
+
+Alerta: cálculo é estimativa preditiva — dosar Na sérico a cada 2–4 h e titular pelo Δ real observado.
+
+### Audit do dado clínico
+
+O range **200–300 mEq por 1 mEq/L de queda de K** é consistente com múltiplas fontes de medicina intensiva (Medicina Intensiva USP; Marino's ICU Book cita 100–200 mEq/L para Δ acima de 4,0 e 200–400 mEq/L para Δ abaixo de 3,0). A faixa 200–300 representa o ponto médio pragmático para Δ entre 3 e 4 mEq/L. **REQUER REVISAO MEDICA** para confirmar a faixa final adotada.
+
+### Implementação
+
+- `kcl_hipocalemia.commercialPresentations[+1]`: nova ampola KCl 10%.
+- `kcl_hipocalemia.deltaModel`:
+  - `deltaSemantic`, `formulaCitation`, `formulaAlert`: strings HTML para as 3 caixas.
+  - `computeBodyDeficit(delta) → [min, max]`: nova função.
+  - `computeDose` preservada (cycle dose, conservadora).
+- `nacl3_hiponatremia.deltaModel`: `deltaSemantic`, `formulaCitation`, `formulaAlert` adicionados.
+- HTML §4 Δ-panel: 4 novos divs (`eletDeltaSemantic`, `eletBodyDeficit`, `eletFormulaCitation`, `eletFormulaAlert`) ocultos por padrão, populados em `populateEletDeltaPanel()` e `applyEletDeltaIfReady()`.
+
+### Hash novo
+
+- Mod 7: `f17d2f6d…e17a029134329167`
+
+### REQUER REVISAO MEDICA
+
+- Faixa 200–300 mEq/L de queda de K para déficit corporal (Medicina Intensiva USP).
+- Aplicação da fórmula linear (Δ × 200–300) — em pacientes com obesidade, ascite, IRC os números podem variar significativamente.
+- Citação completa da fórmula Adrogué-Madias (NEJM 2000).
+
+---
+
+## 2026-05-24 — Mod 7: bugfix KCl conc, presets com volume próprio, reorder, Quando interromper
+
+### Tipo de alteração
+
+- **Bugfix clínico (alta prioridade)** — KCl `commercialPresentations.conc` estava `25.6` (total de mEq por ampola) quando deveria ser `2.56` mEq/mL (per-mL). Resultado prático: o volume a aspirar da ampola era exibido com erro de fator 10 (0,78 mL no lugar do correto 7,81 mL para 20 mEq).
+- **Bugfix UX** — Solução final sugerida e Volume final eram incongruentes: preset informava "20 mEq em 500 mL" mas o input mostrava 200 mL. Cada preset agora carrega seu próprio `finalVolume`.
+- **UX / clínico** — reorder do formulário; novo card "Quando interromper — critério de sucesso" para todos os 5 (agora 6) eletrólitos.
+
+### Bugfix KCl ampoule concentration
+
+**Antes**: `{label:"KCl 19,1% — ampola 10 mL = 25,6 mEq", conc:25.6, ...}` — `conc` valia 25,6 mEq/mL, errado.
+
+**Depois**: `conc:2.56` (mEq/mL = content/volume = 25,6/10).
+
+**Defesa contra recorrência**: `currentElet()` e `currentDVABolus()` agora derivam `ampouleConcPerML` a partir de `content/volume` quando ambos estão disponíveis, com fallback para `conc`. Erros futuros de digitação em `conc` deixam de impactar a calculadora.
+
+Auditoria pós-fix: as demais 9 ampolas (Mg 50%/10%, gluconato Ca, CaCl₂, fosfato K, NaCl 3% pronto, NaCl 20%, fenitoína, fenobarbital, levetiracetam, etc.) já estavam com `conc` corretamente expressa como per-mL.
+
+### Bugfix Solução final vs Volume final
+
+Adicionado campo `finalVolume` em **cada preset** (de todos os 6 eletrólitos: KCl, MgSO₄, gluconato Ca, CaCl₂, NaCl 3%, fosfato K). `applyEletVolumeFromPreset()` agora prioriza `preset.finalVolume` sobre `drug.defaultFinalVolume`. Garantia: o número exibido no input "Volume final" sempre bate com o número descrito no rótulo do preset escolhido.
+
+Os labels dos presets KCl também foram simplificados — em vez de "20 mEq em 500 mL — periférica diluída", agora "500 mL — periférica diluída (40 mEq/L máx)". A dose vem do Δ-panel automaticamente; o preset descreve volume + conc-máxima, não o trio dose+volume+conc.
+
+### Reorder do formulário §4
+
+Ordem nova de campos:
+
+1. Eletrólito / apresentação
+2. Apresentação comercial disponível
+3. **Δ-panel** (Reposição planejada por Δ)
+4. Via de administração
+5. Solução final sugerida (preset)
+6. Dose desejada + Unidade da dose
+7. Volume final da solução (auto-calculado, aparece após preset)
+
+A dose desejada agora vem **abaixo** dos seletores de via e preset, refletindo que o usuário primeiro define o cenário (via, preset) e a dose é derivada automaticamente do Δ.
+
+### Novo card "Quando interromper — critério de sucesso"
+
+Card verde claro inserido entre Posologia e Cuidados, com 4 seções:
+
+- **Alvo** — valor sérico ou clínico que define resolução.
+- **Suspender se** — condições que exigem parada imediata.
+- **Reavaliação** — periodicidade de dosagens e exames.
+- **Após atingir alvo** — manejo de transição (oral, causa de base).
+
+Conteúdo específico por droga (KCl, MgSO₄, gluconato Ca, CaCl₂, NaCl 3%, fosfato K). Marcado como conteúdo clínico — **REQUER REVISAO MEDICA** para os 6 textos.
+
+### Como a dose é calculada a partir do paciente
+
+- **KCl** (déficit corporal): `dose (mEq) = 0,3 × peso × Δ`. **Não usa gênero** (a literatura padrão considera o fator 0,2–0,4 × peso × Δ independente de sexo; usamos 0,3 como valor pragmático intermediário).
+- **NaCl 3%** (Adrogué): `Volume (mL) = Δ × (TBW + 1) × 1000 / (513 − Na atual)`, com `TBW = peso × 0,6 (homem)` ou `peso × 0,5 (mulher)`. **Usa gênero** — diferença de água corporal total.
+- Outros eletrólitos (Mg, Ca, P): dose por cenário clínico, não por Δ. O Δ-panel fica oculto para essas drogas.
+
+### Hash novo
+
+- Mod 7: `e7942c3c…6d26288384b3`
+
+---
+
+## 2026-05-24 — Mod 7: NaCl 3% (Adrogué), UI mais limpa, preparo manual auto-sugerido [REQUER REVISAO MEDICA]
+
+### Tipo de alteração
+
+- **Conteúdo clínico novo** — adicionado NaCl 3% (hiponatremia) com fórmula de Adrogué. Por envolver fórmulas e limites de Δ Na, marcado como `REQUER REVISAO MEDICA` para auditoria.
+- **UX** — sincronização §1↔§4 esclarecida, tempo de administração e volume final removidos da UI direta (definidos por Δ-panel + preset).
+
+### Sincronização bidirecional explícita §1 ↔ §4
+
+Texto do mini-painel de paciente atualizado para deixar clara a sincronização nos dois sentidos: editar em §1 reflete em §4 e vice-versa.
+
+### Tempo de administração — input removido da UI
+
+O input "Tempo de administração (min)" foi removido do `eletIntermittentPanel`. Causava conflito com o Tempo de reposição do Δ-panel. Agora é hidden no DOM (mantido para retrocompat dos handlers) e seu valor é populado por: (a) preset Δ quando ativo; (b) drug.defaultTimeMin como fallback.
+
+### Volume final — aparece apenas após preset escolhido, auto-calculado
+
+O wrap `eletFinalVolumeWrap` é hidden por padrão. Aparece quando uma Solução final sugerida (preset) é populada. Valor preenchido automaticamente:
+- Δ + conc-constraint mode: menor volume padrão (100/250/500/1000 mL) que respeita a concentração máxima da via — `dataset.eletAutoFilled = "delta"`.
+- Default (sem Δ ativo): `drug.defaultFinalVolume` — `dataset.eletAutoFilled = "preset"`.
+
+Usuário pode editar manualmente — depois disso, o auto-fill respeita a edição (não sobrescreve).
+
+### NaCl 3% — reposição em hiponatremia (NOVO)
+
+Nova entrada `nacl3_hiponatremia` em `dvaBolusDrugs.eletrolito_reposicao.drugs`. Características:
+
+- **Fórmula Adrogué**: `Volume NaCl 3% (mL) = Δ × (TBW + 1) / (513 − Na atual)`, onde TBW = peso × 0,6 (homem) ou 0,5 (mulher).
+- **Δ vem do preset de tempo**, não do alvo do usuário (`deltaSource: "preset"`). O Δ-panel oculta o input "alvo" quando esse modo está ativo.
+- **Time presets baseados em literatura**:
+  - 10 min — bólus emergência (sintoma grave/convulsão): elevar 4–6 mEq/L.
+  - 24 h — crônica geral: máx ↑ Na 8 mEq/L.
+  - 24 h — alto risco (alcoolismo, hipoK, desnutrição, hepatopatia): máx ↑ Na 6 mEq/L.
+  - 48 h — meta cumulativa: máx ↑ Na 18 mEq/L.
+- **Frase resumo** exibida acima dos cards: `Para este paciente são necessários X mL de NaCl 3% para corrigir o déficit de Y mEq de Na⁺, com potencial de elevar a [Na⁺] sérica em até Z mEq/L se infundido em W horas`.
+- **Apresentação manual**: preparo de NaCl 3% a partir de **NaCl 20% + SF 0,9%** com auto-sugestão da receita:
+  - `Vol(NaCl 20%) = 0,11 × Vol(final)` mL
+  - `Vol(SF 0,9%) = Vol(final) − Vol(NaCl 20%)` mL
+  - Considera a contribuição de Na do SF 0,9% (9 g/L = 0,154 mEq/mL).
+  - Ex.: para 500 mL final → 55 mL NaCl 20% + 445 mL SF 0,9%.
+- Card "Solução preparada" para NaCl 3% mostra: massa total de Na⁺ entregue, concentração fixa 513 mEq/L, e a receita auto-sugerida quando o preparo manual é escolhido.
+
+### Implementação
+
+- `CollapseConfig`/`makeSectionCollapsible` sem mudanças nesta rodada.
+- `eletrolito_reposicao.drugs.nacl3_hiponatremia`: dados clínicos, viaOptions, deltaModel com `formulaName: "adrogue"` e `deltaSource: "preset"`.
+- `applyEletDeltaIfReady()` agora detecta `deltaSource: "preset"` (delta vem do preset, alvo é hidden) e dispatcha `dm.computeDose(delta, peso, sexo, atual)` passando os 4 parâmetros — formulação compatível com KCl (`0,3 × peso × Δ`) e Adrogué.
+- `collectEletDeltaMeta()` captura `{formulaName, atual, tempoMin, presetDelta, presetLabel, sexo, peso}` para uso em calcElet.
+- `buildEletAdroguePhrase(x)` monta a frase de resumo para formula `adrogue`.
+- `calcElet` exibe a frase como banner azul claro acima dos cards e troca os campos do card "Solução preparada" quando o eletrólito é Adrogué (substitui "Volume a aspirar" + "Concentração final calculada" por: receita auto-sugerida quando manual + massa Na⁺ + concentração fixa).
+- `populateEletDeltaPanel()` oculta o input "alvo" em modo preset, atualiza rótulo de Δ-calc, codifica preset value como `tempo|delta|idx` com `data-tempo`/`data-delta`.
+- `applyEletVolumeFromPreset()` controla a visibilidade do wrap de Volume final.
+
+### Hash novo
+
+- Mod 7: `32e44d92…162241acb8d06bed`
+
+### `REQUER REVISAO MEDICA` — itens a confirmar
+
+- Fórmula de Adrogué (volume NaCl 3% = Δ × (TBW + 1) / (513 − Na atual)).
+- Receita de preparo manual (0,11 × Vol_final de NaCl 20% + restante em SF 0,9% — considera contribuição do SF 0,9%).
+- Time presets e seus Δ-alvos (4–6 / 8 / 6 / 18 mEq/L). Aderência às recomendações de Refardt 2024, Verbalis 2017, Sterns 2015.
+- Δ-deficit do K (`0,3 × peso × Δ`) — implementação prática, faixa 0,2–0,4 na literatura.
+
+---
+
+## 2026-05-24 — Mod 7: Δ-based KCl, mini-panel paciente, contraste do Cuidados, remoção do Cenário
+
+### Tipo de alteração
+
+- **Funcionalidade clínica nova + bugfix UX** — sem alteração de doses, limites ou alertas pré-existentes. Nova fórmula de dose-deficit (literatura) introduzida para KCl com flag explícita; demais drogas mantêm fluxo manual.
+
+### Bug fix: contraste do `<strong>` nas notas dos cards
+
+A regra `.calc-result strong { color: #fff; }` aplicava-se globalmente, inclusive aos `<strong>` dentro dos `med-kv` em cards de fundo claro (cards de cuidado/safety, primary, pk). Os labels "Periférica:", "Central:", "NUNCA push IV", "Monitorização:" apareciam brancos sobre fundo laranja, ilegíveis.
+
+Adicionado override: `.calc-result .med-card .med-kv strong, .calc-result .med-card .med-kv b { color: inherit; display: inline; font-size: inherit; font-weight: 700; line-height: inherit; }` mantendo `b` (label do field) com `color: #123c69`. Strong agora herda a cor do parágrafo.
+
+### Remoção do card Cenário no resultado da calculadora de eletrólitos
+
+A reposição de eletrólitos é metabólica e não tem cenário hemodinâmico específico que faça sentido apresentar. Removida a chamada a `scenarioCard(scenario)` em `calcElet()`. Não afeta outras calculadoras (DVA bólus, infusão contínua, IOT) que continuam exibindo cenário.
+
+### Mini-painel "Dados do paciente" em §4
+
+Acima da calculadora de eletrólitos: bloco compacto com Peso (kg) e Sexo, **sincronizado bidirecionalmente** com §1 (Dados globais do paciente). Editar em §4 atualiza §1 e vice-versa via dispatch de evento `input`/`change`. Em accordion mode (apenas §1 ou §4 abertas por vez), o usuário não precisa mais voltar à §1 para confirmar peso.
+
+### Reposição planejada por Δ (atual → alvo) — KCl
+
+Novo painel colapsível (`<details id="eletDeltaPanel">`) abaixo do select de Eletrólito. Aparece **apenas** para drogas com `deltaModel` no cadastro (atualmente: KCl).
+
+Inputs:
+- **Valor atual** (mEq/L)
+- **Valor alvo** (mEq/L)
+- **Tempo de reposição planejado** (preset literatura: 4h emergência, 6h, 8h, 12h, 24h manutenção)
+- **Δ calculado** (read-only)
+
+Cálculo automático ao preencher os três campos:
+1. **Dose total** = `0,3 × peso × Δ` mEq (estimativa de déficit corporal — referência 0,2–0,4 × peso × Δ na literatura).
+2. **Volume final** = menor volume padrão (100, 250, 500, 1000 mL) que respeita a concentração máxima da Via selecionada.
+3. **Vazão** = volume_final / tempo.
+4. **Validação de segurança**:
+   - Se taxa (mEq/h) > limite da via (10 mEq/h periférica, 40 mEq/h central) → campo de Dose/Tempo destacado em vermelho.
+   - Se concentração final > limite da via → campo de Volume final destacado em vermelho.
+   - Mensagem em destaque vermelho: `*OBS: variação desaconselhada para o tempo planejado de reposição` + detalhamento das infrações.
+
+Os campos calculados sobrescrevem os manuais; o usuário pode editar qualquer um dos três (dose, tempo, volume) para refinar.
+
+### Implementação
+
+- `src/data/modules/modulo_07_calculadoras_interativas.html`:
+  - CSS: regras `.calc-result .med-card .med-kv strong/b`, `.elet-warning`, `.elet-input-warn`.
+  - HTML: mini-painel de paciente + `<details id="eletDeltaPanel">` com inputs `eletAtual`, `eletAlvo`, `eletTimePreset`, `eletDeltaCalc`, `eletDeltaWarning`.
+  - Drug data: `deltaModel` em `kcl_hipocalemia` (computeDose, maxRateByVia, maxConcByVia, timePresets, standardVolumes).
+  - JS novo: `syncPatientFieldsToElet()`, `applyEletDeltaIfReady()`, `populateEletDeltaPanel()`.
+  - `calcElet()` removeu `scenarioCard()`.
+
+### Hash novo
+
+- Mod 7: `4ffa06bf…36ead8f29557`
+
+---
+
+## 2026-05-24 — Mod 7: Cuidados reformatado, seletor de Via na reposição de eletrólitos
+
+### Tipo de alteração
+
+- **UX e clareza clínica** — reorganização textual + nova UI para evitar erro de via vs. concentração. Regra de ouro do Mg explicitada conforme orientação clínica. Doses, limites e alertas mantidos.
+
+### Cuidados reformatado (5 medicamentos de reposição)
+
+Cada `notes` agora começa com **Regra de ouro** clínica e separa as instruções em blocos com quebra de linha:
+
+- **KCl 19,1%** — Regra de ouro: se reposição de K se mostrar refratária, suspeitar de hipomagnesemia (corrigir Mg ANTES). Periférica: 10 mEq/h, 40 mEq/L. Central: 20–40 mEq/h, 60–100 mEq/L (até 400 com ECG dedicado). NUNCA push IV. Monitorização separada.
+- **MgSO₄ (hipoMg)** — Regra de ouro do estoque corporal (1% sérico). Periférica/central, IR, monitorização separados.
+- **Gluconato de cálcio** — Regra de ouro (Mg primeiro). Periférica preferida, central aceito. Cuidado digitálico, monitorização ECG.
+- **Cloreto de cálcio** — Atenção vesicante, central obrigatória, periférica proibida, equivalência, digitálico, monitorização ECG.
+- **Fosfato de potássio** — Atenção carga de K, central preferida, periférica com cautela, taxa máx, contraindicação (hipercalcemia), monitorização, CRRT.
+
+Renderização via `<br><br>` e `<strong>` para legibilidade. Mantém compatibilidade com o cenário-resumo.
+
+### Novo seletor "Via de administração"
+
+UI nova entre Apresentação comercial e Solução final sugerida, na seção §4 Reposição de eletrólitos:
+
+- Cada eletrólito ganhou um campo `viaOptions: [{value, label, maxConcLabel}]` que popula o select com formato `Periférica (máx 40 mEq/L)`.
+- Cada preset de solução ganhou `via: string[]` indicando vias compatíveis.
+- Trocar a via filtra automaticamente o select de presets — só aparecem soluções compatíveis com a via escolhida.
+- Quando a droga tem via única (ex.: CaCl₂ central obrigatório), o seletor aparece como informativo (disabled).
+- O card de Solução preparada exibe a Via selecionada com a concentração máxima ao lado, e o cenário-resumo registra a via no `prep` da prescrição.
+
+### KCl: preset 100 mEq/L reclassificado
+
+O preset KCl `20 mEq em 200 mL (100 mEq/L)` era rotulado como "periférica" — incorreto, pois excede o limite de 40 mEq/L para via periférica. Reclassificado para `central sem ECG dedicado (100 mEq/L)`, alinhado com o limite real (apenas conc/labels — não houve mudança de dose).
+
+### Implementação
+
+- `src/data/modules/modulo_07_calculadoras_interativas.html`:
+  - `viaOptions` em cada um dos 5 drugs de `eletrolito_reposicao`.
+  - `via: string[]` em cada preset de `presentations`.
+  - `notes` reescritos com `<br><br>` e `<strong>` para todos os 5.
+  - Novo `<select id="eletVia">` no formulário §4.
+  - Novas funções JS: `updateEletPresentationsForVia()`.
+  - `updateEletDefaults()` agora popula via select e ajusta disabled state.
+  - `currentElet()` exporta `via` e `viaMeta`.
+  - `calcElet()` exibe linha "Via de administração" no card primário.
+  - `addEletToSummary()` inclui texto da via no `prep` salvo no resumo.
+
+### Hash novo
+
+- Mod 7: `fd8a2844…73c9e3ded64477`
+
+---
+
+## 2026-05-24 — Mod 7: accordion mode na calculadora (UX de navegação)
+
+### Tipo de alteração
+
+- **UX / runtime** — sem alteração de doses, fórmulas, alertas ou recomendações clínicas.
+
+### Comportamento novo no Módulo 7 (Calculadoras interativas)
+
+- **§1 Dados globais do paciente**: sempre visível no topo, sem toggle. Funciona como cabeçalho persistente.
+- **Demais seções** (IOT, Bólus/intermitente, Reposição de eletrólitos, Infusão contínua, Cenário-resumo, Sugestão de leitura): iniciam recolhidas como menu colapsível. Clique no `<h2>` expande.
+- **Modo acordeão**: abrir uma seção fecha automaticamente as outras — só uma calculadora visível por vez, para reduzir poluição da tela.
+- Ao expandir uma seção, a página rola suavemente para o início dela.
+
+### Implementação
+
+- `src/utils/iframeSafety.ts`:
+  - `CollapseConfig` ganhou nova flag `accordionMode?: boolean`.
+  - Em accordion, sections em `keepExpandedIds` ficam **sem toggle** (sempre abertas, fixadas no topo).
+  - `makeSectionCollapsible` aceita callback `closeOthers` que é chamado antes de abrir uma section.
+  - `injectSectionCollapse` monta a lista de sections gerenciadas e injeta o callback de acordeão.
+- `src/components/ModuleViewer.tsx`:
+  - `COLLAPSE_BY_MODULE` atualizado pós-swap dos módulos:
+    - `modulo-06` (Distúrbios) → `{ skipSectionsWithDetails: true }` (já usa `<details>` próprio).
+    - `modulo-07` (Calculadoras) → `{ keepExpandedIds: ["paciente"], accordionMode: true }`.
+    - `modulo-08` (Referências) → `undefined` (também usa `<details>` próprio).
+  - `scrollToSection` agora abre uma section recolhida antes de rolar, quando o usuário navega diretamente para ela (link externo, deep link).
+
+### Sem alteração de HTML/hashes
+
+Mudanças concentradas em TS/TSX (runtime layer). Hashes dos 8 módulos permanecem os do ciclo anterior.
+
+---
+
+## 2026-05-24 — Auditoria de cross-refs entre módulos pós-reordenação
+
+### Tipo de alteração
+
+- **Estrutural / texto** — sem alteração de doses, fórmulas, alertas ou recomendações clínicas. Apenas correção de referências cruzadas por número de módulo.
+
+### Contexto
+
+Após o swap Mod 6 ↔ Mod 7 (Distúrbios e Calculadoras), as menções a "Módulo 6" e "Módulo 7" em textos de OUTROS módulos (e em código TS/JSON) precisaram ser auditadas: muitas estavam apontando para os números antigos da Calculadora.
+
+### Citações corrigidas (Módulo 6 → Módulo 7, pois Calculadoras passou para Mod 7)
+
+- `modulo_02_pos_intubacao_confirmacao.html` §9 — alerta de escopo de sedoanalgesia.
+- `modulo_04_manutencao_sedoanalgesia.html` §1 (escopo) — apontava cálculo operacional para Mod 6.
+- `modulo_04_manutencao_sedoanalgesia.html` §7 (anticonvulsivantes) — três menções à calculadora.
+- `modulo_05_drogas_vasoativas.html` §8 (Exemplo didático) — calculadora centralizada.
+- `modulo_08_referencias.html` §5 — duas refs (Yang 2025 + FDA nitroprussiato) que mencionavam "calculadora do Módulo 6".
+- `src/components/AuthGate.tsx` — `LANDING_MODULE_NUMBERS = new Set([1, 6])` → `Set([1, 7])`; comentário "8 módulos" (era "7").
+- `src/components/AuthGate.tsx` — comentário sobre app shell (`PREVIEW_BLOCK_CSS`) generalizado.
+- `src/data/medications/README.medications.json` — nota "extrair do Módulo 6" → "Módulo 7".
+
+### Mod 8 — swap das seções de referências
+
+As seções `#refs-modulo-6` e `#refs-modulo-7` tinham conteúdo trocado (calc refs em #refs-modulo-6, distúrbios em #refs-modulo-7). Agora:
+
+- `#refs-modulo-6` = referências do Módulo 6 (Distúrbios hidroeletrolíticos).
+- `#refs-modulo-7` = referências do Módulo 7 (Calculadoras interativas).
+- Ordem física no arquivo também ajustada (Mod 6 antes de Mod 7).
+- TOC do Mod 8 atualizada para refletir os títulos corretos.
+
+### Não-correção justificada
+
+- `modulo_02_pos_intubacao_confirmacao.html` linha 233 — "aprofundamento ficará no Módulo 10 — POCUS": referência prospectiva a módulo futuro (POCUS, não construído ainda). Mantida como aspiracional.
+
+### Hashes atualizados
+
+- Mod 2: `cc0c94dc…6a10303392`
+- Mod 4: `16aa3ad9…ceb41e9e9ce`
+- Mod 5: `f1aca64d…7e9430aa85675a`
+- Mod 8: `2b5ab718…6631bbb532`
+- Mod 6 e Mod 7 permanecem com os hashes do ciclo anterior.
+
+---
+
+## 2026-05-24 — Reordenação: Distúrbios = Mod 6, Calculadoras = Mod 7, Referências = Mod 8
+
+### Tipo de alteração
+
+- **Estrutural / organizacional** — sem alteração de doses, fórmulas, limites clínicos, alertas ou recomendações médicas.
+
+### Regra de ordenação adotada
+
+A partir desta entrada, o ordenamento dos módulos segue regra fixa:
+
+1. **Módulo de Referências consolidadas** — **sempre o último módulo**, reúne a bibliografia primária de todos os módulos clínicos.
+2. **Módulo de Calculadoras interativas** — **sempre o antepenúltimo** (logo antes das Referências), agrega todos os widgets de cálculo.
+3. **Módulos clínicos** — ocupam as posições anteriores; ao adicionar novo módulo clínico, inserir antes do par Calculadoras + Referências (que recuam uma posição).
+
+### Aplicação imediata
+
+- **Mod 6** (era Calculadoras) ↔ **Mod 7** (era Distúrbios): swap completo de posição.
+  - Conteúdo de Distúrbios hidroeletrolíticos passou a ocupar a posição 6.
+  - Conteúdo de Calculadoras interativas passou a ocupar a posição 7.
+- **Mod 8** (Referências) permanece como último módulo.
+
+### Arquivos renomeados (git mv preserva histórico)
+
+- `modulo_06_calculadoras_interativas.html` → `modulo_07_calculadoras_interativas.html`
+- `modulo_07_disturbios_hidroeletroliticos.html` → `modulo_06_disturbios_hidroeletroliticos.html`
+
+### Referências internas atualizadas
+
+- Títulos, headers, brand sidebar, hero — "Módulo 6" → "Módulo 7" no arquivo de Calculadoras; "Módulo 7" → "Módulo 6" no arquivo de Distúrbios.
+- Cross-references entre os dois módulos: textos como "ver Mod 6 — Calculadora" e "ver Mod 7 — Distúrbios" reescritos na direção correta.
+
+### Outros arquivos modificados
+
+- `src/data/moduleSources.ts` (imports + entradas do array trocadas de posição)
+- `src/features/calculators/audit.ts` (path da referência)
+- `scripts/verify-module-hashes.mjs` (filenames + hashes novos)
+- `docs/REVISAO_MODULOS.md` (entradas reordenadas + regra documentada)
+
+### Hashes (após a renomeação)
+
+- Mod 6 (disturbios): `1a08a5cc7d2cae794d3ed8390b26b830d2f58d4a12f09bdaf021acdede0468aa`
+- Mod 7 (calculadoras): `ce2b7449b3a4642a9b22ab45b7e065906f467959881666e46a5cdcbfac0947a9`
+
+### Observação
+
+- Slugs de rota (`modulo-06`, `modulo-07`, `modulo-08`) **mantidos como posições absolutas** — não rastreiam o tema, apenas a ordem. Quem tinha bookmark de `?modulo=modulo-06` agora vê Distúrbios em vez de Calculadoras. Aceitável por se tratar de regra organizacional consolidada.
+
+---
+
+## 2026-05-24 — Mod 7 com Hiper/Hipo recolhíveis e calculadora de eletrólitos isolada (Mod 6)
+
+### Tipo de alteração
+
+- **Estrutural / UX** — sem alteração de doses, fórmulas, limites clínicos, alertas ou recomendações médicas. Apenas reorganização visual e separação operacional.
+
+### Módulo 7 — Distúrbios hidroeletrolíticos
+
+- Cada seção de distúrbio (sódio, potássio, fósforo, magnésio, cálcio) virou **menu recolhível** (`<details class="section-collapse">`). O título da seção é o gatilho.
+- Dentro de cada seção, o conteúdo foi reorganizado por direção do distúrbio:
+  - **Hipo*** — recolhido por padrão, em `<details class="hh-detail hh-hipo">` (chip azul).
+  - **Hiper*** — recolhido por padrão, em `<details class="hh-detail hh-hiper">` (chip vermelho).
+- Cada Hipo/Hiper agora contém suas próprias subseções (valores, etiologias clínicas, etiologias medicamentosas, indicação, consequências, regras de reposição) — antes estavam organizadas por tópico cobrindo ambas as direções.
+- Magnésio mantém apenas Hipomagnesemia (não havia conteúdo de hipermagnesemia no original).
+- Cálcio mantém uma tabela global de referência antes dos sub-details.
+- Texto, doses, alvos, tabelas e alertas: **preservados verbatim** do conteúdo anterior.
+- §7 (Calculadora operacional) atualizada para apontar à nova **seção dedicada de eletrólitos** no Módulo 6.
+
+### Módulo 6 — Calculadora interativa: separação da reposição de eletrólitos
+
+- Categoria `eletrolito_reposicao` removida do dropdown da Calculadora de bólus/intermitente (§3) para evitar mistura com vasoativos/sedativos/etc.
+- Nova **§4 "Reposição de eletrólitos"** com UI dedicada (IDs prefixados `elet*`): mesma estrutura de cards (Solução preparada, Posologia e farmacodinâmica, Cuidados e segurança) com headline próprio.
+- Funções JS paralelas: `initElet`, `updateEletDefaults`, `currentElet`, `calcElet`, `addEletToSummary`, `getEletManualSolutionConc`, `updateEletManualConcPreview` — todas reutilizam `dvaBolusDrugs.eletrolito_reposicao` como fonte de verdade (sem duplicar dados clínicos).
+- `unitLabel` estendido para reconhecer `mEqml` → "mEq/mL" e `mmolml` → "mmol/mL" (necessário para reposição de KCl e fosfato de potássio).
+- Calculadoras renumeradas: §5 = Infusão contínua (antes §4); §6 = Cenário-resumo (antes §5).
+- Cenário-resumo aceita itens do tipo `Reposição de eletrólito` (compatível com pipeline existente do `state.summary`).
+
+### Arquivos modificados
+
+- `src/data/modules/modulo_07_disturbios_hidroeletroliticos.html` (reescrito)
+- `src/data/modules/modulo_06_calculadoras_interativas.html` (nav, nova seção, JS elet*, unitLabel)
+- `scripts/verify-module-hashes.mjs` (hashes atualizados para os dois)
+
+### Hashes novos
+
+- Mod 6: `6732e75ad2bd6234a7e8668ea8dc69a71a1ef7b2cd7eedbe4483be45ab9e9824`
+- Mod 7: `2e0eee66fd104132dd31cab12147ebde66d10a585f680257510f1c4de59c6237` (inclui remoção da caixa "Não automatizadas nesta versão" em §7 — não citar o que ainda não está disponível)
+
+---
+
 ## 2026-05-22 — Calculadora de eletrólitos no Mod 6 + remover disclaimer do Mod 7 §7 (REQUER REVISAO MEDICA)
 
 ### Tipo de alteração

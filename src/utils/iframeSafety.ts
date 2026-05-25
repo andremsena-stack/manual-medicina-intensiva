@@ -19,11 +19,16 @@ export interface PagerConfig {
 
 export interface CollapseConfig {
   /** IDs de section que iniciam ABERTAS. Quando definido, as demais iniciam fechadas.
+   *  Em accordionMode, esses IDs ficam SEMPRE abertos e SEM toggle (sempre visiveis).
    *  Se omitido ou vazio, todas iniciam abertas (usuario ainda pode recolher). */
   keepExpandedIds?: string[];
-  /** Se true, pula sections que ja contem <details> (ex: Modulo 7) para evitar
-   *  toggles redundantes/aninhados. */
+  /** Se true, pula sections que ja contem <details> nativos para evitar toggles
+   *  redundantes/aninhados (ex: Modulo de Disturbios). */
   skipSectionsWithDetails?: boolean;
+  /** Se true, abrir uma section recolhe automaticamente as demais (comportamento
+   *  acordeao). Sections em keepExpandedIds ficam imutaveis (sempre abertas, sem
+   *  participar do acordeao). */
+  accordionMode?: boolean;
 }
 
 export interface SafetyLayerOptions {
@@ -326,7 +331,12 @@ function injectCollapseStyles(doc: Document): void {
   doc.head.appendChild(style);
 }
 
-function makeSectionCollapsible(doc: Document, section: HTMLElement, startOpen: boolean): void {
+function makeSectionCollapsible(
+  doc: Document,
+  section: HTMLElement,
+  startOpen: boolean,
+  closeOthers?: (current: HTMLElement) => void
+): void {
   const h2 = section.querySelector(":scope > h2");
   if (!h2 || h2.classList.contains(COLLAPSE_TOGGLE_CLASS)) return;
 
@@ -367,8 +377,17 @@ function makeSectionCollapsible(doc: Document, section: HTMLElement, startOpen: 
   }
 
   const toggle = () => {
+    const wasCollapsed = section.classList.contains(COLLAPSE_COLLAPSED_CLASS);
+    // Quando esta abrindo (estava colapsada), fechar as demais primeiro (acordeao).
+    if (wasCollapsed && closeOthers) {
+      closeOthers(section);
+    }
     const isCollapsed = section.classList.toggle(COLLAPSE_COLLAPSED_CLASS);
     h2.setAttribute("aria-expanded", String(!isCollapsed));
+    if (!isCollapsed) {
+      // Acabou de abrir — garantir que rola para a section aberta (UX no acordeao).
+      section.scrollIntoView({ block: "start", behavior: "smooth" });
+    }
   };
 
   h2.addEventListener("click", toggle);
@@ -390,13 +409,41 @@ function injectSectionCollapse(doc: Document, cfg: CollapseConfig): void {
 
   const keepOpen = new Set(cfg.keepExpandedIds ?? []);
   const hasExpandedFilter = keepOpen.size > 0;
+  const accordionMode = cfg.accordionMode === true;
 
+  // Em accordionMode, sections em keepExpandedIds NAO viram colapsiveis (sempre visiveis).
+  // Nos outros modos, elas continuam sendo colapsiveis mas iniciam abertas.
+  const collapsibleSections: HTMLElement[] = [];
   for (const section of sections) {
     if (cfg.skipSectionsWithDetails && section.querySelector(":scope > details")) {
       continue;
     }
-    const startOpen = hasExpandedFilter ? keepOpen.has(section.id) : true;
-    makeSectionCollapsible(doc, section, startOpen);
+    if (accordionMode && keepOpen.has(section.id)) {
+      continue;
+    }
+    collapsibleSections.push(section);
+  }
+
+  const closeOthers = accordionMode
+    ? (currentSection: HTMLElement) => {
+        for (const other of collapsibleSections) {
+          if (other === currentSection) continue;
+          if (other.classList.contains(COLLAPSE_COLLAPSED_CLASS)) continue;
+          other.classList.add(COLLAPSE_COLLAPSED_CLASS);
+          const otherH2 = other.querySelector(":scope > h2");
+          if (otherH2) otherH2.setAttribute("aria-expanded", "false");
+        }
+      }
+    : undefined;
+
+  for (const section of collapsibleSections) {
+    // accordionMode: todas iniciam fechadas. Senao: somente as fora de keepExpandedIds iniciam fechadas.
+    const startOpen = accordionMode
+      ? false
+      : hasExpandedFilter
+        ? keepOpen.has(section.id)
+        : true;
+    makeSectionCollapsible(doc, section, startOpen, closeOthers);
   }
 }
 

@@ -21,7 +21,7 @@ export const calculatorAuditResults: CalculatorAuditResult[] = [
     calculator: "PBW",
     finding: "O modulo de calculadoras ja contem tip educacional de PBW nos HTMLs preservados.",
     risk: "Baixo: nenhuma formula foi alterada.",
-    file: "src/data/modules/modulo_06_calculadoras_interativas.html",
+    file: "src/data/modules/modulo_07_calculadoras_interativas.html",
     proposedAction: "Manter tip didatica e cobrir formulas nos testes minimos.",
     requiresMedicalReview: false
   }

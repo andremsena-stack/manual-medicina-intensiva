@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manual Interativo de Medicina Intensiva — Módulo 6: Calculadoras Interativas</title>
+  <title>Manual Interativo de Medicina Intensiva — Módulo 7: Calculadoras Interativas</title>
   <style>
     :root{
       --bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;
@@ -64,6 +64,28 @@
     .calc-panel textarea{min-height:72px}
     .calc-result{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px;margin-top:10px}
     .calc-result strong{font-size:17px;color:#fff;display:block;line-height:1.25}
+    /* Resetar strong/b dentro dos containers de conteúdo (.med-kv, summary-table,
+       prep-line-summary) — a regra acima foi pensada só para headlines em fundo
+       escuro. Em conteúdo de cards/tabelas, strong precisa herdar cor + ser inline. */
+    .calc-result .med-card .med-kv strong,
+    .calc-result .med-card .med-kv b,
+    .calc-result .summary-table strong,
+    .calc-result .summary-table b,
+    .calc-result .prep-line-summary strong,
+    .calc-result .prep-line-summary b{color:inherit;display:inline;font-size:inherit;font-weight:700;line-height:inherit}
+    .calc-result .med-card .med-kv b{color:#123c69}
+    /* Aviso de variação desaconselhada (delta-T fora da faixa segura) */
+    .elet-warning{background:#fee4e2;border:1px solid #fda4af;color:#7f1d1d;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12px;line-height:1.4}
+    /* Select de Via no §4 — fonte reduzida para caber labels descritivos.
+       Texto truncado mostra full text via title attribute no hover. */
+    #eletVia{font-size:12px;text-overflow:ellipsis}
+    #eletVia option{font-size:12px}
+    /* §1 Paciente — cards de resultado em fonte pequena (alinha com labels).
+       Sobrescreve .result-lines{font-size:12px} do CSS base. */
+    #patientOut .result-lines, #pbwTip .result-lines{font-size:11px !important;line-height:1.4 !important;margin-top:4px !important}
+    #patientOut .result-lines div, #pbwTip .result-lines div{margin:2px 0 !important}
+    #pbwTip .result-lines{font-size:10px !important}
+    .elet-input-warn{background:#fee4e2 !important;border-color:#dc2626 !important;color:#7f1d1d !important}
     .calc-result span{font-size:12px;line-height:1.35}
     .result-lines{font-size:12px;line-height:1.35;margin-top:6px}
     .result-lines div{margin:3px 0}
@@ -72,6 +94,10 @@
     .med-result__headline{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:10px 12px}
     .med-result__headline strong{color:#fff;display:block;font-size:17px;line-height:1.25}
     .med-result__headline span{color:#dbeafe;display:block;font-size:12px;line-height:1.35;margin-top:3px}
+    /* Strong DENTRO do span (frase operacional) precisa de override: o CSS acima
+       força block-level + 17px em qualquer strong, mas dentro da frase resumo
+       os strongs são destaques inline. */
+    .med-result__headline span strong{color:#fff;display:inline;font-size:inherit;font-weight:700;line-height:inherit}
     .med-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
     .med-card{background:#fff;border:1px solid #d8e0ea;border-left:5px solid #94a3b8;border-radius:12px;color:#172033;padding:10px}
     .med-card__title{color:#123c69;font-size:11px;font-weight:800;letter-spacing:.02em;margin-bottom:6px;text-transform:uppercase}
@@ -226,7 +252,7 @@
       <div class="brand__row">
         <div class="brand__content">
       <h1>Manual Interativo de Medicina Intensiva</h1>
-      <p>Módulo 6 — Calculadoras interativas</p>
+      <p>Módulo 7 — Calculadoras interativas</p>
       <div class="small" style="color:rgba(255,255,255,.65);margin-top:12px">IOT, sedoanalgesia, bloqueadores e drogas vasoativas.</div>
         </div>
         <button class="nav-toggle" id="moduleNavToggle" type="button" aria-controls="moduleNav" aria-expanded="true">Minimizar</button>
@@ -237,8 +263,9 @@
         <li><a href="#paciente" data-short="1"><span class="nav-label">1. Dados do paciente</span></a></li>
         <li><a href="#iot" data-short="2"><span class="nav-label">2. Calculadora para Intubação</span></a></li>
         <li><a href="#dva" data-short="3"><span class="nav-label">3. Calculadora de bólus / intermitente</span></a></li>
-        <li><a href="#continua" data-short="4"><span class="nav-label">4. Drogas em infusão contínua</span></a></li>
-        <li><a href="#resumo" data-short="5"><span class="nav-label">5. Cenário-resumo</span></a></li>
+        <li><a href="#eletrolitos" data-short="4"><span class="nav-label">4. Reposição de eletrólitos</span></a></li>
+        <li><a href="#continua" data-short="5"><span class="nav-label">5. Drogas em infusão contínua</span></a></li>
+        <li><a href="#resumo" data-short="6"><span class="nav-label">6. Cenário-resumo</span></a></li>
         <li><a href="#leituras" data-short="Ler"><span class="nav-label">Sugestão de leitura</span></a></li>
       </ul>
     </nav>
@@ -246,20 +273,20 @@
 
   <main>
     <div class="hero">
-      <h2>Módulo 6 — Calculadoras interativas</h2>
-      <p>Ferramentas práticas para cálculo de bólus em intubação orotraqueal, drogas vasoativas e infusões contínuas. O objetivo é padronizar unidades, reduzir erro de conversão e fornecer um cenário-resumo com dose, concentração e vazão.</p>
+      <h2>Módulo 7 — Calculadoras interativas</h2>
+      <p>Ferramentas práticas para preparo e cálculo operacional em cuidados intensivos: bólus para intubação orotraqueal; bólus / push-dose / dose intermitente em emergência; reposição de eletrólitos e medicações em infusão contínua.</p>
     </div>
 
     <section id="paciente">
       <h2>1. Dados globais do paciente</h2>
-      <p>Os dados abaixo alimentam todas as calculadoras do módulo.</p>
-      <div class="calc-panel">
-        <h3>Paciente</h3>
-        <div class="calc-grid">
-          <div><label for="peso">Peso real (kg)</label><input id="peso" type="number" value="70" min="20" max="250"></div>
-          <div><label for="altura">Altura (cm)</label><input id="altura" type="number" value="170" min="120" max="230"></div>
-          <div><label for="sexo">Sexo para PBW</label><select id="sexo"><option value="masculino">Masculino</option><option value="feminino">Feminino</option></select></div>
-          <div><label for="cenario">Cenário clínico</label><select id="cenario">
+      <p style="margin:0 0 8px 0;font-size:13px;color:#5f6b7a">Os dados abaixo alimentam todas as calculadoras do módulo.</p>
+      <div class="calc-panel" style="padding:10px 14px;margin:8px 0">
+        <h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin:0 0 8px 0;color:#cbd5e1;font-weight:700">Paciente</h3>
+        <div class="calc-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px">
+          <div><label for="peso" style="font-size:11px;margin-bottom:3px">Peso real (kg)</label><input id="peso" type="number" value="70" min="20" max="250" style="padding:5px 8px;font-size:13px"></div>
+          <div><label for="altura" style="font-size:11px;margin-bottom:3px">Altura (cm)</label><input id="altura" type="number" value="170" min="120" max="230" style="padding:5px 8px;font-size:13px"></div>
+          <div><label for="sexo" style="font-size:11px;margin-bottom:3px">Sexo para PBW</label><select id="sexo" style="padding:5px 8px;font-size:13px"><option value="masculino">Masculino</option><option value="feminino">Feminino</option></select></div>
+          <div><label for="cenario" style="font-size:11px;margin-bottom:3px">Cenário clínico</label><select id="cenario" style="padding:5px 8px;font-size:13px">
             <option value="geral">Geral / sem cenário específico</option>
             <option value="sepse">Sepse / choque séptico</option>
             <option value="cardiogenico">Choque cardiogênico</option>
@@ -271,8 +298,8 @@
             <option value="broncoespasmo">Broncoespasmo grave — ASMA/DPOC</option>
           </select></div>
         </div>
-        <div class="calc-result" id="patientOut"><strong>Paciente: —</strong><span>—</span></div>
-        <div class="calc-result" id="pbwTip"><strong>Tip de aprendizado — PBW</strong><span>—</span></div>
+        <div class="calc-result" id="patientOut" style="padding:6px 9px;margin-top:6px;font-size:11px;line-height:1.4"><strong style="font-size:11px;line-height:1.3;text-transform:uppercase;letter-spacing:.03em">Paciente: —</strong><span style="font-size:11px">—</span></div>
+        <div class="calc-result" id="pbwTip" style="padding:6px 9px;margin-top:4px;font-size:10px;line-height:1.4;background:rgba(255,255,255,0.06)"><strong style="font-size:10px;line-height:1.3;text-transform:uppercase;letter-spacing:.03em">Tip de aprendizado — PBW</strong><span style="font-size:10px">—</span></div>
       </div>
     </section>
 
@@ -337,7 +364,7 @@
 
     <section id="dva">
       <h2>3. Calculadora de bólus / dose intermitente</h2>
-      <p>Drogas administradas em bólus único (push-dose) ou em infusão intermitente programada por tempo. Para drogas vasoativas em infusão contínua titulada (noradrenalina, adrenalina, dobutamina, etc.), use a calculadora <a href="#continua">Drogas em infusão contínua</a> com a categoria <strong>Droga vasoativa</strong>.</p>
+      <p>Drogas administradas em bólus único (push-dose) ou em infusão intermitente programada por tempo. Para drogas vasoativas em infusão contínua titulada (noradrenalina, adrenalina, dobutamina, etc.), use a calculadora <a href="#continua">Drogas em infusão contínua</a> com a categoria <strong>Droga vasoativa</strong>. Para reposição IV de eletrólitos (KCl, MgSO₄, gluconato/cloreto de cálcio, fosfato de potássio), use a seção dedicada <a href="#eletrolitos">Reposição de eletrólitos</a>.</p>
 
       <div class="calc-panel">
         <h3>Bólus / push-dose / intermitente</h3>
@@ -381,8 +408,125 @@
       </div>
     </section>
 
+    <section id="eletrolitos">
+      <h2>4. Reposição de eletrólitos</h2>
+      <p>Calculadora dedicada à reposição IV de distúrbios hidroeletrolíticos: KCl, sulfato de magnésio, gluconato/cloreto de cálcio e fosfato de potássio. Mantida em painel separado da calculadora de bólus para evitar mistura de cenários hemodinâmicos com reposição metabólica. Para os critérios clínicos (faixas, indicação, regras de delta/concentração/via), ver o Módulo 6 — Distúrbios hidroeletrolíticos.</p>
+
+      <div class="calc-panel" style="background:#eef3f8;color:#172033;padding:8px 12px;margin-bottom:10px;border-radius:10px" title="Sincronização bidirecional com §1 Dados globais do paciente">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+          <strong style="color:#123c69;font-size:11px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0">Paciente</strong>
+          <label for="eletPeso" style="display:flex;align-items:center;gap:6px;color:#172033;font-size:12px;margin:0;font-weight:500">Peso (kg)
+            <input id="eletPeso" type="number" min="20" max="250" style="color:#111827;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:4px 8px;width:72px;font-size:13px">
+          </label>
+          <label for="eletSexo" style="display:flex;align-items:center;gap:6px;color:#172033;font-size:12px;margin:0;font-weight:500">Sexo
+            <select id="eletSexo" style="color:#111827;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:4px 8px;font-size:13px">
+              <option value="masculino">Masculino</option>
+              <option value="feminino">Feminino</option>
+            </select>
+          </label>
+          <span style="color:#5f6b7a;font-size:11px;line-height:1.3;margin-left:auto;flex:1;text-align:right">↕ sincroniza com §1 Dados globais do paciente</span>
+        </div>
+      </div>
+
+      <div class="calc-panel">
+        <h3>Reposição IV de eletrólitos — preparo e vazão</h3>
+        <div class="calc-grid">
+          <div><label for="eletDrug">Eletrólito / apresentação</label><select id="eletDrug"></select></div>
+          <div><label for="eletAmpPresentation">Apresentação comercial disponível</label><select id="eletAmpPresentation"></select></div>
+        </div>
+        <details class="refs-collapsible compact-details" id="eletDeltaPanel" open style="margin-top:12px;display:none">
+          <summary>Reposição planejada por Δ (atual → alvo)</summary>
+          <div class="detail-body">
+            <div class="calc-grid">
+              <div><label for="eletAtual">Valor atual <span id="eletAtualUnit" class="unit-inline"></span></label><input id="eletAtual" type="number" step="0.01" placeholder="ex.: 3,0"></div>
+              <div><label for="eletAlvo">Valor alvo <span id="eletAlvoUnit" class="unit-inline"></span></label><input id="eletAlvo" type="number" step="0.01" placeholder="ex.: 4,0"></div>
+              <div><label for="eletTimePreset">Tempo de reposição planejado</label><select id="eletTimePreset"></select></div>
+              <div><label>Δ calculado</label><input id="eletDeltaCalc" type="text" value="—" readonly></div>
+            </div>
+            <!-- Descrição explicando que Δ é no exame do paciente, não na solução. -->
+            <div id="eletDeltaSemantic" class="compact-note" style="margin-top:8px;padding:8px 10px;background:#eef3f8;border-left:4px solid #123c69;border-radius:6px;display:none;font-size:12px;line-height:1.45;color:#0d2438"></div>
+            <!-- Estimativa de déficit corporal (range), específica do eletrólito. -->
+            <div id="eletBodyDeficit" class="compact-note" style="margin-top:8px;padding:8px 10px;background:#ecfdf3;border-left:4px solid #067647;border-radius:6px;display:none;font-size:12px;line-height:1.45;color:#053f1f"></div>
+            <!-- Citação da fórmula utilizada. -->
+            <div id="eletFormulaCitation" class="compact-note" style="margin-top:8px;padding:8px 10px;background:#fff;border:1px solid #d8e0ea;border-radius:6px;display:none;font-size:11px;line-height:1.45;color:#475569"></div>
+            <!-- Alerta clínico (varia por droga). -->
+            <div id="eletFormulaAlert" class="compact-note" style="margin-top:8px;padding:8px 10px;background:#fffbeb;border-left:4px solid #b54708;border-radius:6px;display:none;font-size:12px;line-height:1.45;color:#5b2206"></div>
+            <div id="eletDeltaWarning" class="elet-warning" style="display:none"></div>
+            <div class="compact-note" style="margin-top:6px">Ao preencher atual, alvo e tempo, a Dose desejada deste ciclo é calculada automaticamente. Volume final auto-calculado respeitando a concentração máxima da Via escolhida.</div>
+          </div>
+        </details>
+        <div class="calc-grid" style="margin-top:12px">
+          <div id="eletViaWrap"><label for="eletVia">Via de administração</label><select id="eletVia"></select></div>
+        </div>
+        <div class="calc-grid" style="margin-top:12px">
+          <div><label for="eletPresentation">Solução final sugerida (preset)</label><select id="eletPresentation"></select></div>
+        </div>
+        <div class="calc-grid" style="margin-top:12px">
+          <div><label for="eletDose">Dose desejada <span id="eletDoseUnitLabel" class="unit-inline"></span></label><input id="eletDose" type="number" step="0.01"></div>
+          <div><label for="eletDoseUnitSelect">Unidade da dose</label><select id="eletDoseUnitSelect"></select></div>
+        </div>
+        <div class="compact-note" style="margin-top:6px">Apresentações comerciais e preparos padronizados no Brasil. A solução final sugerida respeita a concentração máxima da via selecionada. Para reconstituição/diluição customizada, use o painel de Preparo manual abaixo.</div>
+        <!-- Tempo de administração: removido da UI pois é definido pelo preset da droga
+             ou pelo Δ-panel (Reposição planejada). Mantido como input hidden para o JS. -->
+        <input id="eletTimeMin" type="hidden" value="60">
+        <!-- Volume final da solução: removido da UI por design. O valor é derivado de
+             UMA de duas fontes (sem conflito):
+              (1) Δ-panel (auto-calc baseado em conc máx por via), OU
+              (2) Preparo manual da solução (sobrescreve quando preenchido).
+             Mantido como input hidden para retrocompat de currentElet. -->
+        <input id="eletFinalVolume" type="hidden" value="">
+        <div id="eletFinalVolumeWrap" style="display:none"></div>
+        <div class="compact-note" style="margin-top:8px; padding:10px 12px; border-left:4px solid #b54708; background:#fffbeb; border-radius:8px; color:#3b2206;">
+          <strong>Administração intermitente:</strong> a reposição IV de eletrólitos é prescrita como dose total entregue em um tempo definido — NÃO como infusão contínua. O sistema calcula a vazão (mL/h) necessária para entregar o volume final no tempo escolhido. Confirme limites de concentração e via (periférica vs. central) descritos no Módulo 6.
+        </div>
+        <details class="refs-collapsible compact-details" id="eletManualPrepPanel" style="margin-top:10px">
+          <summary>Preparo manual da solução (sobrescreve o preset)</summary>
+          <div class="detail-body">
+            <div class="calc-grid">
+              <div><label for="eletManMass">Massa/quantidade do eletrólito na solução</label><input id="eletManMass" type="number" step="0.001" placeholder="ex.: 20"></div>
+              <div><label for="eletManMassUnit">Unidade</label><select id="eletManMassUnit"><option value="mcg">mcg</option><option value="mg">mg</option><option value="g" selected>g</option><option value="mEq">mEq</option><option value="mmol">mmol</option><option value="UI">UI</option></select></div>
+              <div><label for="eletManDiluent">Diluente</label><select id="eletManDiluent"></select></div>
+              <div><label for="eletManVolume">Volume final da solução (mL)</label><input id="eletManVolume" type="number" step="1" min="1" placeholder="ex.: 200"></div>
+              <div><label>Concentração calculada</label><input id="eletManConcPreview" type="text" value="—" readonly></div>
+            </div>
+            <div class="compact-note">Quando massa e volume estiverem preenchidos, este preparo manual tem precedência sobre o preset selecionado acima. O diluente pré-selecionado segue o preferencial da droga; outras opções aparecem apenas quando seguras.</div>
+          </div>
+        </details>
+        <!-- Preparo manual ESPECÍFICO para NaCl 3% — montagem a partir de NaCl concentrado
+             (20%, 10%, 17,7%) + frasco de SF 0,9%. Visível apenas para a droga nacl3_hiponatremia. -->
+        <details class="refs-collapsible compact-details" id="eletNaClPrepPanel" open style="margin-top:10px; display:none">
+          <summary>Preparo manual de NaCl 3% (NaCl concentrado + SF 0,9%)</summary>
+          <div class="detail-body">
+            <div class="calc-grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+              <div>
+                <label for="eletNaClConcentrate">Apresentação de NaCl concentrado</label>
+                <select id="eletNaClConcentrate"></select>
+              </div>
+              <div>
+                <label for="eletNaClFinalVol">Volume final (= frasco de SF 0,9%)</label>
+                <select id="eletNaClFinalVol">
+                  <option value="100">100 mL</option>
+                  <option value="250">250 mL</option>
+                  <option value="500" selected>500 mL</option>
+                  <option value="1000">1000 mL</option>
+                </select>
+              </div>
+            </div>
+            <div id="eletNaClRecipe" class="compact-note" style="margin-top:10px; padding:10px 12px; background:#fff; border:1px solid #d8e0ea; border-radius:8px; color:#172033; line-height:1.55">—</div>
+            <div class="compact-note" style="color:#f1f5f9; margin-top:8px; padding:8px 10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); border-radius:6px; font-size:12px; line-height:1.45">Selecione a apresentação concentrada disponível no serviço (<strong>NaCl 20%</strong> é a mais comum no Brasil) e o volume do frasco de SF 0,9% que servirá de base. A receita considera a contribuição de Na do próprio SF 0,9% (9 g/L) na conta.</div>
+          </div>
+        </details>
+        <div class="btnrow">
+          <button class="action" onclick="calcElet()">Calcular reposição</button>
+          <button class="action" onclick="addEletToSummary()">Adicionar ao cenário-resumo</button>
+          <span class="summary-counter" aria-live="polite">Itens adicionados: 0</span>
+        </div>
+        <div class="calc-result" id="eletOut"><strong>Resultado: —</strong><span>—</span></div>
+      </div>
+    </section>
+
     <section id="continua">
-      <h2>4. Drogas em infusão contínua - preparo e administração.</h2>
+      <h2>5. Drogas em infusão contínua - preparo e administração.</h2>
       <div class="calc-panel">
         <h3>Infusão contínua</h3>
         <input id="infAutoMode" type="hidden" value="">
@@ -433,7 +577,7 @@
     </section>
 
     <section id="resumo">
-      <h2>5. Cenário-resumo</h2>
+      <h2>6. Cenário-resumo</h2>
       <p>O resumo organiza as drogas calculadas no atendimento, com dose, volume/vazão e solução preparada.</p>
       <div class="calc-panel">
         <h3>Resumo operacional</h3>
@@ -913,17 +1057,62 @@ const dvaBolusDrugs = {
         defaultFinalVolume:200,
         preferredDiluent:"SF 0,9%",
         allowedDiluents:["SF 0,9%","SG 5%"],
-        range:"Periférica: ≤ 10 mEq/h e ≤ 40 mEq/L de concentração. Central: até 20–40 mEq/h e 60–100 mEq/L, sempre com ECG contínuo. Apresentação BR: KCl 19,1% — ampola 10 mL = 1,91 g = 25,6 mEq.",
+        range:"<strong>Periférica:</strong> ≤ 10 mEq/h e ≤ 40 mEq/L de concentração.<br><br><strong>Central:</strong> até 20–40 mEq/h e 60–100 mEq/L, sempre com ECG contínuo.",
+        viaOptions:[
+          {value:"periferica", label:"Periférica", maxConcLabel:"máx 40 mEq/L"},
+          {value:"central", label:"Central", maxConcLabel:"máx 100 mEq/L s/ECG · 400 c/ECG"}
+        ],
+        deltaModel:{
+          inputUnit:"mEq/L",
+          normalLow:3.5,
+          normalHigh:5.0,
+          deltaSemantic:"O Δ aqui representa o <strong>aumento desejado no exame de K sérico do paciente</strong> (mEq por litro de plasma/sangue) — <strong>NÃO</strong> a quantidade de K que será adicionada à solução IV.",
+          formulaCitation: function(ctx){
+            const { atual, delta } = ctx || {};
+            const generic = `<strong>Fonte:</strong> Medicina Intensiva USP — não há correlação definitiva entre K plasmático e déficit corporal, mas a queda de K de 4 → 3 mEq/L costuma representar déficit corporal de <strong>200–300 mEq</strong>. Estimativa didática: <em>Déficit K ≈ (K alvo − K atual) × 200 a 300 mEq</em>.`;
+            if(!Number.isFinite(atual) || !Number.isFinite(delta) || delta <= 0) return generic;
+            const alvo = atual + delta;
+            const dmin = Math.round(delta * 200);
+            const dmax = Math.round(delta * 300);
+            return `${generic}<br><strong>Substituindo valores:</strong> Δ = K alvo − K atual = ${fmt(alvo,2)} − ${fmt(atual,2)} = <strong>${fmt(delta,2)} mEq/L</strong>. Déficit corporal estimado = ${fmt(delta,2)} × 200 a 300 = <strong>${dmin}–${dmax} mEq</strong>.`;
+          },
+          formulaAlert:"<strong>Este valor é estimativa de estoque corporal, NÃO prescrição imediata.</strong> Repor em etapas, reavaliando K sérico, ECG, função renal, diurese e magnésio antes de cada ciclo.",
+          // Estimativa de déficit corporal total (Medicina Intensiva USP):
+          // Δ (mEq/L) × 200 a 300 mEq → retorna [min, max] em mEq.
+          computeBodyDeficit: function(delta){
+            const d = Math.max(0, delta);
+            return [Math.round(d * 200), Math.round(d * 300)];
+          },
+          // Dose do CICLO atual de reposição (não o déficit total). Estimativa
+          // pragmática: 0,3 × peso × Δ mEq por ciclo, dentro das taxas seguras
+          // por via. Permite ao prescritor refinar manualmente.
+          computeDose: function(delta, peso){
+            const v = 0.3 * peso * Math.max(0, delta);
+            return Math.round(v * 10) / 10;
+          },
+          maxRateByVia:{periferica:10, central:40},
+          maxConcByVia:{periferica:0.04, central:0.4},
+          timePresets:[
+            {value:240, label:"4 h — emergência (sintoma/arritmia)"},
+            {value:360, label:"6 h"},
+            {value:480, label:"8 h"},
+            {value:720, label:"12 h"},
+            {value:1440, label:"24 h — manutenção"}
+          ],
+          standardVolumes:[100, 250, 500, 1000]
+        },
         presentations:[
-          {label:"20 mEq em 200 mL — periférica (100 mEq/L)", conc:0.5, unit:"mEqml", prep:"KCl 20 mEq = ~7,8 mL de KCl 19,1% (1 ampola contém 25,6 mEq) + diluente q.s.p. 200 mL → 0,1 mEq/mL (100 mEq/L). NÃO ULTRAPASSAR 40 mEq/L em periférica — diluir mais se necessário."},
-          {label:"20 mEq em 500 mL — periférica diluída (40 mEq/L)", conc:0.04, unit:"mEqml", prep:"KCl 20 mEq = ~7,8 mL de KCl 19,1% + SF 0,9% q.s.p. 500 mL → 0,04 mEq/mL (40 mEq/L) — concentração máxima recomendada para via periférica."},
-          {label:"40 mEq em 100 mL — central com ECG (400 mEq/L)", conc:0.4, unit:"mEqml", prep:"KCl 40 mEq = ~15,6 mL de KCl 19,1% + SF 0,9% q.s.p. 100 mL → 0,4 mEq/mL. APENAS VIA CENTRAL com ECG contínuo e bomba de infusão. NÃO use concentração ≥ 60 mEq/L em periférica."}
+          {label:"500 mL — periférica diluída (40 mEq/L máx)", conc:0.04, unit:"mEqml", via:["periferica","central"], finalVolume:500, prep:"Solução final de 500 mL com concentração máx 40 mEq/L (≤ 20 mEq por bolsa de 500 mL). Volume de KCl 19,1% a aspirar = dose desejada (mEq) ÷ 2,56 mEq/mL. Concentração máxima recomendada para via periférica."},
+          {label:"200 mL — central sem ECG dedicado (100 mEq/L máx)", conc:0.1, unit:"mEqml", via:["central"], finalVolume:200, prep:"Solução final de 200 mL com concentração máx 100 mEq/L (≤ 20 mEq por bolsa de 200 mL). Aceito em via central sob bomba; NÃO usar em periférica (limite 40 mEq/L)."},
+          {label:"100 mL — central com ECG contínuo (400 mEq/L máx)", conc:0.4, unit:"mEqml", via:["central"], finalVolume:100, prep:"Solução final de 100 mL com concentração máx 400 mEq/L (≤ 40 mEq por bolsa de 100 mL). APENAS VIA CENTRAL com ECG contínuo e bomba de infusão."}
         ],
         commercialPresentations:[
-          {label:"KCl 19,1% — ampola 10 mL = 25,6 mEq", conc:25.6, unit:"mEqml", volume:10, content:25.6, contentUnit:"mEq"}
+          {label:"KCl 19,1% — ampola 10 mL = 25,6 mEq (2,56 mEq/mL)", conc:2.56, unit:"mEqml", volume:10, content:25.6, contentUnit:"mEq"},
+          {label:"KCl 10% — ampola 10 mL = 13,4 mEq (1,34 mEq/mL)", conc:1.34, unit:"mEqml", volume:10, content:13.4, contentUnit:"mEq"}
         ],
-        ampoule:"KCl 19,1% — ampola de 10 mL = 1,91 g = 25,6 mEq de potássio (concentração de íon K+ ≈ 2,56 mEq/mL).",
-        notes:"REGRA DE OURO: corrigir hipomagnesemia ANTES — sem Mg adequado, a reposição de K é refratária. Periférica: máx 10 mEq/h e 40 mEq/L. Central: até 20 mEq/h sem ECG dedicado e até 40 mEq/h em UTI com ECG contínuo. NUNCA push IV — risco de PCR. Monitorar K sérico a cada 2–4 h durante reposição IV; ECG contínuo. Suspender se K > 5,0 mEq/L."
+        ampoule:"KCl 19,1% — ampola de 10 mL = 1,91 g = 25,6 mEq de potássio (2,56 mEq/mL). KCl 10% — ampola de 10 mL = 1,0 g = 13,4 mEq de potássio (1,34 mEq/mL).",
+        successCriteria:"<strong>Alvo:</strong> K sérico ≥ 4,0 mEq/L (ou alvo individualizado por cardiopata/digital/QT longo — geralmente 4,5 mEq/L).<br><br><strong>Suspender se:</strong> K sérico > 5,0 mEq/L em qualquer reavaliação durante a reposição.<br><br><strong>Reavaliação:</strong> dosar K sérico a cada 2–4 h durante reposição IV; ECG contínuo em arritmia/risco de arritmia.<br><br><strong>Após atingir alvo:</strong> manter ingesta oral e tratar causa de base (perda renal, GI, hipomagnesemia, diurético).",
+        notes:"<strong>Regra de ouro:</strong> caso a reposição de K se mostre refratária, suspeitar de hipomagnesemia — corrigir Mg ANTES (sem Mg adequado a reposição de K é inefetiva).<br><br><strong>Periférica:</strong> máx 10 mEq/h e concentração de 40 mEq/L.<br><br><strong>Central:</strong> até 20 mEq/h sem ECG dedicado e até 40 mEq/h em UTI com ECG contínuo. Concentração 60–100 mEq/L (até 400 mEq/L em UTI com ECG dedicado).<br><br><strong>NUNCA push IV</strong> — risco de PCR.<br><br><strong>Monitorização:</strong> K sérico a cada 2–4 h durante reposição IV; ECG contínuo. Suspender se K > 5,0 mEq/L."
       },
       magnesio_hipomagnesemia:{
         name:"Sulfato de magnésio IV — reposição em hipomagnesemia",
@@ -935,17 +1124,22 @@ const dvaBolusDrugs = {
         defaultFinalVolume:100,
         preferredDiluent:"SF 0,9%",
         allowedDiluents:["SF 0,9%","SG 5%"],
-        range:"Sintomática grave (TdP/convulsão/espasmo coronariano): 2 g IV em 5–20 min (bólus rápido em TdP: 2 g em 2 min). Moderada/assintomática: 4 g em 4 h ou 1 g/h × 4 h. Manutenção (perda contínua, CRRT): 1–2 g/h conforme nível sérico-alvo 1,8–2,5 mg/dL.",
+        range:"<strong>Sintomática grave</strong> (TdP, convulsão, espasmo coronariano): 2 g IV em 5–20 min (bólus rápido em TdP: 2 g em 2 min).<br><br><strong>Moderada / assintomática:</strong> 4 g em 4 h (ou 1 g/h × 4 h).<br><br><strong>Manutenção</strong> (perda contínua, CRRT): 1–2 g/h conforme nível sérico-alvo 1,8–2,5 mg/dL.",
+        viaOptions:[
+          {value:"periferica", label:"Periférica", maxConcLabel:"máx 20 mg/mL"},
+          {value:"central", label:"Central", maxConcLabel:"concentrações maiores · manutenção contínua"}
+        ],
         presentations:[
-          {label:"2 g em 100 mL — MgSO₄ 50%", conc:20, unit:"mgml", prep:"Sulfato de magnésio 2 g = 4 mL da apresentação 50% (500 mg/mL) + diluente 96 mL = solução final 100 mL → concentração 20 mg/mL; infundir em 5–20 min conforme cenário."},
-          {label:"4 g em 250 mL — MgSO₄ 50% (manutenção 4 h)", conc:16, unit:"mgml", prep:"Sulfato de magnésio 4 g = 8 mL da apresentação 50% + diluente 242 mL = solução final 250 mL → 16 mg/mL; infundir em 4 h (1 g/h)."}
+          {label:"2 g em 100 mL — MgSO₄ 50% (4 mL — ⅖ ampola)", conc:20, unit:"mgml", via:["periferica","central"], finalVolume:100, prep:"Sulfato de magnésio 50% (500 mg/mL, ampola 10 mL = 5 g): aspirar 4 mL (= ⅖ ampola = 2 g) + diluente 96 mL → solução final 100 mL com 20 mg/mL; infundir em 5–20 min conforme cenário."},
+          {label:"4 g em 250 mL — MgSO₄ 50% (8 mL — ⅘ ampola; manutenção 4 h)", conc:16, unit:"mgml", via:["periferica","central"], finalVolume:250, prep:"Sulfato de magnésio 50%: aspirar 8 mL (= ⅘ ampola = 4 g) + diluente 242 mL → solução final 250 mL com 16 mg/mL; infundir em 4 h (1 g/h)."}
         ],
         commercialPresentations:[
           {label:"MgSO₄ 50% — 500 mg/mL", conc:500, unit:"mgml", volume:10, content:5000, contentUnit:"mg"},
           {label:"MgSO₄ 10% — 100 mg/mL", conc:100, unit:"mgml", volume:10, content:1000, contentUnit:"mg"}
         ],
         ampoule:"Sulfato de magnésio: 50% = 500 mg/mL (ampola 10 mL = 5 g); 10% = 100 mg/mL (ampola 10 mL = 1 g).",
-        notes:"Mg sérico reflete só 1% do estoque corporal — em paciente com hipoK/hipoCa refratárias, considerar reposição empírica mesmo com Mg sérico normal. Reduzir dose em 50% se ClCr < 30 mL/min. Monitorar reflexos patelares (sinal precoce de hipermagnesemia), PA, FR e função renal. Cessar se arreflexia ou Mg > 4 mg/dL (fora de indicação obstétrica)."
+        successCriteria:"<strong>Alvo:</strong> Mg sérico 1,8–2,5 mg/dL (0,75–1,0 mmol/L). Em arritmia ventricular (TdP, FV refratária), considerar manter Mg ≥ 2,0 mg/dL.<br><br><strong>Suspender se:</strong> arreflexia patelar, FR < 12, hipotensão sintomática ou Mg > 4 mg/dL (fora de indicação obstétrica).<br><br><strong>Reavaliação:</strong> reflexos patelares e PA antes de cada ciclo; Mg sérico após cada 4 g IV; função renal seriada se ClCr < 30.<br><br><strong>Após atingir alvo:</strong> investigar causa contínua (diurético, IBP, alcoolismo, malabsorção). Reposição oral se ingesta possível.",
+        notes:"<strong>Regra de ouro:</strong> Mg sérico reflete apenas 1% do estoque corporal — em pacientes com hipoK/hipoCa refratárias, considerar reposição empírica mesmo com Mg sérico normal.<br><br><strong>Periférica:</strong> concentração ≤ 20 mg/mL (≈ 1,6 mEq/mL).<br><br><strong>Central:</strong> concentrações maiores ou manutenção contínua (1–2 g/h).<br><br><strong>Insuficiência renal:</strong> reduzir dose em 50% se ClCr < 30 mL/min.<br><br><strong>Monitorização:</strong> reflexos patelares (sinal precoce de hipermagnesemia), PA, FR e função renal. Cessar se arreflexia ou Mg > 4 mg/dL (fora de indicação obstétrica)."
       },
       gluconato_calcio_hipocalcemia:{
         name:"Gluconato de cálcio 10% — reposição em hipocalcemia",
@@ -957,16 +1151,21 @@ const dvaBolusDrugs = {
         defaultFinalVolume:100,
         preferredDiluent:"SG 5%",
         allowedDiluents:["SG 5%","SF 0,9%"],
-        range:"Sintomática grave (tetania, convulsão, laringoespasmo): 1–2 g (10–20 mL gluconato 10%) diluídos em 50–100 mL SG 5% em 5–10 min sob ECG. Moderada/assintomática: 1–2 g em 1–2 h. Manutenção em UTI: 0,5–2 mg Ca elementar/kg/h em infusão contínua.",
+        range:"<strong>Sintomática grave</strong> (tetania, convulsão, laringoespasmo): 1–2 g (10–20 mL gluconato 10%) diluídos em 50–100 mL SG 5% em 5–10 min sob ECG.<br><br><strong>Moderada / assintomática:</strong> 1–2 g em 1–2 h.<br><br><strong>Manutenção em UTI:</strong> 0,5–2 mg Ca elementar/kg/h em infusão contínua.",
+        viaOptions:[
+          {value:"periferica", label:"Periférica", maxConcLabel:"preferida · menos vesicante que CaCl₂"},
+          {value:"central", label:"Central", maxConcLabel:"sem limite específico"}
+        ],
         presentations:[
-          {label:"1 g (10 mL) em 100 mL SG 5%", conc:9, unit:"mgml", prep:"Gluconato de cálcio 10% 10 mL (= 1 g de gluconato = 90 mg de Ca elementar = 2,2 mmol Ca) + SG 5% q.s.p. 100 mL → 0,9 mg de Ca elementar/mL. Administrar em 5–10 min sob ECG."},
-          {label:"2 g (20 mL) em 100 mL SG 5%", conc:18, unit:"mgml", prep:"Gluconato de cálcio 10% 20 mL (= 2 g = 180 mg Ca elementar) + SG 5% q.s.p. 100 mL → 1,8 mg Ca elementar/mL. Para refratários ou pancreatite/transfusão maciça com hipoCa documentada."}
+          {label:"1 g (10 mL — 1 ampola) em 100 mL SG 5%", conc:9, unit:"mgml", via:["periferica","central"], finalVolume:100, prep:"Gluconato de cálcio 10%: 10 mL (= 1 ampola = 1 g de gluconato = 90 mg de Ca elementar = 2,2 mmol Ca) + SG 5% q.s.p. 100 mL → 0,9 mg de Ca elementar/mL. Administrar em 5–10 min sob ECG."},
+          {label:"2 g (20 mL — 2 ampolas) em 100 mL SG 5%", conc:18, unit:"mgml", via:["periferica","central"], finalVolume:100, prep:"Gluconato de cálcio 10%: 20 mL (= 2 ampolas = 2 g = 180 mg Ca elementar) + SG 5% q.s.p. 100 mL → 1,8 mg Ca elementar/mL. Para refratários ou pancreatite/transfusão maciça com hipoCa documentada."}
         ],
         commercialPresentations:[
           {label:"Gluconato de cálcio 10% — ampola 10 mL = 1 g de gluconato (90 mg Ca elementar)", conc:100, unit:"mgml", volume:10, content:1000, contentUnit:"mg"}
         ],
         ampoule:"Gluconato de cálcio 10% — ampola 10 mL = 1 g de gluconato (concentração 100 mg/mL) = 90 mg de cálcio elementar = 2,2 mmol Ca.",
-        notes:"PREFERIR gluconato sobre cloreto em via periférica — gluconato é menos vesicante. Sempre dosar e CORRIGIR hipomagnesemia antes (sem Mg, reposição de Ca é refratária). Monitorar ECG durante infusão (risco de arritmia se infusão rápida). Cuidado em digitalizados — infusão rápida pode precipitar toxicidade digital. Equivalência: 1 g gluconato (10 mL) = 90 mg Ca elementar."
+        successCriteria:"<strong>Alvo:</strong> Ca ionizado 1,15–1,30 mmol/L (≈ Ca total corrigido 8,6–10,2 mg/dL). Resolução de tetania, laringoespasmo ou prolongamento de QT.<br><br><strong>Suspender se:</strong> bradicardia/BAV, hipercalcemia (Ca ionizado > 1,4 mmol/L) ou arritmia nova.<br><br><strong>Reavaliação:</strong> Ca ionizado e ECG após cada bólus; sintomas neuromusculares (Chvostek/Trousseau); Mg sérico em paralelo.<br><br><strong>Após atingir alvo:</strong> manter reposição oral (carbonato/citrato + vitamina D) se causa crônica; rever indicação em transfusão maciça/pancreatite após cada 4–6 unidades.",
+        notes:"<strong>Regra de ouro:</strong> caso a reposição de Ca se mostre refratária, suspeitar de hipomagnesemia — corrigir Mg ANTES (sem Mg adequado a reposição de Ca é refratária).<br><br><strong>Periférica:</strong> PREFERIR gluconato sobre cloreto — gluconato é menos vesicante (concentração usual 9–18 mg Ca elementar/mL).<br><br><strong>Central:</strong> concentrações maiores aceitas; preferida em manutenção contínua.<br><br><strong>Equivalência:</strong> 1 g gluconato (10 mL) = 90 mg Ca elementar = 2,2 mmol Ca.<br><br><strong>Cuidado em digitalizados:</strong> infusão rápida pode precipitar toxicidade digital.<br><br><strong>Monitorização:</strong> ECG contínuo durante infusão (risco de arritmia se infusão rápida)."
       },
       cloreto_calcio_hipocalcemia:{
         name:"Cloreto de cálcio 10% — reposição em hipocalcemia (via central)",
@@ -978,16 +1177,137 @@ const dvaBolusDrugs = {
         defaultFinalVolume:100,
         preferredDiluent:"SG 5%",
         allowedDiluents:["SG 5%","SF 0,9%"],
-        range:"Sintomática refratária ou parada cardiorrespiratória: 5–10 mL de CaCl₂ 10% (= 136–272 mg Ca elementar) em 50–100 mL SG 5% em 5–10 min sob ECG. APENAS VIA CENTRAL — extravasamento periférico causa necrose tecidual grave.",
+        range:"<strong>Sintomática refratária ou PCR:</strong> 5–10 mL de CaCl₂ 10% (= 136–272 mg Ca elementar) em 50–100 mL SG 5% em 5–10 min sob ECG.<br><br><strong>APENAS VIA CENTRAL</strong> — extravasamento periférico causa necrose tecidual grave.",
+        viaOptions:[
+          {value:"central", label:"Central obrigatória", maxConcLabel:"vesicante grave · proibido em periférica"}
+        ],
         presentations:[
-          {label:"0,5 g (5 mL) em 100 mL SG 5%", conc:5, unit:"mgml", prep:"Cloreto de cálcio 10% 5 mL (= 0,5 g = 136 mg Ca elementar = 3,4 mmol Ca) + SG 5% q.s.p. 100 mL → 1,36 mg Ca elementar/mL. APENAS VIA CENTRAL com ECG contínuo."},
-          {label:"1 g (10 mL) em 100 mL SG 5%", conc:10, unit:"mgml", prep:"Cloreto de cálcio 10% 10 mL (= 1 g = 272 mg Ca elementar) + SG 5% q.s.p. 100 mL → 2,72 mg Ca elementar/mL. Para refratários — APENAS VIA CENTRAL."}
+          {label:"0,5 g (5 mL — ½ ampola) em 100 mL SG 5%", conc:5, unit:"mgml", via:["central"], finalVolume:100, prep:"Cloreto de cálcio 10%: 5 mL (= ½ ampola = 0,5 g = 136 mg Ca elementar = 3,4 mmol Ca) + SG 5% q.s.p. 100 mL → 1,36 mg Ca elementar/mL. APENAS VIA CENTRAL com ECG contínuo."},
+          {label:"1 g (10 mL — 1 ampola) em 100 mL SG 5%", conc:10, unit:"mgml", via:["central"], finalVolume:100, prep:"Cloreto de cálcio 10%: 10 mL (= 1 ampola = 1 g = 272 mg Ca elementar) + SG 5% q.s.p. 100 mL → 2,72 mg Ca elementar/mL. Para refratários — APENAS VIA CENTRAL."}
         ],
         commercialPresentations:[
           {label:"Cloreto de cálcio 10% — ampola 10 mL = 1 g (272 mg Ca elementar)", conc:100, unit:"mgml", volume:10, content:1000, contentUnit:"mg"}
         ],
         ampoule:"Cloreto de cálcio 10% — ampola 10 mL = 1 g (concentração 100 mg/mL) = 272 mg de cálcio elementar = 6,8 mmol Ca. 3× MAIS cálcio elementar por mL que gluconato.",
-        notes:"VESICANTE — extravasamento periférico causa NECROSE GRAVE de pele e tecido subcutâneo. RESERVAR para via central garantida ou parada cardiorrespiratória (quando acesso periférico calibroso é aceitável). Em paciente com acesso periférico apenas, SEMPRE usar gluconato. ECG contínuo obrigatório. Cuidado em digitalizados. Equivalência: 10 mL CaCl₂ 10% = 272 mg Ca elementar (3× a dose de Ca elementar do gluconato)."
+        successCriteria:"<strong>Alvo:</strong> resolução do sintoma agudo (tetania, laringoespasmo, hipotensão refratária) e Ca ionizado ≥ 1,0 mmol/L. Em PCR/hipercalemia, sucesso ECG (estreitamento de QRS, retomada de ritmo).<br><br><strong>Suspender se:</strong> Ca ionizado > 1,4 mmol/L, bradicardia/BAV nova ou arritmia ventricular.<br><br><strong>Reavaliação:</strong> Ca ionizado pós-bólus; ECG contínuo; vigiar sítio venoso central para infiltração/necrose.<br><br><strong>Após atingir alvo:</strong> transicionar para gluconato de cálcio em manutenção (menos vesicante) e investigar causa.",
+        notes:"<strong>ATENÇÃO — VESICANTE:</strong> extravasamento periférico causa NECROSE GRAVE de pele e tecido subcutâneo.<br><br><strong>Central (obrigatório):</strong> RESERVAR para via central garantida ou PCR (quando acesso periférico calibroso é aceitável em emergência).<br><br><strong>Periférica:</strong> NÃO USAR. Em acesso periférico simples, SEMPRE preferir gluconato de cálcio.<br><br><strong>Equivalência:</strong> 10 mL CaCl₂ 10% = 272 mg Ca elementar (3× a dose de Ca elementar do gluconato).<br><br><strong>Cuidado em digitalizados:</strong> infusão rápida pode precipitar toxicidade digital.<br><br><strong>Monitorização:</strong> ECG contínuo obrigatório durante infusão."
+      },
+      nacl3_hiponatremia:{
+        name:"NaCl 3% — reposição em hiponatremia",
+        administrationType:"intermittent_infusion",
+        doseUnit:"mL",
+        defaultDose:500,
+        defaultTimeMin:1440,
+        timeMinRange:[10,2880],
+        defaultFinalVolume:500,
+        preferredDiluent:"SF 0,9%",
+        allowedDiluents:["SF 0,9%"],
+        range:"<strong>HipoNa aguda sintomática grave</strong> (convulsão, herniação): 100–150 mL IV em 10 min, repetir até 2× se sintoma persistir — alvo ↑ Na 4–6 mEq/L.<br><br><strong>Crônica:</strong> NaCl 3% 0,5–2 mL/kg/h em infusão titulada.<br><br><strong>Δ Na máximo seguro:</strong> ≤ 8 mEq/L em 24 h (≤ 6 mEq/L em alto risco. alcoolismo, hipoK, desnutrição, hepatopatia, Na atual < 105).",
+        viaOptions:[
+          {value:"central", label:"Central preferida", maxConcLabel:"ideal em infusão prolongada"},
+          {value:"periferica", label:"Periférica", maxConcLabel:"bólus curto ou acesso calibroso"}
+        ],
+        deltaModel:{
+          inputUnit:"mEq/L",
+          deltaSource:"preset",
+          formulaName:"adrogue",
+          deltaSemantic:"O Δ aqui representa o <strong>aumento esperado no exame de Na sérico do paciente</strong> (mEq por litro de plasma/sangue) — <strong>NÃO</strong> a quantidade de Na que será adicionada à solução. Valor vem do preset de tempo selecionado (limite seguro por janela).",
+          formulaCitation: function(ctx){
+            const { peso, sexo, atual, delta } = ctx || {};
+            const formulaBox = "font-family:'Courier New',monospace;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:6px;padding:12px;margin:8px 0;font-size:12px;line-height:1.7;text-align:center;color:#0f172a";
+            const frac = (num, den) => `<span style="display:inline-block;text-align:center;vertical-align:middle"><span style="display:block;border-bottom:1px solid #0f172a;padding:0 8px">${num}</span><span style="display:block;padding:0 8px">${den}</span></span>`;
+            const explanation = `
+              <p style="margin:0 0 8px 0"><strong>Sobre o cálculo:</strong> a fórmula de <strong>Adrogué-Madias</strong> (NEJM 2000;342:1581–9) estima a variação esperada do sódio sérico após a infusão de uma solução, e a partir dela é possível calcular <strong>quantos mL de NaCl 3% são necessários para elevar em X mEq/L o sódio sérico deste paciente</strong> (e, portanto, a massa de Na⁺ que será administrada em mg e em mEq).</p>`;
+            const formulaPart = `
+              <p style="margin:8px 0 4px 0"><strong>Fórmula de Adrogué — variação por 1 L de solução infundida:</strong></p>
+              <div style="${formulaBox}">
+                Δ [Na] sérico (mEq/L) = ${frac("[Na]<sub>solução</sub> + [K]<sub>solução</sub> − [Na]<sub>sérico atual</sub>", "TBW + 1")}
+              </div>
+              <p style="margin:8px 0 4px 0"><strong>Invertendo para o volume necessário de NaCl 3%</strong> ([Na] = 513 mEq/L, sem K):</p>
+              <div style="${formulaBox}">
+                Volume (L) = ${frac("Δ × (TBW + 1)", "513 − [Na] atual")}
+              </div>
+              <p style="margin:4px 0 0 0">onde <strong>TBW</strong> (água corporal total) = peso × <strong>0,6</strong> (homem) ou peso × <strong>0,5</strong> (mulher).</p>`;
+            const generic = explanation + formulaPart;
+            if(!Number.isFinite(peso) || !Number.isFinite(atual)) return generic;
+            const tbwFactor = (sexo === "feminino") ? 0.5 : 0.6;
+            const sexoLabel = sexo === "feminino" ? "mulher" : "homem";
+            const TBW = peso * tbwFactor;
+            const denom = 513 - atual;
+            if(denom <= 0) return generic;
+            const elevPorLitro = denom / (TBW + 1);
+            const applyBox = "background:#eef3f8;border-left:4px solid #123c69;border-radius:6px;padding:10px 12px;margin:10px 0 4px 0;font-size:12px;line-height:1.6;color:#0d2438";
+            // Déficit corporal de Na para o período (delta × TBW, em mEq) — só faz
+            // sentido quando há delta disponível (preset selecionado).
+            const deficitNote = (Number.isFinite(delta) && delta > 0)
+              ? ` <span style="color:#475569">(déficit de Na para o período = Δ ${fmt(delta,1)} × TBW ${fmt(TBW,1)} L = <strong style="color:#0d2438">${fmt(delta*TBW,0)} mEq</strong>)</span>`
+              : "";
+            let applied = `
+              <div style="${applyBox}">
+                <strong>Substituindo os valores deste paciente na fórmula:</strong><br>
+                • TBW = ${fmt(peso,0)} kg × ${String(tbwFactor).replace(".",",")} (${sexoLabel}) = <strong>${fmt(TBW,1)} L</strong><br>
+                • TBW + 1 = <strong>${fmt(TBW+1,1)} L</strong><br>
+                • 513 − [Na] atual = 513 − ${fmt(atual,0)} = <strong>${fmt(denom,0)} mEq/L</strong>${deficitNote}<br>
+                • <em>Em palavras:</em> cada 1 L de NaCl 3% eleva o Na sérico deste paciente em <strong>${fmt(elevPorLitro,2)} mEq/L</strong>.`;
+            if(Number.isFinite(delta) && delta > 0){
+              const vol = delta * (TBW + 1) / denom;
+              const volMl = vol * 1000;
+              const massaMg = volMl * 30;  // NaCl 3% = 30 mg/mL
+              const mEqNa = volMl * 0.513; // = volMl × 30 / 58,44, mas usamos 0,513 mEq/mL direto
+              applied += `<br>• <strong>Para elevar Δ ${fmt(delta,1)} mEq/L</strong>: Volume = ${fmt(delta,1)} × ${fmt(TBW+1,1)} / ${fmt(denom,0)} = <strong>${fmt(vol,3)} L ≈ ${fmt(volMl,0)} mL</strong> de NaCl 3%.<br>` +
+                `&nbsp;&nbsp;&nbsp;Massa de Na⁺ administrada: <strong>${fmt(massaMg/1000,2)} g</strong> ≈ <strong>${fmt(mEqNa,1)} mEq</strong>.`;
+            }
+            applied += `</div>`;
+            return generic + applied;
+          },
+          formulaAlert:"Cálculo é <strong>estimativa preditiva</strong> — a resposta clínica depende de balanço hídrico, perdas insensíveis, ADH e função renal. <strong>Dosar Na sérico a cada 2–4 h</strong> durante a reposição e titular vazão pelo Δ real observado, não pelo previsto.",
+          // Adrogué: ΔNa por L de infusato = (513 - Na_atual) / (TBW + 1)
+          // → Volume (L) = Δ × (TBW + 1) / (513 - Na_atual)
+          //   TBW = peso × 0,6 (homem) ou 0,5 (mulher)
+          // Retorno em mL.
+          computeDose: function(delta, peso, sexo, atual){
+            if(!Number.isFinite(atual) || atual >= 513 || atual <= 0) return NaN;
+            const tbwFactor = (sexo === "feminino") ? 0.5 : 0.6;
+            const TBW = peso * tbwFactor;
+            const volL = delta * (TBW + 1) / (513 - atual);
+            return Math.round(volL * 1000); // mL
+          },
+          // Limites pragmáticos de taxa (mL/h) — bólus curto usa muito mais; crônica é
+          // limitada pela velocidade de variação do Na (não por taxa de fluido fixa).
+          maxRateByVia:{periferica:9999, central:9999}, // sem teto fixo de mL/h; validação é via Δ
+          timePresets:[
+            // Bólus emergência — sintoma neurológico grave; alvo inicial fixo
+            {group:"Emergência", value:10, delta:5, label:"10 min — bólus emergência (sintoma grave / convulsão): ↑ 4–6 mEq/L"},
+            // Crônica geral — taxa máx 8 mEq/L em 24 h (= 0,333 mEq/L por hora)
+            // Janelas curtas são proporcionalizadas a partir dessa taxa.
+            {group:"Crônica geral (taxa máx 8 mEq/L em 24 h)", value:120,  delta:0.7, label:"2 h — janela curta: máx ↑ ~0,7 mEq/L"},
+            {group:"Crônica geral (taxa máx 8 mEq/L em 24 h)", value:240,  delta:1.3, label:"4 h — janela curta: máx ↑ ~1,3 mEq/L"},
+            {group:"Crônica geral (taxa máx 8 mEq/L em 24 h)", value:360,  delta:2,   label:"6 h — janela curta: máx ↑ 2 mEq/L"},
+            {group:"Crônica geral (taxa máx 8 mEq/L em 24 h)", value:720,  delta:4,   label:"12 h — meia janela: máx ↑ 4 mEq/L"},
+            {group:"Crônica geral (taxa máx 8 mEq/L em 24 h)", value:1440, delta:8,   label:"24 h — janela completa: máx ↑ 8 mEq/L"},
+            // Alto risco — taxa máx 6 mEq/L em 24 h (= 0,25 mEq/L por hora)
+            // Indicada em: alcoolismo, hipocalemia, desnutrição, hepatopatia, Na atual < 105.
+            {group:"Alto risco — alcoolismo, hipoK, desnutrição, hepatopatia, Na < 105 (taxa máx 6 mEq/L em 24 h)", value:120,  delta:0.5, label:"2 h — janela curta: máx ↑ ~0,5 mEq/L"},
+            {group:"Alto risco — alcoolismo, hipoK, desnutrição, hepatopatia, Na < 105 (taxa máx 6 mEq/L em 24 h)", value:240,  delta:1,   label:"4 h — janela curta: máx ↑ 1 mEq/L"},
+            {group:"Alto risco — alcoolismo, hipoK, desnutrição, hepatopatia, Na < 105 (taxa máx 6 mEq/L em 24 h)", value:360,  delta:1.5, label:"6 h — janela curta: máx ↑ 1,5 mEq/L"},
+            {group:"Alto risco — alcoolismo, hipoK, desnutrição, hepatopatia, Na < 105 (taxa máx 6 mEq/L em 24 h)", value:720,  delta:3,   label:"12 h — meia janela: máx ↑ 3 mEq/L"},
+            {group:"Alto risco — alcoolismo, hipoK, desnutrição, hepatopatia, Na < 105 (taxa máx 6 mEq/L em 24 h)", value:1440, delta:6,   label:"24 h — janela completa: máx ↑ 6 mEq/L"},
+            // Meta cumulativa em 48 h (Verbalis 2017 / SDM literature)
+            {group:"Cumulativa", value:2880, delta:18, label:"48 h — meta cumulativa: máx ↑ 18 mEq/L"}
+          ]
+        },
+        presentations:[
+          {label:"NaCl 3% pronto — bolsa 500 mL (513 mEq/L)", conc:0.513, unit:"mEqml", via:["periferica","central"], finalVolume:500, prep:"NaCl 3% pré-pronto em bolsa 500 mL (513 mEq/L = 0,513 mEq/mL). Conferir disponibilidade institucional."},
+          {label:"NaCl 3% pronto — bolsa 250 mL (513 mEq/L)", conc:0.513, unit:"mEqml", via:["periferica","central"], finalVolume:250, prep:"NaCl 3% pré-pronto em bolsa 250 mL (513 mEq/L). Conferir disponibilidade institucional."},
+          {label:"NaCl 3% preparo manual — NaCl 20% + SF 0,9%", conc:0.513, unit:"mEqml", via:["periferica","central"], finalVolume:500, prep:"NaCl 20% tem aproximadamente <strong>6,7× mais sódio</strong> que NaCl 3% (200 mg/mL vs 30 mg/mL), por isso é necessário diluir em SF 0,9% para chegar à concentração-alvo. A receita considera a contribuição de sódio do próprio SF 0,9% (9 g/L) — não é uma diluição puramente em água. Exemplo prático: para volume final de <strong>500 mL</strong> de NaCl 3%, diluir <strong>55 mL de NaCl 20%</strong> (≈ 5,5 ampolas de 10 mL = 2 g = 34,2 mEq Na⁺/ampola) em <strong>445 mL de SF 0,9%</strong>."}
+        ],
+        commercialPresentations:[
+          {label:"NaCl 3% pronto — bolsa 250/500/1000 mL · 30 mg NaCl/mL (3 g/100 mL = 513 mEq Na⁺/L)", conc:0.513, unit:"mEqml", volume:500, content:256.5, contentUnit:"mEq"},
+          {label:"NaCl 20% — ampola 10 mL · 200 mg NaCl/mL (20 g/100 mL); ampola = 2 g = 34,2 mEq Na⁺", conc:3.42, unit:"mEqml", volume:10, content:34.2, contentUnit:"mEq"}
+        ],
+        ampoule:"NaCl 3% pronto (bolsa hospitalar) OU NaCl 20% (ampola 10 mL = 2 g = 34,2 mEq Na+) misturado com SF 0,9% até o volume final desejado.",
+        successCriteria:"<strong>Alvo (sintoma grave / bólus emergência):</strong> resolução de convulsão / rebaixamento; ↑ Na 4–6 mEq/L iniciais.<br><br><strong>Alvo (crônica):</strong> ↑ Na ≤ 8 mEq/L em 24 h (ou ≤ 6 mEq/L em alto risco: alcoolismo, hipoK, desnutrição, hepatopatia). NÃO acelerar para Na &quot;normal&quot; — alvo é evitar deterioração.<br><br><strong>Suspender se:</strong> ↑ Na cumulativo &gt; 8 mEq/L em 24 h (ou &gt; 6 mEq/L em alto risco). Considerar dessmopressina 1–2 mcg IV como freio.<br><br><strong>Reavaliação:</strong> Na sérico a cada 2–4 h durante reposição; balanço hídrico; reavaliação neurológica seriada; vigiar sinais de SDM 2–6 dias após (alteração do nível de consciência, disartria, disfagia, paraparesia).<br><br><strong>Após atingir alvo:</strong> investigar e tratar causa de base (SIADH, IC, cirrose, diurético, ISRS, etc.). Restrição hídrica ou tolvaptan conforme indicação.",
+        notes:"<strong>Regra de ouro — Δ Na seguro:</strong> em hiponatremia crônica, NÃO ultrapassar 8 mEq/L em 24 h (ou 6 mEq/L em pacientes de alto risco: alcoolismo, desnutrição, hipocalemia, hepatopatia). Correção rápida causa síndrome de desmielinização osmótica (SDM) 2–6 dias após.<br><br><strong>Bólus emergência (sintoma grave):</strong> 100–150 mL de NaCl 3% IV em 10 min, repetir até 2× se sintoma persistir (convulsão/herniação). Alvo: ↑ Na 4–6 mEq/L.<br><br><strong>Crônica:</strong> 0,5–2 mL/kg/h em infusão controlada, titulada por dosagem de Na seriada.<br><br><strong>Periférica:</strong> aceita em bólus único curto ou acesso calibroso; preferir central em infusão prolongada/concentrações maiores.<br><br><strong>Central (preferida):</strong> para reposição prolongada ou alto risco de SDM, com monitorização rigorosa.<br><br><strong>Freio se correção rápida:</strong> considerar dessmopressina 1–2 mcg IV em pacientes de alto risco.<br><br><strong>Monitorização:</strong> Na sérico a cada 2–4 h durante reposição; balanço hídrico; reavaliação neurológica."
       },
       fosfato_potassio_hipofosfatemia:{
         name:"Fosfato de potássio — reposição em hipofosfatemia",
@@ -999,16 +1319,96 @@ const dvaBolusDrugs = {
         defaultFinalVolume:250,
         preferredDiluent:"SF 0,9%",
         allowedDiluents:["SF 0,9%","SG 5%"],
-        range:"Moderada (P 1,0–1,9 mg/dL): 15–30 mmol em 6 h. Grave (P < 1,0): 0,5 mmol/kg em 4–6 h (dose total ~30–45 mmol). Cálculo individualizado (Bech 2013): 0,5 × peso × (1,25 − P sérico em mmol/L) mmol total. TAXA MÁXIMA: 7 mmol/h.",
+        range:"<strong>Moderada</strong> (P 1,0–1,9 mg/dL): 15–30 mmol em 6 h.<br><br><strong>Grave</strong> (P < 1,0 mg/dL): 0,5 mmol/kg em 4–6 h (dose total ~30–45 mmol).<br><br><strong>Cálculo individualizado</strong> (Bech 2013): 0,5 × peso × (1,25 − P sérico em mmol/L) mmol total.<br><br><strong>TAXA MÁXIMA: 7 mmol/h</strong>.",
+        viaOptions:[
+          {value:"periferica", label:"Periférica", maxConcLabel:"máx 0,18 mmol P/mL · cuidado com carga de K"},
+          {value:"central", label:"Central preferida", maxConcLabel:"alta carga de K — central recomendada"}
+        ],
+        deltaModel:{
+          inputUnit:"mg/dL",
+          normalLow:2.5,
+          normalHigh:4.5,
+          deltaSemantic:"O Δ aqui representa o <strong>aumento desejado no exame de P sérico do paciente</strong> (mg/dL) — <strong>NÃO</strong> a quantidade de fosfato a ser infundida.",
+          // Bech 2013 (J Crit Care 28:838): dose total (mmol P) = 0,5 × peso × Δ(mmol/L)
+          // Conversão: P mmol/L = P mg/dL × 0,3229 (1 mmol P = 30,97 mg)
+          // Bech usa alvo P = 1,25 mmol/L (= 3,87 mg/dL). Generalizamos: dose = 0,5 × peso × (alvo − atual) em mmol/L.
+          formulaCitation: function(ctx){
+            const { peso, atual, delta } = ctx || {};
+            const formulaBox = "font-family:'Courier New',monospace;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:6px;padding:12px;margin:8px 0;font-size:12px;line-height:1.7;text-align:center;color:#0f172a";
+            const indicationsBox = "background:#fff;border:1px solid #d8e0ea;border-radius:6px;padding:8px 12px;margin:8px 0;font-size:11px;line-height:1.55;color:#475569";
+            const explanation = `
+              <p style="margin:0 0 8px 0"><strong>Sobre o cálculo:</strong> a fórmula de <strong>Bech 2013</strong> (J Crit Care 28:838) calcula a dose individualizada de fosfato (em mmol) para corrigir a hipofosfatemia a partir do peso e da diferença entre P alvo e P atual.</p>`;
+            const formulaPart = `
+              <p style="margin:8px 0 4px 0"><strong>Fórmula de Bech — dose total de fosfato:</strong></p>
+              <div style="${formulaBox}">
+                Dose (mmol) = 0,5 × peso (kg) × (P<sub>alvo</sub> − P<sub>atual</sub> em mmol/L)
+              </div>
+              <p style="margin:4px 0 0 0">Alvo Bech sugerido: <strong>1,25 mmol/L</strong> (= 3,87 mg/dL). Conversão: <em>P mmol/L = P mg/dL × 0,3229</em> (PM P = 30,97).</p>`;
+            const conversionBox = "background:#fef3c7;border:1px dashed #f59e0b;border-radius:6px;padding:8px 12px;margin:8px 0;font-size:11px;line-height:1.55;color:#78350f";
+            const indicationsPart = `
+              <div style="${indicationsBox}">
+                <strong>Limites de dose, janelas e taxa máxima (literatura):</strong><br>
+                • <strong>Moderada</strong> (P 1,0–1,9 mg/dL ≈ 0,32–0,61 mmol/L): <strong>15–30 mmol</strong> em <strong>6 h</strong>.<br>
+                • <strong>Grave</strong> (P &lt; 1,0 mg/dL ≈ &lt; 0,32 mmol/L): <strong>0,5 mmol/kg</strong> em <strong>4–6 h</strong> (dose total ~30–45 mmol em adulto de 70 kg).<br>
+                • <strong>Cálculo individualizado</strong> (Bech 2013): 0,5 × peso × (1,25 − P sérico em mmol/L) mmol total.<br>
+                • <strong>TAXA MÁXIMA: 7 mmol/h</strong> (independente da dose total — limite de infusão).
+              </div>
+              <div style="${conversionBox}">
+                <strong>⚠ Atenção às unidades:</strong> o exame de P sérico é reportado em <strong>mg/dL</strong> no Brasil, mas as doses e a taxa máxima são em <strong>mmol</strong> (referência internacional). Conversão: <em>P mmol/L = P mg/dL × 0,3229</em> (1 mmol P = 30,97 mg).<br>
+                <strong>Equivalências práticas:</strong> 0,5 mg/dL ≈ 0,16 mmol/L · <strong>1,0 mg/dL ≈ 0,32 mmol/L</strong> · 1,9 mg/dL ≈ 0,61 mmol/L · 2,5 mg/dL ≈ 0,81 mmol/L (limite inferior da normalidade) · <strong>3,87 mg/dL ≈ 1,25 mmol/L</strong> (alvo Bech).
+              </div>`;
+            const generic = explanation + formulaPart + indicationsPart;
+            if(!Number.isFinite(peso) || !Number.isFinite(atual) || !Number.isFinite(delta) || delta <= 0) return generic;
+            const deltaMmol = delta * 0.3229;
+            const atualMmol = atual * 0.3229;
+            const alvo = atual + delta;
+            const alvoMmol = alvo * 0.3229;
+            const dose = 0.5 * peso * deltaMmol;
+            const applyBox = "background:#eef3f8;border-left:4px solid #123c69;border-radius:6px;padding:10px 12px;margin:8px 0 4px 0;font-size:12px;line-height:1.6;color:#0d2438";
+            const applied = `
+              <div style="${applyBox}">
+                <strong>Substituindo os valores deste paciente na fórmula:</strong><br>
+                • P atual ${fmt(atual,2)} mg/dL = <strong>${fmt(atualMmol,3)} mmol/L</strong><br>
+                • P alvo ${fmt(alvo,2)} mg/dL = <strong>${fmt(alvoMmol,3)} mmol/L</strong><br>
+                • Δ em mmol/L = ${fmt(alvoMmol,3)} − ${fmt(atualMmol,3)} = <strong>${fmt(deltaMmol,3)} mmol/L</strong><br>
+                • Dose = 0,5 × ${fmt(peso,0)} kg × ${fmt(deltaMmol,3)} = <strong>${fmt(dose,1)} mmol</strong> de fosfato total.
+              </div>`;
+            return generic + applied;
+          },
+          formulaAlert:"<strong>Taxa máxima:</strong> 7 mmol/h (Bech/Charron 2003). Em pacientes com IR/hipercalemia, considerar fosfato de SÓDIO (mesma posologia, sem K). Monitorar P, Ca, K e função renal a cada 6 h. CRRT com perda contínua de P pode exigir reposição via solução com fosfato (Phoxilium®).",
+          computeDose: function(delta, peso, sexo, atual){
+            // delta vem em mg/dL — converter para mmol/L
+            const deltaMmol = delta * 0.3229;
+            const dose = 0.5 * peso * Math.max(0, deltaMmol);
+            return Math.round(dose * 10) / 10;
+          },
+          // Auto-seleção de tempo a partir do P atual: < 1,0 → 4 h (grave), 1,0–1,9 → 6 h
+          // (moderada), ≥ 1,9 → 8 h (conservador). O select fica bloqueado pelo prescritor.
+          autoSelectTimeByAtual: function(atual){
+            if(!Number.isFinite(atual)) return null;
+            if(atual < 1.0) return 240;   // 4 h — grave
+            if(atual < 1.9) return 360;   // 6 h — moderada
+            return 480;                    // 8 h — conservador
+          },
+          maxRateByVia:{periferica:7, central:7}, // mmol/h
+          maxConcByVia:{periferica:0.18, central:0.18}, // mmol/mL
+          timePresets:[
+            {value:240, label:"4 h — grave (P < 1,0 mg/dL); taxa próxima ao teto"},
+            {value:360, label:"6 h — moderada (P 1,0–1,9 mg/dL); padrão"},
+            {value:480, label:"8 h — taxa mais conservadora (P ≥ 1,9 mg/dL)"}
+          ],
+          standardVolumes:[100, 250, 500]
+        },
         presentations:[
-          {label:"30 mmol P em 250 mL SF 0,9%", conc:0.12, unit:"mmolml", prep:"Fosfato de potássio 30 mmol = 10 mL da apresentação 3 mmol P + 4,4 mmol K/mL + SF 0,9% q.s.p. 250 mL → 0,12 mmol P/mL. Carrega ~44 mmol de K — atenção em IR/hipercalemia. Infundir em 6 h (5 mmol/h)."},
-          {label:"45 mmol P em 250 mL SF 0,9% (grave)", conc:0.18, unit:"mmolml", prep:"Fosfato de potássio 45 mmol = 15 mL da apresentação 3 mmol P/mL + SF 0,9% q.s.p. 250 mL → 0,18 mmol P/mL. Carrega ~66 mmol de K. Infundir em 6–8 h (≤ 7 mmol/h)."}
+          {label:"30 mmol P em 250 mL SF 0,9% (10 mL — 1 ampola)", conc:0.12, unit:"mmolml", via:["periferica","central"], finalVolume:250, prep:"<strong>Apresentação:</strong> ampola 10 mL contém 30 mmol P + 44 mmol K (= 3 mmol P + 4,4 mmol K por mL).<br><br><strong>Preparo:</strong> aspirar 10 mL (= 1 ampola = 30 mmol P + 44 mmol K) e adicionar SF 0,9% até completar 250 mL.<br><br><strong>Concentração final:</strong> 0,12 mmol P/mL.<br><br><strong>Carga simultânea de K:</strong> ~44 mmol — atenção em IR e hipercalemia.<br><br><strong>Infusão:</strong> em 6 h (~5 mmol/h, abaixo da taxa máxima de 7 mmol/h)."},
+          {label:"45 mmol P em 250 mL SF 0,9% (15 mL — 1½ ampola; grave)", conc:0.18, unit:"mmolml", via:["periferica","central"], finalVolume:250, prep:"<strong>Apresentação:</strong> ampola 10 mL contém 30 mmol P + 44 mmol K (= 3 mmol P + 4,4 mmol K por mL).<br><br><strong>Preparo:</strong> aspirar 15 mL (= 1½ ampola = 45 mmol P + 66 mmol K) e adicionar SF 0,9% até completar 250 mL.<br><br><strong>Concentração final:</strong> 0,18 mmol P/mL.<br><br><strong>Carga simultânea de K:</strong> ~66 mmol — risco aumentado em IR e hipercalemia.<br><br><strong>Infusão:</strong> em 6–8 h (≤ 7 mmol/h = taxa máxima de segurança)."}
         ],
         commercialPresentations:[
           {label:"Fosfato de potássio — apresentação 3 mmol P + 4,4 mmol K /mL", conc:3, unit:"mmolml", volume:10, content:30, contentUnit:"mmol"}
         ],
         ampoule:"Fosfato de potássio: ampola/frasco 10 mL contém 30 mmol P + 44 mmol K (apresentação varia por fabricante; conferir bula). 1 mL = 3 mmol P + 4,4 mmol K.",
-        notes:"Carrega POTÁSSIO — em paciente com IR, hipercalemia, lise tumoral, considerar fosfato de SÓDIO. Evitar em hipercalcemia (precipitação de fosfato cálcio). Monitorar P, Ca, K e função renal a cada 6 h durante reposição. Taxa máxima 7 mmol/h. Em CRRT com perda contínua de P, considerar reposição contínua via solução de reposição com fosfato (e.g., Phoxilium®)."
+        successCriteria:"<strong>Alvo:</strong> P sérico ≥ 2,5 mg/dL (≥ 0,8 mmol/L). Resolução de sintomas (insuficiência respiratória por fadiga muscular, hemólise, disfunção miocárdica, rabdomiólise).<br><br><strong>Suspender se:</strong> hipercalcemia, K sérico > 5,0 mEq/L (carga de K do fosfato), precipitação de cálcio-fosfato (avaliar Ca × P), IR aguda piorando.<br><br><strong>Reavaliação:</strong> P, Ca, K e função renal a cada 6 h durante reposição. ECG se K limítrofe.<br><br><strong>Após atingir alvo:</strong> reposição oral (fosfato de potássio ou sódio) se ingesta possível; investigar causa contínua (refeeding, CRRT, alcoolismo).",
+        notes:"<strong>ATENÇÃO — carga de potássio:</strong> ampola contém 4,4 mmol K por 1 mmol P. Em IR, hipercalemia ou lise tumoral, considerar fosfato de SÓDIO.<br><br><strong>Central (preferida):</strong> alta carga de K requer monitorização rigorosa.<br><br><strong>Periférica:</strong> aceita em diluição usual (0,12 mmol P/mL), mas requer cautela pela carga de K simultânea.<br><br><strong>Taxa máxima:</strong> 7 mmol/h.<br><br><strong>Contraindicação:</strong> hipercalcemia (risco de precipitação de fosfato cálcio).<br><br><strong>Monitorização:</strong> P, Ca, K e função renal a cada 6 h durante reposição.<br><br><strong>CRRT com perda contínua de P:</strong> considerar reposição contínua via solução com fosfato (e.g., Phoxilium®)."
       }
     }
   }
@@ -1194,6 +1594,8 @@ function unitLabel(unit){
   if(unit === "mcgml") return "mcg/mL";
   if(unit === "mgml") return "mg/mL";
   if(unit === "uiml") return "UI/mL";
+  if(unit === "mEqml") return "mEq/mL";
+  if(unit === "mmolml") return "mmol/mL";
   return unit || "";
 }
 function massUnitFromConcUnit(unit){
@@ -2465,7 +2867,11 @@ function bolusAmpouleLine(amp){
   return `${amp.label}. ${concTxt}; ${volTxt}; ${contentTxt}.`;
 }
 function initDVABolus(){
-  populateSelect(document.getElementById("dvaBolusCat"), dvaBolusDrugs);
+  // Excluir eletrolito_reposicao do bolus picker: tem seção dedicada (#eletrolitos)
+  const dvaBolusDrugsForBolus = Object.fromEntries(
+    Object.entries(dvaBolusDrugs).filter(([k]) => k !== "eletrolito_reposicao")
+  );
+  populateSelect(document.getElementById("dvaBolusCat"), dvaBolusDrugsForBolus);
   document.getElementById("dvaBolusCat").addEventListener("change", updateDVABolusDrugs);
   document.getElementById("dvaBolusDrug").addEventListener("change", updateDVABolusDefaults);
   document.getElementById("dvaBolusAmpPresentation").addEventListener("change", calcDVABolus);
@@ -2554,7 +2960,13 @@ function currentDVABolus(){
     const convertedUnit = isMassUnit ? "mg" : doseUnitBase; // "mEq"|"mmol"|"UI"|"mg"
     const concPerMLUnitLabel = `${convertedUnit}/mL`;
     // Volume a aspirar da ampola comercial: ampoule.conc esta na mesma unidade que doseConverted
-    const ampouleConcPerML = ampoule ? ampoule.conc : null;
+    // Derivar conc por mL a partir de content/volume quando disponível (defensivo:
+  // protege contra erros de digitação no campo `conc`, que deve sempre = content/volume).
+  const ampouleConcPerML = ampoule
+    ? ((Number.isFinite(ampoule.content) && Number.isFinite(ampoule.volume) && ampoule.volume > 0)
+        ? ampoule.content / ampoule.volume
+        : ampoule.conc)
+    : null;
     const volumeAspirar = (Number.isFinite(doseConverted) && Number.isFinite(ampouleConcPerML) && ampouleConcPerML > 0)
       ? doseConverted / ampouleConcPerML
       : NaN;
@@ -2711,6 +3123,895 @@ function addDVABolusToSummary(){
     chartVolume:`${fmt(x.volume,2)} mL`,
     diluentInfo:diluentGuidance(x.d.name, x.presentation.prep, "bolus"),
     stabilityInfo:solutionStabilityGuidance(x.d.name, x.presentation.prep, "bolus")
+  });
+  renderSummary();
+  confirmSummaryAdd(x.d.name);
+}
+
+/* ============================================================================
+ * Reposicao de eletrolitos — calculadora dedicada (seção 4 do Modulo 6).
+ * Separada do bolus para evitar mistura de cenarios hemodinamicos com reposicao
+ * metabolica. Reutiliza a estrutura de dados dvaBolusDrugs.eletrolito_reposicao.
+ * ========================================================================== */
+const ELET_CAT = "eletrolito_reposicao";
+function eletDrugs(){ return dvaBolusDrugs[ELET_CAT].drugs; }
+function getEletManualSolutionConc(){
+  const massEl=document.getElementById("eletManMass");
+  const volEl=document.getElementById("eletManVolume");
+  if(!massEl || !volEl) return { conc: NaN, concUnit: "mgml", filled: false };
+  const massVal=parseFloat(massEl.value);
+  const massUnit=document.getElementById("eletManMassUnit")?.value || "g";
+  const volMl=parseFloat(volEl.value);
+  if(!Number.isFinite(massVal) || massVal<=0 || !Number.isFinite(volMl) || volMl<=0){
+    return { conc: NaN, concUnit: "mgml", filled: false, massVal, massUnit, volMl };
+  }
+  let effMass=massVal, effUnit=massUnit;
+  if(massUnit==="g"){ effMass=massVal*1000; effUnit="mg"; }
+  const conc=effMass/volMl;
+  let concUnit = "mgml";
+  if(effUnit==="mcg") concUnit="mcgml";
+  else if(effUnit==="UI") concUnit="uiml";
+  else if(effUnit==="mEq") concUnit="mEqml";
+  else if(effUnit==="mmol") concUnit="mmolml";
+  return { conc, concUnit, filled: true, massVal, massUnit, volMl, effMass };
+}
+function updateEletManualConcPreview(){
+  const out=document.getElementById("eletManConcPreview");
+  if(!out) return;
+  const r=getEletManualSolutionConc();
+  if(!r.filled){ out.value="—"; return; }
+  const dil=document.getElementById("eletManDiluent")?.value || "";
+  out.value = `${fmt(r.conc,3)} ${unitLabel(r.concUnit)} | ${fmt(r.massVal,2)} ${r.massUnit} em ${fmt(r.volMl,0)} mL${dil?` de ${dil}`:""}`;
+}
+/* Apresentações comerciais de NaCl concentrado disponíveis (Brasil + alternativas).
+ * 1 mEq de Na = 23 mg → 1 g NaCl = 17,1 mEq de Na+.
+ * Fórmula da receita: Vol_concentrado = (21 × V_final) / (10 × C% − 9), onde C% é a
+ * porcentagem do concentrado (e.g., 20 para NaCl 20%). Inclui contribuição de Na do
+ * SF 0,9% (9 mg/mL) e alvo de 30 mg/mL para NaCl 3%. */
+const NACL_CONCENTRATES = [
+  { value:"20",   label:"NaCl 20% — ampola 10 mL = 2,0 g (34,2 mEq Na⁺)",    percent:20.0, ampouleVol:10, gPerAmp:2.0,  mEqPerAmp:34.2 },
+  { value:"17.7", label:"NaCl 17,7% — ampola 10 mL = 1,77 g (30,3 mEq Na⁺)", percent:17.7, ampouleVol:10, gPerAmp:1.77, mEqPerAmp:30.3 },
+  { value:"10",   label:"NaCl 10% — ampola 10 mL = 1,0 g (17,1 mEq Na⁺)",    percent:10.0, ampouleVol:10, gPerAmp:1.0,  mEqPerAmp:17.1 }
+];
+
+function initEletNaClPrep(){
+  const sel = document.getElementById("eletNaClConcentrate");
+  if(!sel) return;
+  sel.innerHTML = "";
+  NACL_CONCENTRATES.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c.value;
+    opt.textContent = c.label;
+    sel.appendChild(opt);
+  });
+  ["eletNaClConcentrate","eletNaClFinalVol"].forEach(id => {
+    document.getElementById(id)?.addEventListener("change", updateEletNaClRecipe);
+  });
+  updateEletNaClRecipe();
+}
+
+function updateEletNaClRecipe(){
+  const out = document.getElementById("eletNaClRecipe");
+  if(!out) return;
+  const concVal = document.getElementById("eletNaClConcentrate")?.value;
+  const conc = NACL_CONCENTRATES.find(c => c.value === concVal);
+  const V = parseFloat(document.getElementById("eletNaClFinalVol")?.value);
+  if(!conc || !Number.isFinite(V) || V <= 0){
+    out.innerHTML = "—";
+    return;
+  }
+  const C = conc.percent;
+  // Receita: Vol_concentrado × (10C − 9) = 21 × V_final
+  const x = (21 * V) / (10 * C - 9);
+  const ampolas = x / conc.ampouleVol;
+  const volSF = V - x;
+  const naMg = x * C * 10; // mg de NaCl no volume x
+  const naG  = naMg / 1000;
+  const mEqNa = naMg / 58.44; // PM NaCl = 58,44 g/mol; Na = 23/58,44 do NaCl
+  const concLabel = conc.label.split(" — ")[0];
+  out.innerHTML = `
+    <strong>Para ${fmt(V,0)} mL de NaCl 3% usando ${concLabel}:</strong><br>
+    • Aspirar <strong>${fmt(x,1)} mL</strong> de ${concLabel}
+      (≈ <strong>${fmt(ampolas,1)} ampolas</strong> de ${fmt(conc.ampouleVol,0)} mL — cada ampola contém ${fmt(conc.gPerAmp,2)} g = ${fmt(conc.mEqPerAmp,1)} mEq Na⁺).<br>
+    • Descartar <strong>${fmt(x,1)} mL</strong> de SF 0,9% do frasco de ${fmt(V,0)} mL e adicionar o NaCl concentrado, completando ${fmt(V,0)} mL.<br>
+    • Massa de Na⁺ entregue: <strong>${fmt(naG,2)} g</strong> ≈ <strong>${fmt(mEqNa,1)} mEq</strong> em ${fmt(V,0)} mL → concentração final ${fmt(naMg/V*100/1000,2)}% (alvo 3% / 513 mEq/L).
+  `;
+}
+
+function initElet(){
+  if(!document.getElementById("eletDrug")) return;
+  populateSelect(document.getElementById("eletDrug"), eletDrugs(), "name");
+  initEletNaClPrep();
+  document.getElementById("eletDrug").addEventListener("change", updateEletDefaults);
+  document.getElementById("eletAmpPresentation").addEventListener("change", calcElet);
+  document.getElementById("eletPresentation").addEventListener("change", calcElet);
+  document.getElementById("eletVia")?.addEventListener("change", function(){
+    updateEletPresentationsForVia();
+    // Re-aplicar delta se ativo (limite de conc muda com a via)
+    applyEletDeltaIfReady();
+  });
+  document.getElementById("eletDoseUnitSelect").addEventListener("change", function(){
+    setDoseUnitLabel("eletDoseUnitLabel", this.value); calcElet();
+  });
+  ["eletDose","eletManMass","eletManMassUnit","eletManDiluent","eletManVolume","eletTimeMin","eletFinalVolume","peso","cenario"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener("input", ()=>{updateEletManualConcPreview(); calcElet();});
+  });
+  // Sincronizar peso/sexo entre §1 e §4
+  syncPatientFieldsToElet();
+  // Inputs do bloco Δ
+  ["eletAtual","eletAlvo","eletTimePreset"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener("input", applyEletDeltaIfReady);
+  });
+  // Preset de tempo precisa SEMPRE sincronizar eletTimeMin, mesmo quando atual/alvo
+  // ainda não foram preenchidos. Caso contrário, headline (que lê eletTimeMin) e
+  // operacional (que lê deltaMeta.tempoMin) entram em contradição.
+  document.getElementById("eletTimePreset")?.addEventListener("change", function(){
+    syncEletTempoFromPreset();
+    applyEletDeltaIfReady();
+    calcElet();
+  });
+  updateEletDefaults();
+}
+
+/* Espelha o data-tempo do preset selecionado no input hidden eletTimeMin. Roda em
+ * todo change do select de tempo (mesmo sem atual/alvo preenchidos). */
+function syncEletTempoFromPreset(){
+  const timeSel = document.getElementById("eletTimePreset");
+  const selOpt = timeSel?.selectedOptions && timeSel.selectedOptions[0];
+  if(!selOpt) return;
+  const tempoMin = parseFloat(selOpt.dataset.tempo);
+  if(Number.isFinite(tempoMin)){
+    const timeInput = document.getElementById("eletTimeMin");
+    if(timeInput) timeInput.value = tempoMin;
+  }
+}
+
+/* Sincronização bidirecional peso/sexo entre §1 (#paciente) e §4 (#eletrolitos). */
+function syncPatientFieldsToElet(){
+  const sources = [
+    {main:"peso", elet:"eletPeso"},
+    {main:"sexo", elet:"eletSexo"}
+  ];
+  sources.forEach(pair => {
+    const mainEl=document.getElementById(pair.main);
+    const eletEl=document.getElementById(pair.elet);
+    if(!mainEl || !eletEl) return;
+    // Inicializar elet com valor de §1
+    eletEl.value = mainEl.value;
+    // §1 -> §4
+    mainEl.addEventListener("input", function(){
+      if(eletEl.value !== mainEl.value){ eletEl.value = mainEl.value; }
+      applyEletDeltaIfReady();
+    });
+    mainEl.addEventListener("change", function(){
+      if(eletEl.value !== mainEl.value){ eletEl.value = mainEl.value; }
+      applyEletDeltaIfReady();
+    });
+    // §4 -> §1
+    eletEl.addEventListener("input", function(){
+      if(mainEl.value !== eletEl.value){
+        mainEl.value = eletEl.value;
+        mainEl.dispatchEvent(new Event("input", {bubbles:true}));
+      }
+      applyEletDeltaIfReady();
+    });
+    eletEl.addEventListener("change", function(){
+      if(mainEl.value !== eletEl.value){
+        mainEl.value = eletEl.value;
+        mainEl.dispatchEvent(new Event("change", {bubbles:true}));
+      }
+      applyEletDeltaIfReady();
+    });
+  });
+}
+
+/* Δ-based: lê atual/alvo/tempo, computa dose, valida vs limites de via, preenche
+ * eletDose/eletTimeMin/eletFinalVolume e exibe warning vermelho se ultrapassar
+ * variação aconselhada para o tempo planejado. */
+function applyEletDeltaIfReady(){
+  const drug = document.getElementById("eletDrug")?.value;
+  if(!drug) return;
+  const d = eletDrugs()[drug];
+  if(!d || !d.deltaModel) return;
+  const dm = d.deltaModel;
+  const atualEl = document.getElementById("eletAtual");
+  const alvoEl = document.getElementById("eletAlvo");
+  const timeSel = document.getElementById("eletTimePreset");
+  const deltaOut = document.getElementById("eletDeltaCalc");
+  const warnEl = document.getElementById("eletDeltaWarning");
+  if(!atualEl || !alvoEl || !timeSel || !deltaOut || !warnEl) return;
+  // Limpar estados visuais
+  warnEl.style.display = "none";
+  warnEl.innerHTML = "";
+  ["eletDose","eletTimeMin","eletFinalVolume"].forEach(id=>{
+    document.getElementById(id)?.classList.remove("elet-input-warn");
+  });
+  const isPresetMode = dm.deltaSource === "preset";
+  const atual = parseFloat(atualEl.value);
+  // Auto-seleção de tempo a partir de "atual" (quando deltaModel define essa função).
+  // Bloqueia o select para evitar conflito com a recomendação clínica.
+  if(typeof dm.autoSelectTimeByAtual === "function"){
+    const recommendedMin = dm.autoSelectTimeByAtual(atual);
+    if(Number.isFinite(recommendedMin)){
+      const matchOpt = Array.from(timeSel.options).find(opt => parseFloat(opt.dataset.tempo) === recommendedMin);
+      if(matchOpt && timeSel.value !== matchOpt.value){
+        timeSel.value = matchOpt.value;
+      }
+      timeSel.disabled = true;
+      timeSel.title = "Tempo selecionado automaticamente pelo valor atual do exame (literatura).";
+      timeSel.style.opacity = "0.78";
+      timeSel.style.cursor = "not-allowed";
+    } else {
+      // Sem atual → não há recomendação; deixa habilitado para escolha manual.
+      timeSel.disabled = false;
+      timeSel.removeAttribute("title");
+      timeSel.style.opacity = "";
+      timeSel.style.cursor = "";
+    }
+  }
+  const selOpt = timeSel.selectedOptions && timeSel.selectedOptions[0];
+  const tempoMin = selOpt ? parseFloat(selOpt.dataset.tempo) : NaN;
+  const presetDelta = selOpt && selOpt.dataset.delta ? parseFloat(selOpt.dataset.delta) : NaN;
+  // Em modo "user", δ vem de alvo - atual. Em "preset", vem do preset.
+  let delta;
+  if(isPresetMode){
+    if(!Number.isFinite(atual) || !Number.isFinite(tempoMin) || !Number.isFinite(presetDelta)){
+      deltaOut.value = "—";
+      return;
+    }
+    delta = presetDelta;
+  } else {
+    const alvo = parseFloat(alvoEl.value);
+    if(!Number.isFinite(atual) || !Number.isFinite(alvo) || !Number.isFinite(tempoMin)){
+      deltaOut.value = "—";
+      return;
+    }
+    delta = alvo - atual;
+    if(delta <= 0){
+      warnEl.style.display = "block";
+      warnEl.innerHTML = `<strong>Aviso:</strong> alvo (${fmt(alvo,2)} ${dm.inputUnit}) ≤ atual (${fmt(atual,2)} ${dm.inputUnit}). Verifique os valores.`;
+      return;
+    }
+  }
+  deltaOut.value = `${fmt(delta, 2)} ${dm.inputUnit}`;
+  // Citation dinâmica — quando formulaCitation for função, renderiza com os valores
+  // atuais do paciente (peso, sexo, atual, delta).
+  const citationBox = document.getElementById("eletFormulaCitation");
+  if(citationBox && typeof dm.formulaCitation === "function"){
+    const pesoNow = getPeso();
+    const sexoNow = document.getElementById("sexo")?.value || "masculino";
+    const ctx = { peso: pesoNow, sexo: sexoNow, atual, delta };
+    const html = dm.formulaCitation(ctx);
+    if(html){ citationBox.innerHTML = html; citationBox.style.display = ""; }
+    else { citationBox.style.display = "none"; }
+  }
+  // Box do déficit corporal (estimativa de estoque), separada do "dose deste ciclo".
+  const bodyBox = document.getElementById("eletBodyDeficit");
+  if(bodyBox){
+    if(typeof dm.computeBodyDeficit === "function"){
+      const range = dm.computeBodyDeficit(delta);
+      if(Array.isArray(range) && range.length === 2 && Number.isFinite(range[0])){
+        bodyBox.innerHTML = `<strong>Déficit corporal estimado:</strong> aproximadamente <strong>${range[0]}–${range[1]} mEq</strong> (Δ ${fmt(delta,2)} ${dm.inputUnit} × 200–300 mEq/L). Este é o estoque a ser reposto ao longo de múltiplos ciclos — não a dose de uma única infusão.`;
+        bodyBox.style.display = "";
+      } else {
+        bodyBox.style.display = "none";
+      }
+    } else {
+      bodyBox.style.display = "none";
+    }
+  }
+  const peso = getPeso();
+  if(!Number.isFinite(peso) || peso <= 0){
+    warnEl.style.display = "block";
+    warnEl.innerHTML = `<strong>Aviso:</strong> preencha o peso do paciente antes de calcular a reposição.`;
+    return;
+  }
+  const sexo = document.getElementById("sexo")?.value || "masculino";
+  // Cálculo da dose: deltaModel.computeDose pode usar (delta, peso, sexo, atual)
+  const dose = dm.computeDose(delta, peso, sexo, atual);
+  if(!Number.isFinite(dose) || dose <= 0){
+    deltaOut.value = "—";
+    return;
+  }
+  // Via atual
+  const via = document.getElementById("eletVia")?.value || "central";
+  const maxConc = (dm.maxConcByVia && dm.maxConcByVia[via]) || null; // unit/mL
+  const maxRate = (dm.maxRateByVia && dm.maxRateByVia[via]) || null; // unit/h
+  // Volume final: em formula "adrogue", a dose JÁ é o volume final (mL de NaCl 3%).
+  // Em formula de déficit (KCl), é necessário derivar volume do maxConc.
+  let finalVolume = null;
+  if(dm.formulaName === "adrogue"){
+    finalVolume = Math.round(dose); // dose = mL de NaCl 3%
+  } else if(maxConc){
+    const minVol = dose / maxConc;
+    const stds = Array.isArray(dm.standardVolumes) ? dm.standardVolumes : [100,250,500,1000];
+    finalVolume = stds.find(v => v >= minVol);
+    if(!finalVolume) finalVolume = stds[stds.length - 1];
+  }
+  // Taxa real: dose/tempo (em horas)
+  const horas = tempoMin / 60;
+  const rate = horas > 0 ? dose / horas : Infinity;
+  // Validações
+  const issues = [];
+  let rateUnsafe = false;
+  let concUnsafe = false;
+  if(maxRate != null && rate > maxRate){
+    rateUnsafe = true;
+    const rateUnit = dm.formulaName === "adrogue" ? "mL/h" : `${dm.inputUnit.replace("/L","")}/h`;
+    const maxUnit = dm.formulaName === "adrogue" ? "mL/h" : `${dm.inputUnit.replace("/L","")}/h`;
+    issues.push(`Taxa calculada ${fmt(rate,2)} ${rateUnit} excede o limite de ${maxRate} ${maxUnit} para via ${via}`);
+  }
+  if(dm.formulaName !== "adrogue" && maxConc && finalVolume){
+    const concFinalUnit = dose / finalVolume; // unit/mL
+    if(concFinalUnit > maxConc){
+      concUnsafe = true;
+      issues.push(`Concentração final ${fmt(concFinalUnit*1000,1)} ${dm.inputUnit} excede ${maxConc*1000} ${dm.inputUnit} (via ${via})`);
+    }
+  }
+  // Preencher campos calculados (sobrescrevem os manuais)
+  document.getElementById("eletDose").value = fmt(dose, 2);
+  document.getElementById("eletTimeMin").value = tempoMin;
+  if(finalVolume){
+    const volInput = document.getElementById("eletFinalVolume");
+    volInput.value = finalVolume;
+    volInput.dataset.eletAutoFilled = "delta";
+  }
+  // Sinalização visual de desaconselhado
+  if(rateUnsafe){
+    document.getElementById("eletDose")?.classList.add("elet-input-warn");
+    document.getElementById("eletTimeMin")?.classList.add("elet-input-warn");
+  }
+  if(concUnsafe){
+    document.getElementById("eletFinalVolume")?.classList.add("elet-input-warn");
+  }
+  if(issues.length){
+    warnEl.style.display = "block";
+    warnEl.innerHTML = `<strong>*OBS: variação desaconselhada para o tempo planejado de reposição.</strong><br>` +
+      issues.map(it => `• ${it}`).join("<br>");
+  }
+  calcElet();
+}
+
+/* Popula painel Δ (atual/alvo/tempo) conforme a droga selecionada. */
+function populateEletDeltaPanel(d){
+  const panel = document.getElementById("eletDeltaPanel");
+  if(!panel) return;
+  if(!d || !d.deltaModel){
+    panel.style.display = "none";
+    return;
+  }
+  panel.style.display = "";
+  const dm = d.deltaModel;
+  setDoseUnitLabel("eletAtualUnit", dm.inputUnit);
+  setDoseUnitLabel("eletAlvoUnit", dm.inputUnit);
+  // Caixas explicativas: semântica do Δ, citação da fórmula e alerta clínico.
+  const setBox = (id, html) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(html){ el.innerHTML = html; el.style.display = ""; }
+    else { el.innerHTML = ""; el.style.display = "none"; }
+  };
+  setBox("eletDeltaSemantic", dm.deltaSemantic || "");
+  // Citation pode ser string (estática) OU função (dinâmica com valores). Quando
+  // função, renderizamos o conteúdo GENÉRICO imediatamente (sem substituição) para
+  // que indicações/limites de dose já apareçam ao selecionar a droga. Os valores
+  // aplicados aos inputs do paciente são adicionados depois em applyEletDeltaIfReady.
+  if(typeof dm.formulaCitation === "string"){
+    setBox("eletFormulaCitation", dm.formulaCitation);
+  } else if(typeof dm.formulaCitation === "function"){
+    setBox("eletFormulaCitation", dm.formulaCitation({}) || "");
+  } else {
+    setBox("eletFormulaCitation", "");
+  }
+  setBox("eletFormulaAlert", dm.formulaAlert || "");
+  // Box de déficit corporal: render somente quando há fórmula específica e valores válidos.
+  setBox("eletBodyDeficit", ""); // reset; preenchido em applyEletDeltaIfReady
+  // Modo "preset" — delta vem do tempo preset, oculta o input "alvo".
+  const alvoWrap = document.getElementById("eletAlvo")?.parentElement;
+  const deltaWrap = document.getElementById("eletDeltaCalc")?.parentElement;
+  const isPresetMode = dm.deltaSource === "preset";
+  if(alvoWrap) alvoWrap.style.display = isPresetMode ? "none" : "";
+  // Δ calculado: rótulo muda — em preset mode mostra "Δ-alvo do preset"
+  if(deltaWrap){
+    const lbl = deltaWrap.querySelector("label");
+    if(lbl) lbl.textContent = isPresetMode ? "Δ-alvo (do preset selecionado)" : "Δ calculado";
+  }
+  // Preset de tempo — suporta agrupamento via <optgroup> quando preset.group definido.
+  const timeSel = document.getElementById("eletTimePreset");
+  if(timeSel){
+    // Reset do estado disabled/visual quando troca de droga (autoSelectTimeByAtual
+    // reaplica em seguida se a nova droga usa essa lógica).
+    timeSel.disabled = false;
+    timeSel.removeAttribute("title");
+    timeSel.style.opacity = "";
+    timeSel.style.cursor = "";
+    timeSel.innerHTML = "";
+    const presets = dm.timePresets || [];
+    const hasGroups = presets.some(p => p && p.group);
+    const groupMap = new Map(); // group label -> <optgroup>
+    presets.forEach((tp, i)=>{
+      const opt = document.createElement("option");
+      opt.value = `${tp.value}|${tp.delta ?? ""}|${i}`; // codifica tempo|delta|idx para unicidade
+      opt.dataset.tempo = String(tp.value);
+      if(tp.delta != null) opt.dataset.delta = String(tp.delta);
+      opt.dataset.idx = String(i);
+      opt.textContent = tp.label;
+      if(hasGroups && tp.group){
+        let og = groupMap.get(tp.group);
+        if(!og){
+          og = document.createElement("optgroup");
+          og.label = tp.group;
+          timeSel.appendChild(og);
+          groupMap.set(tp.group, og);
+        }
+        og.appendChild(opt);
+      } else {
+        timeSel.appendChild(opt);
+      }
+    });
+  }
+  // Limpar campos atual/alvo (ao trocar de droga)
+  const atual = document.getElementById("eletAtual");
+  const alvo = document.getElementById("eletAlvo");
+  if(atual) atual.value = "";
+  if(alvo) alvo.value = "";
+  const deltaOut = document.getElementById("eletDeltaCalc");
+  if(deltaOut) deltaOut.value = "—";
+  const warn = document.getElementById("eletDeltaWarning");
+  if(warn){ warn.style.display = "none"; warn.innerHTML = ""; }
+  // Limpar estados de warning
+  ["eletDose","eletTimeMin","eletFinalVolume"].forEach(id=>{
+    document.getElementById(id)?.classList.remove("elet-input-warn");
+  });
+}
+function updateEletPresentationsForVia(){
+  const drug=document.getElementById("eletDrug").value;
+  const d=eletDrugs()[drug];
+  if(!d) return;
+  const viaSel=document.getElementById("eletVia");
+  const via=viaSel?.value || null;
+  const pres=document.getElementById("eletPresentation");
+  if(!pres) return;
+  pres.innerHTML="";
+  d.presentations.forEach((p,i)=>{
+    // Compatibilidade: se a apresentação não tem via tag, considera compatível com todas.
+    if(via && Array.isArray(p.via) && !p.via.includes(via)) return;
+    const opt=document.createElement("option");
+    opt.value=i; // mantém índice ORIGINAL para currentElet localizar a presentation
+    opt.textContent=p.label;
+    pres.appendChild(opt);
+  });
+  // Se nada compatível (não deveria acontecer com config válido), repopular sem filtro.
+  if(pres.options.length === 0){
+    d.presentations.forEach((p,i)=>{
+      const opt=document.createElement("option");
+      opt.value=i; opt.textContent=p.label; pres.appendChild(opt);
+    });
+  }
+  // Mostra o campo de Volume final apenas após a Solução final sugerida ser
+  // efetivamente populada/escolhida. Auto-calcula o valor a partir do preset.
+  applyEletVolumeFromPreset();
+  calcElet();
+}
+
+/* Após preset ser escolhido, auto-preenche o input hidden eletFinalVolume com o
+ * volume do preset. O campo NÃO aparece no formulário — o valor é derivado das
+ * duas fontes possíveis (Δ-panel ou preparo manual), sem conflito visível para o
+ * prescritor. */
+function applyEletVolumeFromPreset(){
+  const drug=document.getElementById("eletDrug")?.value;
+  const d=drug ? eletDrugs()[drug] : null;
+  const pres=document.getElementById("eletPresentation");
+  const volInput=document.getElementById("eletFinalVolume");
+  if(!d || !pres || !volInput) return;
+  const hasPreset = pres.options.length > 0 && pres.value !== "";
+  if(!hasPreset) return;
+  // Se Δ-panel não tiver sobrescrito o volume, usar o preset (cada preset carrega
+  // seu próprio finalVolume) ou drug.defaultFinalVolume.
+  if(!volInput.value || volInput.dataset.eletAutoFilled === "preset"){
+    const selectedPreset = d.presentations[parseInt(pres.value)] || null;
+    const presetVol = selectedPreset?.finalVolume;
+    volInput.value = Number.isFinite(presetVol) ? presetVol : (d.defaultFinalVolume || 100);
+    volInput.dataset.eletAutoFilled = "preset";
+  }
+}
+function updateEletDefaults(){
+  const drug=document.getElementById("eletDrug").value;
+  const d=eletDrugs()[drug];
+  if(!d) return;
+  // Quando há deltaModel, a dose deve SEMPRE vir do cálculo Δ (Adrogué / K-deficit /
+  // Bech) — não pré-preencher para evitar confusão com a fórmula. Quando não há
+  // deltaModel, usa defaultDose como ponto de partida.
+  if(d.deltaModel){
+    document.getElementById("eletDose").value = "";
+  } else {
+    document.getElementById("eletDose").value = d.defaultDose;
+  }
+  populateDoseUnitSelect("eletDoseUnitSelect", d.doseUnit);
+  setDoseUnitLabel("eletDoseUnitLabel", document.getElementById("eletDoseUnitSelect")?.value || d.doseUnit);
+  const ampSel=document.getElementById("eletAmpPresentation");
+  ampSel.innerHTML="";
+  (d.commercialPresentations || [{label:d.ampoule || "Conferir apresentação comercial"}]).forEach((p,i)=>{
+    const opt=document.createElement("option");
+    opt.value=i; opt.textContent=p.label; ampSel.appendChild(opt);
+  });
+  // Via de administração — popular com d.viaOptions ou ocultar wrapper se ausente
+  const viaSel=document.getElementById("eletVia");
+  const viaWrap=document.getElementById("eletViaWrap");
+  if(viaSel && Array.isArray(d.viaOptions) && d.viaOptions.length > 0){
+    if(viaWrap) viaWrap.style.display = "";
+    viaSel.innerHTML="";
+    d.viaOptions.forEach((v)=>{
+      const opt=document.createElement("option");
+      opt.value=v.value;
+      // Traço em vez de parênteses para não criar dupla parêntese visual.
+      opt.textContent = v.maxConcLabel ? `${v.label} — ${v.maxConcLabel}` : v.label;
+      // Tooltip mostra o texto completo se o select for estreito demais para exibir tudo.
+      opt.title = v.maxConcLabel ? `${v.label}: ${v.maxConcLabel}` : v.label;
+      viaSel.appendChild(opt);
+    });
+    if(d.viaOptions.length === 1){
+      viaSel.disabled = true;
+      viaSel.title = "Via fixa para esta medicação.";
+    } else {
+      viaSel.disabled = false;
+      viaSel.removeAttribute("title");
+    }
+  } else if(viaSel) {
+    viaSel.innerHTML="";
+    if(viaWrap) viaWrap.style.display = "none";
+  }
+  // Reset auto-fill flag para o volume — preset/Δ vão repopular
+  const volInput = document.getElementById("eletFinalVolume");
+  if(volInput){
+    volInput.value = "";
+    delete volInput.dataset.eletAutoFilled;
+  }
+  // Solução final sugerida — filtrada pela via atual (se houver). Isso também
+  // dispara applyEletVolumeFromPreset() que mostra e auto-preenche o volume.
+  updateEletPresentationsForVia();
+  // Painel Δ (atual/alvo/tempo) — mostra apenas se a droga tem deltaModel
+  populateEletDeltaPanel(d);
+  // Toggle entre preparo manual genérico e o específico de NaCl 3%.
+  const isNaCl = drug === "nacl3_hiponatremia";
+  const genericPrep = document.getElementById("eletManualPrepPanel");
+  const naclPrep = document.getElementById("eletNaClPrepPanel");
+  if(genericPrep) genericPrep.style.display = isNaCl ? "none" : "";
+  if(naclPrep) naclPrep.style.display = isNaCl ? "" : "none";
+  if(isNaCl) updateEletNaClRecipe();
+  // Tempo de administração inicial (input hidden). Quando há deltaModel com timePresets,
+  // sincronizar com o preset auto-selecionado (primeiro option) — assim headline e
+  // operacional ficam sempre coerentes. Sem deltaModel, usar drug.defaultTimeMin.
+  if(d.deltaModel && Array.isArray(d.deltaModel.timePresets) && d.deltaModel.timePresets.length > 0){
+    syncEletTempoFromPreset();
+  } else {
+    document.getElementById("eletTimeMin").value = d.defaultTimeMin || 60;
+  }
+  populateDiluentSelect("eletManDiluent", d);
+  if(document.getElementById("eletManMass")) document.getElementById("eletManMass").value = "";
+  if(document.getElementById("eletManVolume")) document.getElementById("eletManVolume").value = "";
+  const baseMass = baseMassUnitFromDoseUnit(d.doseUnit) || "g";
+  const massUnitSel=document.getElementById("eletManMassUnit");
+  if(massUnitSel){
+    const valid=["mcg","mg","g","UI","mEq","mmol"].includes(baseMass) ? baseMass : "g";
+    massUnitSel.value = valid;
+  }
+  updateEletManualConcPreview();
+  calcElet();
+}
+function currentElet(){
+  const drug=document.getElementById("eletDrug").value;
+  const d=eletDrugs()[drug];
+  const rawDose=parseFloat(document.getElementById("eletDose").value || d.defaultDose);
+  const selectedDoseUnit=document.getElementById("eletDoseUnitSelect")?.value || d.doseUnit;
+  setDoseUnitLabel("eletDoseUnitLabel", selectedDoseUnit);
+  const dose=convertMassDose(rawDose, selectedDoseUnit, d.doseUnit);
+  const ampoule=(d.commercialPresentations || [])[parseInt(document.getElementById("eletAmpPresentation").value || 0)] || null;
+  const presIdx=parseInt(document.getElementById("eletPresentation").value || 0);
+  const presentation=d.presentations[presIdx] || d.presentations[0];
+  const viaValue=document.getElementById("eletVia")?.value || null;
+  const viaMeta=Array.isArray(d.viaOptions) ? d.viaOptions.find(v => v.value === viaValue) : null;
+  const manual=getEletManualSolutionConc();
+  const conc=manual.filled ? manual.conc : presentation.conc;
+  const concUnit=manual.filled ? manual.concUnit : presentation.unit;
+  const timeMin = parseFloat(document.getElementById("eletTimeMin")?.value || d.defaultTimeMin || 60);
+  // Volume final: o preparo manual SOBRESCREVE o auto-calculado (Δ-panel/preset).
+  // Não há "campo separado" no formulário — o valor vem APENAS de uma das duas fontes.
+  const finalVolume = manual.filled
+    ? manual.volMl
+    : parseFloat(document.getElementById("eletFinalVolume")?.value || d.defaultFinalVolume || 100);
+  const doseUnitBase = baseMassUnitFromDoseUnit(d.doseUnit);
+  const isMassUnit = ["mcg","mg","g"].includes(doseUnitBase);
+  const doseConverted = isMassUnit ? toMilligrams(dose, d.doseUnit) : dose;
+  const convertedUnit = isMassUnit ? "mg" : doseUnitBase;
+  const concPerMLUnitLabel = `${convertedUnit}/mL`;
+  // Derivar conc por mL a partir de content/volume quando disponível (defensivo:
+  // protege contra erros de digitação no campo `conc`, que deve sempre = content/volume).
+  const ampouleConcPerML = ampoule
+    ? ((Number.isFinite(ampoule.content) && Number.isFinite(ampoule.volume) && ampoule.volume > 0)
+        ? ampoule.content / ampoule.volume
+        : ampoule.conc)
+    : null;
+  const volumeAspirar = (Number.isFinite(doseConverted) && Number.isFinite(ampouleConcPerML) && ampouleConcPerML > 0)
+    ? doseConverted / ampouleConcPerML
+    : NaN;
+  const concFinal = Number.isFinite(finalVolume) && finalVolume > 0 ? doseConverted / finalVolume : NaN;
+  const vazao = Number.isFinite(timeMin) && timeMin > 0 ? finalVolume / (timeMin / 60) : NaN;
+  return {
+    cat: ELET_CAT, drug, d, dose, rawDose, selectedDoseUnit,
+    conc:concFinal, concUnit: isMassUnit ? "mgml" : (convertedUnit === "UI" ? "uiml" : convertedUnit + "ml"),
+    amount:{amount:dose, unit:d.doseUnit, concUnit: isMassUnit ? "mgml" : (convertedUnit + "ml")},
+    volume:volumeAspirar,
+    presentation, ampoule,
+    isIntermittent:true,
+    timeMin, finalVolume,
+    doseInMg: doseConverted,
+    doseConvertedUnit: convertedUnit,
+    concFinalUnitLabel: concPerMLUnitLabel,
+    concFinal, vazao, volumeAspirar,
+    via: viaValue, viaMeta,
+    deltaMeta: collectEletDeltaMeta(d)
+  };
+}
+
+/* Monta a frase operacional única resumindo a reposição. Inclui dados Adrogué
+ * (massa Na⁺ entregue + Δ alvo + janela) inline quando a fórmula for adrogue.
+ * Sem caixa "Resumo da reposição" separada — evita redundância. */
+function buildEletOperationalLine(x){
+  if(!x || !x.d) return "";
+  const d = x.d;
+  const shortName = (d.name || "").split(" — ")[0] || d.name || "";
+  const electrolyteSymbol = shortName.split(" ")[0]; // "KCl", "NaCl", "Sulfato", ...
+  const atual = x.deltaMeta?.atual;
+  const atualUnit = x.deltaMeta?.inputUnit;
+  const presetDelta = x.deltaMeta?.presetDelta;
+  const tempoMin = x.deltaMeta?.tempoMin;
+  const sufixoAtual = (Number.isFinite(atual) && atualUnit)
+    ? ` em paciente com <strong>${electrolyteSymbol} ${fmt(atual,2)} ${atualUnit}</strong> (atual)`
+    : "";
+  const isAdrogue = x.deltaMeta && x.deltaMeta.formulaName === "adrogue";
+  const ampShortLabel = (x.ampoule?.label || "").split(" —")[0].split(" ·")[0] || (x.ampoule?.label || "ampola");
+  let planoStr = "";
+  let solutionStr;
+  if(isAdrogue){
+    // Dados Adrogué inline: alvo de Δ + tempo + massa Na⁺ entregue
+    const massaMEqNa = x.rawDose * 0.513;
+    if(Number.isFinite(presetDelta) && Number.isFinite(tempoMin)){
+      const horas = tempoMin / 60;
+      const tempoLabel = horas >= 1
+        ? `${fmt(horas, horas % 1 === 0 ? 0 : 1)} h`
+        : `${fmt(tempoMin, 0)} min`;
+      planoStr = `. <strong>Plano:</strong> elevar [Na⁺] em <strong>${fmt(presetDelta,1)} mEq/L</strong> em <strong>${tempoLabel}</strong>`;
+    }
+    solutionStr = `<strong>${fmt(x.finalVolume,0)} mL de NaCl 3%</strong> (= <strong>${fmt(massaMEqNa,1)} mEq Na⁺</strong>; 513 mEq/L)`;
+  } else {
+    const volAsp = x.volumeAspirar;
+    const volDil = Number.isFinite(volAsp) ? (x.finalVolume - volAsp) : x.finalVolume;
+    const diluente = d.preferredDiluent || "diluente";
+    const concLabel = Number.isFinite(x.concFinal) ? `${fmt(x.concFinal,3)} ${x.concFinalUnitLabel || "mg/mL"}` : "";
+    // Quando há Δ-panel preenchido (KCl, Fosfato), incluir tempo do plano
+    if(Number.isFinite(tempoMin)){
+      const horas = tempoMin / 60;
+      const tempoLabel = horas >= 1
+        ? `${fmt(horas, horas % 1 === 0 ? 0 : 1)} h`
+        : `${fmt(tempoMin, 0)} min`;
+      planoStr = `. <strong>Plano:</strong> ${fmt(x.rawDose,1)} ${x.selectedDoseUnit} em <strong>${tempoLabel}</strong>`;
+    }
+    solutionStr = `<strong>${fmt(volAsp,1)} mL de ${ampShortLabel}</strong> + <strong>${fmt(volDil,0)} mL de ${diluente}</strong>${concLabel ? ` (${concLabel})` : ""}`;
+  }
+  const viaLabel = x.viaMeta?.label || "—";
+  const vazaoStr = Number.isFinite(x.vazao) ? `<strong>${fmt(x.vazao,1)} mL/h</strong>` : "—";
+  return `Reposição de ${shortName}${sufixoAtual}${planoStr}. <strong>Solução:</strong> ${solutionStr}, via <strong>${viaLabel}</strong>, vazão <strong>${vazaoStr}</strong>.`;
+}
+
+/* Monta a frase de resumo da reposição quando a fórmula for "adrogue" (NaCl 3%).
+ * Modelo: "Para este paciente são necessários X mL de NaCl 3% para corrigir o
+ *  déficit de Y mEq de Na+, com potencial de elevar a [Na+]sérico em até Z mEq/L
+ *  se infundido em W horas." */
+function buildEletAdroguePhrase(x){
+  if(!x || !x.deltaMeta || x.deltaMeta.formulaName !== "adrogue") return "";
+  const m = x.deltaMeta;
+  const X = x.rawDose; // mL de NaCl 3%
+  const Y = X * 0.513; // mEq Na+
+  const Z = m.presetDelta;
+  const W = (m.tempoMin || 0) / 60;
+  const tempoFmt = W >= 1
+    ? `${fmt(W, W % 1 === 0 ? 0 : 1)} hora${W !== 1 ? "s" : ""}`
+    : `${fmt(m.tempoMin, 0)} min`;
+  if(!Number.isFinite(X) || !Number.isFinite(Y) || !Number.isFinite(Z)) return "";
+  return `Para este paciente são necessários <strong>${fmt(X, 0)} mL de NaCl 3%</strong> para corrigir o déficit de <strong>${fmt(Y, 1)} mEq de Na⁺</strong>, com potencial de elevar a [Na⁺] sérica em até <strong>${fmt(Z, 1)} mEq/L</strong> se infundido em <strong>${tempoFmt}</strong>.`;
+}
+
+/* Coleta os parâmetros do painel Δ — atual, preset (tempo, delta), gênero — para
+ * que calcElet possa montar a frase resumo (especialmente para NaCl 3%). */
+function collectEletDeltaMeta(d){
+  if(!d || !d.deltaModel) return null;
+  const dm = d.deltaModel;
+  const atualEl = document.getElementById("eletAtual");
+  const timeSel = document.getElementById("eletTimePreset");
+  const atual = atualEl ? parseFloat(atualEl.value) : NaN;
+  const selOpt = timeSel?.selectedOptions && timeSel.selectedOptions[0];
+  const tempoMin = selOpt ? parseFloat(selOpt.dataset.tempo) : NaN;
+  const presetDelta = selOpt && selOpt.dataset.delta ? parseFloat(selOpt.dataset.delta) : NaN;
+  const presetLabel = selOpt ? selOpt.textContent : "";
+  const sexo = document.getElementById("sexo")?.value || "masculino";
+  const peso = getPeso();
+  return {
+    formulaName: dm.formulaName || null,
+    inputUnit: dm.inputUnit,
+    atual, tempoMin, presetDelta, presetLabel, sexo, peso
+  };
+}
+
+/* Verifica se todos os inputs necessários estão preenchidos para apresentar o
+ * resultado sem contradições. Drogas sem deltaModel sempre prontas (defaults
+ * cobrem); drogas com deltaModel exigem peso + atual + tempo (+ alvo no modo "user"). */
+function isEletReady(d){
+  if(!d) return false;
+  if(!d.deltaModel) return true;
+  const dm = d.deltaModel;
+  const peso = getPeso();
+  if(!Number.isFinite(peso) || peso <= 0) return false;
+  const atual = parseFloat(document.getElementById("eletAtual")?.value);
+  if(!Number.isFinite(atual)) return false;
+  const timeSel = document.getElementById("eletTimePreset");
+  const selOpt = timeSel?.selectedOptions && timeSel.selectedOptions[0];
+  const tempoMin = selOpt ? parseFloat(selOpt.dataset.tempo) : NaN;
+  if(!Number.isFinite(tempoMin)) return false;
+  // Em deltaSource "preset" (NaCl 3% Adrogué), alvo não é necessário — delta vem do preset.
+  if(dm.deltaSource === "preset") return true;
+  // Em modo "user" (KCl, Fosfato), alvo é obrigatório.
+  const alvo = parseFloat(document.getElementById("eletAlvo")?.value);
+  return Number.isFinite(alvo);
+}
+
+function calcElet(){
+  if(!document.getElementById("eletOut")) return;
+  const drug = document.getElementById("eletDrug")?.value;
+  const d = drug ? eletDrugs()[drug] : null;
+  const ready = isEletReady(d);
+  // Lista de campos faltando (usada apenas no banner do headline quando NOT ready).
+  const missingList = (function(){
+    if(!d) return [];
+    if(!d.deltaModel) return [];
+    const dm = d.deltaModel;
+    const missing = [];
+    if(!Number.isFinite(getPeso()) || getPeso() <= 0) missing.push("peso do paciente");
+    if(!Number.isFinite(parseFloat(document.getElementById("eletAtual")?.value))) missing.push(`valor atual (${dm.inputUnit})`);
+    if(dm.deltaSource !== "preset" && !Number.isFinite(parseFloat(document.getElementById("eletAlvo")?.value))) missing.push(`valor alvo (${dm.inputUnit})`);
+    const timeSel = document.getElementById("eletTimePreset");
+    const selOpt = timeSel?.selectedOptions && timeSel.selectedOptions[0];
+    const tempoMin = selOpt ? parseFloat(selOpt.dataset.tempo) : NaN;
+    if(!Number.isFinite(tempoMin)) missing.push("tempo de reposição");
+    return missing;
+  })();
+  const x=currentElet();
+  const headline = `${fmt(x.rawDose,2)} ${x.selectedDoseUnit} em ${fmt(x.timeMin,0)} min → vazão ${fmt(x.vazao,1)} mL/h`;
+  const ampLabel = ampoulesNeededLabel(x.volumeAspirar, x.ampoule);
+  // Frase operacional única — sem caixa separada de Adrogué. Inclui dados Adrogué
+  // (massa Na⁺, Δ alvo, janela) inline quando aplicável.
+  const operationalLine = buildEletOperationalLine(x);
+  // Headline + frase operacional aparecem APENAS quando todos os inputs estão
+  // preenchidos (peso + atual + tempo + alvo no modo "user"). Quando não está
+  // pronto, NADA é renderizado no lugar do headline — os cards seguem completos
+  // logo abaixo (Solução, Posologia, Quando interromper, Cuidados), pois eles
+  // contêm informações de referência clínica úteis ao prescritor mesmo sem o
+  // cálculo final.
+  const headlineBlock = ready
+    ? `<div class="med-result__headline">
+        <strong>${x.d.name}: ${headline}</strong>
+        <span>${operationalLine}</span>
+      </div>`
+    : "";
+  document.getElementById("eletOut").innerHTML =
+    `<div class="med-result">
+      ${headlineBlock}
+      <div class="med-grid">
+        ${(function(){
+          const isAdrogue = x.deltaMeta && x.deltaMeta.formulaName === "adrogue";
+          // Para NaCl 3% (adrogue), os campos "Volume a aspirar" e "Concentração final
+          // calculada" são substituídos por informações mais úteis: massa total de Na+
+          // entregue, recipe de preparo manual auto-sugerido, concentração fixa do NaCl 3%.
+          const lines = [
+            medKv("Apresentação comercial", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
+            x.viaMeta ? medKv("Via de administração", `${x.viaMeta.label}${x.viaMeta.maxConcLabel ? ` <span class="small" style="color:#5f6b7a">(${x.viaMeta.maxConcLabel})</span>` : ""}`) : "",
+            medKv("Diluente/uso", diluentGuidance(x.d.name, x.presentation.prep, "intermittent")),
+            medKv("Preparo da solução", x.presentation.prep)
+          ];
+          if(isAdrogue){
+            const Vol = x.finalVolume;
+            const massaNa = Vol * 0.513;
+            const isManualPrep = (x.presentation.label || "").toLowerCase().includes("preparo manual");
+            if(isManualPrep){
+              const Vol20 = Math.round(0.11 * Vol);
+              const VolSF = Vol - Vol20;
+              lines.push(medKv("Diluição", `<strong>${fmt(Vol20,0)} mL</strong> de NaCl 20% + <strong>${fmt(VolSF,0)} mL</strong> de SF 0,9% (= <strong>${fmt(Vol,0)} mL de NaCl 3%</strong> = ${fmt(massaNa,1)} mEq Na⁺)`));
+            } else {
+              lines.push(medKv("Diluição", `Bolsa pronta de NaCl 3% — <strong>${fmt(Vol,0)} mL</strong> (= ${fmt(massaNa,1)} mEq Na⁺)`));
+            }
+            lines.push(medKv("Concentração final", `<strong>${fmt(massaNa,1)} mEq Na⁺ em ${fmt(Vol,0)} mL</strong> = 513 mEq/L (NaCl 3% — fixo)`));
+          } else {
+            // Padrão das demais calculadoras (e.g., Noradrenalina):
+            // "Diluição: 16 mL + 234 mL de SF 0,9% (= 16 mg em 250 mL)"
+            // "Concentração final: 16 mg em 250 mL = 0,064 mg/mL"
+            const ampShort = (x.ampoule?.label || "").split(" —")[0].split(" ·")[0] || "ampola";
+            const volAsp = x.volumeAspirar;
+            const volDil = Number.isFinite(volAsp) ? (x.finalVolume - volAsp) : x.finalVolume;
+            const diluente = x.d.preferredDiluent || "diluente";
+            const massaTotal = `${fmt(x.rawDose,2)} ${x.selectedDoseUnit}`;
+            lines.push(medKv("Diluição", `<strong>${fmt(volAsp,2)} mL</strong> de ${ampShort}${ampLabel ? ` (${ampLabel})` : ""} + <strong>${fmt(volDil,0)} mL</strong> de ${diluente} (= <strong>${massaTotal}</strong> em ${fmt(x.finalVolume,0)} mL)`));
+            lines.push(medKv("Concentração final", `<strong>${massaTotal} em ${fmt(x.finalVolume,0)} mL</strong> = ${fmt(x.concFinal,3)} ${x.concFinalUnitLabel || "mg/mL"}`));
+          }
+          return medCard("Solução preparada", lines, "med-card--primary");
+        })()}
+        ${medCard("Posologia e farmacodinâmica", [
+          medKv("Categoria", dvaBolusDrugs[x.cat].label),
+          medKv("Dose total", `${fmt(x.rawDose,2)} ${x.selectedDoseUnit}`),
+          medKv("Tempo de administração", `${fmt(x.timeMin,0)} min`),
+          medKv("Vazão na bomba", `${fmt(x.vazao,1)} mL/h por ${fmt(x.timeMin,0)} min`),
+          medKv("Faixa terapêutica", x.d.range)
+        ], "med-card--pk")}
+        ${x.d.successCriteria ? medCard("Quando interromper — critério de sucesso", [
+          medKv("Diretrizes", x.d.successCriteria)
+        ], "med-card--scenario-good") : ""}
+        ${medCard("Cuidados e segurança", [
+          medKv("Cuidados", x.d.notes),
+          medKv("Modo de administração", "Reposição intermitente em bomba — NÃO é infusão contínua. A vazão calculada vale apenas pelos minutos definidos."),
+          medKv("Estabilidade/validade", solutionStabilityGuidance(x.d.name, x.presentation.prep, "intermittent"))
+        ], "med-card--safety")}
+      </div>
+    </div>`;
+}
+function addEletToSummary(){
+  const x=currentElet();
+  const viaText = x.viaMeta ? ` Via: ${x.viaMeta.label}${x.viaMeta.maxConcLabel ? ` (${x.viaMeta.maxConcLabel})` : ""}.` : "";
+  // Metadados do Δ-panel para enriquecer o texto do prontuário (chartItemLine).
+  const eletDelta = x.deltaMeta ? {
+    formulaName: x.deltaMeta.formulaName || null,
+    atual: x.deltaMeta.atual,
+    delta: x.deltaMeta.presetDelta != null ? x.deltaMeta.presetDelta : (Number.isFinite(x.deltaMeta.presetDelta) ? x.deltaMeta.presetDelta : null),
+    inputUnit: x.deltaMeta.inputUnit,
+    tempoMin: x.deltaMeta.tempoMin
+  } : null;
+  state.summary.push({
+    type:"Reposição de eletrólito",
+    categoryKey:ELET_CAT,
+    categoryLabel:dvaBolusDrugs[ELET_CAT]?.label || "",
+    name:x.d.name,
+    dose:`${fmt(x.rawDose,2)} ${x.selectedDoseUnit} em ${fmt(x.timeMin,0)} min`,
+    mass:`${fmt(x.rawDose,2)} ${x.selectedDoseUnit}`,
+    volume:`${fmt(x.vazao,1)} mL/h por ${fmt(x.timeMin,0)} min`,
+    range:x.d.range,
+    result:`${fmt(x.rawDose,2)} ${x.selectedDoseUnit} em ${fmt(x.finalVolume,0)} mL infundido em ${fmt(x.timeMin,0)} min (vazão ${fmt(x.vazao,1)} mL/h)`,
+    shortResult:`dose ${fmt(x.rawDose,2)} ${x.selectedDoseUnit} em ${fmt(x.timeMin,0)} min; vazão ${fmt(x.vazao,1)} mL/h`,
+    prep:`${bolusAmpouleLine(x.ampoule)} ${x.presentation.prep}.${viaText} Aspirar ${fmt(x.volumeAspirar,2)} mL da ampola, diluir até volume final ${fmt(x.finalVolume,0)} mL, infundir em ${fmt(x.timeMin,0)} min na vazão ${fmt(x.vazao,1)} mL/h.`,
+    notes:x.d.notes,
+    chartKind:"intermittent",
+    chartDose:`${fmt(x.rawDose,2)} ${x.selectedDoseUnit}`,
+    chartMass:`${fmt(x.rawDose,2)} ${x.selectedDoseUnit}`,
+    chartVolume:`${fmt(x.finalVolume,0)} mL em ${fmt(x.timeMin,0)} min (vazão ${fmt(x.vazao,1)} mL/h)`,
+    diluentInfo:diluentGuidance(x.d.name, x.presentation.prep, "intermittent"),
+    stabilityInfo:solutionStabilityGuidance(x.d.name, x.presentation.prep, "intermittent"),
+    // Metadados para o texto do prontuário (chartItemLine), distinguindo
+    // KCl-like (concentração + via + vazão) de NaCl-like (volume final + Na+).
+    eletMeta: {
+      rawDose: x.rawDose,
+      doseUnit: x.selectedDoseUnit,
+      finalVolume: x.finalVolume,
+      timeMin: x.timeMin,
+      vazao: x.vazao,
+      concFinal: x.concFinal,
+      concFinalUnitLabel: x.concFinalUnitLabel,
+      viaLabel: x.viaMeta ? x.viaMeta.label : null,
+      atual: eletDelta?.atual,
+      delta: eletDelta?.delta,
+      inputUnit: eletDelta?.inputUnit,
+      formulaName: eletDelta?.formulaName,
+      // Para NaCl 3% (Adrogué): massa de Na+ entregue
+      massaNaMEq: x.deltaMeta?.formulaName === "adrogue" ? x.rawDose * 0.513 : null
+    }
   });
   renderSummary();
   confirmSummaryAdd(x.d.name);
@@ -3131,13 +4432,49 @@ function chartIntroText(){
 
 function chartItemLine(item, idx){
   const isBolus = /\bb[óo]lus\b/i.test(item.type || "") || item.chartKind === "bolus";
+  const isElet = item.type === "Reposição de eletrólito" && item.eletMeta;
   const parts = extractSolutionParts(item.prep);
   const effectiveMass = parts.mass !== "—" ? parts.mass : (item.mass && item.mass !== "—" ? item.mass : "—");
 
   if(isBolus){
-    // Nome — bólus — massa (volume de medicação)
+    // Nome — bólus — massa (volume de medicação) — dose por kg (quando aplicável)
     const volPart = item.volume ? ` (${item.volume})` : "";
-    return `${idx}. ${item.name} — bólus — ${effectiveMass}${volPart}`;
+    // item.dose costuma vir como "0.3 mg/kg" — anexamos no final se aplicável.
+    const dosePerKg = (item.dose && /\/kg/i.test(item.dose)) ? ` — ${item.dose}` : "";
+    return `${idx}. ${item.name} — bólus — ${effectiveMass}${volPart}${dosePerKg}`;
+  }
+
+  if(isElet){
+    // Reposição IV de eletrólito — formato específico que inclui valor atual do exame,
+    // delta programado, via e características da solução. Removemos "— reposição em ..."
+    // do nome para evitar redundância (já vem na linha).
+    const cleanName = (item.name || "").split(" — ")[0] || item.name;
+    const m = item.eletMeta;
+    const horas = m.timeMin / 60;
+    const tempoLabel = horas >= 1
+      ? `${fmt(horas, horas % 1 === 0 ? 0 : 1)} h`
+      : `${fmt(m.timeMin, 0)} min`;
+    const electrolyteSymbol = cleanName.split(" ")[0]; // "KCl", "NaCl", "Sulfato", ...
+    const exam = (Number.isFinite(m.atual) && m.inputUnit)
+      ? ` — ${electrolyteSymbol} atual ${fmt(m.atual,2)} ${m.inputUnit}`
+      : "";
+    const deltaTxt = Number.isFinite(m.delta)
+      ? ` (Δ programado +${fmt(m.delta,1)} ${m.inputUnit || "mEq/L"} em ${tempoLabel})`
+      : "";
+    const viaTxt = m.viaLabel ? ` — via ${m.viaLabel}` : "";
+    const vazaoTxt = Number.isFinite(m.vazao) ? ` — vazão ${fmt(m.vazao,1)} mL/h` : "";
+    if(m.formulaName === "adrogue"){
+      // NaCl 3%: dose = volume final em mL de NaCl 3% + massa de Na+ entregue
+      const massaNa = Number.isFinite(m.massaNaMEq) ? ` (${fmt(m.massaNaMEq,1)} mEq Na⁺ entregues)` : "";
+      const volFinal = `volume final ${fmt(m.finalVolume,0)} mL de NaCl 3%${massaNa}`;
+      return `${idx}. ${cleanName}${exam}${deltaTxt} — ${volFinal}${viaTxt}${vazaoTxt}`;
+    }
+    // KCl-like (Bech / déficit USP): concentração da solução + via + vazão
+    const solucao = `${fmt(m.rawDose,2)} ${m.doseUnit} em ${fmt(m.finalVolume,0)} mL`;
+    const concTxt = Number.isFinite(m.concFinal)
+      ? ` (${fmt(m.concFinal,3)} ${m.concFinalUnitLabel || "mg/mL"})`
+      : "";
+    return `${idx}. ${cleanName}${exam}${deltaTxt} — solução ${solucao}${concTxt}${viaTxt}${vazaoTxt}`;
   }
 
   // Infusão contínua: Nome — infusão contínua — massa/volume final (concentração) — dose prescrita — vazão
@@ -3318,18 +4655,32 @@ function renderSummary(){
   let commands = state.summary.map(i => prepCommand(i)).join("");
   const prepHeader = commands ? `<div class="prep-line-summary prep-line-summary--header"><span>Medicação</span><span>Solução preparada</span><span>Concentração</span><span>Administração</span></div>` : "";
   const infusionGroups = renderInfusionGroups();
+  // Estilo padronizado para os <details> colapsíveis dentro do cenário-resumo.
+  // Mantemos o fundo escuro (mesmo tema do .calc-result envolvente) para que os
+  // elementos internos — resumo-group-title, prep-line-summary--header, pill cards —
+  // renderizem com as cores claras originalmente desenhadas para o tema escuro.
+  const dStyle = "margin-top:14px;border:1px solid rgba(255,255,255,0.18);border-radius:12px;overflow:hidden;background:rgba(255,255,255,0.06)";
+  const dSummary = "padding:10px 14px;cursor:pointer;font-weight:700;color:#fff;background:rgba(255,255,255,0.10);list-style:none;font-size:13px;text-transform:uppercase;letter-spacing:.03em";
+  const dBody = "padding:12px 14px";
+  // Ordem: (1) Cenário-resumo (paciente + tabela), (2) Infusões contínuas (recolhível),
+  // (3) Preparo operacional estruturado (recolhível).
+  const infusionBlock = infusionGroups
+    ? `<details style="${dStyle}" open><summary style="${dSummary}">Infusões contínuas — visão rápida</summary><div style="${dBody}">${infusionGroups}</div></details>`
+    : "";
+  const prepBlock = commands
+    ? `<details style="${dStyle}"><summary style="${dSummary}">Preparo operacional estruturado</summary><div style="${dBody}">${prepHeader}${commands}</div></details>`
+    : "";
   out.innerHTML=`<strong>Cenário: ${document.getElementById("cenario").selectedOptions[0].text} · Peso ${fmt(getPeso(),1)} kg · PBW ${fmt(pbw(),1)} kg</strong>
   <span>${scenarioNotes[getCenario()].iot}<br>${scenarioNotes[getCenario()].dva}</span>
-  ${infusionGroups}
   <table class="summary-table"><thead><tr><th>#</th><th>Classe</th><th>Droga</th><th>Dose prescrita</th><th>Administração</th><th>Faixa terapêutica</th></tr></thead><tbody>${rows}</tbody></table>
-  <strong style="margin-top:10px">Preparo operacional estruturado</strong>
-  ${prepHeader}${commands}`;
+  ${infusionBlock}
+  ${prepBlock}`;
   updateSummaryFeedback();
 }
 function clearSummary(){ state.summary=[]; renderSummary(); }
 
 ["peso","altura","sexo","cenario"].forEach(id=>document.getElementById(id).addEventListener("input", ()=>{renderPatient(); updateIOTStrategy(); calcIOT(); calcDVA(); calcInfusion(); renderSummary();}));
-initModuleMenu(); initIOT(); initDVA(); initDVABolus(); initInfusion(); renderPatient(); renderSummary();
+initModuleMenu(); initIOT(); initDVA(); initDVABolus(); initElet(); initInfusion(); renderPatient(); renderSummary();
 </script>
 </body>
 </html>

@@ -60,34 +60,48 @@ e otimizações por módulo antes de gerar deploy.
 
 - [ ] **P_** _Tipo_ — descrição do item.
 
-## Módulo 7 — Referências consolidadas
+## Módulo 6 — Distúrbios hidroeletrolíticos
 
-`src/data/modules/modulo_07_referencias.html`
+`src/data/modules/modulo_06_disturbios_hidroeletroliticos.html`
 
-Reúne a bibliografia primária dos seis módulos clínicos, organizada por módulo de origem.
-Criado em 2026-05-21 a partir das seções `<section id="referencias">` extraídas dos
-módulos 1–6 (mini-blocos contextuais `.ref` permanecem nos módulos originais).
+Sódio, potássio, fósforo, magnésio e cálcio: cada distúrbio é seção recolhível
+com Hipo/Hiper como sub-collapsibles (recolhidos por padrão). Conteúdo clínico
+preservado verbatim da versão Mod 7 anterior — apenas reestruturado em colapsos.
 
-- [ ] **P2** _texto_ — revisar se há referências duplicadas que devem ser deduplicadas.
-- [ ] **P2** _interface_ — confirmar render no `?preview=app` e no `?preview=modulos`.
+- [ ] **P_** _Tipo_ — descrição do item.
 
-## Módulo 6 — Calculadoras interativas
+## Módulo 7 — Calculadoras interativas
 
-`src/data/modules/modulo_06_calculadoras_interativas.html`
+`src/data/modules/modulo_07_calculadoras_interativas.html`
 
-Calculadoras presentes (segundo `docs/developer_notes.md`):
+Calculadoras presentes:
 
 - Bólus para IOT
-- DVA (drogas vasoativas)
-- Infusão contínua
-- Planejamento de ampolas/frascos e bolsas
+- Bólus / dose intermitente (sem reposição de eletrólitos)
+- **Reposição de eletrólitos** (seção dedicada §4 — KCl/MgSO₄/gluconato Ca/CaCl₂/fosfato K)
+- Infusão contínua (DVA + sedativos + analgesia + diuréticos + antiarrítmicos + anticonvulsivantes + broncodilatadores)
 - PBW (peso predito)
-- Cenários clínicos
-- Estratégias de IOT
+- Cenários clínicos (cenário-resumo)
 
 Pendências:
 
 - [ ] **P_** _Tipo_ — descrição do item.
+
+## Módulo 8 — Referências consolidadas
+
+`src/data/modules/modulo_08_referencias.html`
+
+Reúne a bibliografia primária dos módulos clínicos, organizada por módulo de origem.
+Criado em 2026-05-21 a partir das seções `<section id="referencias">` extraídas dos
+módulos 1–6 (mini-blocos contextuais `.ref` permanecem nos módulos originais).
+
+**Regra de ordenação dos módulos**: o módulo de Calculadoras interativas é sempre
+o antepenúltimo (penúltimo entre módulos clínicos); as Referências consolidadas
+são sempre o último módulo. Ao adicionar novos módulos clínicos, intercalá-los
+antes do bloco Calculadoras + Referências.
+
+- [ ] **P2** _texto_ — revisar se há referências duplicadas que devem ser deduplicadas.
+- [ ] **P2** _interface_ — confirmar render no `?preview=app` e no `?preview=modulos`.
 
 ---
 
