@@ -1,4 +1,5 @@
 import {
+  getAllowedPriceIds,
   getClerkUser,
   getPrimaryEmail,
   getSafeReturnUrl,
@@ -19,13 +20,20 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   try {
     const userId = await requireClerkUserId(request, env);
     const user = await getClerkUser(env, userId);
-    const body = (await request.json().catch(() => ({}))) as { returnUrl?: string };
+    const body = (await request.json().catch(() => ({}))) as { returnUrl?: string; priceId?: string };
     const returnUrl = getSafeReturnUrl(request, env, body.returnUrl);
     const subscription = subscriptionFromUserMetadata(user);
 
+    // Valida o priceId contra o allowlist do ambiente; cai para o plano anual se ausente/inválido.
+    const allowedPriceIds = getAllowedPriceIds(env);
+    const priceId =
+      body.priceId && allowedPriceIds.has(body.priceId)
+        ? body.priceId
+        : requireEnv(env, "STRIPE_PRICE_ID");
+
     const params = new URLSearchParams();
     params.set("mode", "subscription");
-    params.set("line_items[0][price]", requireEnv(env, "STRIPE_PRICE_ID"));
+    params.set("line_items[0][price]", priceId);
     params.set("line_items[0][quantity]", "1");
     params.set("success_url", `${returnUrl}${returnUrl.includes("?") ? "&" : "?"}checkout=success`);
     params.set("cancel_url", `${returnUrl}${returnUrl.includes("?") ? "&" : "?"}checkout=cancelled`);

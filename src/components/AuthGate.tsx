@@ -25,13 +25,40 @@ const landingModuleSources = moduleSources.filter((mod) => LANDING_MODULE_NUMBER
 const billingRequired = import.meta.env.VITE_CLERK_BILLING_REQUIRED !== "false";
 const stripeCheckoutFallbackUrl = import.meta.env.VITE_STRIPE_CHECKOUT_URL;
 const isDevEnvironment = import.meta.env.DEV;
-// Link de pagamento da fase fundadora. Em produção o fallback aponta para o
-// Payment Link live R$ 29,99 one-time. Em dev/test, definir
-// VITE_FOUNDER_PAYMENT_LINK no .env.local apontando para um Payment Link de
-// teste (https://buy.stripe.com/test_...).
-const founderPaymentLink =
-  import.meta.env.VITE_FOUNDER_PAYMENT_LINK ??
-  "https://buy.stripe.com/14AeVc0vS66vgVKeJB3gk01";
+// Planos de assinatura recorrente. Price IDs não são segredos — são identificadores
+// públicos do Stripe, seguros para constar no bundle do frontend.
+const PLANS = [
+  {
+    id: "annual" as const,
+    priceId: "price_1TazAEAnI7zzun0R5wGrD2ol",
+    label: "Anual",
+    price: "R$ 199,99",
+    period: "por ano",
+    perMonth: "R$ 16,67/mês",
+    badge: "Melhor valor" as string | null,
+    highlight: true
+  },
+  {
+    id: "quarterly" as const,
+    priceId: "price_1Taz9eAnI7zzun0RCHhB5NOg",
+    label: "Trimestral",
+    price: "R$ 63,99",
+    period: "por 3 meses",
+    perMonth: "R$ 21,33/mês",
+    badge: null as string | null,
+    highlight: false
+  },
+  {
+    id: "monthly" as const,
+    priceId: "price_1Taz9MAnI7zzun0R92AYw0ld",
+    label: "Mensal",
+    price: "R$ 25,99",
+    period: "por mês",
+    perMonth: null as string | null,
+    badge: null as string | null,
+    highlight: false
+  }
+];
 
 type SubscriptionStatus = {
   active: boolean;
@@ -172,12 +199,12 @@ function LandingNav({ previewMode = false }: { previewMode?: boolean }) {
         )}
         {previewMode ? (
           <button className="button button--cta" type="button" disabled>
-            Acesso fundador
+            Assinar
           </button>
         ) : (
           <SignUpButton mode="modal">
             <button className="button button--cta" type="button">
-              Acesso fundador
+              Assinar
             </button>
           </SignUpButton>
         )}
@@ -450,7 +477,7 @@ function LandingModuleCarousel() {
         <p className="landing-section-lead">
           Dois módulos do Manual entram em rotação no celular ao lado — um capítulo clínico e a
           tela de calculadoras. A prévia é somente leitura; a interação completa é liberada após
-          o pagamento do acesso fundador.
+          a assinatura.
         </p>
 
         <div className="landing-carousel-meta">
@@ -537,12 +564,12 @@ export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean
           <div className="landing-cta">
             {previewMode ? (
               <button className="button button--cta button--lg" type="button" disabled>
-                Garantir acesso fundador — R$ 29,99
+                Assinar agora
               </button>
             ) : (
               <SignUpButton mode="modal">
                 <button className="button button--cta button--lg" type="button">
-                  Garantir acesso fundador — R$ 29,99
+                  Assinar agora
                 </button>
               </SignUpButton>
             )}
@@ -558,10 +585,10 @@ export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean
               </SignInButton>
             )}
           </div>
-          <ul className="landing-hero-meta" aria-label="Benefícios do acesso fundador">
-            <li><span className="dot dot--cyan" aria-hidden="true" /> Pagamento único de R$ 29,99</li>
+          <ul className="landing-hero-meta" aria-label="Benefícios da assinatura">
+            <li><span className="dot dot--cyan" aria-hidden="true" /> A partir de R$ 25,99 por mês</li>
             <li><span className="dot dot--cyan" aria-hidden="true" /> Seis módulos clínicos e calculadoras integradas</li>
-            <li><span className="dot dot--cyan" aria-hidden="true" /> Atualizações inclusas no acesso</li>
+            <li><span className="dot dot--cyan" aria-hidden="true" /> Atualizações inclusas em todos os planos</li>
           </ul>
         </section>
 
@@ -654,41 +681,54 @@ export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean
           </p>
         </section>
 
-        <section className="landing-founder" aria-labelledby="founder-title">
-          <div className="landing-founder-card">
-            <span className="landing-badge landing-badge--solid">Acesso fundador</span>
-            <h2 id="founder-title">
-              R$ <span className="founder-price">29</span>
-              <span className="founder-price-cents">,99</span>
-            </h2>
-            <p className="founder-mode">Pagamento único — sem mensalidade</p>
-            <ul className="founder-list">
-              <li><span className="dot dot--success" aria-hidden="true" /> Acesso completo aos seis módulos clínicos</li>
-              <li><span className="dot dot--success" aria-hidden="true" /> Calculadoras interativas e fluxos visuais integrados</li>
-              <li><span className="dot dot--success" aria-hidden="true" /> Modo offline após o primeiro acesso autenticado</li>
-              <li><span className="dot dot--success" aria-hidden="true" /> Atualizações clínicas inclusas no acesso</li>
-              <li><span className="dot dot--success" aria-hidden="true" /> Atendimento prioritário para a turma fundadora</li>
-            </ul>
-            {previewMode ? (
-              <button className="button button--cta button--xl" type="button" disabled>
-                Quero meu acesso fundador
-              </button>
-            ) : (
-              <SignUpButton mode="modal">
-                <button className="button button--cta button--xl" type="button">
-                  Quero meu acesso fundador
-                </button>
-              </SignUpButton>
-            )}
-            <p className="founder-note">
-              Crie sua conta agora e conclua o pagamento de R$ 29,99 em seguida para liberar o
-              acesso completo ao Manual.
-            </p>
-            <p className="founder-note">
-              As vagas da fase fundadora são limitadas. Encerrado o período, o produto passa ao modelo
-              de assinatura mensal padrão.
+        <section className="landing-founder" aria-labelledby="pricing-title">
+          <div className="landing-pricing-header">
+            <span className="landing-badge landing-badge--solid">Planos de assinatura</span>
+            <h2 id="pricing-title">Acesso completo ao Manual</h2>
+            <p className="landing-pricing-lead">
+              Todos os planos incluem os seis módulos clínicos, calculadoras interativas,
+              modo offline e atualizações.
             </p>
           </div>
+          <div className="landing-pricing-grid">
+            {PLANS.map((plan) => (
+              <div
+                key={plan.id}
+                className={`pricing-card${plan.highlight ? " pricing-card--featured" : ""}`}
+              >
+                {plan.badge && <span className="pricing-card-badge">{plan.badge}</span>}
+                <span className="pricing-card-label">{plan.label}</span>
+                <div className="pricing-card-amount">
+                  <span className="pricing-card-price">{plan.price}</span>
+                  <span className="pricing-card-period">{plan.period}</span>
+                </div>
+                {plan.perMonth && (
+                  <span className="pricing-card-per-month">{plan.perMonth}</span>
+                )}
+                {previewMode ? (
+                  <button
+                    className={`button ${plan.highlight ? "button--cta" : "button--ghost"} button--full`}
+                    type="button"
+                    disabled
+                  >
+                    Assinar
+                  </button>
+                ) : (
+                  <SignUpButton mode="modal">
+                    <button
+                      className={`button ${plan.highlight ? "button--cta" : "button--ghost"} button--full`}
+                      type="button"
+                    >
+                      Assinar
+                    </button>
+                  </SignUpButton>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="founder-note">
+            Crie sua conta e escolha o plano para liberar o acesso completo ao Manual.
+          </p>
         </section>
 
         <footer className="landing-footer">
@@ -889,11 +929,13 @@ function PaywallPreviewCarousel() {
 }
 
 function PaywallOverlay({
-  paymentUrl,
+  onCheckout,
+  checkingOutPriceId,
   isWaiting,
   onRefresh
 }: {
-  paymentUrl: string;
+  onCheckout: (priceId: string) => void;
+  checkingOutPriceId: string | null;
   isWaiting: boolean;
   onRefresh: () => void;
 }) {
@@ -901,19 +943,37 @@ function PaywallOverlay({
     <div className="paywall-overlay" role="dialog" aria-modal="false" aria-labelledby="paywall-title">
       <div className="paywall-card">
         <div className="paywall-card-copy">
-          <span className="paywall-eyebrow">Acesso fundador</span>
+          <span className="paywall-eyebrow">Assine para acessar</span>
           <h2 id="paywall-title" className="paywall-title">
-            Conclua o pagamento para liberar o Manual
+            Escolha o plano para liberar o Manual
           </h2>
           <p className="paywall-lead">
-            Sua conta está criada. Veja ao lado os 7 módulos reais do Manual em rotação —
-            calculadoras, fluxos clínicos e referências. O acesso completo, com interação e
-            cálculo, é liberado após a confirmação do pagamento de R$ 29,99 (pagamento único
-            da fase fundadora).
+            Sua conta está criada. Escolha um plano abaixo para liberar o acesso completo —
+            calculadoras interativas, módulos clínicos e modo offline.
           </p>
-          <a className="button button--cta button--xl paywall-cta" href={paymentUrl}>
-            Concluir pagamento — R$ 29,99
-          </a>
+          <div className="paywall-plan-grid" role="list">
+            {PLANS.map((plan) => (
+              <button
+                key={plan.id}
+                className={`paywall-plan-card${plan.highlight ? " paywall-plan-card--featured" : ""}`}
+                type="button"
+                role="listitem"
+                onClick={() => onCheckout(plan.priceId)}
+                disabled={checkingOutPriceId !== null}
+              >
+                {plan.badge && <span className="paywall-plan-badge">{plan.badge}</span>}
+                <span className="paywall-plan-label">{plan.label}</span>
+                <span className="paywall-plan-price">{plan.price}</span>
+                <span className="paywall-plan-period">{plan.period}</span>
+                {plan.perMonth && (
+                  <span className="paywall-plan-per-month">{plan.perMonth}</span>
+                )}
+                <span className="paywall-plan-action">
+                  {checkingOutPriceId === plan.priceId ? "Aguardando..." : "Assinar"}
+                </span>
+              </button>
+            ))}
+          </div>
           <button
             className="button button--quiet paywall-refresh"
             type="button"
@@ -923,8 +983,8 @@ function PaywallOverlay({
             {isWaiting ? "Aguardando confirmação do pagamento..." : "Já paguei — atualizar acesso"}
           </button>
           <p className="paywall-note">
-            Após pagar você é redirecionado de volta. O acesso é liberado automaticamente assim
-            que o Stripe confirma o pagamento.
+            Após assinar você é redirecionado de volta. O acesso é liberado automaticamente
+            assim que o Stripe confirma o pagamento.
           </p>
         </div>
         <PaywallPreviewCarousel />
@@ -936,29 +996,23 @@ function PaywallOverlay({
 function subscriptionStatusFromPublicMetadata(
   metadata: Record<string, unknown> | null | undefined
 ): SubscriptionStatus {
+  // founderAccess: true concede acesso vitalício, independente de assinatura.
+  const founderAccess = metadata?.founderAccess === true;
   const subscriptionStatus =
     typeof metadata?.subscriptionStatus === "string" ? metadata.subscriptionStatus : undefined;
   const stripeSubscriptionStatus =
     typeof metadata?.stripeSubscriptionStatus === "string" ? metadata.stripeSubscriptionStatus : undefined;
-  const active = subscriptionStatus === "active" || stripeSubscriptionStatus === "active";
+  const active =
+    founderAccess ||
+    subscriptionStatus === "active" ||
+    stripeSubscriptionStatus === "active";
 
   return {
     active,
-    status: subscriptionStatus ?? stripeSubscriptionStatus ?? "none"
+    status: founderAccess ? "founder" : (subscriptionStatus ?? stripeSubscriptionStatus ?? "none")
   };
 }
 
-function buildFounderPaymentUrl(clerkUserId: string | undefined, email: string | undefined): string {
-  const params = new URLSearchParams();
-  if (clerkUserId) {
-    params.set("client_reference_id", clerkUserId);
-  }
-  if (email) {
-    params.set("prefilled_email", email);
-  }
-  const query = params.toString();
-  return query ? `${founderPaymentLink}?${query}` : founderPaymentLink;
-}
 
 function SignedInAccessGate({ children }: PropsWithChildren) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
@@ -966,6 +1020,7 @@ function SignedInAccessGate({ children }: PropsWithChildren) {
   const [accessState, setAccessState] = useState<AccessState>("idle");
   const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null);
   const [isCheckoutBusy, setIsCheckoutBusy] = useState(false);
+  const [checkingOutPriceId, setCheckingOutPriceId] = useState<string | null>(null);
   const [isWaitingPayment, setIsWaitingPayment] = useState(false);
   const pollTimeoutRef = useRef<number | null>(null);
   const isBillingBusy = isCheckoutBusy;
@@ -1087,6 +1142,29 @@ function SignedInAccessGate({ children }: PropsWithChildren) {
     }
   };
 
+  const checkoutPlan = async (priceId: string) => {
+    if (checkingOutPriceId) return;
+    setCheckingOutPriceId(priceId);
+    try {
+      const token = await getToken();
+      const response = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ priceId, returnUrl: appReturnUrl })
+      });
+      const data = (await response.json()) as { url?: string; error?: string };
+      if (!response.ok || !data.url) {
+        throw new Error(data.error || "Nao foi possivel iniciar o checkout.");
+      }
+      window.location.assign(data.url);
+    } catch {
+      setCheckingOutPriceId(null);
+    }
+  };
+
   if (!isLoaded || !isUserLoaded) {
     return <LoadingScreen />;
   }
@@ -1099,8 +1177,6 @@ function SignedInAccessGate({ children }: PropsWithChildren) {
     return <LoadingScreen />;
   }
 
-  const primaryEmail = user?.primaryEmailAddress?.emailAddress;
-  const paymentUrl = buildFounderPaymentUrl(user?.id, primaryEmail);
   const isBlocked = accessState === "blocked" || accessState === "error";
   // Stripe Customer Portal só faz sentido para assinaturas recorrentes.
   // No modelo atual (Payment Link one-time R$ 29,99 fundador), o webhook
@@ -1115,6 +1191,7 @@ function SignedInAccessGate({ children }: PropsWithChildren) {
   void subscription;
   void isDevEnvironment;
   void stripeCheckoutFallbackUrl;
+  void checkingOutPriceId;
 
   return (
     <>
@@ -1134,11 +1211,10 @@ function SignedInAccessGate({ children }: PropsWithChildren) {
       <div className={isBlocked ? "app-paywall-locked" : undefined}>{children}</div>
       {isBlocked ? (
         <PaywallOverlay
-          paymentUrl={paymentUrl}
+          onCheckout={(priceId) => { void checkoutPlan(priceId); }}
+          checkingOutPriceId={checkingOutPriceId}
           isWaiting={isWaitingPayment}
-          onRefresh={() => {
-            void refreshAccess();
-          }}
+          onRefresh={() => { void refreshAccess(); }}
         />
       ) : null}
     </>
@@ -1154,7 +1230,8 @@ export function PaywallPreview() {
         <App />
       </div>
       <PaywallOverlay
-        paymentUrl="https://buy.stripe.com/test_preview"
+        onCheckout={() => undefined}
+        checkingOutPriceId={null}
         isWaiting={false}
         onRefresh={() => undefined}
       />

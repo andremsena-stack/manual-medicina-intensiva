@@ -4,7 +4,9 @@ export interface Env {
   APP_URL?: string;
   CLERK_SECRET_KEY: string;
   STRIPE_ALLOWED_STATUSES?: string;
-  STRIPE_PRICE_ID: string;
+  STRIPE_PRICE_ID: string;            // anual (plano principal)
+  STRIPE_PRICE_ID_QUARTERLY?: string; // trimestral
+  STRIPE_PRICE_ID_MONTHLY?: string;   // mensal
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET?: string;
 }
@@ -37,6 +39,16 @@ export function jsonResponse(data: unknown, init?: ResponseInit): Response {
       ...(init?.headers ?? {})
     }
   });
+}
+
+// Retorna o conjunto de Price IDs permitidos para criação de checkout.
+// Valida no backend para impedir que o frontend envie IDs arbitrários.
+export function getAllowedPriceIds(env: Env): Set<string> {
+  const ids = new Set<string>();
+  ids.add(requireEnv(env, "STRIPE_PRICE_ID"));
+  if (env.STRIPE_PRICE_ID_QUARTERLY) ids.add(env.STRIPE_PRICE_ID_QUARTERLY);
+  if (env.STRIPE_PRICE_ID_MONTHLY) ids.add(env.STRIPE_PRICE_ID_MONTHLY);
+  return ids;
 }
 
 export function requireEnv(env: Env, key: keyof Env): string {
