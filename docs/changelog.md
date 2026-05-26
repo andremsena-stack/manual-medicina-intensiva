@@ -1,5 +1,145 @@
 # Changelog
 
+## 2026-05-26 — Mod 2 §8.1 e §8.2: ajustes iniciais e triagem de auto-PEEP em scenario-cards
+
+### Tipo de alteração
+
+- **Técnica/UX**. Texto preservado verbatim das tabelas originais (parâmetros, valores, racional, condutas).
+
+### O que mudou
+
+1. **Mod 2 §8.1 Ajustes iniciais seguros** — 6 scenario-cards (Modo · Volume corrente · Frequência respiratória · FiO₂ · PEEP · Alarmes) com prefer (ponto de partida) + note (racional).
+
+2. **Mod 2 §8.2 Triagem rápida de auto-PEEP no pós-IOT** — 3 scenario-cards (Padrão respiratório obstrutivo · Pressão de pico elevada · Hipotensão súbita pós-conexão) com anticipate (quando suspeitar) + avoid (risco imediato) + practice (resposta inicial).
+
+### Hash
+
+- Mod 2: `08add49a…d8e77bb48` (atualizado em `scripts/verify-module-hashes.mjs`).
+
+## 2026-05-26 — Step-cards + scenario-cards adicionais: Mod 1 §7, Mod 4 §10.1/3/5/6
+
+### Tipo de alteração
+
+- **Técnica/UX**. **Não toca em critérios, condutas, definições CAM-ICU ou recomendações** — texto preservado verbatim das tabelas originais.
+
+### O que mudou
+
+1. **Novo componente `.step-grid` / `.step-card`** no template Mod 1 — passos numerados para procedimentos sequenciais (despertar diário, features CAM-ICU, checklists ordenados). Estrutura:
+   - Badge circular numérico à esquerda (gradiente navy → cyan, mono).
+   - `step-card__name` (nome da etapa, display).
+   - `step-card__action` (bloco cyan "Ação").
+   - `step-card__success` (bloco verde-cyan "Critério").
+
+2. **Mod 1 §7 Pré-oxigenação** — 5 scenario-cards: Máscara não reinalante · Bolsa-válvula-máscara com PEEP · VNI/CPAP · HFNC · Oxigenação apneica. Estrutura prefer (quando considerar) / avoid (limitações).
+
+3. **Mod 4 §10.1 Quando considerar redução ou despertar** — 4 scenario-cards: Hemodinâmica · Oxigenação/ventilação · Sem indicação de sedação profunda · Dor controlável. Estrutura anticipate (o que observar) / prevent (conduta).
+
+4. **Mod 4 §10.3 Como fazer o despertar diário** — 5 step-cards numerados: Preparar · Reduzir hipnótico · Reavaliar em série · Testar comandos · Integrar ao desmame.
+
+5. **Mod 4 §10.5 CAM-ICU — features** — 5 step-cards com badge não numérico mas identificador (Pré, F1, F2, F3, F4): Nível de consciência · Início agudo/curso flutuante · Desatenção · Nível de consciência alterado · Pensamento desorganizado.
+
+6. **Mod 4 §10.6 Aplicabilidade e limitações do CAM-ICU** — 3 scenario-cards: Avaliação em paciente intubado · Rastreamento seriado · Apoio ao pacote ABCDEF. Estrutura prefer / avoid / practice.
+
+### Hashes (atualizados em `scripts/verify-module-hashes.mjs`)
+
+- Todos os 6 módulos clínicos: nova rodada de propagação pelo step-card.
+- Mods 1 e 4: conversão de conteúdo.
+
+## 2026-05-26 — Cenários clínicos convertidos em scenario-cards: Mod 4 §8, Mod 2 §9.1, Mod 1 §11
+
+### Tipo de alteração
+
+- **Técnica/UX**. **Não toca em condutas, evidências, armadilhas ou estratégias clínicas** — texto preservado verbatim das tabelas originais.
+
+### O que mudou
+
+1. **Novo componente `.scenario-grid` / `.scenario-card`** no template de Mod 1:
+   - Header navy com gradiente (`#0d2438 → #123c69`) e tipografia display em branco.
+   - Body com blocos tipados via `data-tone`, cada um com label mono uppercase próprio:
+     - `prefer` (verde-cyan) → "Preferir"
+     - `avoid` (vermelho-âmbar) → "Evitar / cautela"
+     - `note` (cyan navy) → "Comentário prático"
+     - `practice` (cyan navy) → "Estratégia prática"
+     - `evidence` (roxo) → "Evidência comparativa"
+     - `anticipate` (âmbar-vermelho) → "Como antecipar"
+     - `prevent` (verde-cyan) → "Prevenção peri-IOT"
+
+2. **Mod 4 §8 Cenários clínicos e escolha racional** — 7 scenario-cards: Choque/vasopressor alto · Despertar para extubação · SDRA/prona/bloqueio · TCE/HIC · Broncoespasmo/asma · Disfunção renal · Delirium hiperativo. Estrutura prefer / avoid / note.
+
+3. **Mod 2 §9.1 Estratégia por cenário clínico** — 5 scenario-cards: Pós-RSI com rocurônio · Choque · Broncoespasmo · HIC/TCE · Delirium/agitação. Estrutura prefer / practice / evidence / avoid (4 blocos, com Evidência comparativa em roxo).
+
+4. **Mod 1 §11 Complicações peri-intubação** — 6 scenario-cards: Hipoxemia · Hipotensão/colapso · Tubo mal posicionado · Aspiração · Awareness · Pneumotórax/auto-PEEP. Estrutura anticipate / prevent (2 blocos, foco antecipação→prevenção).
+
+### Hashes (atualizados em `scripts/verify-module-hashes.mjs`)
+
+- Todos os 6 módulos clínicos receberam o CSS scenario-card via propagação. Mods 1, 2 e 4 receberam conversão de conteúdo. Mod 5 também (carry-over da conversão §5.1).
+
+## 2026-05-26 — Mod 5 §5.1: Mapa farmacológico de vasoativas convertido em mechanism-cards
+
+### Tipo de alteração
+
+- **Técnica/UX**. **Não toca em mecanismos, efeitos, cenários ou cautelas** — todo texto copiado verbatim da tabela original.
+
+### O que mudou
+
+1. **Extensão do componente `.drug-card`**:
+   - Novo bloco `.drug-card__mech` com linhas chave-valor "Mecanismo / Efeito" (substitui o bloco numérico quando o foco é overview farmacológico, não dose/preparo).
+   - Novas `data-class`: `vasopressor` (rail vermelho-âmbar), `inotrope` (cyan-azul), `vasodilator` (âmbar-cyan claro), `antihtn` (roxo-azul, CCB), `betablock` (navy-azul).
+
+2. **Mod 5 §5.1 Mapa farmacológico detalhado** — 14 cartões reunindo overview por classe:
+   - **Vasopressores** (4): Noradrenalina, Vasopressina, Adrenalina, Fenilefrina
+   - **Inotrópicos** (3): Dobutamina, Milrinona, Isoproterenol/isoprenalina
+   - **Misto α/β/D** (1): Dopamina
+   - **Vasodilatadores NO** (2): Nitroglicerina, Nitroprussiato
+   - **Anti-hipertensivos CCB** (2): Nicardipina, Clevidipina
+   - **β-bloqueadores** (2): Esmolol, Labetalol
+
+3. As sub-seções abaixo do mapa (§5.1 Noradrenalina, §5.2 Vasopressina, etc. com deep-dive de diluição e exemplo 70 kg) permanecem inalteradas — já estão bem estruturadas em `<details>` por droga.
+
+### Hashes (atualizados em `scripts/verify-module-hashes.mjs`)
+
+- Mod 1 → 5: nova rodada de propagação por adição das classes `vasopressor/inotrope/vasodilator/antihtn/betablock` e bloco `__mech` no template.
+- Mod 5: conversão completa do §5.1 mapa farmacológico.
+
+## 2026-05-26 — Mod 4 §6: Fármacos de sedoanalgesia + anticonvulsivantes convertidos em drug-cards
+
+### Tipo de alteração
+
+- **Técnica/UX** (apresentação visual de tabela de fármacos). **Não toca em doses, diluições, mecanismos ou cuidados clínicos** — todos os valores preservados na íntegra a partir das tabelas originais.
+
+### O que mudou
+
+1. **Novo componente `.drug-grid` / `.drug-card`** adicionado ao template de Mod 1 e propagado para Mods 2–6 via `scripts/propagate-mod1-style.py`. Estrutura por cartão:
+   - Header com nome do fármaco + chip de classe (Opioide, Adjuvante, Sedativo, BNM, Carga, BIC).
+   - Bloco "Numbers" (grid auto-fit) com `Dose`, `Preparo`, `70 kg` em fonte mono.
+   - Bloco "Quando usar" (cenários de destaque) com chamada em pequena-caixa cyan.
+   - Footer "Cuidados" em destaque âmbar com fundo gradiente sutil.
+   - Rail colorido na lateral esquerda por `data-class` (opioid/adjuvant/sedative/bnm/anticonv-load/anticonv-bic) — gradiente vertical da paleta clínica.
+
+2. **Mod 4 §6.1 Opioides** (6 fármacos): Fentanil, Remifentanil, Morfina, Sufentanil, Alfentanil, Hidromorfona.
+3. **Mod 4 §6.2 Adjuvantes não opioides** (2 fármacos): Cetamina analgésica, Lidocaína IV.
+4. **Mod 4 §6.3 Sedativos/hipnóticos** (5 fármacos): Propofol, Midazolam, Dexmedetomidina, Cetamina sedativa, Tiopental.
+5. **Mod 4 §6.4 Bloqueadores neuromusculares** (3 fármacos): Cisatracúrio, Rocurônio, Atracúrio.
+6. **Mod 4 §6.5 Anticonvulsivantes em status epilepticus** — separado em dois sub-grids com cabeçalho-fase em mono uppercase:
+   - **Fase 2 — Dose de carga IV** (3 cartões): Fenitoína, Fenobarbital, Levetiracetam.
+   - **Fase 3 — BIC anestésica** (4 cartões): Midazolam, Propofol, Tiopental, Cetamina adjuvante.
+   - Cada cartão inclui o mecanismo dentro do bloco "Quando usar" como anchor pedagógico inicial.
+
+### Hashes (atualizados em `scripts/verify-module-hashes.mjs`)
+
+- Mod 1: `b16b6806…6bd72803` (apenas adição de CSS `.drug-card`)
+- Mod 2: `770d0293…cea2c966` (propagação de head)
+- Mod 3: `200ff5df…ff381d8a` (propagação de head)
+- Mod 4: `2d32ed35…081ce0b3` (propagação + conversão de §6.1–§6.5)
+- Mod 5: `a746974f…b84bc6e02` (propagação de head)
+- Mod 6: `43bac7d9…17a6aaac12` (propagação de head)
+
+### Notas
+
+- Conteúdo clínico preservado verbatim das tabelas originais (doses, diluições, mecanismos, cuidados). Apenas reorganização visual.
+- Mods 2/3/5/6 ganharam apenas o CSS `.drug-card` no head (propagação); ainda não usam o componente.
+- Próximos candidatos: Mod 5 §5 Fármacos (estrutura já é detalhada por droga; pode receber overview-cards), Mod 4 §8 Cenários clínicos, Mod 2 §9 Sedoanalgesia pós-IOT, Mod 1 §11 Complicações peri-intubação.
+
 ## 2026-05-24 — Mod 7: preparo operacional na infusão contínua + padrão de headline uniforme
 
 ### Tipo de alteração

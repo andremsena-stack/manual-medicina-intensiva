@@ -7,12 +7,12 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const moduleDir = path.join(rootDir, "src", "data", "modules");
 
 const expectedHashes = {
-  "modulo_01_via_aerea_iot.html": "cf4d07d8f4d2b395347de1c6e7a4ee6d66ee14f2308359efca5823a93bfb1e33",
-  "modulo_02_pos_intubacao_confirmacao.html": "afa5be1afd59c6ccc3e1259a2c04259feb5547d0e1e98b43dd007af82d67b80e",
-  "modulo_03_ventilacao_mecanica.html": "5250c4442c9f31727a6ea4983aeacd1b45199b02d899d0e6c6780d96e8d7223e",
-  "modulo_04_manutencao_sedoanalgesia.html": "16aa3ad956ec40bf8f2210449f3b8da27fa658e8186267cfb1c8aceb41e9e9ce",
-  "modulo_05_drogas_vasoativas.html": "f1aca64d33da7a0f1cb9fe82b0e4471f0169b237221ec08b357e9430aa85675a",
-  "modulo_06_disturbios_hidroeletroliticos.html": "0d4e984122bcfe650ac2672b3ee0afdd3e2567aff4881d9198702dad137440db",
+  "modulo_01_via_aerea_iot.html": "bf4ced96cef67ad9dbebccc59ebfadb8a7b24f9e0c9339e99df053cc2d890fa0",
+  "modulo_02_pos_intubacao_confirmacao.html": "cb7d2b528c8a4d04964cc94db3d6d07f683c4e7305c3d728d0af846eec0eb93c",
+  "modulo_03_ventilacao_mecanica.html": "963723674b772d1f5b9b37e7b5013841249b18a80299e27bc6b92019cc40c978",
+  "modulo_04_manutencao_sedoanalgesia.html": "982fbbe39c1fabbdde337f61ef58413b06de408b0479a996fbf1d9076d57e7d0",
+  "modulo_05_drogas_vasoativas.html": "177facdfba05bca28746d389445741ab2bc022052bcb71d6f4fa866966e68837",
+  "modulo_06_disturbios_hidroeletroliticos.html": "e6e4733f0e3eebf5bba230099d11f7ed9e8718ac551ec2294af45e8ac8f4417e",
   "modulo_07_calculadoras_interativas.html": "b8da57601f948cbf7d8c8e559c453641c594ea555396c3bcea8f098a47f1b4bb",
   "modulo_08_referencias.html": "2b5ab7186a4ec7d2b3e3f2ee0034d2b68eee0b2ac0d4e56c5e99bd6631bbb532"
 };

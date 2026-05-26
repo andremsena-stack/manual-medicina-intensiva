@@ -4,78 +4,1631 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Manual Interativo de Medicina Intensiva — Módulo 6: Distúrbios hidroeletrolíticos</title>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap">
   <style>
+    /* =========================================================================
+       SISTEMA TECH/EDUCACIONAL — Manual de Medicina Intensiva, Módulo 1
+       Identidade alinhada com landing/home: navy escuro + cyan brilhante.
+       Vibe: ferramenta interativa de educação médica (NÃO periódico/jornal).
+       Tipografia: DM Sans (geometric sans, moderna, friendly) + JetBrains Mono.
+       ========================================================================= */
     :root{
-      --bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;
-      --primary:#123c69;--primary-soft:#dce9f6;--accent:#0b6b5c;--danger:#b42318;
-      --warning:#b54708;--success:#067647;--border:#d8e0ea;--shadow:0 8px 24px rgba(16,24,40,.08);
-      --radius:16px
+      /* Tipografia */
+      --font-display: 'DM Sans', system-ui, -apple-system, sans-serif;
+      --font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
+      --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+      /* Paleta — DNA do projeto (mesma da landing/home) */
+      --brand-deep: #0d2438;
+      --brand:      #123c69;
+      --brand-mid:  #1a4d80;
+      --cyan:       #12bed1;
+      --cyan-light: #30f1e6;
+      --ink:        #0d2438;
+      --ink-2:      #5f6b7a;
+      --paper:      #f4f7fb;
+      --surface:    #ffffff;
+      --surface-2:  #eef3f8;
+      --rule:       #d8e2ea;
+      /* Severidade clínica (alinhada com paleta) */
+      --crit:       #b42318;
+      --urgent:     #b54708;
+      --stable:     #067647;
+      --info:       var(--brand);
+      /* Aliases legados (compat com código pré-existente) */
+      --bg: var(--paper);
+      --surface-soft: var(--surface-2);
+      --text: var(--ink);
+      --muted: var(--ink-2);
+      --primary: var(--brand);
+      --primary-soft: #dce9f6;
+      --accent: var(--cyan);
+      --danger: var(--crit);
+      --warning: var(--urgent);
+      --success: var(--stable);
+      --border: var(--rule);
+      --shadow: 0 1px 3px rgba(13,36,56,.05), 0 4px 12px rgba(13,36,56,.06);
+      --shadow-hover: 0 4px 12px rgba(18,190,209,.12), 0 12px 28px rgba(13,36,56,.10);
+      --radius: 12px;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+    body{
+      margin:0;
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      letter-spacing: -0.003em;
+      background: var(--paper);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
     a{color:inherit;text-decoration:none}
-    .app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
-    aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d2438;color:#fff;padding:24px 18px}
-    .brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}
-    .brand h1{font-size:19px;margin:0 0 8px;line-height:1.25}
-    .brand p{margin:0;font-size:13px;color:rgba(255,255,255,.75)}
+
+    /* === Layout === */
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+    aside{
+      position:sticky;top:0;height:100vh;overflow-y:auto;
+      background: linear-gradient(180deg, var(--brand-deep) 0%, #081726 100%);
+      color: rgba(255,255,255,.92);
+      padding: 24px 20px;
+      font-size: 13.5px;
+      border-right: 1px solid rgba(255,255,255,.05);
+    }
+    main{
+      padding: 32px clamp(24px, 4vw, 48px) 64px;
+      max-width: 1180px;
+      width: 100%;
+    }
+
+    /* === Brand (sidebar) === */
+    .brand{
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .brand h1{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 17px;
+      line-height: 1.25;
+      letter-spacing: -0.012em;
+      margin: 0 0 6px;
+      background: linear-gradient(135deg, #fff 0%, var(--cyan-light) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .brand p{
+      margin: 0;
+      font-size: 12px;
+      color: rgba(255,255,255,.7);
+      font-weight: 500;
+    }
+    .toc-note{
+      font-size: 10.5px;
+      color: rgba(48,241,230,.55);
+      margin-top: 10px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.02em;
+    }
+
+    /* === Nav lateral: pills com hover cyan === */
     nav ul{list-style:none;padding:0;margin:0}
-    nav li{margin:5px 0}
-    nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88)}
-    nav a:hover{background:rgba(255,255,255,.10)}
-    main{padding:34px;max-width:1380px;width:100%}
-    .hero{background:linear-gradient(135deg,#123c69,#0b6b5c);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);margin-bottom:28px}
-    .hero h2{font-size:34px;margin:0 0 10px}.hero p{max-width:1040px;color:rgba(255,255,255,.9);margin:0}
-    section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}
-    section h2{margin:0 0 14px;color:var(--primary);font-size:25px}
-    section h3{margin:22px 0 10px;color:#243b53;font-size:19px}
-    section h4{margin:18px 0 8px;color:#243b53;font-size:16px}
-    .grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .card{background:var(--surface-soft);border:1px solid var(--border);border-radius:14px;padding:16px}
-    .card h4{margin:0 0 8px;color:var(--primary)}.card p{margin:0;color:var(--muted)}
-    .alert{border-radius:14px;padding:14px 16px;margin:16px 0;border-left:6px solid}
-    .alert-danger{background:#fff1f0;border-color:var(--danger)}.alert-warning{background:#fff7ed;border-color:var(--warning)}
-    .alert-info{background:var(--primary-soft);border-color:var(--primary)}.alert-success{background:#ecfdf3;border-color:var(--success)}
-    table{width:100%;border-collapse:collapse;margin:14px 0;overflow:hidden;border-radius:12px}
-    th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;font-size:14px}
-    th{background:var(--primary);color:#fff}tbody tr:nth-child(even){background:#f8fafc}
-    details{border:1px solid var(--border);border-radius:14px;background:#fff;margin:12px 0;overflow:hidden}
-    summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--primary);background:#eef3f8}
-    summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}
-    .pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700;background:#dce9f6;color:#123c69;margin:2px}
-    .pill-danger{background:#fee4e2;color:#912018}.pill-warning{background:#fef0c7;color:#93370d}.pill-success{background:#dcfae6;color:#067647}
-    .ref{font-size:12px;color:#485568;border-top:1px solid var(--border);margin-top:12px;padding-top:10px}
-    .small{font-size:12px;color:var(--muted)}
-    .footer-sign{margin-top:40px;text-align:right;color:#344054}
-    /* Distúrbio: seção como menu recolhível (outer details) */
-    section.disturbio{padding:0;overflow:visible}
-    section.disturbio > details.section-collapse{border:none;background:transparent;margin:0;border-radius:var(--radius)}
-    section.disturbio > details.section-collapse > summary{padding:22px 26px;font-size:23px;color:var(--primary);background:#fff;border-radius:var(--radius);display:flex;align-items:center;justify-content:space-between;gap:14px}
-    section.disturbio > details.section-collapse > summary::after{content:"▸";font-size:16px;color:var(--muted);transition:transform .15s ease}
-    section.disturbio > details.section-collapse[open] > summary::after{content:"▾"}
-    section.disturbio > details.section-collapse[open] > summary{border-bottom:1px solid var(--border);border-bottom-left-radius:0;border-bottom-right-radius:0}
-    section.disturbio > details.section-collapse > .detail-body{padding:20px 26px 26px}
-    section.disturbio > details.section-collapse > .detail-body > .intro-block{margin-bottom:14px}
-    /* Sub-detalhes Hiper/Hipo */
-    .hh-detail{border:1px solid var(--border);border-radius:14px;background:#fff;margin:12px 0}
-    .hh-detail > summary{padding:14px 16px;font-weight:700;background:#eef3f8;color:var(--primary);font-size:16px;border-radius:14px}
-    .hh-detail[open] > summary{border-bottom:1px solid var(--border);border-bottom-left-radius:0;border-bottom-right-radius:0}
-    .hh-detail > summary::after{content:" ▸";color:var(--muted);font-weight:400;font-size:13px}
-    .hh-detail[open] > summary::after{content:" ▾"}
-    .hh-detail.hh-hipo > summary{background:#e8f1fb}
-    .hh-detail.hh-hiper > summary{background:#fdecea}
-    .hh-detail > .detail-body{padding:16px}
-    @media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}.grid-2,.grid-3{grid-template-columns:1fr}main{padding:18px}.hero h2{font-size:26px}section.disturbio > details.section-collapse > summary{padding:18px 20px;font-size:20px}section.disturbio > details.section-collapse > .detail-body{padding:16px 18px 20px}}
-    @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}}
+    nav li{margin: 2px 0}
+    nav a{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,.72);
+      transition: color .14s ease, background .14s ease, transform .14s ease;
+    }
+    nav a:hover,
+    nav a.module-nav-link--active{
+      color: #fff;
+      background: rgba(48,241,230,.10);
+      transform: translateX(2px);
+    }
+    nav a.module-nav-link--active{
+      background: linear-gradient(135deg, rgba(48,241,230,.18) 0%, rgba(18,190,209,.10) 100%);
+      box-shadow: inset 2px 0 0 var(--cyan-light);
+    }
+
+    /* === Hero — gradient navy → cyan glow (alinha com landing) === */
+    .hero{
+      background:
+        radial-gradient(120% 80% at 100% 0%, rgba(48,241,230,.18) 0%, transparent 55%),
+        radial-gradient(60% 100% at 0% 100%, rgba(18,190,209,.12) 0%, transparent 60%),
+        linear-gradient(135deg, var(--brand-deep) 0%, var(--brand) 60%, var(--brand-mid) 100%);
+      color: #fff;
+      padding: 32px 36px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      box-shadow: 0 12px 32px rgba(13,36,56,.18);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before{
+      content: "";
+      position: absolute;
+      right: -80px; top: -80px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(48,241,230,.14) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero h2{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(24px, 3.4vw, 34px);
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      margin: 0 0 12px;
+      color: #fff;
+      position: relative;
+    }
+    .hero p{
+      max-width: 70ch;
+      font-size: 15px;
+      line-height: 1.6;
+      color: rgba(255,255,255,.86);
+      margin: 0;
+      position: relative;
+    }
+    .badge-row{
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-top: 18px;
+      position: relative;
+    }
+    .badge{
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid rgba(48,241,230,.32);
+      border-radius: 999px;
+      padding: 4px 12px;
+      background: rgba(48,241,230,.08);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--cyan-light);
+    }
+
+    /* === Sections como cards interativos === */
+    section{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      transition: box-shadow .2s ease, border-color .2s ease;
+    }
+    section:hover{
+      border-color: rgba(18,190,209,.32);
+    }
+    section h2{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(20px, 2.4vw, 24px);
+      line-height: 1.2;
+      letter-spacing: -0.012em;
+      color: var(--brand);
+      margin: 0 0 14px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--cyan-light);
+      display: inline-block;
+    }
+    /* h3 — subtópico nível 1: pílula com tarja cyan à esquerda + espaçamento
+       generoso pra criar separação visual entre subtemas. */
+    section h3{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1.3;
+      letter-spacing: -0.008em;
+      color: var(--brand-deep);
+      margin: 32px 0 14px;
+      padding: 6px 0 6px 14px;
+      border-left: 4px solid var(--cyan);
+      background: linear-gradient(90deg, rgba(48,241,230,.08) 0%, transparent 60%);
+      border-radius: 0 4px 4px 0;
+    }
+    /* Primeiro h3 da section: menos margin-top (já tem padding-top da section). */
+    section > h3:first-of-type,
+    section > p + h3,
+    section > .grid + h3{
+      margin-top: 20px;
+    }
+    /* h4 — subtópico nível 2: rótulo navy compacto, com hairline curta. */
+    section h4{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.35;
+      letter-spacing: 0.005em;
+      color: var(--brand);
+      margin: 22px 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+    }
+    section h4::before{
+      content: "";
+      position: absolute;
+      left: 0; bottom: -1px;
+      width: 32px; height: 2px;
+      background: var(--cyan);
+    }
+    p{margin: 0 0 12px}
+    p:last-child{margin-bottom: 0}
+
+    /* === Grids === */
+    .grid{display: grid; gap: 14px}
+    .grid-2{grid-template-columns: repeat(2, minmax(0,1fr))}
+    .grid-3{grid-template-columns: repeat(3, minmax(0,1fr))}
+    .grid-4{grid-template-columns: repeat(4, minmax(0,1fr))}
+
+    /* === Cards interativos === */
+    .card{
+      background: var(--surface-2);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 14px 16px;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .card:hover{
+      border-color: rgba(18,190,209,.36);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+    }
+    .card h4{
+      margin: 0 0 6px;
+      color: var(--brand);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: -0.005em;
+    }
+    .card p{margin: 0; color: var(--ink-2); font-size: 13.5px; line-height: 1.5}
+
+    /* Metric — cards de destaque com hover cyan */
+    .metric{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 14px 16px;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .metric:hover{
+      border-color: rgba(18,190,209,.36);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+    }
+    .metric strong{
+      display: block;
+      font-weight: 700;
+      color: var(--brand);
+      font-size: 15px;
+      letter-spacing: -0.005em;
+      margin-bottom: 4px;
+    }
+    .metric span{
+      color: var(--ink-2);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    /* === Alerts — bloco colorido refinado, com borda lateral === */
+    .alert{
+      border: 1px solid transparent;
+      border-left: 4px solid var(--info);
+      border-radius: 8px;
+      background: var(--surface-2);
+      padding: 12px 16px;
+      margin: 16px 0;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .alert strong:first-child{
+      color: var(--info);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .alert-danger{
+      background: #fef5f4;
+      border-color: rgba(180,35,24,.18);
+      border-left-color: var(--crit);
+    }
+    .alert-danger strong:first-child{color: var(--crit)}
+    .alert-warning{
+      background: #fff8eb;
+      border-color: rgba(181,71,8,.18);
+      border-left-color: var(--urgent);
+    }
+    .alert-warning strong:first-child{color: var(--urgent)}
+    .alert-info{
+      background: #eef3f8;
+      border-color: rgba(18,60,105,.16);
+      border-left-color: var(--brand);
+    }
+    .alert-info strong:first-child{color: var(--brand)}
+    .alert-success{
+      background: #ecfdf3;
+      border-color: rgba(6,118,71,.18);
+      border-left-color: var(--stable);
+    }
+    .alert-success strong:first-child{color: var(--stable)}
+
+    /* === Tabelas — harmonizadas com o corpo do texto (14px ≈ body 15px) === */
+    table{
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 14px 0;
+      font-size: 14px;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    thead th{
+      background: linear-gradient(180deg, var(--brand-mid) 0%, var(--brand) 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 9px 13px;
+      text-align: left;
+      vertical-align: middle;
+      border: 0;
+      border-right: 1px solid rgba(255,255,255,.12);
+    }
+    thead th:last-child{border-right: 0}
+    tbody td,
+    tbody th{
+      padding: 9px 13px;
+      vertical-align: top;
+      border-top: 1px solid var(--rule);
+      border-right: 1px solid #f1f5f9;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.5;
+      background: var(--surface);
+      transition: background .14s ease;
+      text-align: left;
+    }
+    tbody td:last-child,
+    tbody th:last-child{border-right: 0}
+    tbody tr:first-child td,
+    tbody tr:first-child th{border-top: 0}
+    tbody td:first-child{
+      font-weight: 600;
+      color: var(--brand);
+    }
+    /* Tabelas pivot (key→value): tbody>tr>th é o rótulo na coluna esquerda.
+       Cor de fundo levemente tingida + texto navy bold + borda direita marcada
+       criam separação clara entre rótulo e valor, importante nos fármacos. */
+    tbody tr > th:first-child{
+      background: linear-gradient(90deg, #eef3f8 0%, #f4f7fb 100%);
+      color: var(--brand);
+      font-weight: 700;
+      font-size: 12.5px;
+      border-right: 1px solid var(--rule);
+      width: 28%;
+      min-width: 140px;
+    }
+    tbody tr:nth-child(even) td,
+    tbody tr:nth-child(even) th:not(:first-child){background: #f8fbfd}
+    tbody tr:hover td,
+    tbody tr:hover th{background: rgba(48,241,230,.06)}
+    tbody tr:hover > th:first-child{
+      background: linear-gradient(90deg, #e3edf6 0%, #eef3f8 100%);
+    }
+
+    /* === SVG box — frame minimalista, alinha com tabelas === */
+    .svg-box{
+      background: linear-gradient(180deg, #fbfdff 0%, #f1f6fb 100%);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 12px 0;
+    }
+    .svg-box svg{width: 100%; height: auto; display: block}
+    .small{font-size: 12px; color: var(--ink-2)}
+
+    /* === Details/Summary — pill interativo com chevron === */
+    details{
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      background: var(--surface);
+      margin: 12px 0;
+      overflow: hidden;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    details[open]{
+      border-color: rgba(18,190,209,.36);
+      box-shadow: var(--shadow-hover);
+    }
+    summary{
+      cursor: pointer;
+      list-style: none;
+      padding: 12px 44px 12px 16px;
+      font-weight: 600;
+      font-size: 14.5px;
+      color: var(--brand);
+      background: var(--surface-2);
+      position: relative;
+      transition: background .14s ease;
+    }
+    summary:hover{background: #e3edf6}
+    summary::-webkit-details-marker{display: none}
+    summary::after{
+      content: "";
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      width: 8px; height: 8px;
+      border-right: 2px solid var(--cyan);
+      border-bottom: 2px solid var(--cyan);
+      transform: translateY(-70%) rotate(45deg);
+      transition: transform .25s ease, border-color .14s ease;
+    }
+    details[open] summary::after{
+      transform: translateY(-30%) rotate(-135deg);
+    }
+    details .detail-body{padding: 14px 16px}
+
+    /* === Pills (severity tags) === */
+    .pill{
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      background: #dce9f6;
+      color: var(--brand);
+      margin: 1px;
+      border: 1px solid transparent;
+    }
+    .pill-danger{background: #fee4e2; color: #912018}
+    .pill-warning{background: #fef0c7; color: #93370d}
+    .pill-success{background: #dcfae6; color: #067647}
+
+    /* === Timeline com nó cyan === */
+    .timeline{
+      border-left: 2px solid var(--rule);
+      padding-left: 22px;
+      margin: 18px 0;
+    }
+    .timeline .step{
+      position: relative;
+      margin: 0 0 16px;
+    }
+    .timeline .step:before{
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--cyan);
+      border: 2px solid var(--surface);
+      box-shadow: 0 0 0 2px var(--cyan);
+    }
+
+    /* === Refs (citation) === */
+    .ref{
+      font-size: 12px;
+      color: var(--ink-2);
+      border-top: 1px solid var(--rule);
+      margin-top: 18px;
+      padding-top: 12px;
+      line-height: 1.55;
+    }
+    .ref strong{
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .print-note{
+      background: var(--brand-deep);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+    .two-col-list{columns: 2; column-gap: 28px}
+    .checklist li{margin: 4px 0}
+    .footer-sign{
+      margin-top: 48px;
+      padding-top: 18px;
+      border-top: 1px solid var(--rule);
+      text-align: right;
+      color: var(--ink-2);
+      font-size: 12.5px;
+    }
+
+    /* === Doses e números — mono tabular para precisão clínica === */
+    .dose-fig, .num,
+    .calc-result strong, .calc-result span{
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+    }
+
+    /* === Stagger first paint — sutil, sem drama === */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+    main > .hero,
+    main > section{
+      animation: fadeUp 360ms ease-out both;
+    }
+    main > section:nth-of-type(1){animation-delay: 60ms}
+    main > section:nth-of-type(2){animation-delay: 120ms}
+    main > section:nth-of-type(3){animation-delay: 160ms}
+    main > section:nth-of-type(n+4){animation-delay: 200ms}
+
+    /* === Highlight ao chegar via anchor === */
+    section:target{
+      animation: fadeUp 360ms ease-out both, targetGlow 1.6s ease-out 360ms both;
+    }
+    @keyframes targetGlow {
+      0%, 100% { box-shadow: var(--shadow); border-color: var(--rule); }
+      30% { box-shadow: 0 0 0 3px rgba(48,241,230,.18), var(--shadow); border-color: var(--cyan); }
+    }
+
+    @media(max-width:980px){
+      .app{grid-template-columns:1fr}
+      aside{position:relative;height:auto;padding:16px 18px}
+      .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+      main{padding: 18px 14px 56px}
+      .hero{padding: 22px 18px}
+      .hero h2{font-size: clamp(20px, 6vw, 28px)}
+      section{padding: 18px 18px}
+      .two-col-list{columns:1}
+    }
+    .figure-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 14px;
+      margin: 16px 0;
+      box-shadow: var(--shadow);
+    }
+    .figure-card img{
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      border-radius: 8px;
+      border: 1px solid var(--rule);
+      background: #fff;
+    }
+    .figure-card figcaption{
+      font-size: 12.5px;
+      color: var(--ink-2);
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+    .figure-card figcaption strong{color: var(--brand); font-weight: 700}
+    .figure-card .source-line{
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink-2);
+      margin-top: 6px;
+      letter-spacing: 0.02em;
+    }
+    .classification-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+    @media(max-width:980px){.classification-grid{grid-template-columns:1fr}}
+    /* ===========================================================================
+       REGRA DE ALINHAMENTO LADO-A-LADO (figura/tabela/svg)
+       ---------------------------------------------------------------------------
+       Estratégia "espelho de altura por cap calibrado":
+       - Tabela manda na altura natural (rígida, cells não esticam).
+       - Imagem é capada em max-height ≈ altura típica das tabelas do módulo
+         (~360px ≈ 5 linhas × ~52px + header + padding). Mantém harmonia.
+       - Ambos alinham ao TOPO. Pequenas diferenças de altura ficam compactas
+         e visíveis apenas embaixo do mais curto — sem vazio simétrico.
+       - Legibilidade da imagem preservada (min 200px) com object-fit:contain.
+       =========================================================================== */
+    .figure-split{
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);  /* imagem ganha mais peso */
+      gap: 18px;
+      align-items: start;
+      margin: 14px 0;
+    }
+    .figure-split > .figure-card{
+      margin: 0;
+    }
+    .figure-split > .figure-card img{
+      width: 100%;
+      height: auto;
+      min-height: 200px;
+      max-height: 460px;        /* imagem pode crescer mais — preserva legibilidade */
+      object-fit: contain;
+      background: #fff;
+    }
+    /* Tabela em figure-split: levemente compactada pra coluna estreita */
+    .figure-split > table{
+      margin: 0;
+      font-size: 13px;
+    }
+    .figure-split > table thead th{padding: 7px 10px; font-size: 10.5px}
+    .figure-split > table tbody td,
+    .figure-split > table tbody th{padding: 7px 10px; font-size: 13px; line-height: 1.45}
+    /* Wrapper de conteúdo mixto (cards + alert) na coluna direita. */
+    .figure-split__stack{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .figure-split__stack > *{margin: 0}
+
+    /* Variant narrow (Mallampati/Cormack): imagem ~32%, cards/alert à direita.
+       Imagens são wide (charts horizontais de bocas/laringo), max menor. */
+    .figure-split--narrow{grid-template-columns: minmax(200px, 32%) 1fr}
+    .figure-split--narrow > .figure-card img{
+      min-height: 140px;
+      max-height: 240px;
+    }
+    .figure-split--narrow .classification-grid{
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 8px;
+      margin: 0;
+      align-content: start;
+    }
+    .figure-split--narrow .card{padding: 10px 12px}
+    .figure-split--narrow .card h4{font-size: 13px; margin: 0 0 4px}
+    .figure-split--narrow .card p{font-size: 12.5px; line-height: 1.42}
+
+    @media(max-width:980px){
+      .figure-split, .figure-split--narrow{grid-template-columns: 1fr}
+      .figure-split--narrow .classification-grid{grid-template-columns: 1fr}
+      .figure-split > .figure-card img{
+        min-height: 0;
+        max-height: 420px;
+      }
+    }
+    /* SVG/figura com texto fluindo ao redor (apenas desktop). */
+    .svg-float-left{float:left;width:44%;max-width:460px;margin:0 18px 8px 0;clear:left}
+    .clear-floats{clear:both}
+    @media(max-width:980px){.svg-float-left{float:none;width:auto;max-width:none;margin:14px 0}}
+    /* Algoritmo A/B/C/D: SVG-mapa compacto acima como "trilha visual" + tabela
+       embaixo com largura total. Evita disproporção de side-by-side. */
+    .algo-split{display:flex;flex-direction:column;gap:12px;margin:14px 0}
+    .algo-split>table,.algo-split>.svg-box{margin:0}
+    .algo-split>.svg-box{padding:8px 14px}
+    .algo-split>.svg-box svg{max-height:140px}
+
+    /* ===========================================================================
+       SISTEMA DE MEMÓRIA FOTOGRÁFICA — destaques pedagógicos
+       Criam pontos de fixação visual para o leitor "ver" antes de "ler".
+       Uso consciente — não tudo é keyword. Apenas termos verdadeiramente âncora.
+       =========================================================================== */
+
+    /* Termo-chave neutro: highlight cyan suave + bold navy. */
+    mark.kw, .kw{
+      background: linear-gradient(180deg, transparent 60%, rgba(48,241,230,.32) 60%, rgba(48,241,230,.32) 92%, transparent 92%);
+      color: var(--brand-deep);
+      font-weight: 700;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+
+    /* Termo crítico (perigo, contraindicação, "nunca", "evitar"): rosa-coral. */
+    mark.kw-crit, .kw-crit{
+      background: linear-gradient(180deg, transparent 60%, rgba(180,35,24,.20) 60%, rgba(180,35,24,.20) 92%, transparent 92%);
+      color: var(--crit);
+      font-weight: 700;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+
+    /* Número/dose/valor numérico de alta importância: bg amarelo-pastel + mono. */
+    mark.kw-num, .kw-num{
+      background: rgba(255, 213, 79, .35);
+      color: var(--brand-deep);
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.94em;
+      padding: 1px 5px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 213, 79, .6);
+    }
+
+    /* Princípio orientador: banner no início de uma section/subseção. */
+    .principle{
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: linear-gradient(135deg, rgba(18,60,105,.06) 0%, rgba(48,241,230,.08) 100%);
+      border-left: 4px solid var(--brand);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 8px 0 18px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .principle::before{
+      content: "PRINCÍPIO";
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--brand);
+      background: #fff;
+      border: 1px solid rgba(18,60,105,.18);
+      padding: 4px 10px;
+      border-radius: 999px;
+      align-self: center;
+      white-space: nowrap;
+    }
+    .principle p{margin: 0; color: var(--brand-deep); font-weight: 500}
+
+    /* Takeaway — banner-resumo no final de uma section. */
+    .takeaway{
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--brand-deep) 0%, var(--brand) 100%);
+      color: #fff;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 20px 0 0;
+      font-size: 14.5px;
+      line-height: 1.55;
+      box-shadow: var(--shadow);
+    }
+    .takeaway::before{
+      content: "→";
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--cyan-light);
+      margin-top: 0;
+    }
+    .takeaway-label{
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--cyan-light);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .takeaway p{margin: 0; color: rgba(255,255,255,.94); font-weight: 500}
+    .takeaway strong{color: #fff}
+
+    /* Escala visual genérica (RASS, CPOT, Glasgow, faixas eletrolíticas). Cores
+       semânticas por severidade (data-level): crit, warning, target, goal.
+       Badge auto-ajusta largura ao conteúdo (números curtos como "0" ou faixas
+       como "10,3–12,0") sem quebrar layout. */
+    .scale-rows{display: flex; flex-direction: column; gap: 5px; margin: 14px 0}
+    .scale-row{
+      display: grid;
+      grid-template-columns: minmax(72px, auto) 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 9px 14px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+    .scale-row:hover{transform: translateX(2px); box-shadow: var(--shadow)}
+    .scale-row__badge{
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 32px;
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1.2;
+      border-radius: 6px;
+      background: var(--brand);
+      color: #fff;
+      letter-spacing: 0;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .scale-row__body{font-size: 14px; line-height: 1.5}
+    .scale-row__body strong{color: var(--brand-deep); font-weight: 700; display: block; margin-bottom: 2px}
+    .scale-row__body em{font-style: normal; color: var(--ink-2); font-size: 13px}
+    .scale-row[data-level="crit"]{background: #fef5f4; border-color: rgba(180,35,24,.22)}
+    .scale-row[data-level="crit"] .scale-row__badge{background: var(--crit)}
+    .scale-row[data-level="warning"]{background: #fff8eb; border-color: rgba(196,105,10,.22)}
+    .scale-row[data-level="warning"] .scale-row__badge{background: var(--urgent)}
+    .scale-row[data-level="target"]{background: #ecfdf3; border-color: rgba(6,118,71,.32)}
+    .scale-row[data-level="target"] .scale-row__badge{background: var(--stable)}
+    .scale-row[data-level="goal"]{
+      background: linear-gradient(135deg, rgba(48,241,230,.12), rgba(18,190,209,.06));
+      border-color: rgba(18,190,209,.36);
+    }
+    .scale-row[data-level="goal"] .scale-row__badge{background: var(--cyan); color: var(--brand-deep)}
+
+    /* Padrão "Erros frequentes" — problema clínico + risco + prevenção + resposta.
+       Substitui a seção <details> com tabela interna que se repete em vários
+       módulos. Cada card é uma situação clínica, com 3-4 facetas estruturadas. */
+    .error-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+    .error-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .error-card:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(180,35,24,.32);
+    }
+    .error-card__problem{
+      background: linear-gradient(135deg, rgba(180,35,24,.10) 0%, rgba(196,105,10,.06) 100%);
+      border-left: 4px solid var(--crit);
+      padding: 11px 14px;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.35;
+      color: var(--brand-deep);
+    }
+    .error-card__problem::before{
+      content: "ERRO";
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--crit);
+      background: rgba(180,35,24,.10);
+      padding: 1px 7px;
+      border-radius: 3px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .error-card__list{
+      list-style: none;
+      margin: 0;
+      padding: 10px 14px 12px;
+      display: grid;
+      gap: 8px;
+      flex: 1;
+    }
+    .error-card__list li{
+      font-size: 13px;
+      line-height: 1.5;
+      padding-left: 22px;
+      position: relative;
+      color: var(--ink);
+    }
+    .error-card__list li::before{
+      position: absolute;
+      left: 0;
+      top: 1px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .error-card__list li[data-type="risk"]::before{content: "!"; background: rgba(180,35,24,.14); color: var(--crit)}
+    .error-card__list li[data-type="prevention"]::before{content: "✓"; background: rgba(6,118,71,.14); color: var(--stable)}
+    .error-card__list li[data-type="response"]::before{content: "→"; background: rgba(18,190,209,.14); color: var(--brand)}
+    .error-card__list li strong{
+      color: var(--brand);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Tabela pontuada (CPOT, BPS, escalas multi-domínio) — colore células
+       conforme score (data-score 0..4). Verde → âmbar → vermelho em gradiente
+       semântico, facilitando leitura rápida da severidade. */
+    table.scored-table thead th[data-score="0"]{
+      background: linear-gradient(180deg, #4d7c3a 0%, #355c26 100%);
+    }
+    table.scored-table thead th[data-score="1"]{
+      background: linear-gradient(180deg, #c4690a 0%, #9a5008 100%);
+    }
+    table.scored-table thead th[data-score="2"],
+    table.scored-table thead th[data-score="3"],
+    table.scored-table thead th[data-score="4"]{
+      background: linear-gradient(180deg, #b42318 0%, #8a190f 100%);
+    }
+    table.scored-table tbody td[data-score="0"]{background: rgba(77,124,58,.08); color: #2c4720}
+    table.scored-table tbody td[data-score="1"]{background: rgba(196,105,10,.10); color: #6b3a04}
+    table.scored-table tbody td[data-score="2"]{background: rgba(180,35,24,.10); color: #6b110a}
+    table.scored-table tbody td[data-score="3"]{background: rgba(180,35,24,.14); color: #6b110a}
+    table.scored-table tbody td[data-score="4"]{background: rgba(180,35,24,.18); color: #6b110a}
+    table.scored-table tbody tr:hover td[data-score]{filter: brightness(.97)}
+
+    /* Gauge de score: barra visual simples mostrando faixa segura e alerta. */
+    .score-gauge{
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0 4px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      font-size: 13px;
+    }
+    .score-gauge__label{font-weight: 700; color: var(--brand-deep)}
+    .score-gauge__bar{
+      display: flex;
+      flex: 1;
+      height: 22px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--rule);
+      min-width: 280px;
+    }
+    .score-gauge__safe,
+    .score-gauge__alert{
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 9.5px;
+      letter-spacing: 0.02em;
+      padding: 0 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+    .score-gauge__safe{
+      flex: var(--safe, 3);
+      background: linear-gradient(90deg, rgba(77,124,58,.18), rgba(77,124,58,.32));
+      color: #355c26;
+    }
+    .score-gauge__alert{
+      flex: var(--alert, 5);
+      background: linear-gradient(90deg, rgba(196,105,10,.22), rgba(180,35,24,.32));
+      color: #6b110a;
+    }
+
+    /* Padrões clínicos com waveform (capnografia, ventilação) — grid de cards
+       com nome + tag de severidade + SVG da forma + causa + conduta. */
+    .pattern-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .pattern-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .pattern-card:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(18,190,209,.36);
+    }
+    .pattern-card__head{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 14px;
+      background: linear-gradient(180deg, #f4f7fb 0%, #eef3f8 100%);
+      border-bottom: 1px solid var(--rule);
+    }
+    .pattern-card__name{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--brand-deep);
+      line-height: 1.25;
+    }
+    .pattern-card__tag{
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .pattern-card[data-severity="crit"] .pattern-card__tag{background: rgba(180,35,24,.12); color: var(--crit)}
+    .pattern-card[data-severity="warning"] .pattern-card__tag{background: rgba(196,105,10,.14); color: var(--urgent)}
+    .pattern-card[data-severity="info"] .pattern-card__tag{background: rgba(18,190,209,.14); color: var(--brand)}
+    .pattern-card__wave{
+      width: 100%;
+      height: auto;
+      display: block;
+      padding: 6px 14px 0;
+      background: linear-gradient(180deg, #fbfdff 0%, #f1f6fb 100%);
+      box-sizing: border-box;
+    }
+    .pattern-card__body{
+      padding: 10px 14px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      flex: 1;
+    }
+    .pattern-card__body p{margin: 0 0 6px}
+    .pattern-card__body p:last-child{margin: 0}
+    .pattern-card__body strong{color: var(--brand)}
+    .pattern-card__action{margin-top: 6px !important; padding-top: 8px; border-top: 1px dashed var(--rule)}
+    .pattern-card__action strong{color: var(--cyan)}
+
+    /* Diagrama de receptores adrenérgicos — cards conectados por flow visual.
+       Cada receptor é uma "estação" colorida com efeitos abaixo. */
+    .receptor-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .receptor-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+    .receptor-card:hover{transform: translateY(-2px); box-shadow: var(--shadow-hover)}
+    .receptor-card::before{
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--cyan);
+    }
+    .receptor-card[data-axis="alpha1"]::before{background: linear-gradient(90deg, #b42318, #c4690a)}
+    .receptor-card[data-axis="alpha2"]::before{background: linear-gradient(90deg, #c4690a, #5f6b7a)}
+    .receptor-card[data-axis="beta1"]::before{background: linear-gradient(90deg, var(--cyan), var(--brand))}
+    .receptor-card[data-axis="beta2"]::before{background: linear-gradient(90deg, var(--cyan-light), var(--cyan))}
+    .receptor-card[data-axis="d1"]{}
+    .receptor-card[data-axis="d1"]::before{background: linear-gradient(90deg, #6d4ba6, var(--brand))}
+    .receptor-card[data-axis="v1"]::before{background: linear-gradient(90deg, var(--brand-deep), var(--brand))}
+    .receptor-card__name{
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      margin-bottom: 4px;
+    }
+    .receptor-card__symbol{
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--brand-deep);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .receptor-card__symbol sub{font-size: 14px; font-weight: 600}
+    .receptor-card__where{
+      font-size: 12px;
+      color: var(--ink-2);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--rule);
+    }
+    .receptor-card__effects{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 4px;
+    }
+    .receptor-card__effects li{
+      font-size: 13px;
+      line-height: 1.4;
+      padding-left: 14px;
+      position: relative;
+      color: var(--ink);
+    }
+    .receptor-card__effects li::before{
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .receptor-card__effects .up::before{content: "↑"; color: var(--stable)}
+    .receptor-card__effects .down::before{content: "↓"; color: var(--crit)}
+
+    /* Cards de fármaco — apresentação operacional (dose, preparo, exemplo,
+       cenários e cuidados) com classe colorida no rail esquerdo. */
+    .drug-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+      margin: 16px 0 20px;
+    }
+    .drug-card{
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 14px 16px 14px 22px;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .drug-card:hover{transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: rgba(18,190,209,.36)}
+    .drug-card::before{
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: var(--cyan);
+      border-radius: 12px 0 0 12px;
+    }
+    .drug-card[data-class="opioid"]::before{background: linear-gradient(180deg, #b42318, #c4690a)}
+    .drug-card[data-class="adjuvant"]::before{background: linear-gradient(180deg, #c4690a, var(--cyan))}
+    .drug-card[data-class="sedative"]::before{background: linear-gradient(180deg, var(--cyan), var(--brand))}
+    .drug-card[data-class="bnm"]::before{background: linear-gradient(180deg, #6d4ba6, var(--brand-deep))}
+    .drug-card[data-class="anticonv-load"]::before{background: linear-gradient(180deg, #4d7c3a, var(--cyan))}
+    .drug-card[data-class="anticonv-bic"]::before{background: linear-gradient(180deg, var(--brand-deep), #6d4ba6)}
+    .drug-card[data-class="vasopressor"]::before{background: linear-gradient(180deg, #b42318, #c4690a)}
+    .drug-card[data-class="inotrope"]::before{background: linear-gradient(180deg, var(--cyan), var(--brand))}
+    .drug-card[data-class="vasodilator"]::before{background: linear-gradient(180deg, #c4690a, var(--cyan-light))}
+    .drug-card[data-class="antihtn"]::before{background: linear-gradient(180deg, #6d4ba6, var(--brand))}
+    .drug-card[data-class="betablock"]::before{background: linear-gradient(180deg, var(--brand-deep), var(--brand))}
+    .drug-card__head{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .drug-card__name{
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--brand-deep);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+    .drug-card__chip{
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(18,190,209,.12);
+      color: var(--brand);
+      flex-shrink: 0;
+    }
+    .drug-card[data-class="opioid"] .drug-card__chip{background: rgba(180,35,24,.10); color: var(--crit)}
+    .drug-card[data-class="adjuvant"] .drug-card__chip{background: rgba(196,105,10,.14); color: var(--urgent)}
+    .drug-card[data-class="sedative"] .drug-card__chip{background: rgba(18,190,209,.14); color: var(--brand)}
+    .drug-card[data-class="bnm"] .drug-card__chip{background: rgba(109,75,166,.14); color: #4a3478}
+    .drug-card[data-class="anticonv-load"] .drug-card__chip{background: rgba(77,124,58,.16); color: #355c26}
+    .drug-card[data-class="anticonv-bic"] .drug-card__chip{background: rgba(109,75,166,.14); color: #4a3478}
+    .drug-card[data-class="vasopressor"] .drug-card__chip{background: rgba(180,35,24,.10); color: var(--crit)}
+    .drug-card[data-class="inotrope"] .drug-card__chip{background: rgba(18,190,209,.14); color: var(--brand)}
+    .drug-card[data-class="vasodilator"] .drug-card__chip{background: rgba(196,105,10,.14); color: var(--urgent)}
+    .drug-card[data-class="antihtn"] .drug-card__chip{background: rgba(109,75,166,.14); color: #4a3478}
+    .drug-card[data-class="betablock"] .drug-card__chip{background: rgba(13,36,56,.10); color: var(--brand-deep)}
+
+    /* Bloco Mecanismo + Efeito — alternativa ao __numbers para overviews
+       farmacológicos onde dose/preparo não é o foco. */
+    .drug-card__mech{
+      display: grid;
+      gap: 6px;
+      padding: 8px 10px;
+      background: linear-gradient(135deg, rgba(13,36,56,.03) 0%, rgba(18,190,209,.04) 100%);
+      border-left: 3px solid var(--brand);
+      border-radius: 0 6px 6px 0;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .drug-card__mech-row{display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap}
+    .drug-card__mech-label{
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand);
+      flex-shrink: 0;
+      min-width: 72px;
+    }
+    .drug-card__mech-value{color: var(--ink); flex: 1; min-width: 180px}
+
+    /* Cenário clínico — cartão com cenário no header, estratégia preferencial
+       (verde-cyan), evitar/cautela (âmbar-vermelho) e comentário prático. */
+    .scenario-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .scenario-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+    }
+    .scenario-card:hover{transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: rgba(18,190,209,.36)}
+    .scenario-card__head{
+      padding: 10px 14px;
+      background: linear-gradient(135deg, var(--brand-deep) 0%, #123c69 100%);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13.5px;
+      line-height: 1.3;
+      border-bottom: 1px solid rgba(48,241,230,.18);
+    }
+    .scenario-card__body{
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .scenario-card__block{
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 8px 10px;
+      border-radius: 0 6px 6px 0;
+    }
+    .scenario-card__block::before{
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .scenario-card__block[data-tone="prefer"]{
+      background: linear-gradient(135deg, rgba(6,118,71,.08) 0%, rgba(18,190,209,.06) 100%);
+      border-left: 3px solid var(--stable);
+      color: #2c4720;
+    }
+    .scenario-card__block[data-tone="prefer"]::before{content: "Preferir"; color: var(--stable)}
+    .scenario-card__block[data-tone="avoid"]{
+      background: linear-gradient(135deg, rgba(180,35,24,.08) 0%, rgba(196,105,10,.06) 100%);
+      border-left: 3px solid var(--crit);
+      color: #6b110a;
+    }
+    .scenario-card__block[data-tone="avoid"]::before{content: "Evitar / cautela"; color: var(--crit)}
+    .scenario-card__block[data-tone="note"]{
+      background: linear-gradient(135deg, rgba(13,36,56,.04) 0%, rgba(18,190,209,.05) 100%);
+      border-left: 3px solid var(--brand);
+      color: var(--ink);
+    }
+    .scenario-card__block[data-tone="note"]::before{content: "Comentário prático"; color: var(--brand)}
+    .scenario-card__block[data-tone="practice"]{
+      background: linear-gradient(135deg, rgba(13,36,56,.04) 0%, rgba(18,190,209,.05) 100%);
+      border-left: 3px solid var(--brand);
+      color: var(--ink);
+    }
+    .scenario-card__block[data-tone="practice"]::before{content: "Estratégia prática"; color: var(--brand)}
+    .scenario-card__block[data-tone="evidence"]{
+      background: linear-gradient(135deg, rgba(109,75,166,.06) 0%, rgba(18,190,209,.04) 100%);
+      border-left: 3px solid #6d4ba6;
+      color: var(--ink-2);
+      font-size: 12px;
+    }
+    .scenario-card__block[data-tone="evidence"]::before{content: "Evidência comparativa"; color: #4a3478}
+    .scenario-card__block[data-tone="anticipate"]{
+      background: linear-gradient(135deg, rgba(196,105,10,.06) 0%, rgba(180,35,24,.04) 100%);
+      border-left: 3px solid var(--urgent);
+      color: #6b3a04;
+    }
+    .scenario-card__block[data-tone="anticipate"]::before{content: "Como antecipar"; color: var(--urgent)}
+    .scenario-card__block[data-tone="prevent"]{
+      background: linear-gradient(135deg, rgba(6,118,71,.08) 0%, rgba(18,190,209,.06) 100%);
+      border-left: 3px solid var(--stable);
+      color: #2c4720;
+    }
+    .scenario-card__block[data-tone="prevent"]::before{content: "Prevenção peri-IOT"; color: var(--stable)}
+
+    /* Step-card — passos numerados para procedimentos sequenciais
+       (despertar diário, CAM-ICU features, checklists ordenados). */
+    .step-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .step-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 14px 16px 14px 56px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+    }
+    .step-card:hover{transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: rgba(18,190,209,.36)}
+    .step-card__num{
+      position: absolute;
+      left: 14px; top: 14px;
+      width: 32px; height: 32px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand-deep) 0%, var(--brand) 100%);
+      color: var(--cyan-light);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(13,36,56,.18);
+    }
+    .step-card__name{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--brand-deep);
+      line-height: 1.25;
+    }
+    .step-card__action,
+    .step-card__success{
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 6px 10px;
+      border-radius: 0 6px 6px 0;
+    }
+    .step-card__action::before,
+    .step-card__success::before{
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .step-card__action{
+      background: linear-gradient(135deg, rgba(13,36,56,.04) 0%, rgba(18,190,209,.05) 100%);
+      border-left: 3px solid var(--brand);
+      color: var(--ink);
+    }
+    .step-card__action::before{content: "Ação"; color: var(--brand)}
+    .step-card__success{
+      background: linear-gradient(135deg, rgba(6,118,71,.06) 0%, rgba(18,190,209,.04) 100%);
+      border-left: 3px solid var(--stable);
+      color: #2c4720;
+    }
+    .step-card__success::before{content: "Critério"; color: var(--stable)}
+    .drug-card__numbers{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 8px;
+      padding: 10px 12px;
+      background: linear-gradient(135deg, rgba(13,36,56,.04) 0%, rgba(18,190,209,.05) 100%);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+    }
+    .drug-card__num{
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .drug-card__num-label{
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+    }
+    .drug-card__num-value{
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--brand-deep);
+      line-height: 1.35;
+    }
+    .drug-card__num-value strong{color: var(--cyan); font-weight: 700}
+    .drug-card__scenarios{
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .drug-card__scenarios::before{
+      content: "Quando usar";
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 4px;
+    }
+    .drug-card__caution{
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #6b3a04;
+      background: linear-gradient(135deg, rgba(196,105,10,.08) 0%, rgba(180,35,24,.05) 100%);
+      border-left: 3px solid var(--urgent);
+      padding: 8px 10px;
+      border-radius: 0 6px 6px 0;
+    }
+    .drug-card__caution::before{
+      content: "Cuidados";
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--urgent);
+      margin-bottom: 3px;
+    }
+
+    /* Mnemônico — cartão de baralho com letras-âncora destacadas. */
+    .mnemonic{
+      background: linear-gradient(135deg, var(--brand-deep) 0%, #0a1d2e 100%);
+      color: #fff;
+      border: 1px solid rgba(48,241,230,.24);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .mnemonic::before{
+      content: "MNEMÔNICO";
+      position: absolute;
+      top: 12px; right: 14px;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(48,241,230,.6);
+    }
+    .mnemonic h5{
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 17px;
+      line-height: 1.2;
+      margin: 0 0 10px;
+      color: var(--cyan-light);
+      letter-spacing: 0.02em;
+    }
+    .mnemonic ul{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 4px;
+    }
+    .mnemonic li{
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255,255,255,.88);
+    }
+    .mnemonic li b,
+    .mnemonic .letter{
+      display: inline-block;
+      min-width: 18px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--cyan-light);
+      font-size: 15px;
+      margin-right: 4px;
+    }
+@media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}details:not([open]){border-color:#ccc}}
   </style>
   <style>
+    /* Sidebar: utility bits + collapsed state */
     .brand__row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
     .brand__content{min-width:0}
-    .nav-toggle{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
-    .nav-toggle:hover{background:rgba(255,255,255,.18)}
-    nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
+    .nav-toggle{
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .14s ease, border-color .14s ease;
+    }
+    .nav-toggle:hover{
+      background: rgba(48,241,230,.10);
+      border-color: rgba(48,241,230,.36);
+    }
+    /* Metric link (caso volte a ser usado): hover cyan */
+    .metric-link{
+      display: block;
+      text-decoration: none;
+      transition: border-color .14s ease, box-shadow .14s ease, transform .14s ease;
+    }
+    .metric-link:hover,.metric-link:focus-visible{
+      border-color: rgba(18,190,209,.36);
+      box-shadow: var(--shadow-hover);
+      outline: 0;
+      transform: translateY(-1px);
+    }
+    /* Collapsed sidebar */
+    .app.nav-collapsed{grid-template-columns:72px 1fr}
+    .app.nav-collapsed aside{padding:18px 10px}
+    .app.nav-collapsed .brand{margin-bottom:14px;padding-bottom:12px;text-align:center}
+    .app.nav-collapsed .brand__row{display:grid;justify-items:center;gap:8px}
+    .app.nav-collapsed .brand__content{display:none}
+    .app.nav-collapsed .nav-toggle{width:100%;padding:6px 4px;font-size:10px}
+    .app.nav-collapsed nav a{align-items:center;display:flex;justify-content:center;min-height:40px;padding:9px 4px;position:relative;border-bottom-color:transparent}
+    .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
+    .app.nav-collapsed nav a::before{content:attr(data-short);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.04em}
+    @media(max-width:980px){
+      .app,.app.nav-collapsed{grid-template-columns:1fr}
+      aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}
+      .app.nav-collapsed aside{padding:12px 14px}
+      .app.nav-collapsed nav{display:none}
+      .app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}
+      .app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}
+      .app.nav-collapsed .brand__content{display:block}
+      .app.nav-collapsed .brand h1{font-size:16px}
+      .app.nav-collapsed .brand p,.app.nav-collapsed .brand .toc-note{display:none}
+    }
   </style>
 </head>
 <body>
@@ -137,12 +1690,21 @@
             <summary>Hiponatremia — Na &lt; 135 mEq/L</summary>
             <div class="detail-body">
               <h4>Valores de referência e classificação</h4>
-              <table>
-                <thead><tr><th>Faixa</th><th>Classificação</th><th>Cronicidade</th></tr></thead>
-                <tbody>
-                  <tr><td>Na &lt; 135 mEq/L</td><td>Leve 130–134 · Moderada 125–129 · Grave &lt; 125</td><td>Aguda &lt; 48 h · Crônica ≥ 48 h ou duração desconhecida</td></tr>
-                </tbody>
-              </table>
+              <div class="scale-rows">
+                <div class="scale-row" data-level="goal">
+                  <span class="scale-row__badge">130–134</span>
+                  <div class="scale-row__body"><strong>Leve</strong><em>Baixo risco neurológico agudo; identificar etiologia e tratar conforme cronicidade.</em></div>
+                </div>
+                <div class="scale-row" data-level="warning">
+                  <span class="scale-row__badge">125–129</span>
+                  <div class="scale-row__body"><strong>Moderada</strong><em>Risco de cefaleia, náusea, confusão; tratamento depende da cronicidade.</em></div>
+                </div>
+                <div class="scale-row" data-level="crit">
+                  <span class="scale-row__badge">&lt; 125</span>
+                  <div class="scale-row__body"><strong>Grave</strong><em>Risco de edema cerebral, convulsão, herniação. Tratamento sempre indicado.</em></div>
+                </div>
+              </div>
+              <div class="alert alert-info"><strong>Cronicidade:</strong> aguda &lt; 48 h documentada · crônica ≥ 48 h ou duração desconhecida (assumir crônica em dúvida).</div>
 
               <h4>Etiologias clínicas</h4>
               <p>SIADH (neoplasia pulmonar/SNC, pneumonia, AVC), insuficiência cardíaca, cirrose, síndrome nefrótica, hipotireoidismo grave, insuficiência adrenal (Addison), polidipsia psicogênica, perda gastrointestinal/renal de Na com reposição inadequada.</p>
@@ -179,12 +1741,21 @@
             <summary>Hipernatremia — Na &gt; 145 mEq/L</summary>
             <div class="detail-body">
               <h4>Valores de referência e classificação</h4>
-              <table>
-                <thead><tr><th>Faixa</th><th>Classificação</th><th>Cronicidade</th></tr></thead>
-                <tbody>
-                  <tr><td>Na &gt; 145 mEq/L</td><td>Leve 146–149 · Moderada 150–155 · Grave &gt; 155</td><td>Aguda &lt; 48 h · Crônica ≥ 48 h</td></tr>
-                </tbody>
-              </table>
+              <div class="scale-rows">
+                <div class="scale-row" data-level="goal">
+                  <span class="scale-row__badge">146–149</span>
+                  <div class="scale-row__body"><strong>Leve</strong><em>Geralmente assintomática; identificar etiologia, corrigir gradualmente.</em></div>
+                </div>
+                <div class="scale-row" data-level="warning">
+                  <span class="scale-row__badge">150–155</span>
+                  <div class="scale-row__body"><strong>Moderada</strong><em>Sede intensa, fraqueza, irritabilidade; risco de complicação se rapidamente corrigida.</em></div>
+                </div>
+                <div class="scale-row" data-level="crit">
+                  <span class="scale-row__badge">&gt; 155</span>
+                  <div class="scale-row__body"><strong>Grave</strong><em>Risco de hemorragia intracraniana, convulsão, coma. Tratamento sempre indicado.</em></div>
+                </div>
+              </div>
+              <div class="alert alert-info"><strong>Cronicidade:</strong> aguda &lt; 48 h documentada · crônica ≥ 48 h (assumir crônica em dúvida).</div>
 
               <h4>Etiologias clínicas</h4>
               <p>Perda de água livre por sede comprometida (idoso, demência, AVC), diabetes insipidus central ou nefrogênico, diarreia osmótica, diurese pós-obstrutiva, queimadura extensa, hiperventilação prolongada, hiperaldosteronismo primário.</p>
@@ -227,12 +1798,21 @@
             <summary>Hipocalemia — K &lt; 3,5 mEq/L</summary>
             <div class="detail-body">
               <h4>Valores de referência e classificação</h4>
-              <table>
-                <thead><tr><th>Faixa</th><th>Classificação</th><th>Risco arrítmico</th></tr></thead>
-                <tbody>
-                  <tr><td>K &lt; 3,5 mEq/L</td><td>Leve 3,0–3,4 · Moderada 2,5–2,9 · Grave &lt; 2,5</td><td>Alto se cardiopatia, digital, QT longo, infarto recente</td></tr>
-                </tbody>
-              </table>
+              <div class="scale-rows">
+                <div class="scale-row" data-level="goal">
+                  <span class="scale-row__badge">3,0–3,4</span>
+                  <div class="scale-row__body"><strong>Leve</strong><em>Geralmente assintomática; repor por VO se possível.</em></div>
+                </div>
+                <div class="scale-row" data-level="warning">
+                  <span class="scale-row__badge">2,5–2,9</span>
+                  <div class="scale-row__body"><strong>Moderada</strong><em>Fraqueza muscular, alterações no ECG (U proeminente, T achatada).</em></div>
+                </div>
+                <div class="scale-row" data-level="crit">
+                  <span class="scale-row__badge">&lt; 2,5</span>
+                  <div class="scale-row__body"><strong>Grave</strong><em>Risco de arritmias graves, rabdomiólise, paralisia. Tratamento IV imediato.</em></div>
+                </div>
+              </div>
+              <div class="alert alert-warning"><strong>Risco arrítmico ↑↑↑:</strong> cardiopatia conhecida, uso de digital, QT longo, infarto recente. Nesses pacientes, reposição mais agressiva mesmo com hipocalemia leve.</div>
 
               <h4>Etiologias clínicas</h4>
               <p>Vômitos persistentes, diarreia, sucção gástrica, fístulas, síndrome de Cushing/hiperaldosteronismo primário, síndrome de Bartter/Gitelman, hipomagnesemia, alcalose metabólica, paralisia periódica hipocalêmica, refeeding syndrome.</p>
@@ -266,12 +1846,21 @@
             <summary>Hipercalemia — K &gt; 5,0 mEq/L</summary>
             <div class="detail-body">
               <h4>Valores de referência e classificação</h4>
-              <table>
-                <thead><tr><th>Faixa</th><th>Classificação</th><th>Risco arrítmico</th></tr></thead>
-                <tbody>
-                  <tr><td>K &gt; 5,0 mEq/L</td><td>Leve 5,1–6,0 · Moderada 6,1–6,9 · Grave ≥ 7,0 ou alteração ECG</td><td>Alto a partir de 6,5; emergência se ECG alterado</td></tr>
-                </tbody>
-              </table>
+              <div class="scale-rows">
+                <div class="scale-row" data-level="goal">
+                  <span class="scale-row__badge">5,1–6,0</span>
+                  <div class="scale-row__body"><strong>Leve</strong><em>Investigar etiologia (medicações, AKI, lise). Tratamento conservador.</em></div>
+                </div>
+                <div class="scale-row" data-level="warning">
+                  <span class="scale-row__badge">6,1–6,9</span>
+                  <div class="scale-row__body"><strong>Moderada</strong><em>Risco crescente — solicitar ECG e iniciar shift de K (β2-agonista, glicose+insulina).</em></div>
+                </div>
+                <div class="scale-row" data-level="crit">
+                  <span class="scale-row__badge">≥ 7,0 ou ECG alterado</span>
+                  <div class="scale-row__body"><strong>Grave / Emergência</strong><em>Cálcio IV imediato (estabilização de membrana) + shift + remoção (diurético/diálise).</em></div>
+                </div>
+              </div>
+              <div class="alert alert-danger"><strong>Emergência:</strong> a partir de K ≥ 6,5 mEq/L ou QUALQUER alteração no ECG (T apiculada, alargamento de QRS, bradicardia, perda de onda P, onda sinusoidal), tratar como emergência cardíaca — cálcio IV antes mesmo do shift.</div>
 
               <h4>Etiologias clínicas</h4>
               <p>Insuficiência renal aguda/crônica, rabdomiólise, lise tumoral, hemólise massiva, acidose metabólica, doença de Addison, hipoaldosteronismo hiporreninêmico, sangramento gastrointestinal alto, transfusão maciça de hemoderivados.</p>
@@ -320,12 +1909,20 @@
             <summary>Hipofosfatemia — P &lt; 2,5 mg/dL (&lt; 0,8 mmol/L)</summary>
             <div class="detail-body">
               <h4>Valores de referência e classificação</h4>
-              <table>
-                <thead><tr><th>Faixa</th><th>Classificação</th><th>Reposição IV indicada</th></tr></thead>
-                <tbody>
-                  <tr><td>P &lt; 2,5 mg/dL (&lt; 0,8 mmol/L)</td><td>Leve 2,0–2,4 · Moderada 1,0–1,9 · Grave &lt; 1,0</td><td>Sim, se &lt; 1,0 mg/dL ou sintomas (insuficiência respiratória, hemólise, IC)</td></tr>
-                </tbody>
-              </table>
+              <div class="scale-rows">
+                <div class="scale-row" data-level="goal">
+                  <span class="scale-row__badge">2,0–2,4</span>
+                  <div class="scale-row__body"><strong>Leve</strong><em>Geralmente assintomática; repor VO se desnutrição/refeeding.</em></div>
+                </div>
+                <div class="scale-row" data-level="warning">
+                  <span class="scale-row__badge">1,0–1,9</span>
+                  <div class="scale-row__body"><strong>Moderada</strong><em>Fraqueza muscular, fadiga; considerar reposição IV se sintomas.</em></div>
+                </div>
+                <div class="scale-row" data-level="crit">
+                  <span class="scale-row__badge">&lt; 1,0</span>
+                  <div class="scale-row__body"><strong>Grave</strong><em>Reposição IV imediata. Risco de insuficiência respiratória, hemólise, falência cardíaca.</em></div>
+                </div>
+              </div>
 
               <h4>Etiologias clínicas</h4>
               <p>Alcoolismo crônico, refeeding syndrome, cetoacidose diabética (durante tratamento), sepse, queimadura extensa, hiperparatireoidismo, deficiência de vitamina D, hiperventilação prolongada (alcalose respiratória), CRRT prolongada.</p>
@@ -359,12 +1956,21 @@
             <summary>Hiperfosfatemia — P &gt; 4,5 mg/dL (&gt; 1,45 mmol/L)</summary>
             <div class="detail-body">
               <h4>Valores de referência e classificação</h4>
-              <table>
-                <thead><tr><th>Faixa</th><th>Classificação</th><th>Reposição IV indicada</th></tr></thead>
-                <tbody>
-                  <tr><td>P &gt; 4,5 mg/dL (&gt; 1,45 mmol/L)</td><td>Leve 4,6–6,0 · Moderada 6,1–7,5 · Grave &gt; 7,5</td><td>Sem reposição IV — tratamento é restrição + quelante + diálise</td></tr>
-                </tbody>
-              </table>
+              <div class="scale-rows">
+                <div class="scale-row" data-level="goal">
+                  <span class="scale-row__badge">4,6–6,0</span>
+                  <div class="scale-row__body"><strong>Leve</strong><em>Tratar causa subjacente; restrição dietética.</em></div>
+                </div>
+                <div class="scale-row" data-level="warning">
+                  <span class="scale-row__badge">6,1–7,5</span>
+                  <div class="scale-row__body"><strong>Moderada</strong><em>Quelantes orais (sevelamer, carbonato de cálcio); avaliar função renal.</em></div>
+                </div>
+                <div class="scale-row" data-level="crit">
+                  <span class="scale-row__badge">&gt; 7,5</span>
+                  <div class="scale-row__body"><strong>Grave</strong><em>Risco de calcificação metastática e hipocalcemia sintomática. Diálise frequentemente indicada.</em></div>
+                </div>
+              </div>
+              <div class="alert alert-info"><strong>Sem reposição IV:</strong> tratamento é restrição + quelante + diálise.</div>
 
               <h4>Etiologias clínicas</h4>
               <p>Insuficiência renal aguda/crônica (causa mais comum), lise tumoral, rabdomiólise, hipoparatireoidismo, acromegalia, acidose metabólica/diabética (shift extracelular), pseudo-hiperfosfatemia (hiperglobulinemia).</p>
@@ -397,16 +2003,25 @@
           <details class="hh-detail hh-hipo">
             <summary>Hipomagnesemia — Mg &lt; 1,7 mg/dL (&lt; 0,7 mmol/L)</summary>
             <div class="detail-body">
-              <h4>Valores de referência</h4>
-              <table>
-                <thead><tr><th>Faixa</th><th>Valor sérico</th><th>Interpretação</th></tr></thead>
-                <tbody>
-                  <tr><td>Normal</td><td>1,7–2,4 mg/dL (0,7–1,0 mmol/L)</td><td>—</td></tr>
-                  <tr><td>Hipomagnesemia leve</td><td>1,4–1,6 mg/dL</td><td>Geralmente assintomática; tratar se contexto clínico (hipoK, hipoCa, QT longo)</td></tr>
-                  <tr><td>Hipomagnesemia moderada</td><td>1,0–1,3 mg/dL</td><td>Indicação clara de reposição</td></tr>
-                  <tr><td>Hipomagnesemia grave</td><td>&lt; 1,0 mg/dL</td><td>Risco de torsades de pointes, tetania, convulsão — reposição IV imediata</td></tr>
-                </tbody>
-              </table>
+              <h4>Valores de referência e classificação</h4>
+              <div class="scale-rows">
+                <div class="scale-row" data-level="target">
+                  <span class="scale-row__badge">1,7–2,4</span>
+                  <div class="scale-row__body"><strong>Normal</strong><em>0,7–1,0 mmol/L.</em></div>
+                </div>
+                <div class="scale-row" data-level="goal">
+                  <span class="scale-row__badge">1,4–1,6</span>
+                  <div class="scale-row__body"><strong>Leve</strong><em>Geralmente assintomática; tratar se hipoK, hipoCa ou QT longo concomitantes.</em></div>
+                </div>
+                <div class="scale-row" data-level="warning">
+                  <span class="scale-row__badge">1,0–1,3</span>
+                  <div class="scale-row__body"><strong>Moderada</strong><em>Indicação clara de reposição IV.</em></div>
+                </div>
+                <div class="scale-row" data-level="crit">
+                  <span class="scale-row__badge">&lt; 1,0</span>
+                  <div class="scale-row__body"><strong>Grave</strong><em>Risco de torsades de pointes, tetania, convulsão. Reposição IV imediata.</em></div>
+                </div>
+              </div>
 
               <h4>Etiologias clínicas</h4>
               <p>Diarreia crônica, malabsorção, alcoolismo (causa mais comum no adulto), pancreatite aguda, queimadura, sepse, hipoparatireoidismo, hipertireoidismo, transfusão maciça (citrato).</p>
@@ -471,13 +2086,16 @@
             <summary>Hipocalcemia — Ca total &lt; 8,6 ou ionizado &lt; 1,15 mmol/L</summary>
             <div class="detail-body">
               <h4>Classificação</h4>
-              <table>
-                <thead><tr><th>Gravidade</th><th>Critério</th><th>Conduta</th></tr></thead>
-                <tbody>
-                  <tr><td>Leve</td><td>Ca total 8,0–8,5 ou ionizado 1,0–1,15</td><td>Geralmente assintomática</td></tr>
-                  <tr><td>Moderada/grave</td><td>Ca total &lt; 8,0 ou ionizado &lt; 1,0</td><td>Risco de tetania, convulsão, arritmia — reposição indicada</td></tr>
-                </tbody>
-              </table>
+              <div class="scale-rows">
+                <div class="scale-row" data-level="goal">
+                  <span class="scale-row__badge">8,0–8,5</span>
+                  <div class="scale-row__body"><strong>Leve</strong><em>Ca ionizado 1,0–1,15 mmol/L. Geralmente assintomática; reavaliar e tratar causa.</em></div>
+                </div>
+                <div class="scale-row" data-level="crit">
+                  <span class="scale-row__badge">&lt; 8,0</span>
+                  <div class="scale-row__body"><strong>Moderada / Grave</strong><em>Ca ionizado &lt; 1,0 mmol/L. Risco de tetania, convulsão, arritmia. Reposição IV indicada.</em></div>
+                </div>
+              </div>
 
               <h4>Etiologias clínicas</h4>
               <p>Hipoparatireoidismo (pós-tireoidectomia), deficiência de vitamina D, doença renal crônica, pancreatite aguda grave, sepse, transfusão maciça (citrato), hipomagnesemia, hiperfosfatemia aguda (lise tumoral, rabdomiólise), choque hemorrágico, queimadura extensa.</p>
@@ -514,13 +2132,16 @@
             <summary>Hipercalcemia — Ca total &gt; 10,2 ou ionizado &gt; 1,30 mmol/L</summary>
             <div class="detail-body">
               <h4>Classificação</h4>
-              <table>
-                <thead><tr><th>Gravidade</th><th>Critério</th><th>Conduta</th></tr></thead>
-                <tbody>
-                  <tr><td>Leve</td><td>Ca total 10,3–12,0</td><td>Hidratação + tratar causa</td></tr>
-                  <tr><td>Moderada/grave</td><td>Ca total &gt; 12,0 ou ionizado &gt; 1,4</td><td>Tratamento intensivo: SF + calcitonina + bisfosfonato</td></tr>
-                </tbody>
-              </table>
+              <div class="scale-rows">
+                <div class="scale-row" data-level="goal">
+                  <span class="scale-row__badge">10,3–12,0</span>
+                  <div class="scale-row__body"><strong>Leve</strong><em>Hidratação salina + tratar causa subjacente.</em></div>
+                </div>
+                <div class="scale-row" data-level="crit">
+                  <span class="scale-row__badge">&gt; 12,0</span>
+                  <div class="scale-row__body"><strong>Moderada / Grave</strong><em>Ca ionizado &gt; 1,4 mmol/L. Tratamento intensivo: SF + calcitonina + bisfosfonato; considerar diálise se IRA.</em></div>
+                </div>
+              </div>
 
               <h4>Etiologias clínicas</h4>
               <p>Hiperparatireoidismo primário, malignidade (mieloma múltiplo, ca de mama, ca renal, ca pulmonar, linfoma — secreção de PTHrP), sarcoidose e doenças granulomatosas, imobilização prolongada, tireotoxicose, insuficiência adrenal, doença de Paget.</p>

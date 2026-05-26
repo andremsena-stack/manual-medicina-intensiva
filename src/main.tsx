@@ -4,6 +4,13 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import App from "./App";
 import { AuthConfigurationMissing, AuthGate, SignedOutScreen } from "./components/AuthGate";
 import { registerServiceWorker } from "./registerServiceWorker";
+// Self-hosted Inter Tight via @fontsource (latin subset, pesos usados na landing).
+// Substitui o <link> Google Fonts no index.html — evita FOUT e dependência externa.
+import "@fontsource/inter-tight/latin-400.css";
+import "@fontsource/inter-tight/latin-600.css";
+import "@fontsource/inter-tight/latin-700.css";
+import "@fontsource/inter-tight/latin-800.css";
+import "@fontsource/inter-tight/latin-900.css";
 import "./styles.css";
 
 const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;

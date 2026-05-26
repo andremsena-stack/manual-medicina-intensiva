@@ -418,6 +418,17 @@ body.landing-active {
   z-index: 5;
 }
 
+/* Canvas animado de fundo (substituto leve de video bg). Renderiza partículas
+   + curvas sinusoidais + grid sutil. Sempre atrás de todo conteúdo. */
+.hero-v2-bg {
+  height: 100%;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  z-index: 0;
+}
+
 .hero-v2-stage {
   align-content: space-between;
   display: grid;
@@ -637,10 +648,184 @@ body.landing-active {
     place-items: center;
     position: static;
   }
+  /* Phone maior no stacked (tablet/mobile) que no split (desktop). Quando empilhado,
+     há mais espaço lateral livre — phone fica visivelmente maior, conteúdo do
+     iframe mais legível. Cap em 92vw pra não bater na borda do viewport. */
+  .hero-v2 .landing-phone.hero-v2-phone {
+    width: min(340px, 92vw);
+  }
   .hero-v2-carousel-meta {
     justify-items: start;
     text-align: left;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   CTA BANNER — mini-cards de planos logo após o hero (alto-conversão).
+   Não substitui o pricing-v2 lá embaixo, é um teaser top-of-fold.
+   Anchor #planos faz scroll suave até pricing-v2 onde tem detalhes completos.
+   --------------------------------------------------------------------------- */
+.cta-banner {
+  background:
+    radial-gradient(800px 300px at 50% 0%, rgba(48, 241, 230, 0.1), transparent 70%),
+    rgba(11, 37, 52, 0.45);
+  border-bottom: 1px solid var(--l-line);
+  border-top: 1px solid var(--l-line);
+  display: grid;
+  gap: 28px;
+  /* Full-bleed: escapa do max-width:1180px de .landing */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  max-width: 100vw;
+  padding: clamp(40px, 6vw, 64px) clamp(20px, 5vw, 64px);
+  position: relative;
+  width: 100vw;
+}
+
+.cta-banner-header {
+  display: grid;
+  gap: 12px;
+  margin: 0 auto;
+  max-width: 720px;
+  text-align: center;
+}
+
+.cta-banner-eyebrow {
+  color: var(--l-cyan);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.cta-banner-title {
+  color: var(--l-ink);
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.6vw, 48px);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.cta-banner-lead {
+  color: var(--l-ink-muted);
+  font-size: clamp(14px, 1vw, 16px);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.cta-banner-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+  margin: 0 auto;
+  max-width: 920px;
+  width: 100%;
+}
+
+@media (min-width: 720px) {
+  .cta-banner-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.cta-banner-card {
+  align-items: center;
+  background: rgba(11, 37, 52, 0.55);
+  border: 1px solid var(--l-line);
+  color: var(--l-ink);
+  cursor: pointer;
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px 20px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.cta-banner-card:hover,
+.cta-banner-card:focus-visible {
+  background: rgba(11, 37, 52, 0.85);
+  border-color: rgba(48, 241, 230, 0.55);
+  outline: 0;
+  transform: translateY(-3px);
+}
+
+.cta-banner-card--featured {
+  background: rgba(11, 37, 52, 0.75);
+  border-color: rgba(48, 241, 230, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(48, 241, 230, 0.25) inset,
+    0 14px 36px -16px rgba(48, 241, 230, 0.35);
+}
+
+.cta-banner-card-badge {
+  background: linear-gradient(135deg, var(--l-cyan), var(--l-cyan-2));
+  color: #021018;
+  font-size: 0.62rem;
+  font-weight: 900;
+  left: 50%;
+  letter-spacing: 0.16em;
+  padding: 4px 10px;
+  position: absolute;
+  text-transform: uppercase;
+  top: -10px;
+  transform: translateX(-50%);
+}
+
+.cta-banner-card-label {
+  color: var(--l-cyan);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.cta-banner-card-price {
+  color: var(--l-ink);
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.cta-banner-card-period {
+  color: var(--l-ink-muted);
+  font-size: 0.84rem;
+}
+
+.cta-banner-cta {
+  align-items: center;
+  background: linear-gradient(135deg, var(--l-cyan), var(--l-cyan-2));
+  border: 0;
+  color: #021018;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  gap: 14px;
+  justify-content: center;
+  justify-self: center;
+  letter-spacing: 0.04em;
+  padding: 18px 36px;
+  text-transform: uppercase;
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.cta-banner-cta:hover,
+.cta-banner-cta:focus-visible {
+  box-shadow: 0 18px 40px -10px rgba(48, 241, 230, 0.55);
+  outline: 0;
+  transform: translateY(-2px);
 }
 
 /* ---------------------------------------------------------------------------
@@ -747,6 +932,16 @@ body.landing-active {
   width: 100%;
 }
 
+.features-v2-card-stat {
+  color: var(--l-cyan);
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  margin-top: -8px;
+  text-transform: uppercase;
+}
+
 .features-v2-card-title {
   color: var(--l-ink);
   font-family: var(--font-display);
@@ -763,6 +958,178 @@ body.landing-active {
   font-size: 0.96rem;
   line-height: 1.55;
   margin: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   ANIMATED CALCULATOR — seção demonstrativa do bloqueio dose↔vazão.
+   Timeline GSAP anima números sendo digitados e o "ativo" alternando.
+   Layout: copy à esquerda, widget calc à direita (split em desktop;
+   empilhado no mobile via stacking natural do grid).
+   --------------------------------------------------------------------------- */
+.animcalc {
+  align-items: center;
+  display: grid;
+  gap: clamp(32px, 5vw, 56px);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 820px) {
+  .animcalc {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  }
+}
+
+.animcalc-eyebrow {
+  color: var(--l-cyan);
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.animcalc-title {
+  color: var(--l-ink);
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.5vw, 64px);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin: 0 0 18px;
+  text-transform: uppercase;
+}
+
+.animcalc-lead {
+  color: var(--l-ink-soft);
+  font-size: clamp(15px, 1.1vw, 18px);
+  line-height: 1.6;
+  margin: 0 0 20px;
+  max-width: 52ch;
+}
+
+.animcalc-bullets {
+  color: var(--l-ink-muted);
+  display: grid;
+  font-size: 0.95rem;
+  gap: 10px;
+  line-height: 1.5;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.animcalc-bullets li {
+  border-left: 2px solid rgba(48, 241, 230, 0.45);
+  padding: 2px 0 2px 14px;
+}
+
+.animcalc-widget {
+  background: rgba(11, 37, 52, 0.55);
+  border: 1px solid var(--l-line);
+  display: grid;
+  gap: 18px;
+  padding: clamp(20px, 3vw, 32px);
+}
+
+.animcalc-header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.animcalc-header-label {
+  color: var(--l-ink);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.animcalc-header-tag {
+  background: rgba(48, 241, 230, 0.12);
+  border: 1px solid rgba(48, 241, 230, 0.35);
+  color: var(--l-cyan);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+
+.animcalc-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.animcalc-field {
+  background: rgba(4, 16, 24, 0.55);
+  border: 1.5px solid var(--l-line);
+  display: grid;
+  gap: 8px;
+  min-height: 96px;
+  padding: 14px 16px;
+  /* Sem transition no border/bg porque GSAP cuida da animação. */
+}
+
+.animcalc-field--editable {
+  /* Wireframe sutil indicando que esse é um campo editável (ativo via GSAP) */
+  border-style: solid;
+}
+
+.animcalc-field-label {
+  color: var(--l-ink-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.animcalc-field-value {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.animcalc-field-number {
+  color: var(--l-ink);
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.animcalc-field-number--soft {
+  color: var(--l-ink-soft);
+  font-size: clamp(16px, 1.4vw, 20px);
+  font-weight: 700;
+}
+
+.animcalc-field-unit {
+  color: var(--l-ink-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.animcalc-footnote {
+  color: var(--l-ink-muted);
+  font-size: 0.84rem;
+  font-style: italic;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .animcalc-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------------------------------------------------------------------------

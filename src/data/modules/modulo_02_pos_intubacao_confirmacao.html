@@ -4,31 +4,1631 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Manual Interativo de Medicina Intensiva — Módulo 2: Pós-intubação e Confirmação</title>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap">
   <style>
-    :root{--bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;--primary:#123c69;--primary-soft:#dce9f6;--accent:#0b6b5c;--danger:#b42318;--warning:#b54708;--success:#067647;--border:#d8e0ea;--shadow:0 8px 24px rgba(16,24,40,.08);--radius:16px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}a{color:inherit;text-decoration:none}.app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d2438;color:#fff;padding:24px 18px}.brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}.brand h1{font-size:19px;margin:0 0 8px;line-height:1.25}.brand p{margin:0;font-size:13px;color:rgba(255,255,255,.75)}nav ul{list-style:none;padding:0;margin:0}nav li{margin:5px 0}nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88)}nav a:hover{background:rgba(255,255,255,.10)}main{padding:34px;max-width:1380px;width:100%}.hero{background:linear-gradient(135deg,#123c69,#0b6b5c);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);margin-bottom:28px}.hero h2{font-size:34px;margin:0 0 10px}.hero p{max-width:980px;color:rgba(255,255,255,.9);margin:0}.badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.14);font-size:12px}.toc-note{font-size:12px;color:rgba(255,255,255,.65);margin-top:12px}section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}section h2{margin:0 0 14px;color:var(--primary);font-size:25px}section h3{margin:22px 0 10px;color:#243b53;font-size:19px}.grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:var(--surface-soft);border:1px solid var(--border);border-radius:14px;padding:16px}.card h4{margin:0 0 8px;color:var(--primary)}.card p{margin:0;color:var(--muted)}.metric{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px}.metric strong{display:block;color:var(--primary);font-size:22px}.alert{border-radius:14px;padding:14px 16px;margin:16px 0;border-left:6px solid}.alert-danger{background:#fff1f0;border-color:var(--danger)}.alert-warning{background:#fff7ed;border-color:var(--warning)}.alert-info{background:var(--primary-soft);border-color:var(--primary)}.alert-success{background:#ecfdf3;border-color:var(--success)}table{width:100%;border-collapse:collapse;margin:14px 0;overflow:hidden;border-radius:12px}th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;font-size:14px}th{background:var(--primary);color:#fff}tbody tr:nth-child(even){background:#f8fafc}.svg-box{background:#f8fbff;border:1px solid var(--border);border-radius:16px;padding:14px;margin:14px 0}.svg-box svg{width:100%;height:auto;display:block}.small{font-size:12px;color:var(--muted)}details{border:1px solid var(--border);border-radius:14px;background:#fff;margin:12px 0;overflow:hidden}summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--primary);background:#eef3f8}summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}.pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700;background:#dce9f6;color:#123c69;margin:2px}.pill-danger{background:#fee4e2;color:#912018}.pill-warning{background:#fef0c7;color:#93370d}.pill-success{background:#dcfae6;color:#067647}.timeline{border-left:3px solid var(--primary);padding-left:18px}.timeline .step{position:relative;margin:0 0 16px}.timeline .step:before{content:"";position:absolute;left:-27px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 1px var(--accent)}.ref{font-size:12px;color:#485568;border-top:1px solid var(--border);margin-top:12px;padding-top:10px}.print-note{background:#111827;color:#fff;border-radius:16px;padding:18px;margin:20px 0}.two-col-list{columns:2;column-gap:28px}.checklist li{margin:6px 0}.footer-sign{margin-top:40px;text-align:right;color:#344054}.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#111827;color:#fff;padding:2px 6px;border-radius:6px;font-size:12px}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.flow .card{position:relative}.flow .card:not(:last-child):after{content:"→";position:absolute;right:-14px;top:40%;font-size:24px;color:var(--muted)}@media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}.grid-2,.grid-3,.grid-4,.flow{grid-template-columns:1fr}.flow .card:after{display:none}main{padding:18px}.hero h2{font-size:26px}.two-col-list{columns:1}}@media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}details:not([open]){border-color:#ccc}}
-  </style>
+    /* =========================================================================
+       SISTEMA TECH/EDUCACIONAL — Manual de Medicina Intensiva, Módulo 1
+       Identidade alinhada com landing/home: navy escuro + cyan brilhante.
+       Vibe: ferramenta interativa de educação médica (NÃO periódico/jornal).
+       Tipografia: DM Sans (geometric sans, moderna, friendly) + JetBrains Mono.
+       ========================================================================= */
+    :root{
+      /* Tipografia */
+      --font-display: 'DM Sans', system-ui, -apple-system, sans-serif;
+      --font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
+      --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+      /* Paleta — DNA do projeto (mesma da landing/home) */
+      --brand-deep: #0d2438;
+      --brand:      #123c69;
+      --brand-mid:  #1a4d80;
+      --cyan:       #12bed1;
+      --cyan-light: #30f1e6;
+      --ink:        #0d2438;
+      --ink-2:      #5f6b7a;
+      --paper:      #f4f7fb;
+      --surface:    #ffffff;
+      --surface-2:  #eef3f8;
+      --rule:       #d8e2ea;
+      /* Severidade clínica (alinhada com paleta) */
+      --crit:       #b42318;
+      --urgent:     #b54708;
+      --stable:     #067647;
+      --info:       var(--brand);
+      /* Aliases legados (compat com código pré-existente) */
+      --bg: var(--paper);
+      --surface-soft: var(--surface-2);
+      --text: var(--ink);
+      --muted: var(--ink-2);
+      --primary: var(--brand);
+      --primary-soft: #dce9f6;
+      --accent: var(--cyan);
+      --danger: var(--crit);
+      --warning: var(--urgent);
+      --success: var(--stable);
+      --border: var(--rule);
+      --shadow: 0 1px 3px rgba(13,36,56,.05), 0 4px 12px rgba(13,36,56,.06);
+      --shadow-hover: 0 4px 12px rgba(18,190,209,.12), 0 12px 28px rgba(13,36,56,.10);
+      --radius: 12px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      letter-spacing: -0.003em;
+      background: var(--paper);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a{color:inherit;text-decoration:none}
 
+    /* === Layout === */
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+    aside{
+      position:sticky;top:0;height:100vh;overflow-y:auto;
+      background: linear-gradient(180deg, var(--brand-deep) 0%, #081726 100%);
+      color: rgba(255,255,255,.92);
+      padding: 24px 20px;
+      font-size: 13.5px;
+      border-right: 1px solid rgba(255,255,255,.05);
+    }
+    main{
+      padding: 32px clamp(24px, 4vw, 48px) 64px;
+      max-width: 1180px;
+      width: 100%;
+    }
+
+    /* === Brand (sidebar) === */
+    .brand{
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .brand h1{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 17px;
+      line-height: 1.25;
+      letter-spacing: -0.012em;
+      margin: 0 0 6px;
+      background: linear-gradient(135deg, #fff 0%, var(--cyan-light) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .brand p{
+      margin: 0;
+      font-size: 12px;
+      color: rgba(255,255,255,.7);
+      font-weight: 500;
+    }
+    .toc-note{
+      font-size: 10.5px;
+      color: rgba(48,241,230,.55);
+      margin-top: 10px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.02em;
+    }
+
+    /* === Nav lateral: pills com hover cyan === */
+    nav ul{list-style:none;padding:0;margin:0}
+    nav li{margin: 2px 0}
+    nav a{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,.72);
+      transition: color .14s ease, background .14s ease, transform .14s ease;
+    }
+    nav a:hover,
+    nav a.module-nav-link--active{
+      color: #fff;
+      background: rgba(48,241,230,.10);
+      transform: translateX(2px);
+    }
+    nav a.module-nav-link--active{
+      background: linear-gradient(135deg, rgba(48,241,230,.18) 0%, rgba(18,190,209,.10) 100%);
+      box-shadow: inset 2px 0 0 var(--cyan-light);
+    }
+
+    /* === Hero — gradient navy → cyan glow (alinha com landing) === */
+    .hero{
+      background:
+        radial-gradient(120% 80% at 100% 0%, rgba(48,241,230,.18) 0%, transparent 55%),
+        radial-gradient(60% 100% at 0% 100%, rgba(18,190,209,.12) 0%, transparent 60%),
+        linear-gradient(135deg, var(--brand-deep) 0%, var(--brand) 60%, var(--brand-mid) 100%);
+      color: #fff;
+      padding: 32px 36px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      box-shadow: 0 12px 32px rgba(13,36,56,.18);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before{
+      content: "";
+      position: absolute;
+      right: -80px; top: -80px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(48,241,230,.14) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero h2{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(24px, 3.4vw, 34px);
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      margin: 0 0 12px;
+      color: #fff;
+      position: relative;
+    }
+    .hero p{
+      max-width: 70ch;
+      font-size: 15px;
+      line-height: 1.6;
+      color: rgba(255,255,255,.86);
+      margin: 0;
+      position: relative;
+    }
+    .badge-row{
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-top: 18px;
+      position: relative;
+    }
+    .badge{
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid rgba(48,241,230,.32);
+      border-radius: 999px;
+      padding: 4px 12px;
+      background: rgba(48,241,230,.08);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--cyan-light);
+    }
+
+    /* === Sections como cards interativos === */
+    section{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      transition: box-shadow .2s ease, border-color .2s ease;
+    }
+    section:hover{
+      border-color: rgba(18,190,209,.32);
+    }
+    section h2{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(20px, 2.4vw, 24px);
+      line-height: 1.2;
+      letter-spacing: -0.012em;
+      color: var(--brand);
+      margin: 0 0 14px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--cyan-light);
+      display: inline-block;
+    }
+    /* h3 — subtópico nível 1: pílula com tarja cyan à esquerda + espaçamento
+       generoso pra criar separação visual entre subtemas. */
+    section h3{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1.3;
+      letter-spacing: -0.008em;
+      color: var(--brand-deep);
+      margin: 32px 0 14px;
+      padding: 6px 0 6px 14px;
+      border-left: 4px solid var(--cyan);
+      background: linear-gradient(90deg, rgba(48,241,230,.08) 0%, transparent 60%);
+      border-radius: 0 4px 4px 0;
+    }
+    /* Primeiro h3 da section: menos margin-top (já tem padding-top da section). */
+    section > h3:first-of-type,
+    section > p + h3,
+    section > .grid + h3{
+      margin-top: 20px;
+    }
+    /* h4 — subtópico nível 2: rótulo navy compacto, com hairline curta. */
+    section h4{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.35;
+      letter-spacing: 0.005em;
+      color: var(--brand);
+      margin: 22px 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+    }
+    section h4::before{
+      content: "";
+      position: absolute;
+      left: 0; bottom: -1px;
+      width: 32px; height: 2px;
+      background: var(--cyan);
+    }
+    p{margin: 0 0 12px}
+    p:last-child{margin-bottom: 0}
+
+    /* === Grids === */
+    .grid{display: grid; gap: 14px}
+    .grid-2{grid-template-columns: repeat(2, minmax(0,1fr))}
+    .grid-3{grid-template-columns: repeat(3, minmax(0,1fr))}
+    .grid-4{grid-template-columns: repeat(4, minmax(0,1fr))}
+
+    /* === Cards interativos === */
+    .card{
+      background: var(--surface-2);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 14px 16px;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .card:hover{
+      border-color: rgba(18,190,209,.36);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+    }
+    .card h4{
+      margin: 0 0 6px;
+      color: var(--brand);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: -0.005em;
+    }
+    .card p{margin: 0; color: var(--ink-2); font-size: 13.5px; line-height: 1.5}
+
+    /* Metric — cards de destaque com hover cyan */
+    .metric{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 14px 16px;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .metric:hover{
+      border-color: rgba(18,190,209,.36);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+    }
+    .metric strong{
+      display: block;
+      font-weight: 700;
+      color: var(--brand);
+      font-size: 15px;
+      letter-spacing: -0.005em;
+      margin-bottom: 4px;
+    }
+    .metric span{
+      color: var(--ink-2);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    /* === Alerts — bloco colorido refinado, com borda lateral === */
+    .alert{
+      border: 1px solid transparent;
+      border-left: 4px solid var(--info);
+      border-radius: 8px;
+      background: var(--surface-2);
+      padding: 12px 16px;
+      margin: 16px 0;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .alert strong:first-child{
+      color: var(--info);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .alert-danger{
+      background: #fef5f4;
+      border-color: rgba(180,35,24,.18);
+      border-left-color: var(--crit);
+    }
+    .alert-danger strong:first-child{color: var(--crit)}
+    .alert-warning{
+      background: #fff8eb;
+      border-color: rgba(181,71,8,.18);
+      border-left-color: var(--urgent);
+    }
+    .alert-warning strong:first-child{color: var(--urgent)}
+    .alert-info{
+      background: #eef3f8;
+      border-color: rgba(18,60,105,.16);
+      border-left-color: var(--brand);
+    }
+    .alert-info strong:first-child{color: var(--brand)}
+    .alert-success{
+      background: #ecfdf3;
+      border-color: rgba(6,118,71,.18);
+      border-left-color: var(--stable);
+    }
+    .alert-success strong:first-child{color: var(--stable)}
+
+    /* === Tabelas — harmonizadas com o corpo do texto (14px ≈ body 15px) === */
+    table{
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 14px 0;
+      font-size: 14px;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    thead th{
+      background: linear-gradient(180deg, var(--brand-mid) 0%, var(--brand) 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 9px 13px;
+      text-align: left;
+      vertical-align: middle;
+      border: 0;
+      border-right: 1px solid rgba(255,255,255,.12);
+    }
+    thead th:last-child{border-right: 0}
+    tbody td,
+    tbody th{
+      padding: 9px 13px;
+      vertical-align: top;
+      border-top: 1px solid var(--rule);
+      border-right: 1px solid #f1f5f9;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.5;
+      background: var(--surface);
+      transition: background .14s ease;
+      text-align: left;
+    }
+    tbody td:last-child,
+    tbody th:last-child{border-right: 0}
+    tbody tr:first-child td,
+    tbody tr:first-child th{border-top: 0}
+    tbody td:first-child{
+      font-weight: 600;
+      color: var(--brand);
+    }
+    /* Tabelas pivot (key→value): tbody>tr>th é o rótulo na coluna esquerda.
+       Cor de fundo levemente tingida + texto navy bold + borda direita marcada
+       criam separação clara entre rótulo e valor, importante nos fármacos. */
+    tbody tr > th:first-child{
+      background: linear-gradient(90deg, #eef3f8 0%, #f4f7fb 100%);
+      color: var(--brand);
+      font-weight: 700;
+      font-size: 12.5px;
+      border-right: 1px solid var(--rule);
+      width: 28%;
+      min-width: 140px;
+    }
+    tbody tr:nth-child(even) td,
+    tbody tr:nth-child(even) th:not(:first-child){background: #f8fbfd}
+    tbody tr:hover td,
+    tbody tr:hover th{background: rgba(48,241,230,.06)}
+    tbody tr:hover > th:first-child{
+      background: linear-gradient(90deg, #e3edf6 0%, #eef3f8 100%);
+    }
+
+    /* === SVG box — frame minimalista, alinha com tabelas === */
+    .svg-box{
+      background: linear-gradient(180deg, #fbfdff 0%, #f1f6fb 100%);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 12px 0;
+    }
+    .svg-box svg{width: 100%; height: auto; display: block}
+    .small{font-size: 12px; color: var(--ink-2)}
+
+    /* === Details/Summary — pill interativo com chevron === */
+    details{
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      background: var(--surface);
+      margin: 12px 0;
+      overflow: hidden;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    details[open]{
+      border-color: rgba(18,190,209,.36);
+      box-shadow: var(--shadow-hover);
+    }
+    summary{
+      cursor: pointer;
+      list-style: none;
+      padding: 12px 44px 12px 16px;
+      font-weight: 600;
+      font-size: 14.5px;
+      color: var(--brand);
+      background: var(--surface-2);
+      position: relative;
+      transition: background .14s ease;
+    }
+    summary:hover{background: #e3edf6}
+    summary::-webkit-details-marker{display: none}
+    summary::after{
+      content: "";
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      width: 8px; height: 8px;
+      border-right: 2px solid var(--cyan);
+      border-bottom: 2px solid var(--cyan);
+      transform: translateY(-70%) rotate(45deg);
+      transition: transform .25s ease, border-color .14s ease;
+    }
+    details[open] summary::after{
+      transform: translateY(-30%) rotate(-135deg);
+    }
+    details .detail-body{padding: 14px 16px}
+
+    /* === Pills (severity tags) === */
+    .pill{
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      background: #dce9f6;
+      color: var(--brand);
+      margin: 1px;
+      border: 1px solid transparent;
+    }
+    .pill-danger{background: #fee4e2; color: #912018}
+    .pill-warning{background: #fef0c7; color: #93370d}
+    .pill-success{background: #dcfae6; color: #067647}
+
+    /* === Timeline com nó cyan === */
+    .timeline{
+      border-left: 2px solid var(--rule);
+      padding-left: 22px;
+      margin: 18px 0;
+    }
+    .timeline .step{
+      position: relative;
+      margin: 0 0 16px;
+    }
+    .timeline .step:before{
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--cyan);
+      border: 2px solid var(--surface);
+      box-shadow: 0 0 0 2px var(--cyan);
+    }
+
+    /* === Refs (citation) === */
+    .ref{
+      font-size: 12px;
+      color: var(--ink-2);
+      border-top: 1px solid var(--rule);
+      margin-top: 18px;
+      padding-top: 12px;
+      line-height: 1.55;
+    }
+    .ref strong{
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .print-note{
+      background: var(--brand-deep);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+    .two-col-list{columns: 2; column-gap: 28px}
+    .checklist li{margin: 4px 0}
+    .footer-sign{
+      margin-top: 48px;
+      padding-top: 18px;
+      border-top: 1px solid var(--rule);
+      text-align: right;
+      color: var(--ink-2);
+      font-size: 12.5px;
+    }
+
+    /* === Doses e números — mono tabular para precisão clínica === */
+    .dose-fig, .num,
+    .calc-result strong, .calc-result span{
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+    }
+
+    /* === Stagger first paint — sutil, sem drama === */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+    main > .hero,
+    main > section{
+      animation: fadeUp 360ms ease-out both;
+    }
+    main > section:nth-of-type(1){animation-delay: 60ms}
+    main > section:nth-of-type(2){animation-delay: 120ms}
+    main > section:nth-of-type(3){animation-delay: 160ms}
+    main > section:nth-of-type(n+4){animation-delay: 200ms}
+
+    /* === Highlight ao chegar via anchor === */
+    section:target{
+      animation: fadeUp 360ms ease-out both, targetGlow 1.6s ease-out 360ms both;
+    }
+    @keyframes targetGlow {
+      0%, 100% { box-shadow: var(--shadow); border-color: var(--rule); }
+      30% { box-shadow: 0 0 0 3px rgba(48,241,230,.18), var(--shadow); border-color: var(--cyan); }
+    }
+
+    @media(max-width:980px){
+      .app{grid-template-columns:1fr}
+      aside{position:relative;height:auto;padding:16px 18px}
+      .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+      main{padding: 18px 14px 56px}
+      .hero{padding: 22px 18px}
+      .hero h2{font-size: clamp(20px, 6vw, 28px)}
+      section{padding: 18px 18px}
+      .two-col-list{columns:1}
+    }
+    .figure-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 14px;
+      margin: 16px 0;
+      box-shadow: var(--shadow);
+    }
+    .figure-card img{
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      border-radius: 8px;
+      border: 1px solid var(--rule);
+      background: #fff;
+    }
+    .figure-card figcaption{
+      font-size: 12.5px;
+      color: var(--ink-2);
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+    .figure-card figcaption strong{color: var(--brand); font-weight: 700}
+    .figure-card .source-line{
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink-2);
+      margin-top: 6px;
+      letter-spacing: 0.02em;
+    }
+    .classification-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+    @media(max-width:980px){.classification-grid{grid-template-columns:1fr}}
+    /* ===========================================================================
+       REGRA DE ALINHAMENTO LADO-A-LADO (figura/tabela/svg)
+       ---------------------------------------------------------------------------
+       Estratégia "espelho de altura por cap calibrado":
+       - Tabela manda na altura natural (rígida, cells não esticam).
+       - Imagem é capada em max-height ≈ altura típica das tabelas do módulo
+         (~360px ≈ 5 linhas × ~52px + header + padding). Mantém harmonia.
+       - Ambos alinham ao TOPO. Pequenas diferenças de altura ficam compactas
+         e visíveis apenas embaixo do mais curto — sem vazio simétrico.
+       - Legibilidade da imagem preservada (min 200px) com object-fit:contain.
+       =========================================================================== */
+    .figure-split{
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);  /* imagem ganha mais peso */
+      gap: 18px;
+      align-items: start;
+      margin: 14px 0;
+    }
+    .figure-split > .figure-card{
+      margin: 0;
+    }
+    .figure-split > .figure-card img{
+      width: 100%;
+      height: auto;
+      min-height: 200px;
+      max-height: 460px;        /* imagem pode crescer mais — preserva legibilidade */
+      object-fit: contain;
+      background: #fff;
+    }
+    /* Tabela em figure-split: levemente compactada pra coluna estreita */
+    .figure-split > table{
+      margin: 0;
+      font-size: 13px;
+    }
+    .figure-split > table thead th{padding: 7px 10px; font-size: 10.5px}
+    .figure-split > table tbody td,
+    .figure-split > table tbody th{padding: 7px 10px; font-size: 13px; line-height: 1.45}
+    /* Wrapper de conteúdo mixto (cards + alert) na coluna direita. */
+    .figure-split__stack{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .figure-split__stack > *{margin: 0}
+
+    /* Variant narrow (Mallampati/Cormack): imagem ~32%, cards/alert à direita.
+       Imagens são wide (charts horizontais de bocas/laringo), max menor. */
+    .figure-split--narrow{grid-template-columns: minmax(200px, 32%) 1fr}
+    .figure-split--narrow > .figure-card img{
+      min-height: 140px;
+      max-height: 240px;
+    }
+    .figure-split--narrow .classification-grid{
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 8px;
+      margin: 0;
+      align-content: start;
+    }
+    .figure-split--narrow .card{padding: 10px 12px}
+    .figure-split--narrow .card h4{font-size: 13px; margin: 0 0 4px}
+    .figure-split--narrow .card p{font-size: 12.5px; line-height: 1.42}
+
+    @media(max-width:980px){
+      .figure-split, .figure-split--narrow{grid-template-columns: 1fr}
+      .figure-split--narrow .classification-grid{grid-template-columns: 1fr}
+      .figure-split > .figure-card img{
+        min-height: 0;
+        max-height: 420px;
+      }
+    }
+    /* SVG/figura com texto fluindo ao redor (apenas desktop). */
+    .svg-float-left{float:left;width:44%;max-width:460px;margin:0 18px 8px 0;clear:left}
+    .clear-floats{clear:both}
+    @media(max-width:980px){.svg-float-left{float:none;width:auto;max-width:none;margin:14px 0}}
+    /* Algoritmo A/B/C/D: SVG-mapa compacto acima como "trilha visual" + tabela
+       embaixo com largura total. Evita disproporção de side-by-side. */
+    .algo-split{display:flex;flex-direction:column;gap:12px;margin:14px 0}
+    .algo-split>table,.algo-split>.svg-box{margin:0}
+    .algo-split>.svg-box{padding:8px 14px}
+    .algo-split>.svg-box svg{max-height:140px}
+
+    /* ===========================================================================
+       SISTEMA DE MEMÓRIA FOTOGRÁFICA — destaques pedagógicos
+       Criam pontos de fixação visual para o leitor "ver" antes de "ler".
+       Uso consciente — não tudo é keyword. Apenas termos verdadeiramente âncora.
+       =========================================================================== */
+
+    /* Termo-chave neutro: highlight cyan suave + bold navy. */
+    mark.kw, .kw{
+      background: linear-gradient(180deg, transparent 60%, rgba(48,241,230,.32) 60%, rgba(48,241,230,.32) 92%, transparent 92%);
+      color: var(--brand-deep);
+      font-weight: 700;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+
+    /* Termo crítico (perigo, contraindicação, "nunca", "evitar"): rosa-coral. */
+    mark.kw-crit, .kw-crit{
+      background: linear-gradient(180deg, transparent 60%, rgba(180,35,24,.20) 60%, rgba(180,35,24,.20) 92%, transparent 92%);
+      color: var(--crit);
+      font-weight: 700;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+
+    /* Número/dose/valor numérico de alta importância: bg amarelo-pastel + mono. */
+    mark.kw-num, .kw-num{
+      background: rgba(255, 213, 79, .35);
+      color: var(--brand-deep);
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.94em;
+      padding: 1px 5px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 213, 79, .6);
+    }
+
+    /* Princípio orientador: banner no início de uma section/subseção. */
+    .principle{
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: linear-gradient(135deg, rgba(18,60,105,.06) 0%, rgba(48,241,230,.08) 100%);
+      border-left: 4px solid var(--brand);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 8px 0 18px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .principle::before{
+      content: "PRINCÍPIO";
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--brand);
+      background: #fff;
+      border: 1px solid rgba(18,60,105,.18);
+      padding: 4px 10px;
+      border-radius: 999px;
+      align-self: center;
+      white-space: nowrap;
+    }
+    .principle p{margin: 0; color: var(--brand-deep); font-weight: 500}
+
+    /* Takeaway — banner-resumo no final de uma section. */
+    .takeaway{
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--brand-deep) 0%, var(--brand) 100%);
+      color: #fff;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 20px 0 0;
+      font-size: 14.5px;
+      line-height: 1.55;
+      box-shadow: var(--shadow);
+    }
+    .takeaway::before{
+      content: "→";
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--cyan-light);
+      margin-top: 0;
+    }
+    .takeaway-label{
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--cyan-light);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .takeaway p{margin: 0; color: rgba(255,255,255,.94); font-weight: 500}
+    .takeaway strong{color: #fff}
+
+    /* Escala visual genérica (RASS, CPOT, Glasgow, faixas eletrolíticas). Cores
+       semânticas por severidade (data-level): crit, warning, target, goal.
+       Badge auto-ajusta largura ao conteúdo (números curtos como "0" ou faixas
+       como "10,3–12,0") sem quebrar layout. */
+    .scale-rows{display: flex; flex-direction: column; gap: 5px; margin: 14px 0}
+    .scale-row{
+      display: grid;
+      grid-template-columns: minmax(72px, auto) 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 9px 14px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+    .scale-row:hover{transform: translateX(2px); box-shadow: var(--shadow)}
+    .scale-row__badge{
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 32px;
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1.2;
+      border-radius: 6px;
+      background: var(--brand);
+      color: #fff;
+      letter-spacing: 0;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .scale-row__body{font-size: 14px; line-height: 1.5}
+    .scale-row__body strong{color: var(--brand-deep); font-weight: 700; display: block; margin-bottom: 2px}
+    .scale-row__body em{font-style: normal; color: var(--ink-2); font-size: 13px}
+    .scale-row[data-level="crit"]{background: #fef5f4; border-color: rgba(180,35,24,.22)}
+    .scale-row[data-level="crit"] .scale-row__badge{background: var(--crit)}
+    .scale-row[data-level="warning"]{background: #fff8eb; border-color: rgba(196,105,10,.22)}
+    .scale-row[data-level="warning"] .scale-row__badge{background: var(--urgent)}
+    .scale-row[data-level="target"]{background: #ecfdf3; border-color: rgba(6,118,71,.32)}
+    .scale-row[data-level="target"] .scale-row__badge{background: var(--stable)}
+    .scale-row[data-level="goal"]{
+      background: linear-gradient(135deg, rgba(48,241,230,.12), rgba(18,190,209,.06));
+      border-color: rgba(18,190,209,.36);
+    }
+    .scale-row[data-level="goal"] .scale-row__badge{background: var(--cyan); color: var(--brand-deep)}
+
+    /* Padrão "Erros frequentes" — problema clínico + risco + prevenção + resposta.
+       Substitui a seção <details> com tabela interna que se repete em vários
+       módulos. Cada card é uma situação clínica, com 3-4 facetas estruturadas. */
+    .error-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+    .error-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .error-card:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(180,35,24,.32);
+    }
+    .error-card__problem{
+      background: linear-gradient(135deg, rgba(180,35,24,.10) 0%, rgba(196,105,10,.06) 100%);
+      border-left: 4px solid var(--crit);
+      padding: 11px 14px;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.35;
+      color: var(--brand-deep);
+    }
+    .error-card__problem::before{
+      content: "ERRO";
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--crit);
+      background: rgba(180,35,24,.10);
+      padding: 1px 7px;
+      border-radius: 3px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .error-card__list{
+      list-style: none;
+      margin: 0;
+      padding: 10px 14px 12px;
+      display: grid;
+      gap: 8px;
+      flex: 1;
+    }
+    .error-card__list li{
+      font-size: 13px;
+      line-height: 1.5;
+      padding-left: 22px;
+      position: relative;
+      color: var(--ink);
+    }
+    .error-card__list li::before{
+      position: absolute;
+      left: 0;
+      top: 1px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .error-card__list li[data-type="risk"]::before{content: "!"; background: rgba(180,35,24,.14); color: var(--crit)}
+    .error-card__list li[data-type="prevention"]::before{content: "✓"; background: rgba(6,118,71,.14); color: var(--stable)}
+    .error-card__list li[data-type="response"]::before{content: "→"; background: rgba(18,190,209,.14); color: var(--brand)}
+    .error-card__list li strong{
+      color: var(--brand);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Tabela pontuada (CPOT, BPS, escalas multi-domínio) — colore células
+       conforme score (data-score 0..4). Verde → âmbar → vermelho em gradiente
+       semântico, facilitando leitura rápida da severidade. */
+    table.scored-table thead th[data-score="0"]{
+      background: linear-gradient(180deg, #4d7c3a 0%, #355c26 100%);
+    }
+    table.scored-table thead th[data-score="1"]{
+      background: linear-gradient(180deg, #c4690a 0%, #9a5008 100%);
+    }
+    table.scored-table thead th[data-score="2"],
+    table.scored-table thead th[data-score="3"],
+    table.scored-table thead th[data-score="4"]{
+      background: linear-gradient(180deg, #b42318 0%, #8a190f 100%);
+    }
+    table.scored-table tbody td[data-score="0"]{background: rgba(77,124,58,.08); color: #2c4720}
+    table.scored-table tbody td[data-score="1"]{background: rgba(196,105,10,.10); color: #6b3a04}
+    table.scored-table tbody td[data-score="2"]{background: rgba(180,35,24,.10); color: #6b110a}
+    table.scored-table tbody td[data-score="3"]{background: rgba(180,35,24,.14); color: #6b110a}
+    table.scored-table tbody td[data-score="4"]{background: rgba(180,35,24,.18); color: #6b110a}
+    table.scored-table tbody tr:hover td[data-score]{filter: brightness(.97)}
+
+    /* Gauge de score: barra visual simples mostrando faixa segura e alerta. */
+    .score-gauge{
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0 4px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      font-size: 13px;
+    }
+    .score-gauge__label{font-weight: 700; color: var(--brand-deep)}
+    .score-gauge__bar{
+      display: flex;
+      flex: 1;
+      height: 22px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--rule);
+      min-width: 280px;
+    }
+    .score-gauge__safe,
+    .score-gauge__alert{
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 9.5px;
+      letter-spacing: 0.02em;
+      padding: 0 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+    .score-gauge__safe{
+      flex: var(--safe, 3);
+      background: linear-gradient(90deg, rgba(77,124,58,.18), rgba(77,124,58,.32));
+      color: #355c26;
+    }
+    .score-gauge__alert{
+      flex: var(--alert, 5);
+      background: linear-gradient(90deg, rgba(196,105,10,.22), rgba(180,35,24,.32));
+      color: #6b110a;
+    }
+
+    /* Padrões clínicos com waveform (capnografia, ventilação) — grid de cards
+       com nome + tag de severidade + SVG da forma + causa + conduta. */
+    .pattern-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .pattern-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .pattern-card:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(18,190,209,.36);
+    }
+    .pattern-card__head{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 14px;
+      background: linear-gradient(180deg, #f4f7fb 0%, #eef3f8 100%);
+      border-bottom: 1px solid var(--rule);
+    }
+    .pattern-card__name{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--brand-deep);
+      line-height: 1.25;
+    }
+    .pattern-card__tag{
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .pattern-card[data-severity="crit"] .pattern-card__tag{background: rgba(180,35,24,.12); color: var(--crit)}
+    .pattern-card[data-severity="warning"] .pattern-card__tag{background: rgba(196,105,10,.14); color: var(--urgent)}
+    .pattern-card[data-severity="info"] .pattern-card__tag{background: rgba(18,190,209,.14); color: var(--brand)}
+    .pattern-card__wave{
+      width: 100%;
+      height: auto;
+      display: block;
+      padding: 6px 14px 0;
+      background: linear-gradient(180deg, #fbfdff 0%, #f1f6fb 100%);
+      box-sizing: border-box;
+    }
+    .pattern-card__body{
+      padding: 10px 14px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      flex: 1;
+    }
+    .pattern-card__body p{margin: 0 0 6px}
+    .pattern-card__body p:last-child{margin: 0}
+    .pattern-card__body strong{color: var(--brand)}
+    .pattern-card__action{margin-top: 6px !important; padding-top: 8px; border-top: 1px dashed var(--rule)}
+    .pattern-card__action strong{color: var(--cyan)}
+
+    /* Diagrama de receptores adrenérgicos — cards conectados por flow visual.
+       Cada receptor é uma "estação" colorida com efeitos abaixo. */
+    .receptor-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .receptor-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+    .receptor-card:hover{transform: translateY(-2px); box-shadow: var(--shadow-hover)}
+    .receptor-card::before{
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--cyan);
+    }
+    .receptor-card[data-axis="alpha1"]::before{background: linear-gradient(90deg, #b42318, #c4690a)}
+    .receptor-card[data-axis="alpha2"]::before{background: linear-gradient(90deg, #c4690a, #5f6b7a)}
+    .receptor-card[data-axis="beta1"]::before{background: linear-gradient(90deg, var(--cyan), var(--brand))}
+    .receptor-card[data-axis="beta2"]::before{background: linear-gradient(90deg, var(--cyan-light), var(--cyan))}
+    .receptor-card[data-axis="d1"]{}
+    .receptor-card[data-axis="d1"]::before{background: linear-gradient(90deg, #6d4ba6, var(--brand))}
+    .receptor-card[data-axis="v1"]::before{background: linear-gradient(90deg, var(--brand-deep), var(--brand))}
+    .receptor-card__name{
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      margin-bottom: 4px;
+    }
+    .receptor-card__symbol{
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--brand-deep);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .receptor-card__symbol sub{font-size: 14px; font-weight: 600}
+    .receptor-card__where{
+      font-size: 12px;
+      color: var(--ink-2);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--rule);
+    }
+    .receptor-card__effects{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 4px;
+    }
+    .receptor-card__effects li{
+      font-size: 13px;
+      line-height: 1.4;
+      padding-left: 14px;
+      position: relative;
+      color: var(--ink);
+    }
+    .receptor-card__effects li::before{
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .receptor-card__effects .up::before{content: "↑"; color: var(--stable)}
+    .receptor-card__effects .down::before{content: "↓"; color: var(--crit)}
+
+    /* Cards de fármaco — apresentação operacional (dose, preparo, exemplo,
+       cenários e cuidados) com classe colorida no rail esquerdo. */
+    .drug-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+      margin: 16px 0 20px;
+    }
+    .drug-card{
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 14px 16px 14px 22px;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .drug-card:hover{transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: rgba(18,190,209,.36)}
+    .drug-card::before{
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: var(--cyan);
+      border-radius: 12px 0 0 12px;
+    }
+    .drug-card[data-class="opioid"]::before{background: linear-gradient(180deg, #b42318, #c4690a)}
+    .drug-card[data-class="adjuvant"]::before{background: linear-gradient(180deg, #c4690a, var(--cyan))}
+    .drug-card[data-class="sedative"]::before{background: linear-gradient(180deg, var(--cyan), var(--brand))}
+    .drug-card[data-class="bnm"]::before{background: linear-gradient(180deg, #6d4ba6, var(--brand-deep))}
+    .drug-card[data-class="anticonv-load"]::before{background: linear-gradient(180deg, #4d7c3a, var(--cyan))}
+    .drug-card[data-class="anticonv-bic"]::before{background: linear-gradient(180deg, var(--brand-deep), #6d4ba6)}
+    .drug-card[data-class="vasopressor"]::before{background: linear-gradient(180deg, #b42318, #c4690a)}
+    .drug-card[data-class="inotrope"]::before{background: linear-gradient(180deg, var(--cyan), var(--brand))}
+    .drug-card[data-class="vasodilator"]::before{background: linear-gradient(180deg, #c4690a, var(--cyan-light))}
+    .drug-card[data-class="antihtn"]::before{background: linear-gradient(180deg, #6d4ba6, var(--brand))}
+    .drug-card[data-class="betablock"]::before{background: linear-gradient(180deg, var(--brand-deep), var(--brand))}
+    .drug-card__head{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .drug-card__name{
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--brand-deep);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+    .drug-card__chip{
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(18,190,209,.12);
+      color: var(--brand);
+      flex-shrink: 0;
+    }
+    .drug-card[data-class="opioid"] .drug-card__chip{background: rgba(180,35,24,.10); color: var(--crit)}
+    .drug-card[data-class="adjuvant"] .drug-card__chip{background: rgba(196,105,10,.14); color: var(--urgent)}
+    .drug-card[data-class="sedative"] .drug-card__chip{background: rgba(18,190,209,.14); color: var(--brand)}
+    .drug-card[data-class="bnm"] .drug-card__chip{background: rgba(109,75,166,.14); color: #4a3478}
+    .drug-card[data-class="anticonv-load"] .drug-card__chip{background: rgba(77,124,58,.16); color: #355c26}
+    .drug-card[data-class="anticonv-bic"] .drug-card__chip{background: rgba(109,75,166,.14); color: #4a3478}
+    .drug-card[data-class="vasopressor"] .drug-card__chip{background: rgba(180,35,24,.10); color: var(--crit)}
+    .drug-card[data-class="inotrope"] .drug-card__chip{background: rgba(18,190,209,.14); color: var(--brand)}
+    .drug-card[data-class="vasodilator"] .drug-card__chip{background: rgba(196,105,10,.14); color: var(--urgent)}
+    .drug-card[data-class="antihtn"] .drug-card__chip{background: rgba(109,75,166,.14); color: #4a3478}
+    .drug-card[data-class="betablock"] .drug-card__chip{background: rgba(13,36,56,.10); color: var(--brand-deep)}
+
+    /* Bloco Mecanismo + Efeito — alternativa ao __numbers para overviews
+       farmacológicos onde dose/preparo não é o foco. */
+    .drug-card__mech{
+      display: grid;
+      gap: 6px;
+      padding: 8px 10px;
+      background: linear-gradient(135deg, rgba(13,36,56,.03) 0%, rgba(18,190,209,.04) 100%);
+      border-left: 3px solid var(--brand);
+      border-radius: 0 6px 6px 0;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .drug-card__mech-row{display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap}
+    .drug-card__mech-label{
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand);
+      flex-shrink: 0;
+      min-width: 72px;
+    }
+    .drug-card__mech-value{color: var(--ink); flex: 1; min-width: 180px}
+
+    /* Cenário clínico — cartão com cenário no header, estratégia preferencial
+       (verde-cyan), evitar/cautela (âmbar-vermelho) e comentário prático. */
+    .scenario-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .scenario-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+    }
+    .scenario-card:hover{transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: rgba(18,190,209,.36)}
+    .scenario-card__head{
+      padding: 10px 14px;
+      background: linear-gradient(135deg, var(--brand-deep) 0%, #123c69 100%);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13.5px;
+      line-height: 1.3;
+      border-bottom: 1px solid rgba(48,241,230,.18);
+    }
+    .scenario-card__body{
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .scenario-card__block{
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 8px 10px;
+      border-radius: 0 6px 6px 0;
+    }
+    .scenario-card__block::before{
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .scenario-card__block[data-tone="prefer"]{
+      background: linear-gradient(135deg, rgba(6,118,71,.08) 0%, rgba(18,190,209,.06) 100%);
+      border-left: 3px solid var(--stable);
+      color: #2c4720;
+    }
+    .scenario-card__block[data-tone="prefer"]::before{content: "Preferir"; color: var(--stable)}
+    .scenario-card__block[data-tone="avoid"]{
+      background: linear-gradient(135deg, rgba(180,35,24,.08) 0%, rgba(196,105,10,.06) 100%);
+      border-left: 3px solid var(--crit);
+      color: #6b110a;
+    }
+    .scenario-card__block[data-tone="avoid"]::before{content: "Evitar / cautela"; color: var(--crit)}
+    .scenario-card__block[data-tone="note"]{
+      background: linear-gradient(135deg, rgba(13,36,56,.04) 0%, rgba(18,190,209,.05) 100%);
+      border-left: 3px solid var(--brand);
+      color: var(--ink);
+    }
+    .scenario-card__block[data-tone="note"]::before{content: "Comentário prático"; color: var(--brand)}
+    .scenario-card__block[data-tone="practice"]{
+      background: linear-gradient(135deg, rgba(13,36,56,.04) 0%, rgba(18,190,209,.05) 100%);
+      border-left: 3px solid var(--brand);
+      color: var(--ink);
+    }
+    .scenario-card__block[data-tone="practice"]::before{content: "Estratégia prática"; color: var(--brand)}
+    .scenario-card__block[data-tone="evidence"]{
+      background: linear-gradient(135deg, rgba(109,75,166,.06) 0%, rgba(18,190,209,.04) 100%);
+      border-left: 3px solid #6d4ba6;
+      color: var(--ink-2);
+      font-size: 12px;
+    }
+    .scenario-card__block[data-tone="evidence"]::before{content: "Evidência comparativa"; color: #4a3478}
+    .scenario-card__block[data-tone="anticipate"]{
+      background: linear-gradient(135deg, rgba(196,105,10,.06) 0%, rgba(180,35,24,.04) 100%);
+      border-left: 3px solid var(--urgent);
+      color: #6b3a04;
+    }
+    .scenario-card__block[data-tone="anticipate"]::before{content: "Como antecipar"; color: var(--urgent)}
+    .scenario-card__block[data-tone="prevent"]{
+      background: linear-gradient(135deg, rgba(6,118,71,.08) 0%, rgba(18,190,209,.06) 100%);
+      border-left: 3px solid var(--stable);
+      color: #2c4720;
+    }
+    .scenario-card__block[data-tone="prevent"]::before{content: "Prevenção peri-IOT"; color: var(--stable)}
+
+    /* Step-card — passos numerados para procedimentos sequenciais
+       (despertar diário, CAM-ICU features, checklists ordenados). */
+    .step-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .step-card{
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 14px 16px 14px 56px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+    }
+    .step-card:hover{transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: rgba(18,190,209,.36)}
+    .step-card__num{
+      position: absolute;
+      left: 14px; top: 14px;
+      width: 32px; height: 32px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand-deep) 0%, var(--brand) 100%);
+      color: var(--cyan-light);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(13,36,56,.18);
+    }
+    .step-card__name{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--brand-deep);
+      line-height: 1.25;
+    }
+    .step-card__action,
+    .step-card__success{
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 6px 10px;
+      border-radius: 0 6px 6px 0;
+    }
+    .step-card__action::before,
+    .step-card__success::before{
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .step-card__action{
+      background: linear-gradient(135deg, rgba(13,36,56,.04) 0%, rgba(18,190,209,.05) 100%);
+      border-left: 3px solid var(--brand);
+      color: var(--ink);
+    }
+    .step-card__action::before{content: "Ação"; color: var(--brand)}
+    .step-card__success{
+      background: linear-gradient(135deg, rgba(6,118,71,.06) 0%, rgba(18,190,209,.04) 100%);
+      border-left: 3px solid var(--stable);
+      color: #2c4720;
+    }
+    .step-card__success::before{content: "Critério"; color: var(--stable)}
+    .drug-card__numbers{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 8px;
+      padding: 10px 12px;
+      background: linear-gradient(135deg, rgba(13,36,56,.04) 0%, rgba(18,190,209,.05) 100%);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+    }
+    .drug-card__num{
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .drug-card__num-label{
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+    }
+    .drug-card__num-value{
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--brand-deep);
+      line-height: 1.35;
+    }
+    .drug-card__num-value strong{color: var(--cyan); font-weight: 700}
+    .drug-card__scenarios{
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .drug-card__scenarios::before{
+      content: "Quando usar";
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 4px;
+    }
+    .drug-card__caution{
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #6b3a04;
+      background: linear-gradient(135deg, rgba(196,105,10,.08) 0%, rgba(180,35,24,.05) 100%);
+      border-left: 3px solid var(--urgent);
+      padding: 8px 10px;
+      border-radius: 0 6px 6px 0;
+    }
+    .drug-card__caution::before{
+      content: "Cuidados";
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--urgent);
+      margin-bottom: 3px;
+    }
+
+    /* Mnemônico — cartão de baralho com letras-âncora destacadas. */
+    .mnemonic{
+      background: linear-gradient(135deg, var(--brand-deep) 0%, #0a1d2e 100%);
+      color: #fff;
+      border: 1px solid rgba(48,241,230,.24);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .mnemonic::before{
+      content: "MNEMÔNICO";
+      position: absolute;
+      top: 12px; right: 14px;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(48,241,230,.6);
+    }
+    .mnemonic h5{
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 17px;
+      line-height: 1.2;
+      margin: 0 0 10px;
+      color: var(--cyan-light);
+      letter-spacing: 0.02em;
+    }
+    .mnemonic ul{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 4px;
+    }
+    .mnemonic li{
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255,255,255,.88);
+    }
+    .mnemonic li b,
+    .mnemonic .letter{
+      display: inline-block;
+      min-width: 18px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--cyan-light);
+      font-size: 15px;
+      margin-right: 4px;
+    }
+@media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}details:not([open]){border-color:#ccc}}
+  </style>
   <style>
+    /* Sidebar: utility bits + collapsed state */
     .brand__row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
     .brand__content{min-width:0}
-    .nav-toggle{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
-    .nav-toggle:hover{background:rgba(255,255,255,.18)}
-    nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}
+    .nav-toggle{
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .14s ease, border-color .14s ease;
+    }
+    .nav-toggle:hover{
+      background: rgba(48,241,230,.10);
+      border-color: rgba(48,241,230,.36);
+    }
+    /* Metric link (caso volte a ser usado): hover cyan */
+    .metric-link{
+      display: block;
+      text-decoration: none;
+      transition: border-color .14s ease, box-shadow .14s ease, transform .14s ease;
+    }
+    .metric-link:hover,.metric-link:focus-visible{
+      border-color: rgba(18,190,209,.36);
+      box-shadow: var(--shadow-hover);
+      outline: 0;
+      transform: translateY(-1px);
+    }
+    /* Collapsed sidebar */
     .app.nav-collapsed{grid-template-columns:72px 1fr}
     .app.nav-collapsed aside{padding:18px 10px}
     .app.nav-collapsed .brand{margin-bottom:14px;padding-bottom:12px;text-align:center}
     .app.nav-collapsed .brand__row{display:grid;justify-items:center;gap:8px}
     .app.nav-collapsed .brand__content{display:none}
-    .app.nav-collapsed .nav-toggle{width:100%;padding:8px 4px;font-size:11px}
-    .app.nav-collapsed nav a{align-items:center;display:flex;justify-content:center;min-height:40px;padding:9px 4px;position:relative}
+    .app.nav-collapsed .nav-toggle{width:100%;padding:6px 4px;font-size:10px}
+    .app.nav-collapsed nav a{align-items:center;display:flex;justify-content:center;min-height:40px;padding:9px 4px;position:relative;border-bottom-color:transparent}
     .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
-    .app.nav-collapsed nav a::before{content:attr(data-short);font-size:12px;font-weight:800}
-    @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{padding:12px 14px}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}.app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}.app.nav-collapsed .brand__content{display:block}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .toc-note,.app.nav-collapsed .brand .small{display:none}}
-    /* Layout lado-a-lado: figura/SVG à esquerda + conteúdo (tabela ou texto) à direita.
-       Imagem priorizada (1.4fr) para memória visual. Empilha em mobile. */
-    .figure-split{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start;margin:14px 0}
-    .figure-split>.svg-box,.figure-split>table{margin:0}
-    @media(max-width:980px){.figure-split{grid-template-columns:1fr}}
+    .app.nav-collapsed nav a::before{content:attr(data-short);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.04em}
+    @media(max-width:980px){
+      .app,.app.nav-collapsed{grid-template-columns:1fr}
+      aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}
+      .app.nav-collapsed aside{padding:12px 14px}
+      .app.nav-collapsed nav{display:none}
+      .app.nav-collapsed .brand{border-bottom:0;margin-bottom:0;padding-bottom:0;text-align:left}
+      .app.nav-collapsed .brand__row{display:flex;align-items:center;justify-content:space-between}
+      .app.nav-collapsed .brand__content{display:block}
+      .app.nav-collapsed .brand h1{font-size:16px}
+      .app.nav-collapsed .brand p,.app.nav-collapsed .brand .toc-note{display:none}
+    }
   </style>
 </head>
 <body>
@@ -135,7 +1735,7 @@
           <rect width="900" height="330" rx="18" fill="#f8fbff"/>
           <line x1="70" y1="260" x2="830" y2="260" stroke="#344054" stroke-width="2"/>
           <line x1="70" y1="50" x2="70" y2="260" stroke="#344054" stroke-width="2"/>
-          <polyline points="90,260 180,260 205,115 455,115 500,260 620,260 650,115 800,115" fill="none" stroke="#0b6b5c" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+          <polyline points="90,260 180,260 205,115 455,115 500,260 620,260 650,115 800,115" fill="none" stroke="#12bed1" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
           <text x="98" y="285" font-size="14" fill="#344054">Fase I</text>
           <text x="185" y="105" font-size="14" fill="#344054">Fase II</text>
           <text x="300" y="105" font-size="14" fill="#344054">Fase III / platô</text>
@@ -157,26 +1757,83 @@
       </div>
 
       <h3>4.3 Formas de onda anormais</h3>
-      <details open><summary>Menu visual — padrões anormais comuns</summary><div class="detail-body">
-        <div class="grid grid-2">
-          <div class="card"><h4>Broncoespasmo / obstrução expiratória</h4>
-            <div class="svg-box"><svg viewBox="0 0 420 170"><rect width="420" height="170" rx="12" fill="#fff"/><line x1="40" y1="135" x2="380" y2="135" stroke="#98a2b3"/><polyline points="45,135 100,135 135,110 175,80 260,75 300,135 370,135" fill="none" stroke="#b54708" stroke-width="5" stroke-linecap="round"/></svg></div>
-            <p>Subida lenta e platô inclinado em “barbatana de tubarão”. Pensar em asma/DPOC, tubo dobrado, secreção ou obstrução do circuito.</p>
+      <p>Cada padrão abaixo combina a <mark class="kw">forma da onda</mark> com <mark class="kw">causa provável</mark> e <mark class="kw">conduta imediata</mark>. O ETCO₂ é o primeiro sensor a alertar — antes da SpO₂.</p>
+      <div class="pattern-grid">
+
+        <div class="pattern-card" data-severity="warning">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name">Broncoespasmo / obstrução expiratória</span>
+            <span class="pattern-card__tag">Atenção</span>
           </div>
-          <div class="card"><h4>Desconexão/extubação/intubação esofágica</h4>
-            <div class="svg-box"><svg viewBox="0 0 420 170"><rect width="420" height="170" rx="12" fill="#fff"/><line x1="40" y1="135" x2="380" y2="135" stroke="#98a2b3"/><polyline points="45,135 90,135 120,75 210,75 245,135 370,135" fill="none" stroke="#b42318" stroke-width="5"/><text x="255" y="100" fill="#b42318" font-size="13">queda a zero</text></svg></div>
-            <p>Perda súbita da onda ou ausência persistente. Checar paciente, tubo, circuito, sensor e pulso.</p>
-          </div>
-          <div class="card"><h4>Reinalação de CO₂</h4>
-            <div class="svg-box"><svg viewBox="0 0 420 170"><rect width="420" height="170" rx="12" fill="#fff"/><line x1="40" y1="135" x2="380" y2="135" stroke="#98a2b3"/><line x1="40" y1="115" x2="380" y2="115" stroke="#f79009" stroke-dasharray="4"/><polyline points="45,115 100,115 130,65 240,65 280,115 370,115" fill="none" stroke="#0b6b5c" stroke-width="5"/></svg></div>
-            <p>Linha de base não retorna a zero. Avaliar válvula, circuito, fluxo, filtro trocador de calor e umidade (HME) ou filtro HME com função bacteriana/viral (HMEF), exaustão e espaço morto.</p>
-          </div>
-          <div class="card"><h4>Baixo débito / TEP / PCR</h4>
-            <div class="svg-box"><svg viewBox="0 0 420 170"><rect width="420" height="170" rx="12" fill="#fff"/><line x1="40" y1="135" x2="380" y2="135" stroke="#98a2b3"/><polyline points="45,135 90,135 120,105 220,105 250,135 310,135 340,120 370,135" fill="none" stroke="#123c69" stroke-width="5"/></svg></div>
-            <p>Onda baixa com tubo traqueal pode refletir pouca entrega de CO₂ aos pulmões por baixo fluxo.</p>
+          <svg class="pattern-card__wave" viewBox="0 0 420 140" role="img" aria-label="Onda em barbatana de tubarão">
+            <line x1="25" y1="115" x2="400" y2="115" stroke="#cbd5e1" stroke-width="1.5"/>
+            <line x1="25" y1="55" x2="400" y2="55" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3 4"/>
+            <polyline points="30,115 75,115 110,95 165,75 240,60 280,80 320,115 400,115" fill="none" stroke="#c4690a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="180" y="48" font-size="11" fill="#c4690a" font-weight="600">barbatana de tubarão</text>
+          </svg>
+          <div class="pattern-card__body">
+            <p><strong>Forma:</strong> Subida lenta + platô inclinado.</p>
+            <p><strong>Causas:</strong> Asma/DPOC, tubo dobrado, secreção, obstrução do circuito.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Aspirar, broncodilatador, checar tubo/circuito, prolongar Texp.</p>
           </div>
         </div>
-      </div></details>
+
+        <div class="pattern-card" data-severity="crit">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name">Desconexão · extubação · IOT esofágica</span>
+            <span class="pattern-card__tag">Crítico</span>
+          </div>
+          <svg class="pattern-card__wave" viewBox="0 0 420 140" role="img" aria-label="Queda abrupta a zero">
+            <line x1="25" y1="115" x2="400" y2="115" stroke="#cbd5e1" stroke-width="1.5"/>
+            <line x1="25" y1="55" x2="400" y2="55" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3 4"/>
+            <polyline points="30,115 75,115 105,55 195,55 225,115 400,115" fill="none" stroke="#b42318" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="240" y="100" font-size="11" fill="#b42318" font-weight="600">queda a zero</text>
+            <circle cx="225" cy="115" r="3" fill="#b42318"/>
+          </svg>
+          <div class="pattern-card__body">
+            <p><strong>Forma:</strong> Perda súbita da onda ou ausência persistente.</p>
+            <p><strong>Causas:</strong> Tubo fora, circuito desconectado, IOT esofágica, PCR, sensor solto.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Checar paciente → tubo → circuito → pulso. Se posição incerta: retirar e reventilar.</p>
+          </div>
+        </div>
+
+        <div class="pattern-card" data-severity="warning">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name">Reinalação de CO₂</span>
+            <span class="pattern-card__tag">Atenção</span>
+          </div>
+          <svg class="pattern-card__wave" viewBox="0 0 420 140" role="img" aria-label="Linha de base não retorna a zero">
+            <line x1="25" y1="115" x2="400" y2="115" stroke="#cbd5e1" stroke-width="1.5"/>
+            <line x1="25" y1="95" x2="400" y2="95" stroke="#c4690a" stroke-width="1" stroke-dasharray="4 4"/>
+            <polyline points="30,95 80,95 110,45 220,45 260,95 400,95" fill="none" stroke="#12bed1" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="30" y="85" font-size="10" fill="#c4690a" font-weight="600">base ≠ 0</text>
+          </svg>
+          <div class="pattern-card__body">
+            <p><strong>Forma:</strong> Linha de base elevada (não retorna a zero).</p>
+            <p><strong>Causas:</strong> Válvula expiratória defeituosa, fluxo inadequado, HME/HMEF saturado, espaço morto excessivo.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Trocar filtro/HME, aumentar fluxo, conferir válvulas do ventilador.</p>
+          </div>
+        </div>
+
+        <div class="pattern-card" data-severity="crit">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name">Baixo débito · TEP · PCR iminente</span>
+            <span class="pattern-card__tag">Crítico</span>
+          </div>
+          <svg class="pattern-card__wave" viewBox="0 0 420 140" role="img" aria-label="Onda baixa com tubo traqueal">
+            <line x1="25" y1="115" x2="400" y2="115" stroke="#cbd5e1" stroke-width="1.5"/>
+            <line x1="25" y1="55" x2="400" y2="55" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3 4"/>
+            <polyline points="30,115 75,115 105,90 215,90 245,115 300,115 325,98 360,115 400,115" fill="none" stroke="#123c69" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="120" y="80" font-size="11" fill="#123c69" font-weight="600">amplitude baixa</text>
+          </svg>
+          <div class="pattern-card__body">
+            <p><strong>Forma:</strong> Onda baixa (ETCO₂ &lt; 15 mmHg) com tubo confirmadamente traqueal.</p>
+            <p><strong>Causas:</strong> Baixo débito cardíaco, TEP de alto risco, PCR iminente, hipovolemia grave.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Checar pulso, PA, volemia, ScvO₂; investigar TEP; preparar RCP se PCR.</p>
+          </div>
+        </div>
+
+      </div>
 
       <table>
         <thead><tr><th>Achado</th><th>Possíveis causas</th><th>Resposta prática</th></tr></thead>
@@ -219,13 +1876,13 @@
           <rect width="900" height="300" rx="18" fill="#f8fbff"/>
           <path d="M440 40 C430 100,430 180,440 260" fill="none" stroke="#94a3b8" stroke-width="70" stroke-linecap="round" opacity=".45"/>
           <path d="M455 42 C445 105,445 175,455 255" fill="none" stroke="#123c69" stroke-width="22" stroke-linecap="round"/>
-          <line x1="455" y1="90" x2="650" y2="90" stroke="#b42318" stroke-width="3" stroke-dasharray="8 6"/>
+          <line x1="455" y1="90" x2="650" y2="90" stroke="#b42318" stroke-width="2" stroke-dasharray="8 6"/>
           <text x="660" y="96" font-size="16" fill="#b42318" font-weight="700">Muito alto: risco de extubação</text>
-          <line x1="455" y1="185" x2="650" y2="185" stroke="#067647" stroke-width="3"/>
-          <text x="660" y="190" font-size="16" fill="#067647" font-weight="700">Zona desejada: acima da carina</text>
-          <line x1="455" y1="245" x2="650" y2="245" stroke="#b54708" stroke-width="3" stroke-dasharray="8 6"/>
-          <text x="660" y="250" font-size="16" fill="#b54708" font-weight="700">Muito baixo: seletiva</text>
-          <text x="90" y="55" font-size="18" fill="#123c69" font-weight="700">A profundidade é dinâmica</text>
+          <line x1="455" y1="185" x2="650" y2="185" stroke="#0a8a9a" stroke-width="2"/>
+          <text x="660" y="190" font-size="16" fill="#0a8a9a" font-weight="700">Zona desejada: acima da carina</text>
+          <line x1="455" y1="245" x2="650" y2="245" stroke="#c4690a" stroke-width="2" stroke-dasharray="8 6"/>
+          <text x="660" y="250" font-size="16" fill="#c4690a" font-weight="700">Muito baixo: seletiva</text>
+          <text x="90" y="55" font-size="13" fill="#123c69" font-weight="700">A profundidade é dinâmica</text>
           <text x="90" y="85" font-size="14" fill="#5f6b7a">Flexão cervical avança o tubo; extensão pode recuá-lo.</text>
         </svg>
       </div>
@@ -252,29 +1909,80 @@
       <h2>8. Transição para ventilação mecânica</h2>
       <p>Após confirmação, o paciente deve sair rapidamente da ventilação manual para ventilador ajustado. A transição reduz variabilidade de volume, evita hiperventilação inadvertida e permite controle de pressões.</p>
       <h3>8.1 Ajustes iniciais seguros</h3>
-      <table>
-        <thead><tr><th>Parâmetro</th><th>Ponto de partida</th><th>Racional</th></tr></thead>
-        <tbody>
-          <tr><td>Modo</td><td>VCV ou PCV conforme ventilador/equipe.</td><td>Escolher modo conhecido e seguro para estabilização inicial.</td></tr>
-          <tr><td>Volume corrente</td><td>6 mL/kg de peso predito como referência inicial em estratégia protetora.</td><td>Evita volutrauma; será detalhado no Módulo 3.</td></tr>
-          <tr><td>Frequência respiratória</td><td>12–20 irpm; maior se acidose metabólica, com vigilância de auto-PEEP.</td><td>Controla ventilação minuto e PaCO₂.</td></tr>
-          <tr><td>FiO₂</td><td>Inicialmente 1,0 se instável/hipoxêmico, com desmame após estabilização.</td><td>Evitar hipóxia durante fase crítica, reduzindo hiperóxia depois.</td></tr>
-          <tr><td>PEEP</td><td>5 cmH₂O como ponto de partida; ajustar por hipoxemia, hemodinâmica e doença pulmonar.</td><td>Equilibra recrutamento e impacto hemodinâmico.</td></tr>
-          <tr><td>Alarmes</td><td>Pressão alta, volume minuto, desconexão, apneia.</td><td>Alarmes precisam ser configurados, não apenas silenciados.</td></tr>
-        </tbody>
-      </table>
+      <div class="scenario-grid">
+        <article class="scenario-card">
+          <header class="scenario-card__head">Modo</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">VCV ou PCV conforme ventilador/equipe.</div>
+            <div class="scenario-card__block" data-tone="note">Escolher modo conhecido e seguro para estabilização inicial.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">Volume corrente</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">6 mL/kg de peso predito como referência inicial em estratégia protetora.</div>
+            <div class="scenario-card__block" data-tone="note">Evita volutrauma; será detalhado no Módulo 3.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">Frequência respiratória</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">12–20 irpm; maior se acidose metabólica, com vigilância de auto-PEEP.</div>
+            <div class="scenario-card__block" data-tone="note">Controla ventilação minuto e PaCO₂.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">FiO₂</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">Inicialmente 1,0 se instável/hipoxêmico, com desmame após estabilização.</div>
+            <div class="scenario-card__block" data-tone="note">Evitar hipóxia durante fase crítica, reduzindo hiperóxia depois.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">PEEP</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">5 cmH₂O como ponto de partida; ajustar por hipoxemia, hemodinâmica e doença pulmonar.</div>
+            <div class="scenario-card__block" data-tone="note">Equilibra recrutamento e impacto hemodinâmico.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">Alarmes</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">Pressão alta, volume minuto, desconexão, apneia.</div>
+            <div class="scenario-card__block" data-tone="note">Alarmes precisam ser configurados, não apenas silenciados.</div>
+          </div>
+        </article>
+      </div>
       <div class="alert alert-danger"><strong>Acidose metabólica grave:</strong> não iniciar ventilação com volume minuto muito inferior ao esforço compensatório pré-IOT. Reavaliar ETCO₂ e gasometria precocemente.</div>
 
       <h3>8.2 Triagem rápida de auto-PEEP no pós-IOT</h3>
       <p>No Módulo 2, o objetivo é reconhecer auto-PEEP como causa reversível de deterioração nos primeiros minutos após a intubação. A fisiologia, as curvas e o ajuste ventilatório detalhado ficam no Módulo 3.</p>
-      <table>
-        <thead><tr><th>Quando suspeitar</th><th>Risco imediato</th><th>Resposta inicial</th></tr></thead>
-        <tbody>
-          <tr><td>Asma/DPOC, broncoespasmo, secreção, FR alta, tempo expiratório curto ou fluxo expiratório que não retorna à linha de base.</td><td>Aprisionamento aéreo, pressão intratorácica elevada e dificuldade de disparo.</td><td>Reduzir frequência respiratória, aumentar tempo expiratório e tratar obstrução.</td></tr>
-          <tr><td>Pressão de pico elevada logo após conectar o ventilador.</td><td>Resistência alta, obstrução do tubo/circuito ou hiperinsuflação dinâmica.</td><td>Checar tubo/circuito, aspirar se necessário, tratar broncoespasmo e revisar volume minuto.</td></tr>
-          <tr><td>Hipotensão súbita após iniciar ventilação mecânica, especialmente em asma/DPOC.</td><td>Redução do retorno venoso por hiperinsuflação dinâmica; pode simular ou agravar choque.</td><td>Suspeitar de auto-PEEP, ventilar com baixa frequência e considerar desconexão breve se colapso iminente.</td></tr>
-        </tbody>
-      </table>
+      <div class="scenario-grid">
+        <article class="scenario-card">
+          <header class="scenario-card__head">Padrão respiratório obstrutivo</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="anticipate">Asma/DPOC, broncoespasmo, secreção, FR alta, tempo expiratório curto ou fluxo expiratório que não retorna à linha de base.</div>
+            <div class="scenario-card__block" data-tone="avoid">Aprisionamento aéreo, pressão intratorácica elevada e dificuldade de disparo.</div>
+            <div class="scenario-card__block" data-tone="practice">Reduzir frequência respiratória, aumentar tempo expiratório e tratar obstrução.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">Pressão de pico elevada</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="anticipate">Pressão de pico elevada logo após conectar o ventilador.</div>
+            <div class="scenario-card__block" data-tone="avoid">Resistência alta, obstrução do tubo/circuito ou hiperinsuflação dinâmica.</div>
+            <div class="scenario-card__block" data-tone="practice">Checar tubo/circuito, aspirar se necessário, tratar broncoespasmo e revisar volume minuto.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">Hipotensão súbita pós-conexão</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="anticipate">Hipotensão súbita após iniciar ventilação mecânica, especialmente em asma/DPOC.</div>
+            <div class="scenario-card__block" data-tone="avoid">Redução do retorno venoso por hiperinsuflação dinâmica; pode simular ou agravar choque.</div>
+            <div class="scenario-card__block" data-tone="practice">Suspeitar de auto-PEEP, ventilar com baixa frequência e considerar desconexão breve se colapso iminente.</div>
+          </div>
+        </article>
+      </div>
 
       <details><summary>Medidas de ponte até ajuste definitivo</summary><div class="detail-body">
         <ul class="checklist">
@@ -327,16 +2035,53 @@
       </div>
 
       <h3>9.1 Estratégia por cenário clínico</h3>
-      <table>
-        <thead><tr><th>Situação</th><th>Fármaco/estratégia sugerida</th><th>Estratégia prática</th><th>Evidência comparativa e desfecho</th><th>Armadilha</th></tr></thead>
-        <tbody>
-          <tr><td>Pós-RSI com rocurônio</td><td>Analgesia titulada com opioide + hipnótico/sedativo contínuo compatível com a hemodinâmica. Dexmedetomidina isolada geralmente não é suficiente se houver bloqueio residual e necessidade de sedação profunda.</td><td>Iniciar sedação/analgesia imediatamente após confirmação do tubo e definir alvo RASS.</td><td>PADIS 2018 sustenta analgesia-first e sedação leve quando viável; não há ensaio clínico específico para “pós-RSI com rocurônio”, mas evitar paralisia sem hipnose/analgesia é medida de segurança essencial.</td><td>Paciente paralisado pode parecer “confortável” sem estar sedado.</td></tr>
-          <tr><td>Choque</td><td>Analgesia titulada; considerar cetamina como adjuvante quando apropriado; reduzir ou evitar bolus de hipnóticos hipotensores. Midazolam pode ser alternativa quando propofol é mal tolerado.</td><td>Evitar bolus sedativos agressivos, reavaliar PA/PAM após cada ajuste e manter vasopressor pronto ou em curso se indicado.</td><td>Não há sedativo com melhora de mortalidade demonstrada especificamente em choque pós-IOT. Em sepse ventilada, MENDS2 não mostrou superioridade de dexmedetomidina sobre propofol em dias vivos sem delirium/coma, dias livres de ventilador ou mortalidade; SPICE III também não mostrou redução de mortalidade com dexmedetomidina versus cuidado usual.</td><td>Propofol em dose plena pode precipitar colapso hemodinâmico.</td></tr>
-          <tr><td>Broncoespasmo</td><td>Cetamina como adjuvante sedativo/analgésico quando broncoespasmo e necessidade de sedação coexistem.</td><td>Tratar obstrução, ajustar ventilador, prolongar tempo expiratório e evitar hiperventilação manual vigorosa.</td><td>O suporte para cetamina no broncoespasmo é fisiológico e baseado em evidência limitada. Estudos pequenos descrevem redução de resistência de vias aéreas/melhora de complacência; ensaios em UTI com cetamina mostram resultados mistos e não demonstram benefício consistente em mortalidade, tempo de ventilação ou permanência em UTI.</td><td>Confundir pressão alta por broncoespasmo com necessidade isolada de reduzir volume corrente.</td></tr>
-          <tr><td>HIC/TCE</td><td>Propofol se pressão arterial permitir; midazolam se propofol for mal tolerado ou se houver necessidade anticonvulsivante/sedação profunda. Associar analgesia para evitar tosse e resposta simpática.</td><td>Evitar hipóxia, hipotensão, tosse e assincronia; titular sedação conforme objetivo neurológico e perfusão cerebral.</td><td>Brain Trauma Foundation recomenda propofol para controle de pressão intracraniana, mas não para melhora de mortalidade ou desfecho funcional em 6 meses; alerta para morbidade com dose alta. Portanto, o benefício é de controle fisiológico/ICP, não de desfecho final comprovado.</td><td>Hipotensão por sedativo reduz pressão de perfusão cerebral e piora lesão secundária.</td></tr>
-          <tr><td>Delirium/agitação sem necessidade de sedação profunda</td><td>Dexmedetomidina quando a meta for sedação leve, cooperação e menor depressão respiratória; propofol segue opção adequada se for necessária sedação mais profunda/titulável.</td><td>Considerar dexmedetomidina para paciente que precisa despertar, interagir ou reduzir benzodiazepínico, monitorando bradicardia e hipotensão.</td><td>MENDS mostrou mais dias vivos sem delirium/coma com dexmedetomidina versus lorazepam. SEDCOM mostrou menor delirium e extubação cerca de 1,9 dia mais precoce versus midazolam. MIDEX mostrou menor duração de ventilação versus midazolam, mas PRODEX não mostrou vantagem clara versus propofol; MENDS2 não mostrou superioridade de dexmedetomidina versus propofol na sepse.</td><td>Usar benzodiazepínico contínuo sem indicação pode prolongar despertar e delirium.</td></tr>
-        </tbody>
-      </table>
+      <div class="scenario-grid">
+        <article class="scenario-card">
+          <header class="scenario-card__head">Pós-RSI com rocurônio</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">Analgesia titulada com opioide + hipnótico/sedativo contínuo compatível com a hemodinâmica. Dexmedetomidina isolada geralmente não é suficiente se houver bloqueio residual e necessidade de sedação profunda.</div>
+            <div class="scenario-card__block" data-tone="practice">Iniciar sedação/analgesia imediatamente após confirmação do tubo e definir alvo RASS.</div>
+            <div class="scenario-card__block" data-tone="evidence">PADIS 2018 sustenta analgesia-first e sedação leve quando viável; não há ensaio clínico específico para "pós-RSI com rocurônio", mas evitar paralisia sem hipnose/analgesia é medida de segurança essencial.</div>
+            <div class="scenario-card__block" data-tone="avoid">Paciente paralisado pode parecer "confortável" sem estar sedado.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">Choque</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">Analgesia titulada; considerar cetamina como adjuvante quando apropriado; reduzir ou evitar bolus de hipnóticos hipotensores. Midazolam pode ser alternativa quando propofol é mal tolerado.</div>
+            <div class="scenario-card__block" data-tone="practice">Evitar bolus sedativos agressivos, reavaliar PA/PAM após cada ajuste e manter vasopressor pronto ou em curso se indicado.</div>
+            <div class="scenario-card__block" data-tone="evidence">Não há sedativo com melhora de mortalidade demonstrada especificamente em choque pós-IOT. Em sepse ventilada, MENDS2 não mostrou superioridade de dexmedetomidina sobre propofol em dias vivos sem delirium/coma, dias livres de ventilador ou mortalidade; SPICE III também não mostrou redução de mortalidade com dexmedetomidina versus cuidado usual.</div>
+            <div class="scenario-card__block" data-tone="avoid">Propofol em dose plena pode precipitar colapso hemodinâmico.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">Broncoespasmo</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">Cetamina como adjuvante sedativo/analgésico quando broncoespasmo e necessidade de sedação coexistem.</div>
+            <div class="scenario-card__block" data-tone="practice">Tratar obstrução, ajustar ventilador, prolongar tempo expiratório e evitar hiperventilação manual vigorosa.</div>
+            <div class="scenario-card__block" data-tone="evidence">O suporte para cetamina no broncoespasmo é fisiológico e baseado em evidência limitada. Estudos pequenos descrevem redução de resistência de vias aéreas/melhora de complacência; ensaios em UTI com cetamina mostram resultados mistos e não demonstram benefício consistente em mortalidade, tempo de ventilação ou permanência em UTI.</div>
+            <div class="scenario-card__block" data-tone="avoid">Confundir pressão alta por broncoespasmo com necessidade isolada de reduzir volume corrente.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">HIC / TCE</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">Propofol se pressão arterial permitir; midazolam se propofol for mal tolerado ou se houver necessidade anticonvulsivante/sedação profunda. Associar analgesia para evitar tosse e resposta simpática.</div>
+            <div class="scenario-card__block" data-tone="practice">Evitar hipóxia, hipotensão, tosse e assincronia; titular sedação conforme objetivo neurológico e perfusão cerebral.</div>
+            <div class="scenario-card__block" data-tone="evidence">Brain Trauma Foundation recomenda propofol para controle de pressão intracraniana, mas não para melhora de mortalidade ou desfecho funcional em 6 meses; alerta para morbidade com dose alta. Portanto, o benefício é de controle fisiológico/ICP, não de desfecho final comprovado.</div>
+            <div class="scenario-card__block" data-tone="avoid">Hipotensão por sedativo reduz pressão de perfusão cerebral e piora lesão secundária.</div>
+          </div>
+        </article>
+        <article class="scenario-card">
+          <header class="scenario-card__head">Delirium / agitação sem sedação profunda</header>
+          <div class="scenario-card__body">
+            <div class="scenario-card__block" data-tone="prefer">Dexmedetomidina quando a meta for sedação leve, cooperação e menor depressão respiratória; propofol segue opção adequada se for necessária sedação mais profunda/titulável.</div>
+            <div class="scenario-card__block" data-tone="practice">Considerar dexmedetomidina para paciente que precisa despertar, interagir ou reduzir benzodiazepínico, monitorando bradicardia e hipotensão.</div>
+            <div class="scenario-card__block" data-tone="evidence">MENDS mostrou mais dias vivos sem delirium/coma com dexmedetomidina versus lorazepam. SEDCOM mostrou menor delirium e extubação cerca de 1,9 dia mais precoce versus midazolam. MIDEX mostrou menor duração de ventilação versus midazolam, mas PRODEX não mostrou vantagem clara versus propofol; MENDS2 não mostrou superioridade de dexmedetomidina versus propofol na sepse.</div>
+            <div class="scenario-card__block" data-tone="avoid">Usar benzodiazepínico contínuo sem indicação pode prolongar despertar e delirium.</div>
+          </div>
+        </article>
+      </div>
 
       <h3>9.2 Analgésicos em infusão contínua</h3>
 
@@ -452,53 +2197,146 @@
 
     <section id="dessaturacao">
       <h2>10. Dessaturação ou deterioração ventilatória pós-IOT — DOPE/DOPES</h2>
-      <p>Após intubação, dessaturação deve ser abordada como evento de risco imediato. O mnemônico DOPE/DOPES organiza causas reversíveis.</p>
-      <div class="svg-box">
-        <svg viewBox="0 0 900 390" role="img" aria-label="Algoritmo DOPE DOPES">
-          <rect width="900" height="390" rx="18" fill="#f8fbff"/>
-          <text x="45" y="45" font-size="24" fill="#123c69" font-weight="700">Dessaturou pós-IOT?</text>
-          <g font-family="Arial" font-size="15">
-            <rect x="45" y="75" width="170" height="90" rx="14" fill="#fff1f0" stroke="#b42318"/><text x="72" y="108" fill="#b42318" font-weight="700">D — Deslocamento</text><text x="65" y="135" fill="#5f6b7a">Extubação, seletiva,</text><text x="65" y="155" fill="#5f6b7a">profundidade errada</text>
-            <rect x="245" y="75" width="170" height="90" rx="14" fill="#fff7ed" stroke="#b54708"/><text x="278" y="108" fill="#b54708" font-weight="700">O — Obstrução</text><text x="265" y="135" fill="#5f6b7a">Secreção, mordida,</text><text x="265" y="155" fill="#5f6b7a">tubo dobrado</text>
-            <rect x="445" y="75" width="170" height="90" rx="14" fill="#eef3f8" stroke="#123c69"/><text x="490" y="108" fill="#123c69" font-weight="700">P — Pneumotórax</text><text x="465" y="135" fill="#5f6b7a">Barotrauma, ausculta</text><text x="465" y="155" fill="#5f6b7a">assimétrica</text>
-            <rect x="645" y="75" width="210" height="90" rx="14" fill="#ecfdf3" stroke="#067647"/><text x="695" y="108" fill="#067647" font-weight="700">E — Equipamento</text><text x="665" y="135" fill="#5f6b7a">Desconexão, ventilador,</text><text x="665" y="155" fill="#5f6b7a">filtro, fonte de O₂</text>
-            <rect x="340" y="220" width="220" height="90" rx="14" fill="#f0f9ff" stroke="#0b6b5c"/><text x="385" y="254" fill="#0b6b5c" font-weight="700">S — Stacking</text><text x="365" y="280" fill="#5f6b7a">Auto-PEEP, hiperinsuflação,</text><text x="365" y="300" fill="#5f6b7a">asma/DPOC</text>
-          </g>
-          <text x="60" y="350" font-size="15" fill="#344054">Ação simultânea: FiO₂ 100%, ventilação manual se necessário, checar capnografia/circuito/tubo, ausculta e pressão de vias aéreas.</text>
-        </svg>
-      </div>
-      <details><summary>Traçados de assincronia ventilatória no monitor/ventilador</summary><div class="detail-body">
-        <div class="grid grid-2">
-          <div class="card"><h4>Auto-disparo</h4>
-            <div class="svg-box"><svg viewBox="0 0 420 160"><rect width="420" height="160" rx="12" fill="#fff"/><line x1="40" y1="80" x2="380" y2="80" stroke="#98a2b3"/><polyline points="45,80 75,30 105,80 135,30 165,80 195,30 225,80 255,30 285,80 315,30 345,80" fill="none" stroke="#b54708" stroke-width="4"/></svg></div>
-            <p>Ciclos frequentes sem esforço real. Suspeitar de vazamento, condensado no circuito, trigger sensível ou oscilação cardíaca.</p>
+      <div class="principle"><p>Dessaturou pós-IOT? <mark class="kw">FiO₂ 100% + ventilação manual</mark> imediatamente, e em paralelo percorrer <mark class="kw">D-O-P-E-S</mark> nessa ordem — são as causas reversíveis mais comuns.</p></div>
+
+      <div class="pattern-grid">
+
+        <div class="pattern-card" data-severity="crit">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name"><strong style="color:var(--crit);font-size:18px;margin-right:6px">D</strong> Deslocamento do tubo</span>
+            <span class="pattern-card__tag">Crítico</span>
           </div>
-          <div class="card"><h4>Duplo disparo</h4>
-            <div class="svg-box"><svg viewBox="0 0 420 160"><rect width="420" height="160" rx="12" fill="#fff"/><line x1="40" y1="120" x2="380" y2="120" stroke="#98a2b3"/><polyline points="45,120 90,35 130,120 145,120 190,35 230,120 300,120 345,35 380,120" fill="none" stroke="#123c69" stroke-width="4"/></svg></div>
-            <p>Dois ciclos quase colados. Pensar em tempo inspiratório neural maior que o tempo do ventilador, volume insuficiente ou drive alto.</p>
-          </div>
-          <div class="card"><h4>Esforço inefetivo</h4>
-            <div class="svg-box"><svg viewBox="0 0 420 160"><rect width="420" height="160" rx="12" fill="#fff"/><line x1="40" y1="80" x2="380" y2="80" stroke="#98a2b3"/><polyline points="45,80 100,30 150,80 210,80 225,95 240,80 300,30 350,80" fill="none" stroke="#0b6b5c" stroke-width="4"/><text x="205" y="115" font-size="12" fill="#b42318">esforço sem ciclo</text></svg></div>
-            <p>Deflexão sem entrega de ciclo. Comum em auto-PEEP, fraqueza, sedação excessiva ou trigger pouco sensível.</p>
-          </div>
-          <div class="card"><h4>Ciclagem inadequada</h4>
-            <div class="svg-box"><svg viewBox="0 0 420 160"><rect width="420" height="160" rx="12" fill="#fff"/><line x1="40" y1="120" x2="380" y2="120" stroke="#98a2b3"/><polyline points="45,120 90,35 210,35 235,120 300,120 345,35 365,120" fill="none" stroke="#b42318" stroke-width="4"/></svg></div>
-            <p>Inspiração mecânica termina tarde ou cedo em relação ao paciente. Ajustar tempo inspiratório, rise time, fluxo/ciclagem e suporte.</p>
+          <div class="pattern-card__body">
+            <p><strong>Sinais:</strong> Capnografia some, escape audível, fala/tosse, perda de volume corrente, MV assimétrico (seletiva).</p>
+            <p><strong>Causas:</strong> Extubação acidental, intubação seletiva, profundidade inadequada.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Ventilar com BVM em O₂ 100%, recuar 1-2 cm se seletiva, reintubar se extubação; chamar ajuda.</p>
           </div>
         </div>
-      </div></details>
 
-      <table>
-        <thead><tr><th>Problema</th><th>Como suspeitar</th><th>Resposta imediata</th></tr></thead>
-        <tbody>
-          <tr><td>Deslocamento/extubação</td><td>Capnografia some, escape, fala/tosse, perda de volume.</td><td>Ventilar com BVM, reintubar se necessário, chamar ajuda.</td></tr>
-          <tr><td>Intubação seletiva</td><td>MV reduzido à esquerda, pressão alta, hipoxemia.</td><td>Recuar 1–2 cm, reauscultar, confirmar.</td></tr>
-          <tr><td>Obstrução</td><td>Pressão alta, ETCO₂ alterado, dificuldade de passar ar.</td><td>Aspirar, checar dobra/mordida/filtro, trocar tubo se obstrução crítica.</td></tr>
-          <tr><td>Pneumotórax</td><td>Hipoxemia, hipotensão, assimetria, pressão alta, ausência de sliding.</td><td>Descompressão imediata se instável e suspeita alta.</td></tr>
-          <tr><td>Equipamento</td><td>Alarme, desconexão, vazamento, fonte de O₂.</td><td>Desconectar do ventilador e ventilar manualmente com O₂ 100%; checar circuito.</td></tr>
-          <tr><td>Stacking/auto-PEEP</td><td>Asma/DPOC, expiração incompleta, hipotensão, pressão alta.</td><td>Reduzir frequência, aumentar tempo expiratório, desconectar brevemente se colapso por auto-PEEP.</td></tr>
-        </tbody>
-      </table>
+        <div class="pattern-card" data-severity="warning">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name"><strong style="color:var(--urgent);font-size:18px;margin-right:6px">O</strong> Obstrução</span>
+            <span class="pattern-card__tag">Atenção</span>
+          </div>
+          <div class="pattern-card__body">
+            <p><strong>Sinais:</strong> Pressão de pico alta, ETCO₂ alterado (barbatana), dificuldade de passar ar pelo tubo.</p>
+            <p><strong>Causas:</strong> Secreção, mordida do tubo, dobra, filtro saturado.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Aspirar tubo, checar dobra/mordida/filtro; trocar tubo se obstrução crítica.</p>
+          </div>
+        </div>
+
+        <div class="pattern-card" data-severity="crit">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name"><strong style="color:var(--crit);font-size:18px;margin-right:6px">P</strong> Pneumotórax</span>
+            <span class="pattern-card__tag">Crítico</span>
+          </div>
+          <div class="pattern-card__body">
+            <p><strong>Sinais:</strong> Hipoxemia, hipotensão, ausculta assimétrica, pressão alta, ausência de <em>sliding</em> ao USG.</p>
+            <p><strong>Causas:</strong> Barotrauma (alta pressão/PEEP), trauma prévio, biópsia recente, DPOC com bolha.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Descompressão imediata se instabilidade hemodinâmica + suspeita alta (2.º EIC LMC ou 4.º-5.º EIC LAA).</p>
+          </div>
+        </div>
+
+        <div class="pattern-card" data-severity="warning">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name"><strong style="color:var(--urgent);font-size:18px;margin-right:6px">E</strong> Equipamento</span>
+            <span class="pattern-card__tag">Atenção</span>
+          </div>
+          <div class="pattern-card__body">
+            <p><strong>Sinais:</strong> Alarme de desconexão/vazamento, fonte de O₂ caída, capnografia inconsistente.</p>
+            <p><strong>Causas:</strong> Desconexão de circuito, falha do ventilador, filtro inadequado, fonte de O₂.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Desconectar do ventilador e ventilar manualmente com O₂ 100%; checar circuito ponta a ponta.</p>
+          </div>
+        </div>
+
+        <div class="pattern-card" data-severity="warning">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name"><strong style="color:var(--cyan);font-size:18px;margin-right:6px">S</strong> Stacking · auto-PEEP</span>
+            <span class="pattern-card__tag">Atenção</span>
+          </div>
+          <div class="pattern-card__body">
+            <p><strong>Sinais:</strong> Hipoxemia + hipotensão + pressão alta em asma/DPOC; expiração não retorna a zero na curva de fluxo.</p>
+            <p><strong>Causas:</strong> Tempo expiratório insuficiente, obstrução expiratória, broncoespasmo grave.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Reduzir FR, aumentar T<sub>exp</sub>, broncodilatador; <strong>desconectar 30-60s</strong> se colapso hemodinâmico por auto-PEEP.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <h3>10.1 Assincronias ventilatórias — formas no monitor</h3>
+      <p>Após excluir DOPE/DOPES, observe os traçados de pressão-tempo e fluxo-tempo para identificar dessincronias entre paciente e ventilador.</p>
+
+      <div class="pattern-grid">
+
+        <div class="pattern-card" data-severity="warning">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name">Auto-disparo</span>
+            <span class="pattern-card__tag">Atenção</span>
+          </div>
+          <svg class="pattern-card__wave" viewBox="0 0 420 140" role="img" aria-label="Auto-disparo">
+            <line x1="25" y1="100" x2="400" y2="100" stroke="#cbd5e1" stroke-width="1.5"/>
+            <polyline points="30,100 60,45 95,100 130,45 165,100 200,45 235,100 270,45 305,100 340,45 375,100" fill="none" stroke="#c4690a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="120" y="35" font-size="11" fill="#c4690a" font-weight="600">ciclos sem esforço real</text>
+          </svg>
+          <div class="pattern-card__body">
+            <p><strong>Forma:</strong> Ciclos frequentes regulares sem esforço inspiratório do paciente.</p>
+            <p><strong>Causas:</strong> Vazamento, condensado no circuito, trigger sensível demais, oscilação cardíaca.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Reduzir sensibilidade do trigger, eliminar condensado, checar vazamento de cuff.</p>
+          </div>
+        </div>
+
+        <div class="pattern-card" data-severity="warning">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name">Duplo disparo</span>
+            <span class="pattern-card__tag">Atenção</span>
+          </div>
+          <svg class="pattern-card__wave" viewBox="0 0 420 140" role="img" aria-label="Duplo disparo">
+            <line x1="25" y1="115" x2="400" y2="115" stroke="#cbd5e1" stroke-width="1.5"/>
+            <polyline points="30,115 80,40 125,115 140,115 185,40 230,115 295,115 340,40 380,115" fill="none" stroke="#123c69" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="60" y="35" font-size="11" fill="#123c69" font-weight="600">ciclos colados</text>
+          </svg>
+          <div class="pattern-card__body">
+            <p><strong>Forma:</strong> Dois ciclos quase consecutivos, sem expiração completa entre eles.</p>
+            <p><strong>Causas:</strong> T<sub>insp</sub> neural &gt; T<sub>insp</sub> do ventilador, volume insuficiente, drive alto.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Aumentar T<sub>insp</sub> e Vt; tratar dor/ansiedade; rever sedação se exagerada.</p>
+          </div>
+        </div>
+
+        <div class="pattern-card" data-severity="warning">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name">Esforço inefetivo</span>
+            <span class="pattern-card__tag">Atenção</span>
+          </div>
+          <svg class="pattern-card__wave" viewBox="0 0 420 140" role="img" aria-label="Esforço inefetivo">
+            <line x1="25" y1="100" x2="400" y2="100" stroke="#cbd5e1" stroke-width="1.5"/>
+            <polyline points="30,100 90,40 145,100 215,100 230,112 245,100 305,40 360,100" fill="none" stroke="#12bed1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="200" y="130" font-size="11" fill="#b42318" font-weight="600">esforço sem ciclo entregue</text>
+          </svg>
+          <div class="pattern-card__body">
+            <p><strong>Forma:</strong> Pequena deflexão na curva de pressão/fluxo sem entrega de ciclo mecânico.</p>
+            <p><strong>Causas:</strong> Auto-PEEP, fraqueza diafragmática, sedação excessiva, trigger pouco sensível.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Reduzir sedação se excessiva, ajustar trigger, tratar auto-PEEP.</p>
+          </div>
+        </div>
+
+        <div class="pattern-card" data-severity="warning">
+          <div class="pattern-card__head">
+            <span class="pattern-card__name">Ciclagem inadequada</span>
+            <span class="pattern-card__tag">Atenção</span>
+          </div>
+          <svg class="pattern-card__wave" viewBox="0 0 420 140" role="img" aria-label="Ciclagem inadequada">
+            <line x1="25" y1="115" x2="400" y2="115" stroke="#cbd5e1" stroke-width="1.5"/>
+            <polyline points="30,115 80,40 215,40 240,115 295,115 340,40 365,115" fill="none" stroke="#b42318" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="120" y="35" font-size="11" fill="#b42318" font-weight="600">T<tspan dy="3" font-size="9">insp</tspan><tspan dy="-3"> prolongado/curto</tspan></text>
+          </svg>
+          <div class="pattern-card__body">
+            <p><strong>Forma:</strong> Inspiração mecânica termina antes ou depois do esforço do paciente.</p>
+            <p><strong>Causas:</strong> T<sub>insp</sub>, <em>rise time</em>, % de ciclagem ou suporte desalinhados com a demanda.</p>
+            <p class="pattern-card__action"><strong>Conduta:</strong> Ajustar T<sub>insp</sub>, rise time, % de ciclagem (PSV); revisar modo ventilatório.</p>
+          </div>
+        </div>
+
+      </div>
     </section>
 
     <section id="hipotensao">
@@ -529,12 +2367,62 @@
 
     <section id="erros">
       <h2>13. Erros frequentes — problema → prevenção → resposta</h2>
-      <details open><summary>13.1 Confirmar tubo apenas com ausculta</summary><div class="detail-body"><p><strong>Problema:</strong> ausculta pode ser enganosa, especialmente em ambiente ruidoso, obesidade ou ventilação gástrica.</p><p><strong>Prevenção:</strong> capnografia com onda conectada antes da tentativa.</p><p><strong>Resposta:</strong> se não há onda confiável, tratar como posição incerta: checar conexão/equipamento rapidamente e remover/ventilar ou confirmar por técnica adicional se necessário.</p></div></details>
-      <details><summary>13.2 Não iniciar sedação após rocurônio</summary><div class="detail-body"><p><strong>Problema:</strong> paralisia consciente; o paciente não se move, mas pode estar acordado.</p><p><strong>Prevenção:</strong> sedoanalgesia pós-IOT preparada antes da indução.</p><p><strong>Resposta:</strong> iniciar sedação e analgesia imediatamente, reavaliar profundidade sedativa, documentar evento se houver suspeita de awareness.</p></div></details>
-      <details><summary>13.3 Não reconhecer intubação seletiva</summary><div class="detail-body"><p><strong>Problema:</strong> tubo avançado demais, geralmente para brônquio fonte direito.</p><p><strong>Prevenção:</strong> marcar profundidade, auscultar bilateralmente e confirmar imagem quando indicado.</p><p><strong>Resposta:</strong> recuar 1–2 cm, reauscultar, monitorar SpO₂/ETCO₂ e documentar nova profundidade.</p></div></details>
-      <details><summary>13.4 Dessaturação tratada apenas com aumento de FiO₂</summary><div class="detail-body"><p><strong>Problema:</strong> FiO₂ não corrige deslocamento, obstrução, pneumotórax, equipamento ou auto-PEEP.</p><p><strong>Prevenção:</strong> usar DOPE/DOPES toda vez que houver deterioração.</p><p><strong>Resposta:</strong> O₂ 100%, ventilar manualmente se necessário, checar tubo/circuito/pressão/ausculta e tratar causa.</p></div></details>
-      <details><summary>13.5 Hipotensão atribuída automaticamente à sedação</summary><div class="detail-body"><p><strong>Problema:</strong> pode atrasar diagnóstico de pneumotórax, auto-PEEP, seletiva, hipoxemia ou choque obstrutivo.</p><p><strong>Prevenção:</strong> antecipar risco hemodinâmico e monitorar de forma intensiva após IOT.</p><p><strong>Resposta:</strong> vasopressor quando indicado, revisar ventilador/PEEP, procurar complicações mecânicas e usar POCUS se disponível.</p></div></details>
-      <details><summary>13.6 Não reavaliar após transporte/mudança de decúbito</summary><div class="detail-body"><p><strong>Problema:</strong> tubo pode deslocar, cuff pode vazar, circuito pode tracionar.</p><p><strong>Prevenção:</strong> checagem programada após qualquer mobilização.</p><p><strong>Resposta:</strong> reavaliar capnografia, profundidade, fixação, ausculta, pressão de cuff e parâmetros ventilatórios.</p></div></details>
+      <p>Cada cartão organiza uma armadilha em três facetas: <mark class="kw-crit">risco</mark>, <mark class="kw">prevenção</mark> e <mark class="kw">resposta prática</mark>.</p>
+      <div class="error-grid">
+        <div class="error-card">
+          <div class="error-card__problem">Confirmar tubo apenas com ausculta</div>
+          <ul class="error-card__list">
+            <li data-type="risk"><strong>Risco</strong>Ausculta pode enganar em ambiente ruidoso, obesidade ou ventilação gástrica.</li>
+            <li data-type="prevention"><strong>Prevenção</strong>Capnografia com onda conectada antes da tentativa.</li>
+            <li data-type="response"><strong>Resposta</strong>Sem onda confiável: tratar como posição incerta; checar circuito; remover/ventilar ou confirmar por método adicional.</li>
+          </ul>
+        </div>
+
+        <div class="error-card">
+          <div class="error-card__problem">Não iniciar sedação após rocurônio</div>
+          <ul class="error-card__list">
+            <li data-type="risk"><strong>Risco</strong>Paralisia consciente — paciente não se move mas pode estar acordado.</li>
+            <li data-type="prevention"><strong>Prevenção</strong>Sedoanalgesia pós-IOT preparada antes da indução.</li>
+            <li data-type="response"><strong>Resposta</strong>Iniciar sedação/analgesia imediatamente; reavaliar profundidade; documentar evento se suspeita de awareness.</li>
+          </ul>
+        </div>
+
+        <div class="error-card">
+          <div class="error-card__problem">Não reconhecer intubação seletiva</div>
+          <ul class="error-card__list">
+            <li data-type="risk"><strong>Risco</strong>Tubo avançado demais (geralmente brônquio direito) → hipoxemia + colapso pulmonar contralateral.</li>
+            <li data-type="prevention"><strong>Prevenção</strong>Marcar profundidade, auscultar bilateralmente, confirmar com imagem quando indicado.</li>
+            <li data-type="response"><strong>Resposta</strong>Recuar 1-2 cm, reauscultar, monitorar SpO₂/ETCO₂, documentar nova profundidade.</li>
+          </ul>
+        </div>
+
+        <div class="error-card">
+          <div class="error-card__problem">Dessaturação tratada só com ↑ FiO₂</div>
+          <ul class="error-card__list">
+            <li data-type="risk"><strong>Risco</strong>FiO₂ não corrige deslocamento, obstrução, pneumotórax, falha de equipamento ou auto-PEEP.</li>
+            <li data-type="prevention"><strong>Prevenção</strong>Usar DOPE/DOPES sempre que houver deterioração.</li>
+            <li data-type="response"><strong>Resposta</strong>O₂ 100% + ventilação manual se necessário; checar tubo/circuito/pressão/ausculta; tratar causa.</li>
+          </ul>
+        </div>
+
+        <div class="error-card">
+          <div class="error-card__problem">Hipotensão atribuída só à sedação</div>
+          <ul class="error-card__list">
+            <li data-type="risk"><strong>Risco</strong>Atraso no diagnóstico de pneumotórax, auto-PEEP, seletiva, hipoxemia ou choque obstrutivo.</li>
+            <li data-type="prevention"><strong>Prevenção</strong>Antecipar risco hemodinâmico; monitorar intensivamente após IOT.</li>
+            <li data-type="response"><strong>Resposta</strong>Vasopressor quando indicado; revisar PEEP/ventilador; procurar complicações mecânicas; POCUS se disponível.</li>
+          </ul>
+        </div>
+
+        <div class="error-card">
+          <div class="error-card__problem">Não reavaliar após transporte / decúbito</div>
+          <ul class="error-card__list">
+            <li data-type="risk"><strong>Risco</strong>Tubo pode deslocar, cuff vazar, circuito tracionar.</li>
+            <li data-type="prevention"><strong>Prevenção</strong>Checagem programada após qualquer mobilização.</li>
+            <li data-type="response"><strong>Resposta</strong>Reavaliar capnografia, profundidade, fixação, ausculta, pressão de cuff e parâmetros ventilatórios.</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
 

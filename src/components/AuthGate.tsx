@@ -19,9 +19,17 @@ import {
   useTransform,
   type Variants
 } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import App from "../App";
 import { useImageWithoutHalo } from "../utils/imageProcessing";
 import { moduleSources } from "../data/moduleSources";
+import { track } from "../utils/analytics";
+
+// Registra plugin uma vez no módulo. ScrollTrigger é free no GSAP.
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 // Landing exibe apenas dois módulos representativos em rotação: módulo 1
 // (capítulo clínico — via aérea) e módulo 7 (calculadoras interativas). Cobre
@@ -95,36 +103,42 @@ function AuthShell({
 const landingFeatures = [
   {
     icon: "modules",
+    stat: "6 áreas clínicas",
     title: "Seis módulos clínicos",
     description:
       "Via aérea e IOT, pós-intubação, ventilação mecânica, sedoanalgesia, drogas vasoativas e calculadoras interativas, revisados e consolidados."
   },
   {
     icon: "flow",
+    stat: "Texto + calculadora",
     title: "Capítulos com discussão clínica",
     description:
       "Capítulos com discussão sobre via aérea, ventilação mecânica, sedoanalgesia e vasoativos, com referências recolhíveis e leitura otimizada para celular."
   },
   {
     icon: "calc",
+    stat: "Dose ↔ vazão",
     title: "Calculadoras com bloqueio mútuo",
     description:
       "Cálculo de doses, diluições e vazões com bloqueio mútuo dose/vazão, unidades e bolus editáveis e constantes clínicas centralizadas."
   },
   {
     icon: "offline",
+    stat: "Sem internet",
     title: "Disponível offline no plantão",
     description:
       "Funciona sem internet após o primeiro acesso autenticado, com cache assinado, service worker e busca global em todos os módulos."
   },
   {
     icon: "update",
+    stat: "Changelog versionado",
     title: "Atualizações rastreadas",
     description:
       "Toda alteração clínica passa por revisão médica e é registrada em changelog versionado. Você sempre consulta uma versão identificada."
   },
   {
     icon: "shield",
+    stat: "0 dados de paciente",
     title: "Privacidade clínica",
     description:
       "Sem cadastro de paciente e sem armazenamento de dados sensíveis. Apenas o seu login e a sua assinatura ficam vinculados à conta."
@@ -173,19 +187,27 @@ function LandingNav({ previewMode = false }: { previewMode?: boolean }) {
           </button>
         ) : (
           <SignInButton mode="modal">
-            <button className="button button--ghost" type="button">
+            <button
+              className="button button--ghost"
+              type="button"
+              onClick={() => track("landing_nav_signin_click")}
+            >
               Entrar
             </button>
           </SignInButton>
         )}
         {previewMode ? (
           <button className="button button--cta" type="button" disabled>
-            Assinar
+            Quero meu acesso
           </button>
         ) : (
           <SignUpButton mode="modal">
-            <button className="button button--cta" type="button">
-              Assinar
+            <button
+              className="button button--cta"
+              type="button"
+              onClick={() => track("landing_nav_signup_click")}
+            >
+              Quero meu acesso
             </button>
           </SignUpButton>
         )}
@@ -286,6 +308,134 @@ const heroFadeUp: Variants = {
   })
 };
 
+// HeroCanvasBg: fundo animado em canvas substituindo o vídeo de fundo.
+// Renderiza partículas em deriva + curva sinusoidal (estilo "dose flowing") +
+// grid sutil. Pausa em prefers-reduced-motion. Não bloqueia interação.
+function HeroCanvasBg() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      return;
+    }
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let rafId = 0;
+    let particles: { x: number; y: number; vx: number; vy: number; r: number; a: number }[] = [];
+    let curvePhase = 0;
+
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      canvas.width = Math.max(1, Math.round(w * dpr));
+      canvas.height = Math.max(1, Math.round(h * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = w < 600 ? 35 : 60;
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        r: Math.random() * 1.6 + 0.4,
+        a: Math.random() * 0.35 + 0.1
+      }));
+    };
+
+    const draw = () => {
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      // Radial glow ciano leve no centro-superior
+      const grad = ctx.createRadialGradient(w * 0.5, h * 0.35, 0, w * 0.5, h * 0.35, w * 0.55);
+      grad.addColorStop(0, "rgba(48, 241, 230, 0.06)");
+      grad.addColorStop(1, "rgba(48, 241, 230, 0)");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Linhas de grid horizontais (estilo dashboard clínico)
+      ctx.strokeStyle = "rgba(159, 232, 255, 0.05)";
+      ctx.lineWidth = 1;
+      for (let y = 80; y < h; y += 80) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      // Curva sinusoidal (sweep visual de "dose fluindo")
+      curvePhase += 0.004;
+      ctx.strokeStyle = "rgba(48, 241, 230, 0.14)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (let x = 0; x <= w; x += 4) {
+        const y =
+          h * 0.55 +
+          Math.sin(x * 0.005 + curvePhase) * 70 +
+          Math.sin(x * 0.012 + curvePhase * 0.6) * 24;
+        if (x === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      ctx.stroke();
+
+      // Curva secundária deslocada
+      ctx.strokeStyle = "rgba(46, 139, 255, 0.08)";
+      ctx.beginPath();
+      for (let x = 0; x <= w; x += 4) {
+        const y =
+          h * 0.45 +
+          Math.sin(x * 0.004 - curvePhase * 0.8) * 60 +
+          Math.cos(x * 0.009 + curvePhase) * 18;
+        if (x === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      ctx.stroke();
+
+      // Particles
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+        ctx.fillStyle = `rgba(48, 241, 230, ${p.a})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      rafId = window.requestAnimationFrame(draw);
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    if (!reduced) {
+      draw();
+    } else {
+      // Render frame único estático
+      draw();
+      window.cancelAnimationFrame(rafId);
+    }
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="hero-v2-bg" aria-hidden="true" />;
+}
+
 function LandingHeroV2({ previewMode = false }: { previewMode?: boolean }) {
   const reduceMotion = useReducedMotion();
   const stageRef = useRef<HTMLDivElement>(null);
@@ -361,6 +511,7 @@ function LandingHeroV2({ previewMode = false }: { previewMode?: boolean }) {
       onMouseLeave={handleMouseLeave}
       onMouseEnter={() => setPaused(true)}
     >
+      <HeroCanvasBg />
       <LandingNav previewMode={previewMode} />
 
       <div className="hero-v2-stage">
@@ -439,7 +590,11 @@ function LandingHeroV2({ previewMode = false }: { previewMode?: boolean }) {
               </button>
             ) : (
               <SignUpButton mode="modal">
-                <button className="button button--cta button--lg" type="button">
+                <button
+                  className="button button--cta button--lg"
+                  type="button"
+                  onClick={() => track("landing_hero_signup_click")}
+                >
                   Quero meu acesso
                 </button>
               </SignUpButton>
@@ -450,7 +605,11 @@ function LandingHeroV2({ previewMode = false }: { previewMode?: boolean }) {
               </button>
             ) : (
               <SignInButton mode="modal">
-                <button className="button button--ghost button--lg" type="button">
+                <button
+                  className="button button--ghost button--lg"
+                  type="button"
+                  onClick={() => track("landing_hero_signin_click")}
+                >
                   Já tenho conta
                 </button>
               </SignInButton>
@@ -507,16 +666,297 @@ function LandingHeroV2({ previewMode = false }: { previewMode?: boolean }) {
   );
 }
 
+// AnimatedCalculator: demonstra a calculadora dose↔vazão em ação. GSAP
+// timeline anima os números sendo digitados/calculados quando a seção entra
+// no viewport (via ScrollTrigger). Mostra também o "modo ativo" alternando
+// entre dose e vazão pra ilustrar bloqueio mútuo.
+function AnimatedCalculator() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const pesoRef = useRef<HTMLSpanElement>(null);
+  const diluicaoRef = useRef<HTMLSpanElement>(null);
+  const doseRef = useRef<HTMLSpanElement>(null);
+  const vazaoRef = useRef<HTMLSpanElement>(null);
+  const doseFieldRef = useRef<HTMLDivElement>(null);
+  const vazaoFieldRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) {
+      return;
+    }
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          toggleActions: "play none none reverse"
+        }
+      });
+
+      // Etapa 1: peso preenchendo
+      const peso = { val: 0 };
+      tl.to(peso, {
+        val: 70,
+        duration: 1.0,
+        ease: "power2.out",
+        onUpdate: () => {
+          if (pesoRef.current) pesoRef.current.textContent = Math.round(peso.val).toString();
+        }
+      });
+
+      // Etapa 2: diluição já fixa, só fade-in
+      tl.fromTo(
+        diluicaoRef.current,
+        { opacity: 0.35 },
+        { opacity: 1, duration: 0.5 },
+        "+=0.1"
+      );
+
+      // Etapa 3: dose ativa, digitando
+      tl.to(doseFieldRef.current, {
+        borderColor: "rgba(48, 241, 230, 0.7)",
+        backgroundColor: "rgba(48, 241, 230, 0.08)",
+        duration: 0.3
+      }, "+=0.2");
+
+      const dose = { val: 0 };
+      tl.to(dose, {
+        val: 0.10,
+        duration: 1.0,
+        ease: "power2.out",
+        onUpdate: () => {
+          if (doseRef.current) doseRef.current.textContent = dose.val.toFixed(2).replace(".", ",");
+        }
+      });
+
+      // Etapa 4: vazão calculada (bloqueada, derivada da dose)
+      tl.fromTo(
+        vazaoFieldRef.current,
+        { opacity: 0.4 },
+        { opacity: 1, duration: 0.3 },
+        "+=0.15"
+      );
+      const vazao = { val: 0 };
+      tl.to(vazao, {
+        val: 26.3,
+        duration: 1.2,
+        ease: "power2.out",
+        onUpdate: () => {
+          if (vazaoRef.current) vazaoRef.current.textContent = vazao.val.toFixed(1).replace(".", ",");
+        }
+      }, "<");
+
+      // Etapa 5: pausa, depois inverte — dose vira derivada e vazão é ativa
+      tl.to({}, { duration: 1.2 });
+      tl.to(doseFieldRef.current, {
+        borderColor: "rgba(159, 232, 255, 0.16)",
+        backgroundColor: "transparent",
+        duration: 0.4
+      });
+      tl.to(vazaoFieldRef.current, {
+        borderColor: "rgba(48, 241, 230, 0.7)",
+        backgroundColor: "rgba(48, 241, 230, 0.08)",
+        duration: 0.3
+      }, "<");
+
+      // Etapa 6: vazão digita 35
+      const vazao2 = { val: 26.3 };
+      tl.to(vazao2, {
+        val: 35.0,
+        duration: 0.9,
+        ease: "power2.out",
+        onUpdate: () => {
+          if (vazaoRef.current) vazaoRef.current.textContent = vazao2.val.toFixed(1).replace(".", ",");
+        }
+      });
+
+      // Etapa 7: dose recalcula
+      const dose2 = { val: 0.10 };
+      tl.to(dose2, {
+        val: 0.133,
+        duration: 0.9,
+        ease: "power2.out",
+        onUpdate: () => {
+          if (doseRef.current) doseRef.current.textContent = dose2.val.toFixed(2).replace(".", ",");
+        }
+      }, "<");
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} className="animcalc" aria-labelledby="animcalc-title">
+      <div className="animcalc-copy">
+        <span className="animcalc-eyebrow">Como funciona</span>
+        <h2 id="animcalc-title" className="animcalc-title">
+          Bloqueio mútuo dose ↔ vazão.
+        </h2>
+        <p className="animcalc-lead">
+          O campo ativo calcula o outro automaticamente. Edite a dose, a vazão sai. Edite a
+          vazão, a dose recalcula. Sem decisão dupla, sem ambiguidade — apenas o par coerente
+          para diluição, peso e velocidade de infusão.
+        </p>
+        <ul className="animcalc-bullets">
+          <li>Constantes clínicas centralizadas e versionadas.</li>
+          <li>Unidades editáveis (mcg/kg/min, mg/h, mL/h).</li>
+          <li>Compatível com bolus, infusão contínua e ajuste por peso.</li>
+        </ul>
+      </div>
+      <div className="animcalc-widget" aria-hidden="true">
+        <div className="animcalc-header">
+          <span className="animcalc-header-label">Calculadora — noradrenalina</span>
+          <span className="animcalc-header-tag">demonstração ao vivo</span>
+        </div>
+        <div className="animcalc-grid">
+          <div className="animcalc-field">
+            <span className="animcalc-field-label">Peso</span>
+            <div className="animcalc-field-value">
+              <span ref={pesoRef} className="animcalc-field-number">0</span>
+              <span className="animcalc-field-unit">kg</span>
+            </div>
+          </div>
+          <div className="animcalc-field">
+            <span className="animcalc-field-label">Diluição</span>
+            <div className="animcalc-field-value">
+              <span ref={diluicaoRef} className="animcalc-field-number animcalc-field-number--soft">
+                4 mg / 250 mL
+              </span>
+            </div>
+          </div>
+          <div ref={doseFieldRef} className="animcalc-field animcalc-field--editable">
+            <span className="animcalc-field-label">Dose</span>
+            <div className="animcalc-field-value">
+              <span ref={doseRef} className="animcalc-field-number">0,00</span>
+              <span className="animcalc-field-unit">mcg/kg/min</span>
+            </div>
+          </div>
+          <div ref={vazaoFieldRef} className="animcalc-field animcalc-field--editable">
+            <span className="animcalc-field-label">Vazão</span>
+            <div className="animcalc-field-value">
+              <span ref={vazaoRef} className="animcalc-field-number">0,0</span>
+              <span className="animcalc-field-unit">mL/h</span>
+            </div>
+          </div>
+        </div>
+        <p className="animcalc-footnote">
+          O campo destacado em ciano é o ativo. O outro é calculado automaticamente.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean } = {}) {
   useEffect(() => {
     document.body.classList.add("landing-active");
     return () => document.body.classList.remove("landing-active");
   }, []);
 
+  // GSAP: pulse contínuo no CTA principal do banner + reveal sequenciado
+  // dos 3 cards de planos via ScrollTrigger. Respeita prefers-reduced-motion.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    const ctx = gsap.context(() => {
+      gsap.to(".cta-banner-cta", {
+        scale: 1.03,
+        duration: 1.6,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+
+      gsap.fromTo(
+        ".cta-banner-card",
+        { y: 32, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".cta-banner-grid",
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      // Reveal do header da pricing section (sem mexer nos cards — Framer já cuida deles)
+      gsap.fromTo(
+        ".pricing-v2-header",
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".pricing-v2",
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    });
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="landing-shell">
       <main className="landing">
         <LandingHeroV2 previewMode={previewMode} />
+
+        <section className="cta-banner" aria-labelledby="cta-banner-title">
+          <div className="cta-banner-header">
+            <span className="cta-banner-eyebrow">Comece hoje</span>
+            <h2 id="cta-banner-title" className="cta-banner-title">
+              A partir de R$ 25,99/mês.
+            </h2>
+            <p className="cta-banner-lead">
+              Acesso completo aos seis módulos clínicos, calculadoras interativas, modo offline
+              e atualizações. Cancele quando quiser.
+            </p>
+          </div>
+          <div className="cta-banner-grid">
+            {PLANS.map((plan) => (
+              <a
+                key={plan.id}
+                href="#planos"
+                className={`cta-banner-card${plan.highlight ? " cta-banner-card--featured" : ""}`}
+                onClick={() =>
+                  track("landing_cta_banner_card_click", { plan: plan.id, price: plan.price })
+                }
+              >
+                {plan.badge && (
+                  <span className="cta-banner-card-badge">{plan.badge}</span>
+                )}
+                <span className="cta-banner-card-label">{plan.label}</span>
+                <span className="cta-banner-card-price">{plan.price}</span>
+                <span className="cta-banner-card-period">
+                  {plan.perMonth ? plan.perMonth : plan.period}
+                </span>
+              </a>
+            ))}
+          </div>
+          {previewMode ? (
+            <button className="cta-banner-cta" type="button" disabled>
+              Quero meu acesso <span aria-hidden="true">→</span>
+            </button>
+          ) : (
+            <SignUpButton mode="modal">
+              <button
+                className="cta-banner-cta"
+                type="button"
+                onClick={() => track("landing_cta_banner_main_cta_click")}
+              >
+                Quero meu acesso <span aria-hidden="true">→</span>
+              </button>
+            </SignUpButton>
+          )}
+        </section>
 
         <section className="features-v2" aria-labelledby="features-title">
           <div className="features-v2-header">
@@ -546,12 +986,15 @@ export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean
                     <FeatureIcon name={feature.icon} />
                   </span>
                 </div>
+                <span className="features-v2-card-stat">{feature.stat}</span>
                 <h3 className="features-v2-card-title">{feature.title}</h3>
                 <p className="features-v2-card-body">{feature.description}</p>
               </motion.article>
             ))}
           </div>
         </section>
+
+        <AnimatedCalculator />
 
         <section className="refs-v2" aria-labelledby="refs-title">
           <div className="refs-v2-header">
@@ -630,15 +1073,18 @@ export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean
                     type="button"
                     disabled
                   >
-                    Assinar agora <span aria-hidden="true">→</span>
+                    Quero meu acesso <span aria-hidden="true">→</span>
                   </button>
                 ) : (
                   <SignUpButton mode="modal">
                     <button
                       className={`pricing-v2-card-cta${plan.highlight ? " pricing-v2-card-cta--primary" : ""}`}
                       type="button"
+                      onClick={() =>
+                        track("landing_pricing_card_click", { plan: plan.id, price: plan.price })
+                      }
                     >
-                      Assinar agora <span aria-hidden="true">→</span>
+                      Quero meu acesso <span aria-hidden="true">→</span>
                     </button>
                   </SignUpButton>
                 )}
