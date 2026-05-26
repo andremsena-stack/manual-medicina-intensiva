@@ -3,12 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#041018" />
+    <meta name="theme-color" content="#0d2438" />
     <meta
       name="description"
       content="Manual de Medicina Intensiva: capítulos clínicos, calculadoras de dose e vazão com bloqueio mútuo, modo offline e atualizações rastreadas. Apoio à decisão no plantão de UTI."
     />
     <meta name="author" content="Virtus · Clinical Tools" />
+
+    <!-- PWA — instalação iOS Safari (não usa manifest webmanifest da mesma forma
+         que Android/desktop, exige meta tags próprias).
+         O usuário instala via Compartilhar → "Adicionar à Tela de Início". -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Virtus Intensiva" />
+    <meta name="application-name" content="Virtus Intensiva" />
+    <link rel="apple-touch-icon" href="/pwa-icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/pwa-icons/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/icon.svg" color="#0d2438" />
 
     <!-- Open Graph (Facebook, LinkedIn, WhatsApp, Slack) -->
     <meta property="og:type" content="website" />

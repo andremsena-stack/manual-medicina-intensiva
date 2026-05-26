@@ -1,5 +1,78 @@
 # Changelog
 
+## 2026-05-26 — PWA instalável (iOS · Android · desktop) com prompt nativo + tutorial iOS
+
+### Tipo de alteração
+
+- **Técnica/UX**. Não toca em conteúdo clínico. Habilita instalação como app
+  nativo a partir da tela inicial em todas as plataformas.
+
+### O que mudou
+
+1. **PNG icons gerados** (`scripts/generate-pwa-icons.py`, novos em `public/pwa-icons/`):
+   - `icon-192.png` e `icon-512.png` (purpose: any) — Android Chrome / desktop
+   - `icon-192-maskable.png` e `icon-512-maskable.png` (purpose: maskable, fundo navy
+     com safe-area 62%) — adaptativos para Android (qualquer forma de máscara do SO)
+   - `apple-touch-icon.png` (180×180, fundo navy sólido — iOS não aceita transparência)
+
+2. **`public/manifest.webmanifest`** reescrito:
+   - `id`, `display_override`, `categories`, `dir`, `lang` adicionados
+   - `theme_color` `#123c69` → `#0d2438` (alinha com brand-deep e splash screen)
+   - 5 icons no array (192/512 any, 192/512 maskable, fallback SVG)
+   - `description` atualizado mencionando "Funciona offline"
+
+3. **`index.html`** — meta tags Apple (iOS Safari não usa manifest):
+   - `apple-mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style:black-translucent`
+   - `apple-mobile-web-app-title: "Virtus Intensiva"`
+   - `application-name: "Virtus Intensiva"`
+   - `link rel="apple-touch-icon"` apontando para o novo PNG 180
+   - `link rel="mask-icon"` (Safari pinned tab) com cor `#0d2438`
+   - `theme-color` `#041018` → `#0d2438` (alinha com manifest + brand)
+
+4. **`public/sw.js`** cache version bumped `v59 → v60`. CORE_ASSETS agora pré-cacheia
+   os 5 novos PNGs (instalação funciona offline desde a primeira visita).
+
+5. **Novo `src/components/InstallPrompt.tsx`**:
+   - Detecta plataforma (iOS · Android Chromium · desktop · standalone)
+   - **Android/desktop Chromium**: captura `beforeinstallprompt`, mostra chip
+     no rodapé com CTA "Instalar" que dispara o prompt nativo do browser
+   - **iOS Safari**: como não há prompt nativo, exibe chip "Como instalar" que
+     abre modal com tutorial passo-a-passo (Compartilhar → Adicionar à Tela
+     de Início → Adicionar), com ícones inline e nota sobre modo offline
+   - **Standalone (já instalado)**: prompt não aparece (`display-mode:standalone`
+     e `navigator.standalone` checados)
+   - **Dispensa persistente**: ao fechar, grava timestamp em `localStorage`;
+     volta a aparecer após 14 dias (chave `virtus_install_prompt_dismissed_at`)
+   - `appinstalled` event: esconde o prompt automaticamente
+
+6. **CSS `.install-prompt` + `.install-help`** em `src/styles.css`:
+   - Chip fixo no rodapé centralizado, gradiente navy com borda cyan-soft,
+     ícone cyan + título display + CTA cyan-gradient + botão dismiss compacto
+   - Respeita `env(safe-area-inset-bottom)` (iOS notch)
+   - Modal de tutorial iOS: header navy gradient com eyebrow chip,
+     3 passos numerados em mono cyan, ícones inline (Compartilhar / + caixa)
+     e nota sobre offline
+   - Animações fade-in respeitam `prefers-reduced-motion` via duração curta
+
+7. **`src/App.tsx`** — `<InstallPrompt />` montado no root, sem props (auto-gerencia
+   estado e detecção).
+
+### Comportamento por plataforma
+
+| Plataforma | Disparo do prompt | Ação |
+|---|---|---|
+| Chrome Android | Auto via `beforeinstallprompt` (após critérios PWA atendidos) | CTA "Instalar" dispara prompt nativo do Chrome |
+| Edge desktop | Auto via `beforeinstallprompt` | CTA "Instalar" dispara prompt nativo |
+| Chrome desktop | Auto via `beforeinstallprompt` ou ícone na omnibox | CTA "Instalar" dispara prompt nativo |
+| iOS Safari (iPhone/iPad) | Após 3,5 s da primeira carga (não há prompt nativo) | CTA "Como instalar" abre tutorial visual (3 passos) |
+| Firefox desktop/Android | `beforeinstallprompt` não suportado | Chip não aparece (degrada graciosamente) |
+| Modo standalone | Detectado via media query + `navigator.standalone` | Chip nunca aparece |
+
+### Verificação
+
+- `npx tsc --noEmit` → clean
+- `node scripts/verify-module-hashes.mjs` → 9/9 OK
+
 ## 2026-05-26 — Novo Mod 8: Caderno de questões (70 questões, clínico-aplicado) + renomeação Refs → Mod 9
 
 ### Tipo de alteração

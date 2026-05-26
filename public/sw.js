@@ -1,5 +1,15 @@
-const CACHE_NAME = "guia-intensiva-pwa-v59";
-const CORE_ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"];
+const CACHE_NAME = "guia-intensiva-pwa-v60";
+const CORE_ASSETS = [
+  "./",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./icon.svg",
+  "./pwa-icons/icon-192.png",
+  "./pwa-icons/icon-512.png",
+  "./pwa-icons/icon-192-maskable.png",
+  "./pwa-icons/icon-512-maskable.png",
+  "./pwa-icons/apple-touch-icon.png"
+];
 
 const cacheResponse = (request, response) => {
   if (response && response.ok) {

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { InstallPrompt } from "./components/InstallPrompt";
 import { ModuleHome } from "./components/ModuleHome";
 import { ModuleViewer } from "./components/ModuleViewer";
 import { SearchPanel } from "./components/SearchPanel";
@@ -155,6 +156,7 @@ function App() {
           }}
         />
       </div>
+      <InstallPrompt />
     </div>
   );
 }
