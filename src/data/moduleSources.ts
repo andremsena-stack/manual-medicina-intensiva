@@ -7,7 +7,8 @@ import modulo04 from "./modules/modulo_04_manutencao_sedoanalgesia.html?raw";
 import modulo05 from "./modules/modulo_05_drogas_vasoativas.html?raw";
 import modulo06 from "./modules/modulo_06_disturbios_hidroeletroliticos.html?raw";
 import modulo07 from "./modules/modulo_07_calculadoras_interativas.html?raw";
-import modulo08 from "./modules/modulo_08_referencias.html?raw";
+import modulo08 from "./modules/modulo_08_caderno_questoes.html?raw";
+import modulo09 from "./modules/modulo_09_referencias.html?raw";
 
 export const moduleSources: ModuleSource[] = [
   {
@@ -62,8 +63,15 @@ export const moduleSources: ModuleSource[] = [
   {
     id: "modulo-08",
     number: 8,
-    title: "Referências consolidadas",
-    fileName: "modulo_08_referencias.html",
+    title: "Caderno de questões",
+    fileName: "modulo_08_caderno_questoes.html",
     html: modulo08
+  },
+  {
+    id: "modulo-09",
+    number: 9,
+    title: "Referências consolidadas",
+    fileName: "modulo_09_referencias.html",
+    html: modulo09
   }
 ];

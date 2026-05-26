@@ -87,18 +87,35 @@ Pendências:
 
 - [ ] **P_** _Tipo_ — descrição do item.
 
-## Módulo 8 — Referências consolidadas
+## Módulo 8 — Caderno de questões
 
-`src/data/modules/modulo_08_referencias.html`
+`src/data/modules/modulo_08_caderno_questoes.html`
+
+Caderno com **70 questões de múltipla escolha** (10 por módulo de origem: Mod 1–6 +
+Mod 7) com perfil **clínico-aplicado** (15% Lembrar, 20% Compreender, 35% Aplicar,
+25% Analisar, 5% Avaliar). Cada questão tem alternativas A–D, gabarito recolhível
+via `<details>`, justificativa de 50–100 palavras, conceito testado e tag Bloom.
+
+Criado em 2026-05-26 como módulo penúltimo (entre Mod 7 Calculadoras e Mod 9
+Referências), respeitando a regra de ordenação fixa.
+
+- [ ] **P1** _clínico_ — **REQUER REVISAO MEDICA** das 70 questões (gabarito e justificativas)
+      antes do lançamento comercial.
+- [ ] **P2** _interface_ — confirmar render no `?preview=app` e no `?preview=modulos`.
+- [ ] **P2** _texto_ — revisar consistência de Bloom labels entre questões.
+
+## Módulo 9 — Referências consolidadas
+
+`src/data/modules/modulo_09_referencias.html` (renomeado de `modulo_08_*` em 2026-05-26).
 
 Reúne a bibliografia primária dos módulos clínicos, organizada por módulo de origem.
 Criado em 2026-05-21 a partir das seções `<section id="referencias">` extraídas dos
 módulos 1–6 (mini-blocos contextuais `.ref` permanecem nos módulos originais).
 
 **Regra de ordenação dos módulos**: o módulo de Calculadoras interativas é sempre
-o antepenúltimo (penúltimo entre módulos clínicos); as Referências consolidadas
+o antepenúltimo; o Caderno de questões é o penúltimo; as Referências consolidadas
 são sempre o último módulo. Ao adicionar novos módulos clínicos, intercalá-los
-antes do bloco Calculadoras + Referências.
+antes do bloco Calculadoras + Caderno + Referências.
 
 - [ ] **P2** _texto_ — revisar se há referências duplicadas que devem ser deduplicadas.
 - [ ] **P2** _interface_ — confirmar render no `?preview=app` e no `?preview=modulos`.

@@ -7,7 +7,9 @@ import { applyIframeSafetyLayer, type CollapseConfig } from "../utils/iframeSafe
 // Modulo 7 (Calculadoras): accordionMode — #paciente fixo no topo (sem toggle, sempre
 //   visivel); todas as demais (IOT, Bolus, Eletrolitos, Infusao, Cenario-resumo,
 //   Sugestao de leitura) iniciam recolhidas; abrir uma fecha as outras.
-// Modulo 8 (Referencias): skip — ja usa <details>/<summary> nativo por bloco.
+// Modulo 8 (Caderno de questoes): skip — cada questao ja usa <details> nativo
+//   para revelar gabarito + justificativa.
+// Modulo 9 (Referencias): skip — ja usa <details>/<summary> nativo por bloco.
 // Modulos 1-5: todas comecam abertas; usuario pode recolher clicando no h2.
 const COLLAPSE_BY_MODULE: Partial<Record<ModuleId, CollapseConfig | undefined>> = {
   "modulo-01": {},
@@ -17,13 +19,14 @@ const COLLAPSE_BY_MODULE: Partial<Record<ModuleId, CollapseConfig | undefined>> 
   "modulo-05": {},
   "modulo-06": { skipSectionsWithDetails: true },
   "modulo-07": { keepExpandedIds: ["paciente"], accordionMode: true },
-  "modulo-08": undefined
+  "modulo-08": undefined,
+  "modulo-09": undefined
 };
 
 // Modulos clinicos densos em texto que se beneficiam de compactacao tipografica
-// para reduzir o scroll vertical. Mod 7 (calculadoras) e Mod 8 (referencias) NAO
-// entram — paineis de calculadora precisam dos tamanhos atuais; referencias tem
-// estrutura propria com <details>/<summary>.
+// para reduzir o scroll vertical. Mod 7 (calculadoras), Mod 8 (caderno de
+// questoes) e Mod 9 (referencias) NAO entram — paineis de calculadora precisam
+// dos tamanhos atuais; questoes e referencias tem estrutura propria com <details>.
 const COMPACT_READING_MODULES = new Set<ModuleId>([
   "modulo-01",
   "modulo-02",

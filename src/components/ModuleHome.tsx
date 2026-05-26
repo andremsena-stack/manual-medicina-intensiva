@@ -71,8 +71,19 @@ const MODULE_ICONS: Record<ModuleId, ReactElement> = {
       <circle cx="15" cy="17" r="0.9" fill="currentColor" stroke="none" />
     </svg>
   ),
-  // Mod 8 - Referencias: livro aberto
+  // Mod 8 - Caderno de questoes: prancheta com checks
   "modulo-08": (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="5" y="4" width="14" height="17" rx="2" />
+      <path d="M9 4v-1h6v1" />
+      <path d="M8.5 10l1.5 1.5L13 8" />
+      <path d="M8.5 15l1.5 1.5L13 13" />
+      <path d="M15 10h2" />
+      <path d="M15 15h2" />
+    </svg>
+  ),
+  // Mod 9 - Referencias: livro aberto
+  "modulo-09": (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M3 5c2.5-1 5.5-1 9 1v13c-3.5-2-6.5-2-9-1z" />
       <path d="M21 5c-2.5-1-5.5-1-9 1v13c3.5-2 6.5-2 9-1z" />
@@ -82,9 +93,10 @@ const MODULE_ICONS: Record<ModuleId, ReactElement> = {
 };
 
 // Identifica visualmente a familia do modulo para colorir a tarja lateral.
-function familyOf(moduleId: ModuleId): "clinico" | "calc" | "ref" {
+function familyOf(moduleId: ModuleId): "clinico" | "calc" | "quiz" | "ref" {
   if (moduleId === "modulo-07") return "calc";
-  if (moduleId === "modulo-08") return "ref";
+  if (moduleId === "modulo-08") return "quiz";
+  if (moduleId === "modulo-09") return "ref";
   return "clinico";
 }
 

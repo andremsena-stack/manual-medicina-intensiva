@@ -92,12 +92,14 @@ o melhor caminho é commitar e deixar o CI buildar; deploy direto via
 Ordem fixa, válida para o estado atual e para qualquer expansão futura:
 
 1. **Módulos clínicos** ocupam as primeiras posições (atualmente 1–6).
-2. **Módulo de Calculadoras interativas** é **sempre o antepenúltimo** (atualmente Mod 7).
-3. **Módulo de Referências consolidadas** é **sempre o último** (atualmente Mod 8), reunindo a
-   bibliografia primária de todos os módulos clínicos.
+2. **Módulo de Calculadoras interativas** vem logo após os clínicos (atualmente Mod 7).
+3. **Módulo de Caderno de questões** é **sempre o penúltimo** (atualmente Mod 8) — banco
+   de questões de múltipla escolha alinhado por módulo de origem.
+4. **Módulo de Referências consolidadas** é **sempre o último** (atualmente Mod 9), reunindo
+   a bibliografia primária de todos os módulos clínicos.
 
-Ao adicionar novo módulo clínico, inseri-lo antes do par Calculadoras + Referências
-(esses dois recuam uma posição cada e os arquivos são renomeados via `git mv` para refletir
+Ao adicionar novo módulo clínico, inseri-lo antes do trio Calculadoras + Caderno + Referências
+(esses três recuam uma posição cada e os arquivos são renomeados via `git mv` para refletir
 a nova numeração). Os slugs de rota (`modulo-NN`) seguem a posição absoluta, não o tema —
 manter conexão `slug ↔ posição` ao renomear.
 

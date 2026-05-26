@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Interativo de Medicina Intensiva — Módulo 8: Caderno de questões</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <style>
+    :root{
+      --font-display:'DM Sans',system-ui,-apple-system,sans-serif;
+      --font-body:'DM Sans',system-ui,-apple-system,sans-serif;
+      --font-mono:'JetBrains Mono','IBM Plex Mono',ui-monospace,monospace;
+      --brand-deep:#0d2438;--brand:#123c69;--brand-mid:#1a4d80;
+      --cyan:#12bed1;--cyan-light:#30f1e6;
+      --ink:#0d2438;--ink-2:#5f6b7a;
+      --paper:#f4f7fb;--surface:#fff;--surface-2:#eef3f8;--rule:#d8e2ea;
+      --crit:#b42318;--urgent:#b54708;--stable:#067647;
+      --bg:var(--paper);--surface-soft:var(--surface-2);--text:var(--ink);--muted:var(--ink-2);
+      --primary:var(--brand);--primary-soft:#dce9f6;--accent:var(--cyan);
+      --danger:var(--crit);--warning:var(--urgent);--success:var(--stable);
+      --border:var(--rule);
+      --shadow:0 1px 3px rgba(13,36,56,.05),0 4px 12px rgba(13,36,56,.06);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:var(--font-body);font-size:15px;background:var(--bg);color:var(--text);line-height:1.55;letter-spacing:-0.003em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    a{color:inherit;text-decoration:none}
+    .app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+    aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--brand-deep);color:#fff;padding:24px 18px}
+    .brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}
+    .brand h1{font-family:var(--font-display);font-size:19px;margin:0 0 8px;line-height:1.25;letter-spacing:-0.01em}
+    .brand p{margin:0;font-size:13px;color:rgba(255,255,255,.78)}
+    nav ul{list-style:none;padding:0;margin:0}
+    nav li{margin:5px 0}
+    nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88);transition:background-color .15s ease,color .15s ease}
+    nav a:hover,nav a.module-nav-link--active{background:rgba(48,241,230,.14);color:#fff}
+    main{padding:34px;max-width:1380px;width:100%}
+    .hero{
+      position:relative;overflow:hidden;
+      background:linear-gradient(135deg,#0d2438 0%,#123c69 60%,#1a4d80 100%);
+      color:#fff;border-radius:24px;padding:34px;
+      box-shadow:0 1px 3px rgba(13,36,56,.10),0 12px 32px rgba(13,36,56,.18);
+      margin-bottom:28px;border:1px solid rgba(48,241,230,.18);
+    }
+    .hero__eyebrow{
+      display:inline-block;font-family:var(--font-mono);font-size:10.5px;font-weight:700;
+      letter-spacing:.16em;text-transform:uppercase;color:var(--cyan-light);
+      padding:4px 12px;background:rgba(48,241,230,.10);border:1px solid rgba(48,241,230,.32);
+      border-radius:999px;margin-bottom:12px;
+    }
+    .hero h2{
+      font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:700;
+      letter-spacing:-0.014em;line-height:1.15;margin:0 0 12px;
+      background:linear-gradient(180deg,#fff 0%,#cfeef3 100%);
+      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .hero p{max-width:980px;color:rgba(255,255,255,.88);margin:0;font-size:15px;line-height:1.55}
+    .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .badge{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(48,241,230,.24);color:rgba(255,255,255,.92);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.04em}
+    .badge::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan-light);box-shadow:0 0 8px rgba(48,241,230,.6)}
+    section{
+      background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+      padding:24px 28px;margin-bottom:18px;box-shadow:var(--shadow);position:relative;
+      transition:box-shadow .2s ease,border-color .2s ease;
+    }
+    section:hover{border-color:rgba(18,190,209,.32)}
+    .section-eyebrow{
+      display:inline-block;margin:0 0 6px;
+      font-family:var(--font-mono);font-size:10.5px;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);
+      padding:3px 9px;background:rgba(18,190,209,.10);
+      border:1px solid rgba(18,190,209,.24);border-radius:999px;
+    }
+    section h2{
+      font-family:var(--font-display);font-weight:700;
+      font-size:clamp(19px,2.2vw,22px);line-height:1.2;letter-spacing:-0.012em;
+      color:var(--brand);margin:0 0 14px;padding-bottom:12px;
+      border-bottom:2px solid var(--cyan-light);display:inline-block;
+    }
+    /* Questão — card individual com header numerado, alternativas e gabarito recolhível. */
+    .quiz-q{
+      background:var(--surface);
+      border:1px solid var(--rule);
+      border-radius:12px;
+      padding:18px 20px;
+      margin:14px 0;
+      position:relative;
+      transition:border-color .15s ease,box-shadow .15s ease;
+    }
+    .quiz-q:hover{border-color:rgba(18,190,209,.32);box-shadow:0 4px 12px rgba(13,36,56,.06)}
+    .quiz-q__head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+    .quiz-q__num{
+      flex-shrink:0;
+      font-family:var(--font-mono);font-size:11px;font-weight:700;
+      letter-spacing:.10em;text-transform:uppercase;color:var(--brand);
+      padding:3px 10px;background:linear-gradient(135deg,rgba(18,190,209,.14),rgba(48,241,230,.08));
+      border:1px solid rgba(18,190,209,.30);border-radius:999px;
+    }
+    .quiz-q__bloom{
+      flex-shrink:0;
+      font-family:var(--font-mono);font-size:9.5px;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+      padding:2px 8px;background:var(--surface-2);border:1px solid var(--rule);
+      border-radius:999px;
+    }
+    .quiz-q__bloom[data-bloom="remember"]{color:var(--brand);background:rgba(18,190,209,.08);border-color:rgba(18,190,209,.24)}
+    .quiz-q__bloom[data-bloom="understand"]{color:var(--brand);background:rgba(18,190,209,.10);border-color:rgba(18,190,209,.28)}
+    .quiz-q__bloom[data-bloom="apply"]{color:#0a8a9a;background:rgba(10,138,154,.10);border-color:rgba(10,138,154,.28)}
+    .quiz-q__bloom[data-bloom="analyze"]{color:#4a3478;background:rgba(109,75,166,.10);border-color:rgba(109,75,166,.28)}
+    .quiz-q__bloom[data-bloom="evaluate"]{color:var(--urgent);background:rgba(196,105,10,.10);border-color:rgba(196,105,10,.28)}
+    .quiz-q__stem{
+      font-family:var(--font-display);font-size:15.5px;font-weight:600;
+      line-height:1.45;color:var(--brand-deep);margin:6px 0 12px;
+      letter-spacing:-0.008em;
+    }
+    .quiz-q__stem strong{color:var(--brand)}
+    .quiz-q__options{list-style:none;padding:0;margin:0;display:grid;gap:8px;counter-reset:opt}
+    .quiz-q__options li{
+      padding:10px 12px 10px 44px;background:var(--surface-2);
+      border:1px solid var(--rule);border-radius:8px;font-size:14px;line-height:1.5;
+      position:relative;counter-increment:opt;
+      transition:background .15s ease,border-color .15s ease;
+    }
+    .quiz-q__options li:hover{background:rgba(18,190,209,.06);border-color:rgba(18,190,209,.32)}
+    .quiz-q__options li::before{
+      content:counter(opt,upper-alpha);
+      position:absolute;left:12px;top:50%;transform:translateY(-50%);
+      width:22px;height:22px;border-radius:6px;
+      background:var(--surface);border:1px solid var(--rule);
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--brand);
+    }
+    /* Gabarito recolhível — details/summary com chevron e cor cyan/verde quando aberto. */
+    .quiz-q__answer{
+      margin-top:14px;border:1px solid var(--rule);border-radius:10px;
+      background:#fff;overflow:hidden;transition:border-color .15s ease;
+    }
+    .quiz-q__answer[open]{border-color:rgba(6,118,71,.36)}
+    .quiz-q__answer>summary{
+      cursor:pointer;list-style:none;padding:10px 14px;
+      font-family:var(--font-mono);font-size:11px;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;color:var(--brand);
+      background:linear-gradient(90deg,#dce9f6 0%,#eef3f8 100%);
+      transition:background .15s ease,color .15s ease;
+      display:flex;align-items:center;gap:8px;
+    }
+    .quiz-q__answer>summary::-webkit-details-marker{display:none}
+    .quiz-q__answer>summary::before{
+      content:"▸";color:var(--cyan);transition:transform .15s ease;display:inline-block;
+    }
+    .quiz-q__answer[open]>summary::before{transform:rotate(90deg);color:var(--stable)}
+    .quiz-q__answer[open]>summary{
+      background:linear-gradient(90deg,rgba(6,118,71,.12) 0%,rgba(18,190,209,.06) 100%);
+      color:var(--stable);
+    }
+    .quiz-q__answer-body{padding:14px 16px}
+    .quiz-q__correct{
+      font-family:var(--font-mono);font-size:11.5px;font-weight:700;
+      letter-spacing:.06em;color:var(--stable);text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    .quiz-q__correct strong{font-size:16px;background:rgba(6,118,71,.12);padding:2px 10px;border-radius:6px;letter-spacing:.04em}
+    .quiz-q__rationale{font-size:13.5px;line-height:1.55;color:var(--ink);margin:6px 0 0}
+    .quiz-q__rationale strong{color:var(--brand)}
+    .quiz-q__concept{
+      margin-top:10px;padding-top:8px;border-top:1px dashed var(--rule);
+      font-family:var(--font-mono);font-size:10px;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+    }
+    .quiz-q__concept strong{color:var(--brand);font-weight:700}
+    @media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}main{padding:18px}.hero h2{font-size:24px}}
+    @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}.quiz-q__answer[open] .quiz-q__answer-body{display:block}}
+  </style>
+</head>
+<body>
+<div class="app" id="moduleApp">
+  <aside>
+    <div class="brand">
+      <h1>Módulo 8</h1>
+      <p>Caderno de questões — 70 perguntas de múltipla escolha distribuídas pelos sete módulos do Manual.</p>
+    </div>
+    <nav aria-label="Caderno por módulo de origem">
+      <ul id="moduleNav">
+        <li><a href="#cad-mod-1"><span class="nav-label">1. Via aérea e IOT</span></a></li>
+        <li><a href="#cad-mod-2"><span class="nav-label">2. Pós-intubação</span></a></li>
+        <li><a href="#cad-mod-3"><span class="nav-label">3. Ventilação mecânica</span></a></li>
+        <li><a href="#cad-mod-4"><span class="nav-label">4. Sedoanalgesia</span></a></li>
+        <li><a href="#cad-mod-5"><span class="nav-label">5. Drogas vasoativas</span></a></li>
+        <li><a href="#cad-mod-6"><span class="nav-label">6. Distúrbios hidroeletrolíticos</span></a></li>
+        <li><a href="#cad-mod-7"><span class="nav-label">7. Calculadoras / preparo</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <span class="hero__eyebrow">Módulo 8 · Caderno de questões</span>
+      <h2>Pratique. Confirme. Avance.</h2>
+      <p>Setenta questões de múltipla escolha (10 por módulo) construídas no perfil clínico-aplicado: 15% Lembrar, 20% Compreender, 35% Aplicar, 25% Analisar, 5% Avaliar. Cada item traz alternativas A–D e gabarito recolhível com justificativa e conceito testado.</p>
+      <div class="badge-row">
+        <span class="badge">70 questões · 7 capítulos</span>
+        <span class="badge">Estilo TEM / residência</span>
+        <span class="badge">Gabarito comentado</span>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MÓDULO 1 — Via aérea e intubação orotraqueal (10 questões)
+         ============================================================ -->
+    <section id="cad-mod-1">
+      <span class="section-eyebrow">Origem · Módulo 1</span>
+      <h2>1. Via aérea e intubação orotraqueal</h2>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+        <p class="quiz-q__stem">Qual é o componente do escore MACOCHA que reflete diretamente a anatomia da via aérea superior?</p>
+        <ol class="quiz-q__options">
+          <li>Saturação de O₂ &lt; 80%</li>
+          <li>Coma (Glasgow &lt; 8)</li>
+          <li>Mallampati III ou IV</li>
+          <li>Operador não-anestesista</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>C</strong></div>
+            <p class="quiz-q__rationale">O acrônimo MACOCHA reúne <strong>M</strong>allampati III/IV, apneia obstrutiva do sono (<strong>A</strong>), rigidez cervical (<strong>C</strong>), abertura bucal &lt; 3 cm (<strong>O</strong>), coma (<strong>CO</strong>), hipoxemia (<strong>H</strong>) e operador não-anestesista (<strong>A</strong>). Mallampati é o único item puramente anatômico de via aérea superior; SpO₂, coma e operador refletem reserva fisiológica e contexto, não anatomia.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Predição de via aérea difícil (MACOCHA)</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+        <p class="quiz-q__stem">Em paciente com hipoxemia refratária e shunt importante, qual estratégia de pré-oxigenação tende a oferecer maior benefício na denitrogenação alveolar?</p>
+        <ol class="quiz-q__options">
+          <li>Máscara não reinalante a 15 L/min isolada</li>
+          <li>VNI/CPAP com PEEP titulada</li>
+          <li>Oxigenação apneica isolada por cateter nasal</li>
+          <li>Bolsa-válvula-máscara sem PEEP</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Em shunt importante (atelectasia, edema, consolidação), a denitrogenação só é eficaz se houver recrutamento. <strong>VNI/CPAP</strong> com PEEP fornece pressão positiva que mantém alvéolos abertos durante toda a pré-oxigenação. Máscara não reinalante e oxigenação apneica isolada não recrutam. Bolsa-válvula sem PEEP gera variação de FiO₂ e não estabiliza recrutamento.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Pré-oxigenação por fenótipo</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Paciente de 70 kg, séptico, PAM 58 mmHg, lactato 5,2 mmol/L, hipoxêmico. Necessária IOT urgente. Qual indutor é mais coerente com esse cenário?</p>
+        <ol class="quiz-q__options">
+          <li>Propofol 2 mg/kg em bolus rápido</li>
+          <li>Etomidato 0,2–0,3 mg/kg em bolus</li>
+          <li>Midazolam 0,3 mg/kg em bolus</li>
+          <li>Tiopental 4 mg/kg em bolus</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Em choque com PAM crítica, o objetivo é minimizar a queda hemodinâmica peri-IOT. <strong>Etomidato</strong> tem perfil hemodinâmico mais estável entre os indutores GABAérgicos clássicos (cetamina também aceitável). Propofol em dose plena pode precipitar colapso por vasodilatação + depressão miocárdica. Midazolam é depressor; tiopental é fortemente hipotensor.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Escolha de indutor em choque</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Após IOT com rocurônio (bloqueio neuromuscular profundo), o paciente fica imóvel ao estímulo doloroso. Qual a conduta imediata mais segura quanto à sedoanalgesia?</p>
+        <ol class="quiz-q__options">
+          <li>Aguardar reversão do bloqueio para então iniciar sedativos</li>
+          <li>Iniciar sedação e analgesia contínuas imediatamente após confirmação do tubo</li>
+          <li>Iniciar apenas analgesia, pois o bloqueio já provê "sedação"</li>
+          <li>Reverter o rocurônio com sugamadex antes de qualquer outra droga</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Bloqueio neuromuscular <strong>não seda nem analgésia</strong> — só impede movimento. Paralisia sem hipnose/analgesia gera awareness e sofrimento extremo. A regra é iniciar sedoanalgesia imediatamente após confirmar o tubo, idealmente já preparada antes da indução. Esperar reversão é arriscado; "analgesia só" deixa o paciente consciente; reverter sem necessidade compromete o controle da via aérea.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Awareness pós-RSI com rocurônio</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Paciente com DPOC exacerbada em pré-IOT apresenta SpO₂ 86% sob VNI e acidose mista com pH 7,12 / pCO₂ 78. Qual achado deve ser <strong>antecipado</strong> com maior preocupação imediatamente após a IOT?</p>
+        <ol class="quiz-q__options">
+          <li>Hipertensão reativa pela laringoscopia</li>
+          <li>Hipotensão por auto-PEEP e queda do retorno venoso</li>
+          <li>Pneumotórax por barotrauma agudo</li>
+          <li>Broncoaspiração silenciosa por refluxo</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">DPOC com hipercapnia grave costuma cursar com hiperinsuflação dinâmica. Após IOT e início de pressão positiva, <strong>auto-PEEP</strong> reduz retorno venoso e pode precipitar hipotensão/colapso. Pneumotórax ocorre, mas é menos frequente que o impacto hemodinâmico do auto-PEEP. Hipertensão reativa é típica do estímulo de laringoscopia, não da fisiopatologia DPOC. Aspiração depende do contexto de jejum/secreção.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Auto-PEEP peri-IOT em DPOC</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Em sequência rápida de intubação (RSI clássica) sem expectativa de via aérea difícil, qual bloqueador neuromuscular oferece <strong>maior duração</strong> com perfil de uso amplamente disseminado em UTI brasileira?</p>
+        <ol class="quiz-q__options">
+          <li>Succinilcolina 1,5 mg/kg</li>
+          <li>Rocurônio 1,0–1,2 mg/kg</li>
+          <li>Atracúrio 0,5 mg/kg</li>
+          <li>Cisatracúrio 0,2 mg/kg</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Em RSI, <strong>rocurônio</strong> em dose alta (1,0–1,2 mg/kg) oferece bloqueio profundo em ~60 s com duração de 60–90 min. Succinilcolina tem início mais rápido mas duração curtíssima (5–10 min) e contraindicações relevantes (hipercalemia, distrofias, queimaduras). Atracúrio e cisatracúrio têm início mais lento — inadequados para RSI clássica.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Bloqueador neuromuscular em RSI</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">No estudo INTUBE (Russotto, JAMA 2021), qual foi o desfecho composto mais frequente entre os eventos peri-intubação adversos em pacientes críticos?</p>
+        <ol class="quiz-q__options">
+          <li>Pneumonia associada à ventilação</li>
+          <li>Colapso/instabilidade cardiovascular</li>
+          <li>Dessaturação grave isolada</li>
+          <li>Falha de intubação requerendo via cirúrgica</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">No INTUBE, <strong>colapso/instabilidade cardiovascular</strong> ocorreu em ~43% dos pacientes críticos intubados em 29 países, sendo o componente mais frequente do desfecho composto e associado a maior mortalidade. Dessaturação grave foi relevante (~9%), mas isolada. Falha de intubação cirúrgica é evento raro (&lt;1%). PAV não é desfecho peri-intubação imediato.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Eventos peri-IOT (estudo INTUBE)</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Paciente com índice de choque 1,4, vasopressor em ascensão, indicação de IOT. Qual estratégia hemodinâmica adjuvante <strong>antes</strong> da indução é mais coerente com PrePARE e INTUBE?</p>
+        <ol class="quiz-q__options">
+          <li>Bolus cristaloide 30 mL/kg de rotina</li>
+          <li>Noradrenalina pronta/em curso, com plano de bólus push-dose, sem fluido automático</li>
+          <li>Aguardar PAM espontânea ≥ 90 mmHg antes de induzir</li>
+          <li>Iniciar dobutamina profilática para todos</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">PrePARE mostrou que <strong>bolus cristaloide pré-indução não reduziu</strong> colapso cardiovascular de forma global. Fluido deve ser guiado por responsividade. A prática consistente com a literatura é <strong>preparar vasopressor</strong> (noradrenalina em bomba ou push-dose) antes da indução, com plano de resgate. Esperar PA "espontânea" pode atrasar IOT crítica; dobutamina profilática é desnecessária e pode piorar.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Otimização hemodinâmica pré-IOT</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.9</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+        <p class="quiz-q__stem">Qual é a justificativa fisiológica para limitar o número de tentativas de laringoscopia em IOT difícil?</p>
+        <ol class="quiz-q__options">
+          <li>Cada tentativa adicional consome cerca de 20% da reserva de O₂ pré-oxigenado</li>
+          <li>Tentativas múltiplas aumentam edema, sangramento, trauma e risco de hipoxemia/PCR</li>
+          <li>O bloqueador neuromuscular perde efeito após 3 tentativas</li>
+          <li>A capnografia perde sensibilidade após múltiplas inserções</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">A regra "limitar tentativas" tem base em estudos de complicações: tentativas repetidas geram <strong>edema, sangramento e trauma</strong> que degradam a visão laríngea e aceleram hipoxemia, podendo precipitar PCR hipóxica. Por isso DAS e ASA recomendam mudar pelo menos uma variável (operador, lâmina, vídeo, bougie, posição) a cada tentativa e migrar para dispositivo alternativo após 2–3 falhas. As outras opções são afirmações imprecisas ou falsas.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Limite de tentativas em IOT difícil</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.10</span><span class="quiz-q__bloom" data-bloom="evaluate">Avaliar</span></header>
+        <p class="quiz-q__stem">Frente a um paciente com via aérea difícil prevista, ventilação difícil prevista <strong>e</strong> instabilidade hemodinâmica, qual abordagem maximiza segurança?</p>
+        <ol class="quiz-q__options">
+          <li>RSI clássica com rocurônio e propofol</li>
+          <li>Awake intubation com anestesia tópica, sedação leve titulada e operador experiente</li>
+          <li>Crash airway imediato sem otimização</li>
+          <li>VNI até melhora espontânea, adiando IOT por 6 h</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Em via aérea + ventilação difíceis previstas, o cenário é "perda de via aérea após indução pode não ter resgate". <strong>Awake intubation</strong> mantém respiração espontânea e tônus muscular, permitindo abortar com segurança se a visão for inadequada. RSI nesse cenário é o pior caminho — induz apneia em paciente que não se ventila/intuba. Crash airway é só para parada/colapso iminente; adiar IOT em paciente instável piora o desfecho.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Escolha de estratégia em via aérea difícil prevista</p>
+          </div>
+        </details>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         MÓDULO 2 — Pós-intubação e confirmação (10 questões)
+         ============================================================ -->
+    <section id="cad-mod-2">
+      <span class="section-eyebrow">Origem · Módulo 2</span>
+      <h2>2. Pós-intubação e confirmação</h2>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+        <p class="quiz-q__stem">Qual é o método de confirmação <strong>primária</strong> mais sensível e específico de intubação traqueal segundo as diretrizes atuais?</p>
+        <ol class="quiz-q__options">
+          <li>Ausculta bilateral simétrica</li>
+          <li>Capnografia com onda persistente em 6+ ciclos</li>
+          <li>Visualização do tubo passando pelas cordas vocais</li>
+          <li>Elevação simétrica do tórax</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale"><strong>Capnografia com onda</strong> (não apenas valor numérico) por pelo menos 6 ciclos respiratórios é o padrão de confirmação primária — sensibilidade e especificidade próximas de 100% para distinguir intubação traqueal vs esofágica. Ausculta e elevação torácica são adjuvantes (podem enganar). Visualizar o tubo passando pelas cordas é confirmação direta, mas nem sempre obtida.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Confirmação primária da IOT</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+        <p class="quiz-q__stem">A capnografia mostra plateau retangular subindo rapidamente e descendo até zero. Em paciente recém-intubado, esse padrão sugere:</p>
+        <ol class="quiz-q__options">
+          <li>Broncoespasmo grave (asma/DPOC)</li>
+          <li>Reinalação de CO₂</li>
+          <li>Padrão normal de ventilação efetiva</li>
+          <li>Desconexão intermitente do circuito</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>C</strong></div>
+            <p class="quiz-q__rationale">A onda capnográfica normal tem 4 fases: linha de base zero (I), subida rápida (II), <strong>plateau retangular</strong> (III, mais alto no fim expiratório) e descida rápida ao zero (IV). Esse é o padrão de ventilação efetiva. Broncoespasmo dá "barbatana de tubarão". Reinalação eleva a linha de base. Desconexão zera abruptamente o traçado.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Forma de onda capnográfica normal</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Paciente intubado há 5 min apresenta queda súbita de SpO₂ de 98% para 82%, ETCO₂ caindo de 38 para 12 mmHg, pressão de pico subindo. Qual é o passo mais imediato dentro do algoritmo DOPE/DOPES?</p>
+        <ol class="quiz-q__options">
+          <li>Aumentar FiO₂ para 100% e aguardar 2 minutos</li>
+          <li>Desconectar do ventilador, ventilar com bolsa, aspirar e verificar tubo</li>
+          <li>Solicitar radiografia urgente antes de qualquer intervenção</li>
+          <li>Aprofundar sedação para "sincronizar" com o ventilador</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">A regra DOPE/DOPES (Deslocamento, Obstrução, Pneumotórax, Equipamento, Stomach/Sedação) começa com <strong>desconectar do ventilador</strong> e ventilar manualmente com bolsa para isolar o problema. Aspirar e verificar profundidade/cuff investigam D e O. Aprofundar sedação sem avaliar causa é o erro clássico. Rx é útil mas não primeira ação. FiO₂ 100% já está implícita.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Algoritmo DOPE/DOPES</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Tubo orotraqueal n° 8.0 em adulto de 175 cm. Qual a profundidade aproximada esperada na rima labial?</p>
+        <ol class="quiz-q__options">
+          <li>17–19 cm</li>
+          <li>21–23 cm</li>
+          <li>25–27 cm</li>
+          <li>29–31 cm</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Para adultos a profundidade usual de fixação na rima labial é <strong>21 cm em mulheres e 23 cm em homens</strong> (regra "tubo × 3" também usada: tamanho do tubo × 3 = profundidade). Em paciente de 175 cm, 21–23 cm fixa a ponta do tubo ~3–5 cm acima da carina, dentro da margem segura. 17–19 cm sugere intubação alta; 25+ cm sugere intubação seletiva.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Profundidade do tubo orotraqueal</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Hipotensão pós-IOT em paciente séptico aparece tipicamente em janela de:</p>
+        <ol class="quiz-q__options">
+          <li>Primeiros 5 segundos após a indução</li>
+          <li>5–30 minutos após a passagem do tubo (até 60 min)</li>
+          <li>Somente após 6 horas (quando a sedação acumula)</li>
+          <li>Apenas no momento da extubação</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Estudos como Heffner et al. e INTUBE definem hipotensão pós-IOT como queda de PAS &lt; 90 mmHg em janela de <strong>até 30–60 minutos</strong> após a IOT, frequente nos primeiros minutos pela combinação de sedativos, perda do drive simpático, pressão positiva e fenótipo de choque. Por isso a vigilância deve ser ativa nessa janela (PA em ciclos curtos, linha arterial idealmente).</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Janela temporal da hipotensão pós-IOT</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Após confirmação da IOT em paciente adulto de 70 kg, qual ajuste inicial de ventilação é mais alinhado à estratégia protetora padrão?</p>
+        <ol class="quiz-q__options">
+          <li>Vt 10 mL/kg de peso real, FR 8, PEEP 0</li>
+          <li>Vt 6 mL/kg de peso predito, FR 12–20, PEEP 5</li>
+          <li>Vt 4 mL/kg de peso real, FR 30, PEEP 0</li>
+          <li>Vt 8 mL/kg de peso predito, FR 25, PEEP 15</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">O ponto de partida da ventilação protetora é <strong>Vt 6 mL/kg de peso predito</strong> (não real, que superdimensiona em obesos), FR 12–20 (ajustar por PaCO₂ e auto-PEEP), PEEP inicial 5 cmH₂O (ajustar por hipoxemia/hemodinâmica), FiO₂ 100% se instável com desmame após estabilização. As demais opções extrapolam ou erram dimensão.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Ajuste ventilatório inicial pós-IOT</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Paciente broncoespástico recém-intubado. Curva de capnografia mostra subida em "barbatana de tubarão" (slope expiratório). Esse achado reflete:</p>
+        <ol class="quiz-q__options">
+          <li>Hiperventilação alveolar</li>
+          <li>Obstrução de fluxo expiratório por broncoespasmo</li>
+          <li>Extubação acidental parcial</li>
+          <li>Calibração inadequada do sensor</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">A perda do plateau retangular com slope ascendente característico ("shark fin") reflete <strong>obstrução de fluxo expiratório</strong> — broncoespasmo ou hiperinsuflação dinâmica. As unidades alveolares mais obstruídas esvaziam tardiamente, prolongando a fase III. Permite reconhecer broncoespasmo em tempo real e guiar ajuste ventilatório (prolongar tempo expiratório, reduzir FR, broncodilatador).</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Capnografia em broncoespasmo (shark fin)</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Pressão de cuff ideal em paciente intubado deve estar entre:</p>
+        <ol class="quiz-q__options">
+          <li>5–10 cmH₂O</li>
+          <li>20–30 cmH₂O</li>
+          <li>40–50 cmH₂O</li>
+          <li>50–60 cmH₂O</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">A faixa de segurança de pressão do cuff é <strong>20–30 cmH₂O</strong>: abaixo de 20 aumenta risco de vazamento e microaspiração; acima de 30 compromete a perfusão capilar da mucosa traqueal, podendo causar isquemia e estenose. Medir com manômetro pelo menos a cada turno é o padrão.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Pressão de cuff</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Em hipotensão pós-IOT em paciente com DPOC, antes de presumir "sedação", qual mecanismo deve ser <strong>sempre</strong> considerado?</p>
+        <ol class="quiz-q__options">
+          <li>Sangramento gastrointestinal oculto</li>
+          <li>Auto-PEEP por hiperinsuflação dinâmica</li>
+          <li>Insuficiência adrenal aguda</li>
+          <li>Tromboembolismo pulmonar agudo</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Em DPOC/asma intubada, a hipotensão "óbvia" frequentemente é devida a <strong>auto-PEEP</strong>, que reduz retorno venoso e simula choque. A conduta inclui desconectar do ventilador brevemente, reduzir FR e prolongar tempo expiratório. As demais causas existem mas não são o padrão imediato no DPOC.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Hipotensão por auto-PEEP em DPOC</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Imediatamente após confirmação da IOT, qual destas <strong>NÃO</strong> deve estar no checklist dos primeiros 5–10 minutos?</p>
+        <ol class="quiz-q__options">
+          <li>Capnografia com onda + ausculta bilateral</li>
+          <li>Início imediato de sedoanalgesia contínua com meta de RASS</li>
+          <li>Avaliação de PA/PAM e necessidade de ajuste do vasopressor</li>
+          <li>Realização de broncoscopia diagnóstica de rotina</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>D</strong></div>
+            <p class="quiz-q__rationale">O checklist pós-IOT inclui: via aérea (capnografia, ausculta, profundidade, cuff, fixação), ventilação (modo, Vt, FR, PEEP, FiO₂, alarmes), hemodinâmica (PA, vasopressor, perfusão) e sedoanalgesia (analgesia, sedação, meta RASS). <strong>Broncoscopia diagnóstica de rotina não faz parte</strong> — é reservada para situações específicas (suspeita de aspiração maciça, tampão mucoso, lesão estrutural).</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Checklist pós-IOT</p>
+          </div>
+        </details>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         MÓDULO 3 — Ventilação mecânica invasiva (10 questões)
+         ============================================================ -->
+    <section id="cad-mod-3">
+      <span class="section-eyebrow">Origem · Módulo 3</span>
+      <h2>3. Ventilação mecânica invasiva</h2>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+        <p class="quiz-q__stem">Qual o alvo de pressão de platô (Pplat) na ventilação protetora em SDRA?</p>
+        <ol class="quiz-q__options">
+          <li>&lt; 20 cmH₂O</li>
+          <li>&lt; 30 cmH₂O</li>
+          <li>&lt; 40 cmH₂O</li>
+          <li>&lt; 50 cmH₂O</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Pplat <strong>&lt; 30 cmH₂O</strong> é o teto consagrado da ventilação protetora (ARDSNet, SDRA), reduzindo barotrauma e mortalidade. Driving pressure (Pplat − PEEP) deve ser ≤ 15 cmH₂O. Valores acima exigem revisão de Vt, PEEP e estratégia.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Ventilação protetora — limites de pressão</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+        <p class="quiz-q__stem">Qual a definição correta de <strong>driving pressure</strong> em ventilação controlada?</p>
+        <ol class="quiz-q__options">
+          <li>Pressão de pico − pressão de platô</li>
+          <li>Pressão de platô − PEEP total</li>
+          <li>PEEP intrínseca − PEEP extrínseca</li>
+          <li>FiO₂ × Vt / peso predito</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale"><strong>Driving pressure = Pplat − PEEP total</strong>. Reflete a tensão real aplicada ao parênquima pulmonar funcional. Estudos (Amato 2015) mostram associação independente com mortalidade em SDRA. Pico − platô = pressão resistiva (vias aéreas). PEEP intrínseca − extrínseca não é driving pressure.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Driving pressure</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Homem de 180 cm em SDRA grave. Qual o Vt ideal alvo na ventilação protetora?</p>
+        <ol class="quiz-q__options">
+          <li>~280 mL (4 mL/kg PBW)</li>
+          <li>~450 mL (6 mL/kg PBW)</li>
+          <li>~650 mL (peso real estimado)</li>
+          <li>~800 mL (8 mL/kg peso real)</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Peso predito masculino 180 cm: 50 + 0,91 × (180 − 152,4) = 50 + 25,1 ≈ <strong>75 kg PBW</strong>. Vt 6 mL/kg PBW = ~450 mL. Em SDRA muito grave (driving alta), pode-se cair a 4 mL/kg (~300 mL). Vt baseado em peso real superestima em obesos e fora do alvo protetor.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Volume corrente em peso predito</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Paciente em VC, Vt 420 mL, PEEP 10, Pplat 28, pressão de pico 38. O que esse perfil sugere?</p>
+        <ol class="quiz-q__options">
+          <li>Resistência alta em vias aéreas (broncoespasmo, secreção)</li>
+          <li>Complacência muito reduzida do parênquima</li>
+          <li>Ajuste perfeito de ventilação protetora</li>
+          <li>Auto-PEEP grave subdiagnosticada</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">Diferença pico − platô = 38 − 28 = <strong>10 cmH₂O</strong> reflete pressão resistiva — alta quando há broncoespasmo, secreção espessa, tubo dobrado ou pequeno demais. Driving = 28 − 10 = 18 cmH₂O (limítrofe alto). Complacência reduzida elevaria Pplat e driving. Auto-PEEP exigiria pausa expiratória para diagnóstico.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Interpretação de pressões (pico vs platô)</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Em paciente com TEP maciço e disfunção de VD, qual ajuste ventilatório piora o desfecho hemodinâmico?</p>
+        <ol class="quiz-q__options">
+          <li>PEEP baixa (5 cmH₂O) com FiO₂ titulada</li>
+          <li>PEEP alta (15 cmH₂O) para recrutamento agressivo</li>
+          <li>FR baixa com tempo expiratório longo</li>
+          <li>Manter pCO₂ próximo do normal</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Em falência de VD (TEP maciço), <strong>PEEP alta aumenta resistência vascular pulmonar</strong> e pós-carga do VD, podendo precipitar colapso. O alvo é PEEP mínima necessária, evitar hipoxemia/hipercapnia/acidose (pioram RVP), considerar inotrópico/inodilatador se baixo débito tolerar.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Ventilação em falência de VD/TEP</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Assincronia de duplo-disparo (double-triggering) no ventilador sugere mais comumente:</p>
+        <ol class="quiz-q__options">
+          <li>PEEP muito alta</li>
+          <li>Vt ou tempo inspiratório insuficientes para a demanda</li>
+          <li>Sensibilidade do trigger desligada</li>
+          <li>FR muito baixa para o paciente</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Duplo-disparo ocorre quando o paciente ainda está demandando esforço inspiratório quando o ventilador encerra o ciclo — geralmente porque <strong>Vt ou Ti são insuficientes</strong>. A resposta é ajustar Vt/Ti, revisar sedação e drive, não silenciar o alarme. PEEP alta gera outros padrões; trigger desligado é um erro de configuração, não causa direta.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Assincronia de duplo-disparo</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Paciente em SDRA grave com PaO₂/FiO₂ &lt; 100 apesar de PEEP 14, prona 16h/dia já estabelecida. Qual estratégia adicional tem suporte de literatura sólido para reduzir mortalidade?</p>
+        <ol class="quiz-q__options">
+          <li>Aumentar FiO₂ para 100% por 24 h</li>
+          <li>Bloqueio neuromuscular contínuo nas primeiras 48 h (estudos ACURASYS)</li>
+          <li>Hiperventilação para pCO₂ 25 mmHg</li>
+          <li>Iniciar corticoide em alta dose universalmente</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">ACURASYS (Papazian, 2010) mostrou que <strong>bloqueio neuromuscular contínuo</strong> com cisatracúrio nas primeiras 48 h em SDRA grave reduziu mortalidade. ROSE (2019) não replicou o benefício de mortalidade mas reforçou tolerância. Hiperventilação não corrige shunt. Corticoide universal não é padrão; depende da etiologia.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> SDRA grave refratária — BNM</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Em DPOC ventilada, qual ajuste reduz auto-PEEP de forma mais consistente?</p>
+        <ol class="quiz-q__options">
+          <li>Aumentar PEEP extrínseca para 15 cmH₂O</li>
+          <li>Reduzir FR e prolongar tempo expiratório</li>
+          <li>Aumentar Vt para 10 mL/kg</li>
+          <li>Reduzir FiO₂ para 40%</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Auto-PEEP em DPOC vem de tempo expiratório insuficiente. <strong>Reduzir FR</strong> e/ou aumentar fluxo inspiratório (encurtando Ti) prolonga o Te, permitindo esvaziamento pulmonar. PEEP extrínseca moderada pode ajudar o disparo (~80% do auto-PEEP), mas 15 é excessivo. Aumentar Vt e baixar FiO₂ não tratam auto-PEEP.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Manejo de auto-PEEP em DPOC</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Hipoxemia em paciente ventilado que responde bem a PEEP indica predomínio de:</p>
+        <ol class="quiz-q__options">
+          <li>Alteração V/Q (low V/Q)</li>
+          <li>Shunt intrapulmonar puro</li>
+          <li>Hipoventilação alveolar</li>
+          <li>Difusão prejudicada isolada</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">Hipoxemia que <strong>responde a PEEP</strong> sugere recrutamento de áreas com baixa V/Q (atelectasia parcial, colapso). Shunt puro (V/Q = 0) tipicamente não responde a FiO₂ nem a PEEP (alvéolo totalmente preenchido — pneumonia consolidada, sangramento). Hipoventilação responde a FR/Vt; difusão isolada é rara em UTI.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Diferenciação de mecanismos de hipoxemia</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Paciente em SDRA grave (PaO₂/FiO₂ 90), candidato à pronação. Qual condição é critério para iniciar pronação segundo PROSEVA?</p>
+        <ol class="quiz-q__options">
+          <li>PaO₂/FiO₂ &lt; 150 mantido após otimização de ventilação por &gt; 12 h</li>
+          <li>Apenas em pacientes &lt; 50 anos</li>
+          <li>Somente quando PEEP &lt; 5 cmH₂O</li>
+          <li>Somente após 48 h sem resposta a ECMO</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">PROSEVA (Guérin, 2013) demonstrou redução de mortalidade em SDRA com pronação ≥ 16 h/dia quando <strong>PaO₂/FiO₂ &lt; 150 com FiO₂ ≥ 60% e PEEP ≥ 5</strong> mantidos após otimização. As demais opções não refletem o protocolo (idade não é critério; ECMO não precede pronação na escada terapêutica).</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Critério para pronação (PROSEVA)</p>
+          </div>
+        </details>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         MÓDULO 4 — Sedoanalgesia (10 questões)
+         ============================================================ -->
+    <section id="cad-mod-4">
+      <span class="section-eyebrow">Origem · Módulo 4</span>
+      <h2>4. Manutenção de sedoanalgesia em UTI</h2>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+        <p class="quiz-q__stem">No RASS, o valor RASS = −2 corresponde a:</p>
+        <ol class="quiz-q__options">
+          <li>Combativo</li>
+          <li>Sedação leve — desperta brevemente ao chamado verbal</li>
+          <li>Não responsivo a estímulo físico</li>
+          <li>Alerta e calmo</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">RASS varia de +4 (combativo) a −5 (não responsivo). <strong>RASS −2</strong> = sedação leve, desperta brevemente ao chamado verbal (&lt; 10 s, contato ocular). −4/−5 são alvos só em indicações específicas (BNM, HIC, status). Meta usual em UTI ventilada é 0 a −2.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Escala RASS</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+        <p class="quiz-q__stem">A regra "analgesia-first" preconizada pelo PADIS 2018 significa:</p>
+        <ol class="quiz-q__options">
+          <li>Iniciar todos os pacientes ventilados em propofol</li>
+          <li>Priorizar identificação e tratamento da dor antes de escalar sedativos hipnóticos</li>
+          <li>Usar opioides em monoterapia, sem hipnóticos</li>
+          <li>Aprofundar sedação para evitar dor secundária</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">PADIS 2018 enfatiza <strong>"trate a dor primeiro"</strong> — aplicar escala (CPOT/BPS), iniciar analgesia (opioide) antes de escalar hipnóticos como propofol ou midazolam. Reduz exposição cumulativa a sedativos, delirium e tempo de VM. Não significa monoterapia opioide nem aprofundar sedação.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Analgesia-first (PADIS)</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Paciente de 70 kg em SDRA com necessidade de BNM contínuo. Cisatracúrio em qual faixa de infusão é a referência inicial?</p>
+        <ol class="quiz-q__options">
+          <li>0,1–0,3 mcg/kg/min</li>
+          <li>1–3 mcg/kg/min</li>
+          <li>10–30 mcg/kg/min</li>
+          <li>100–300 mcg/kg/min</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Cisatracúrio em UTI: <strong>1–3 mcg/kg/min</strong>, titulando por TOF (train-of-four). Para 70 kg: 70–210 mcg/min = 4,2–12,6 mg/h → ~2,1–6,3 mL/h de solução 2 mg/mL (100 mg em 50 mL). Metabolismo por Hofmann (independente de fígado/rim) — útil em disfunção orgânica.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Dose de BNM contínuo</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Paciente em ventilação mecânica, choque séptico, vasopressor em ascensão, RASS −1 desejado. Qual escolha de sedação é mais coerente?</p>
+        <ol class="quiz-q__options">
+          <li>Propofol em dose plena (3 mg/kg/h)</li>
+          <li>Analgesia titulada (fentanil/remifentanil) + sedativo em dose reduzida; cetamina pode ser adjuvante</li>
+          <li>Midazolam contínuo prolongado em alta dose</li>
+          <li>Dexmedetomidina isolada para sedação profunda</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Em choque com vasopressor crescente, evitar bolus sedativos agressivos. Estratégia: <strong>analgesia titulada</strong> (fentanil/remifentanil) + sedativo em menor dose, cetamina como adjuvante poupador de opioide e com perfil hemodinâmico favorável. Propofol em dose plena pode precipitar colapso. Midazolam acumulativo prolonga despertar. Dexmedetomidina não atinge RASS profundo isolada.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Sedoanalgesia em choque</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Paciente em uso de propofol &gt; 4 mg/kg/h por &gt; 48 h apresenta lactato 6, CK 4500, acidose metabólica e hipertrigliceridemia. Qual o diagnóstico mais provável?</p>
+        <ol class="quiz-q__options">
+          <li>Sepse oculta</li>
+          <li>Síndrome de infusão do propofol (PRIS)</li>
+          <li>Síndrome maligna neuroléptica</li>
+          <li>Hipertermia maligna</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale"><strong>PRIS</strong> ocorre com infusão prolongada de propofol em dose > 4 mg/kg/h por > 48 h: acidose metabólica, lactato elevado, rabdomiólise (CK alta), hipertrigliceridemia e disfunção miocárdica. Conduta: suspender propofol imediatamente, troca por sedativo alternativo, suporte. As demais síndromes têm contexto e gatilhos distintos.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Síndrome de infusão do propofol</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">No despertar diário, qual o primeiro passo prático após verificar elegibilidade (hemodinâmica e ventilação estáveis)?</p>
+        <ol class="quiz-q__options">
+          <li>Suspender abruptamente todas as infusões e aguardar 30 min</li>
+          <li>Reduzir o hipnótico primeiro, mantendo analgesia adequada</li>
+          <li>Aumentar PEEP profilaticamente</li>
+          <li>Iniciar haloperidol em todos para evitar agitação</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">No despertar diário, <strong>reduz-se primeiro o hipnótico</strong> (propofol/midazolam), mantendo analgesia adequada para evitar dor/desconforto pelo tubo. Reavalia-se RASS, CPOT, drive respiratório, sincronia. Suspender tudo de uma vez gera resposta adrenérgica e auto-extubação. Antipsicótico profilático não é recomendado.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Despertar diário — sequência operacional</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">CAM-ICU positivo exige presença de qual combinação de features?</p>
+        <ol class="quiz-q__options">
+          <li>F1 e F2 e (F3 ou F4)</li>
+          <li>F1 ou F2 ou F3 ou F4</li>
+          <li>Apenas F3 e F4</li>
+          <li>F1 e F4 obrigatoriamente</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">CAM-ICU positivo: <strong>F1 (início agudo ou curso flutuante) + F2 (desatenção) + (F3 ou F4)</strong>, onde F3 = nível de consciência alterado (RASS ≠ 0) e F4 = pensamento desorganizado. Pré-requisito: RASS ≥ −3 (paciente avaliável).</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Critérios CAM-ICU</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Paciente em status epilepticus refratário a benzodiazepínico (fase 1) e fenitoína (fase 2). Qual sedativo anestésico em BIC é a primeira escolha quando hipotensão limita propofol e tiopental?</p>
+        <ol class="quiz-q__options">
+          <li>Midazolam contínuo 0,05–2 mg/kg/h</li>
+          <li>Cetamina isolada 1–7 mg/kg/h</li>
+          <li>Dexmedetomidina 0,7 mcg/kg/h</li>
+          <li>Haloperidol 10 mg IV</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">Em status refratário com restrição hemodinâmica, <strong>midazolam BIC</strong> (0,05–2 mg/kg/h, até 2,9 em SRSE) é geralmente preferido como primeira BIC anestésica quando propofol/tiopental são limitados pela PA. Cetamina é adjuvante valiosa. Dexmedetomidina não controla status. Haloperidol não é anticonvulsivante.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> BIC anestésica em status refratário</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.9</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Fentanil em infusão contínua: faixa terapêutica usual em UTI?</p>
+        <ol class="quiz-q__options">
+          <li>0,05–0,1 mcg/kg/h</li>
+          <li>0,5–2 mcg/kg/h</li>
+          <li>5–10 mcg/kg/h</li>
+          <li>50–100 mcg/kg/h</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Fentanil em UTI: <strong>0,5–2 mcg/kg/h</strong>. Para 70 kg: 35–140 mcg/h → ~3,5–14 mL/h se solução 500 mcg em 50 mL (10 mcg/mL). Doses maiores associadas a acúmulo, íleo e despertar prolongado.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Dose de fentanil em infusão contínua</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.10</span><span class="quiz-q__bloom" data-bloom="evaluate">Avaliar</span></header>
+        <p class="quiz-q__stem">Paciente em VM, delirium hiperativo, hemodinamicamente estável, sem necessidade de sedação profunda. Qual estratégia tem melhor evidência para reduzir delirium e tempo de VM?</p>
+        <ol class="quiz-q__options">
+          <li>Aumentar midazolam para sedação profunda</li>
+          <li>Dexmedetomidina, com correção de causas, sono, reorientação e mobilização precoce</li>
+          <li>Haloperidol em dose alta universalmente</li>
+          <li>Restrição mecânica e ambiente escuro 24 h</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Estudos (MENDS, SEDCOM, MIDEX) mostram que <strong>dexmedetomidina</strong> reduz delirium e tempo de VM versus benzodiazepínicos. Estratégia integrada ABCDEF (analgesia, despertar, escolha de sedativo, delirium, mobilidade, família) é o padrão. Midazolam profundo piora; haloperidol não previne (e tem efeitos adversos); ambiente escuro 24 h piora o ciclo circadiano.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Delirium hiperativo — pacote ABCDEF</p>
+          </div>
+        </details>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         MÓDULO 5 — Drogas vasoativas (10 questões)
+         ============================================================ -->
+    <section id="cad-mod-5">
+      <span class="section-eyebrow">Origem · Módulo 5</span>
+      <h2>5. Drogas vasoativas em medicina intensiva</h2>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+        <p class="quiz-q__stem">A noradrenalina em UTI atua predominantemente em qual receptor?</p>
+        <ol class="quiz-q__options">
+          <li>β₂ adrenérgico</li>
+          <li>α₁ adrenérgico (com efeito β₁ modesto)</li>
+          <li>V₁ₐ vascular</li>
+          <li>PDE3 miocárdico</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Noradrenalina é agonista <strong>α₁ predominante</strong> com efeito β₁ modesto. Promove vasoconstrição arterial e venosa, elevando RVS e PAM, com algum aumento de inotropia. Não atua em V₁ₐ (vasopressina), PDE3 (milrinona) nem β₂ (broncodilatador) de forma clinicamente relevante.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Receptores da noradrenalina</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+        <p class="quiz-q__stem">Por que a vasopressina é considerada adjunta ("poupadora" de noradrenalina) em choque vasoplégico?</p>
+        <ol class="quiz-q__options">
+          <li>Aumenta inotropia diretamente</li>
+          <li>Atua em V₁ₐ vascular por via não adrenérgica, complementando a vasoconstrição</li>
+          <li>Tem efeito broncodilatador potente</li>
+          <li>Reduz a frequência cardíaca</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">A vasopressina atua em <strong>receptor V₁ₐ vascular</strong>, fornecendo via de vasoconstrição complementar e não adrenérgica. Em sepse, há tendência a deficiência relativa de vasopressina endógena — a reposição em dose fixa (~0,03 UI/min) ajuda a manter PAM e reduz necessidade de noradrenalina (efeito "poupador"). Não aumenta inotropia significativa, não é broncodilatadora.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Vasopressina como adjunto em vasoplegia</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Paciente 70 kg, choque cardiogênico, PAM 55, lactato 4, ECO com FE 20%, congestão. Qual combinação inicial é mais coerente?</p>
+        <ol class="quiz-q__options">
+          <li>Noradrenalina + dobutamina, conforme necessidade hemodinâmica</li>
+          <li>Vasopressina isolada</li>
+          <li>Nitroprussiato + furosemida</li>
+          <li>Dopamina em alta dose isolada</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">Em choque cardiogênico com hipotensão, <strong>noradrenalina</strong> mantém PAM e perfusão coronariana; <strong>dobutamina</strong> (ou milrinona) acrescenta inotropia quando o débito é baixo e a PA tolera. Vasopressina isolada não trata a falência de bomba; nitroprussiato + diurético sem suporte hemodinâmico precipita colapso; dopamina alta dose tem maior risco arrítmico e perfil inferior a NORA.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Suporte em choque cardiogênico</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Preparo padrão de noradrenalina em UTI brasileira para concentração base 64 mcg/mL em 250 mL:</p>
+        <ol class="quiz-q__options">
+          <li>2 ampolas hemitartarato 8 mg/4 mL + 242 mL SF 0,9%</li>
+          <li>4 ampolas hemitartarato 8 mg/4 mL + 234 mL SF 0,9%</li>
+          <li>8 ampolas hemitartarato 8 mg/4 mL + 218 mL SF 0,9%</li>
+          <li>1 ampola hemitartarato 8 mg/4 mL + 246 mL SF 0,9%</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Hemitartarato 8 mg/4 mL ≈ <strong>base 4 mg/4 mL</strong>. Para 16 mg base em 250 mL = 64 mcg/mL → 4 ampolas (16 mL aspirados + 234 mL de SF 0,9%). 2 ampolas = 32 mcg/mL; 8 ampolas = 128 mcg/mL.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Preparo padrão de noradrenalina</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Em paciente com TEP maciço e disfunção de VD, por que noradrenalina é a vasopressor preferencial?</p>
+        <ol class="quiz-q__options">
+          <li>Reduz resistência vascular pulmonar diretamente</li>
+          <li>Mantém pressão de perfusão coronariana direita sem aumentar muito a pós-carga de VD</li>
+          <li>Tem efeito broncodilatador acentuado</li>
+          <li>Inverte a hipertensão pulmonar aguda</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Em TEP/falência de VD, manter <strong>PAM e perfusão coronariana</strong> é crítico para preservar a contratilidade do VD. Noradrenalina eleva PAM sistêmica sem aumentar drasticamente a RVP. Não reduz RVP nem reverte hipertensão pulmonar — para isso, inodilatador (milrinona) ou óxido nítrico inalado podem ser considerados.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Noradrenalina em falência de VD</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Nitroprussiato deve ser diluído em qual diluente, exclusivamente?</p>
+        <ol class="quiz-q__options">
+          <li>SF 0,9%</li>
+          <li>SG 5%</li>
+          <li>Ringer lactato</li>
+          <li>Qualquer um deles, indiferente</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Nitroprussiato deve ser reconstituído e diluído <strong>exclusivamente em SG 5%</strong> (bula FDA). Incompatível com SF 0,9% e Ringer. Deve ser protegido da luz (cobrir o equipo). Toxicidade: cianeto/tiocianato em uso prolongado/dose alta, especialmente em DRC.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Diluente exclusivo do nitroprussiato</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Por que a dopamina caiu em desuso como vasopressor de primeira linha em choque séptico?</p>
+        <ol class="quiz-q__options">
+          <li>Causa broncoespasmo grave</li>
+          <li>Tem maior risco de arritmia versus noradrenalina, sem benefício em desfechos</li>
+          <li>Não atravessa a barreira hematoencefálica</li>
+          <li>Tem ação exclusiva renal</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">SOAP II (De Backer, 2010) e outros mostraram <strong>maior incidência de arritmias</strong> com dopamina versus noradrenalina, sem benefício em mortalidade global; aumento de mortalidade em subgrupo cardiogênico. Hoje é restrita a bradicardia hipotensiva com baixo risco arrítmico quando opções melhores não estão disponíveis.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Dopamina em choque (limitações)</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Dose usual de início da dobutamina em UTI:</p>
+        <ol class="quiz-q__options">
+          <li>0,1–0,5 mcg/kg/min</li>
+          <li>2,5–5 mcg/kg/min, titulando até 20 mcg/kg/min</li>
+          <li>30–50 mcg/kg/min</li>
+          <li>0,01–0,03 mcg/kg/min</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Dobutamina: <strong>2,5–5 mcg/kg/min</strong> de início, titulando até 20 mcg/kg/min conforme resposta. Preparo padrão: 250 mg em 250 mL = 1000 mcg/mL. Cuidado com taquiarritmia e hipotensão por vasodilatação se PA não tolerar.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Dose da dobutamina</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Em choque vasoplégico refratário a noradrenalina (≥ 0,25 mcg/kg/min), qual adjuvante tem evidência de redução de necessidade de catecolaminas?</p>
+        <ol class="quiz-q__options">
+          <li>Adrenalina em alta dose</li>
+          <li>Vasopressina 0,01–0,04 UI/min</li>
+          <li>Nitroprussiato como adjuvante</li>
+          <li>Esmolol para "modular" simpaticotonia</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">VASST e estudos subsequentes apoiam <strong>vasopressina 0,01–0,04 UI/min</strong> como adjuvante em choque vasoplégico, especialmente sepse, reduzindo dose de noradrenalina. Adrenalina alta dose tem perfil metabólico desfavorável (hiperlactatemia, hipocalemia). Nitroprussiato é vasodilatador (oposto do que se quer). Esmolol em sepse é experimental.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Vasopressina adjunta em vasoplegia refratária</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Em emergência hipertensiva com dissecção aórtica, qual é a sequência de drogas mais coerente?</p>
+        <ol class="quiz-q__options">
+          <li>Iniciar nitroprussiato isolado e titular agressivamente</li>
+          <li>Iniciar β-bloqueador (esmolol/labetalol) primeiro, e só então vasodilatador (nitroprussiato/nicardipina) se necessário</li>
+          <li>Iniciar furosemida e clonidina oral</li>
+          <li>Aguardar redução espontânea</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Em dissecção aórtica, controle de FC e dP/dt vem antes da PA — começar com <strong>β-bloqueador</strong> (esmolol em BIC ou labetalol em bólus/BIC), depois adicionar vasodilatador se PA persiste alta. Iniciar nitroprussiato isolado pode gerar taquicardia reflexa e piorar a propagação. Furosemida não controla agudo; aguardar é inaceitável.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Dissecção aórtica — ordem das drogas</p>
+          </div>
+        </details>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         MÓDULO 6 — Distúrbios hidroeletrolíticos (10 questões)
+         ============================================================ -->
+    <section id="cad-mod-6">
+      <span class="section-eyebrow">Origem · Módulo 6</span>
+      <h2>6. Distúrbios hidroeletrolíticos</h2>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+        <p class="quiz-q__stem">Faixa de referência de potássio sérico em adulto:</p>
+        <ol class="quiz-q__options">
+          <li>2,5–3,5 mEq/L</li>
+          <li>3,5–5,0 mEq/L</li>
+          <li>5,0–7,0 mEq/L</li>
+          <li>7,0–9,0 mEq/L</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">K sérico normal: <strong>3,5–5,0 mEq/L</strong>. Hipocalemia &lt; 3,5 (grave &lt; 2,5); hipercalemia &gt; 5,0 (grave &gt; 6,5 ou com alterações de ECG). Em cardiopata/digital/QT longo, alvo individualizado ~4,0–4,5 mEq/L.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Faixa normal de potássio</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+        <p class="quiz-q__stem">Em hipocalemia refratária, qual eletrólito deve ser investigado/corrigido <strong>antes</strong> para que a reposição de K seja efetiva?</p>
+        <ol class="quiz-q__options">
+          <li>Sódio</li>
+          <li>Cálcio</li>
+          <li>Magnésio</li>
+          <li>Fósforo</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>C</strong></div>
+            <p class="quiz-q__rationale">Hipomagnesemia perpetua a hipocalemia (aumenta excreção renal e bloqueia canais que retêm K). <strong>Corrigir Mg ANTES</strong> ou junto à reposição de K. Cálcio e fósforo influenciam menos a homeostase de K. Sódio é independente.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Magnésio na hipocalemia refratária</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">KCl em via periférica: taxa e concentração máximas recomendadas:</p>
+        <ol class="quiz-q__options">
+          <li>≤ 10 mEq/h e ≤ 40 mEq/L</li>
+          <li>≤ 20 mEq/h e ≤ 100 mEq/L</li>
+          <li>40 mEq/h e 400 mEq/L</li>
+          <li>Sem limite</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">Em <strong>via periférica</strong>: ≤ 10 mEq/h e concentração ≤ 40 mEq/L (evita flebite e dor). Via central pode 20–40 mEq/h e até 100 (ou 400 em UTI com ECG dedicado). NUNCA bolus IV de KCl — risco de PCR.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Limites de reposição de KCl por via</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Hiponatremia grave com Na 118 mEq/L em paciente com convulsão. Qual o alvo de correção nas primeiras horas e o limite para evitar mielinólise?</p>
+        <ol class="quiz-q__options">
+          <li>Subir 1–2 mEq/L em 1–2 h até cessar a crise; máximo 8–10 mEq/L em 24 h</li>
+          <li>Normalizar a 140 nas primeiras 6 h</li>
+          <li>Subir 30 mEq/L em 6 h</li>
+          <li>Restringir água isolada e aguardar correção espontânea</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">Em hiponatremia sintomática grave (convulsão, coma), <strong>NaCl 3% 100–150 mL em bolus</strong> visando elevar Na 4–6 mEq/L rapidamente para cessar sintoma — máximo <strong>8–10 mEq/L em 24 h</strong>. Correção excessiva → mielinólise pontina osmótica. "Aguardar" em crise não cabe.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Hiponatremia grave sintomática</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Em hipercalemia grave (K 7,2) com alargamento de QRS, qual a sequência de drogas mais coerente?</p>
+        <ol class="quiz-q__options">
+          <li>Gluconato de cálcio IV → insulina+glicose → β2-agonista → diurético/hemodiálise se refratário</li>
+          <li>Apenas bicarbonato IV em bolus</li>
+          <li>Apenas furosemida em alta dose</li>
+          <li>Hidratar com SF 0,9% e aguardar 24 h</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">Em hipercalemia grave com alterações de ECG: <strong>1) gluconato de cálcio</strong> (estabiliza membrana, não baixa K); <strong>2) insulina + glicose</strong> (puxa K para dentro da célula); 3) β2-agonista inalado (idem); 4) furosemida ou hemodiálise (removem K). Bicarbonato só em acidose franca. Hidratar isolado não controla.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Hipercalemia grave — ordem terapêutica</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Sulfato de magnésio para eclâmpsia: dose de ataque IV em 15–20 min:</p>
+        <ol class="quiz-q__options">
+          <li>1 g</li>
+          <li>4–6 g</li>
+          <li>20 g</li>
+          <li>50 g</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Eclâmpsia: ataque <strong>4–6 g IV em 15–20 min</strong>, seguido de manutenção 1–2 g/h por 24 h após o último episódio. Monitorar reflexos patelares (sinal precoce de hipermagnesemia), FR e diurese; antagonista: gluconato de cálcio 1 g IV lento.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Sulfato de magnésio em eclâmpsia</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Paciente com hipocalcemia sintomática (Chvostek+, parestesia, QT longo). Cálcio iônico 0,8 mmol/L. Qual a conduta inicial?</p>
+        <ol class="quiz-q__options">
+          <li>Gluconato de cálcio 10% — 1 a 2 g IV lento em 10 min</li>
+          <li>Cálcio oral isolado</li>
+          <li>Aguardar dosagem de PTH</li>
+          <li>Furosemida para baixar Ca rapidamente</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">Hipocalcemia sintomática exige <strong>cálcio IV</strong> imediato — gluconato de cálcio 10% 1–2 g (10–20 mL) lento em 10 min, podendo repetir; se persistente, infusão contínua. Cálcio oral não atua agudo. PTH é diagnóstico, não tratamento. Furosemida BAIXA cálcio (oposto).</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Hipocalcemia sintomática</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Hipofosfatemia grave (P &lt; 1,0 mg/dL) sintomática. Qual a taxa máxima de infusão de fosfato IV?</p>
+        <ol class="quiz-q__options">
+          <li>1 mmol/h</li>
+          <li>7 mmol/h</li>
+          <li>30 mmol/h</li>
+          <li>60 mmol/h</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Taxa máxima de infusão IV de fosfato: <strong>7 mmol/h</strong> (independente da dose total). Doses totais em grave: ~0,5 mmol/kg em 4–6 h. Acima do limite: risco de hipocalcemia (Ca-PO₄ precipitando), hiperfosfatemia aguda e arritmia.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Reposição IV de fosfato — taxa máxima</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+        <p class="quiz-q__stem">Após cessar reposição de NaCl 3% em hiponatremia, o Na do paciente subiu 14 mEq/L em 24 h. Qual a conduta correta?</p>
+        <ol class="quiz-q__options">
+          <li>Nada a fazer — está dentro do alvo</li>
+          <li>"Re-baixar" o sódio com água livre/desmopressina para evitar mielinólise</li>
+          <li>Aumentar a infusão de NaCl 3%</li>
+          <li>Iniciar furosemida</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Correção &gt; 10 mEq/L em 24 h aumenta risco de <strong>mielinólise pontina</strong>. A conduta é <strong>re-baixar</strong> o Na com água livre IV (SG 5%) e/ou desmopressina (DDAVP) para impedir excreção de água, voltando à faixa segura. Continuar/aumentar NaCl piora. Furosemida não tem papel.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Overcorrection de hiponatremia</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Em hipernatremia (Na 168), paciente desidratado, qual a conduta inicial?</p>
+        <ol class="quiz-q__options">
+          <li>Repor déficit de água livre lentamente; não baixar &gt; 10 mEq/L em 24 h</li>
+          <li>Bolus de NaCl 3% imediato</li>
+          <li>Furosemida IV em alta dose</li>
+          <li>Restrição completa de água por 24 h</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>A</strong></div>
+            <p class="quiz-q__rationale">Hipernatremia se corrige <strong>repondo déficit de água livre</strong> (SG 5% IV ou água VO/SNG conforme estado), com limite de queda de <strong>10 mEq/L em 24 h</strong> para evitar edema cerebral. NaCl 3% iria piorar; furosemida desidrata mais; restringir água é o oposto do necessário.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Correção de hipernatremia</p>
+          </div>
+        </details>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         MÓDULO 7 — Calculadoras / preparo operacional (10 questões)
+         ============================================================ -->
+    <section id="cad-mod-7">
+      <span class="section-eyebrow">Origem · Módulo 7</span>
+      <h2>7. Calculadoras e preparo operacional</h2>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.1</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Para preparar nora 64 mcg/mL em 250 mL com ampola hemitartarato 8 mg/4 mL, quantos mL devem ser aspirados da ampola?</p>
+        <ol class="quiz-q__options">
+          <li>8 mL (2 ampolas)</li>
+          <li>16 mL (4 ampolas)</li>
+          <li>32 mL (8 ampolas)</li>
+          <li>4 mL (1 ampola)</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Hemitartarato 8 mg/4 mL ≈ base 4 mg/4 mL. Para 16 mg base em 250 mL = 64 mcg/mL → 4 ampolas × 4 mL = <strong>16 mL aspirados</strong> + 234 mL de SF 0,9%. 8 mL = 32 mcg/mL; 32 mL = 128 mcg/mL.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Preparo de noradrenalina</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.2</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Paciente 70 kg, noradrenalina solução 64 mcg/mL, dose alvo 0,1 mcg/kg/min. Qual a vazão da bomba?</p>
+        <ol class="quiz-q__options">
+          <li>3,28 mL/h</li>
+          <li>6,56 mL/h</li>
+          <li>13,13 mL/h</li>
+          <li>21,88 mL/h</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Dose = 0,1 × 70 = 7 mcg/min = 420 mcg/h. Vazão = 420 ÷ 64 = <strong>6,56 mL/h</strong>. Confere: 6,56 × 64 = 420 mcg/h ÷ 60 = 7 mcg/min ÷ 70 kg = 0,1 mcg/kg/min ✓.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Cálculo de vazão em mcg/kg/min</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Nitroprussiato 50 mg em 250 mL de SG 5% — concentração final:</p>
+        <ol class="quiz-q__options">
+          <li>50 mcg/mL</li>
+          <li>100 mcg/mL</li>
+          <li>200 mcg/mL</li>
+          <li>500 mcg/mL</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>C</strong></div>
+            <p class="quiz-q__rationale">50 mg = 50.000 mcg em 250 mL = <strong>200 mcg/mL</strong>. Ampola 50 mg/2 mL (25 mg/mL) → aspirar 2 mL + 248 mL de SG 5% → 250 mL @ 200 mcg/mL.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Concentração final do nitroprussiato</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Para administrar 2 g de sulfato de magnésio 50% (500 mg/mL) em broncoespasmo grave, quantos mL aspirar da ampola?</p>
+        <ol class="quiz-q__options">
+          <li>1 mL</li>
+          <li>4 mL</li>
+          <li>10 mL</li>
+          <li>20 mL</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">MgSO₄ 50% = 500 mg/mL. 2.000 mg ÷ 500 mg/mL = <strong>4 mL</strong>. Diluir em 96 mL → 100 mL @ 20 mg/mL, infundir em 20–30 min.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Preparo de MgSO₄ em broncoespasmo</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.5</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Fentanil 500 mcg em 50 mL → concentração 10 mcg/mL. Para 70 kg em dose 1 mcg/kg/h, qual a vazão?</p>
+        <ol class="quiz-q__options">
+          <li>0,7 mL/h</li>
+          <li>3,5 mL/h</li>
+          <li>7,0 mL/h</li>
+          <li>14,0 mL/h</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>C</strong></div>
+            <p class="quiz-q__rationale">Dose = 1 × 70 = 70 mcg/h. Vazão = 70 ÷ 10 = <strong>7,0 mL/h</strong>. Faixa terapêutica usual 0,5–2 mcg/kg/h (3,5–14 mL/h em 70 kg).</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Vazão do fentanil</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Propofol é uma das drogas que se usa <strong>puro</strong>. Em frasco 500 mg/50 mL, o volume final na bomba e a concentração são:</p>
+        <ol class="quiz-q__options">
+          <li>250 mL e 2 mg/mL (sempre diluído)</li>
+          <li>50 mL e 10 mg/mL (ampola pura)</li>
+          <li>100 mL e 5 mg/mL (sempre diluído)</li>
+          <li>500 mL e 1 mg/mL (sempre diluído)</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Propofol 1% = 10 mg/mL, usado <strong>puro</strong> (ampola pura, sem diluição) — volume final = volume do frasco (50 mL em adultos). Outras opções inserem diluição não padrão.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Uso puro do propofol</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.7</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">KCl 19,1% — ampola de 10 mL contém quantos mEq de K⁺?</p>
+        <ol class="quiz-q__options">
+          <li>13,4 mEq</li>
+          <li>25,6 mEq</li>
+          <li>50 mEq</li>
+          <li>100 mEq</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">KCl 19,1% = 191 mg/mL = 2,56 mEq/mL. Ampola 10 mL = <strong>25,6 mEq</strong>. (KCl 10% = 1,34 mEq/mL → ampola 10 mL = 13,4 mEq.)</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Conteúdo da ampola de KCl</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Cisatracúrio 100 mg em 50 mL → concentração de 2 mg/mL. Em paciente 70 kg, dose 1,5 mcg/kg/min, qual a vazão?</p>
+        <ol class="quiz-q__options">
+          <li>1,05 mL/h</li>
+          <li>3,15 mL/h</li>
+          <li>6,30 mL/h</li>
+          <li>12,60 mL/h</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Dose = 1,5 × 70 = 105 mcg/min = 6.300 mcg/h = 6,3 mg/h. Vazão = 6,3 ÷ 2 = <strong>3,15 mL/h</strong>. Faixa terapêutica em BNM 1–3 mcg/kg/min.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Vazão do cisatracúrio</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.9</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+        <p class="quiz-q__stem">Adrogué-Madias: estimar variação de Na sérico em adulto 70 kg após infusão de 1 L de NaCl 3% (513 mEq Na/L). Na atual = 120, K = 4. Variação prevista:</p>
+        <ol class="quiz-q__options">
+          <li>~0,5 mEq/L</li>
+          <li>~5 mEq/L</li>
+          <li>~10 mEq/L</li>
+          <li>~30 mEq/L</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>C</strong></div>
+            <p class="quiz-q__rationale">ΔNa = (Na inf − Na sérico) ÷ (ACT + 1), onde ACT (água corporal total) = 0,6 × 70 = 42 L. ΔNa por L = (513 − 120) ÷ 43 ≈ <strong>9,1 mEq/L</strong> ≈ ~10. Por isso a infusão deve ser controlada e fracionada — 1 L em bolus rápido excederia o limite seguro de 8–10 mEq/L em 24 h.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Fórmula de Adrogué-Madias</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="quiz-q">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.10</span><span class="quiz-q__bloom" data-bloom="evaluate">Avaliar</span></header>
+        <p class="quiz-q__stem">Calculadora exibe "aspirar 16 mL + 234 mL de SF 0,9% → 250 mL @ 64 mcg/mL". Antes de prescrever, o intensivista deve confirmar criticamente:</p>
+        <ol class="quiz-q__options">
+          <li>Apenas a vazão calculada</li>
+          <li>Apresentação real da ampola, compatibilidade do diluente, alvo de PAM e via de infusão (central/periférica)</li>
+          <li>Somente o peso do paciente</li>
+          <li>Apenas o sódio sérico</li>
+        </ol>
+        <details class="quiz-q__answer">
+          <summary>Mostrar gabarito</summary>
+          <div class="quiz-q__answer-body">
+            <div class="quiz-q__correct">Resposta correta: <strong>B</strong></div>
+            <p class="quiz-q__rationale">Calculadora é apoio, não substitui validação clínica. Antes de administrar: confirmar <strong>apresentação real da ampola</strong> (sal vs base, mg vs mcg, volume total), <strong>compatibilidade do diluente</strong> (ex: nitroprussiato só SG 5%), <strong>alvo hemodinâmico</strong> (PAM, perfusão, vasopressor já em curso) e <strong>via de infusão</strong> (central preferencial em DVA). Dupla checagem reduz erro grave.</p>
+            <p class="quiz-q__concept"><strong>Conceito:</strong> Validação clínica antes de prescrever pela calculadora</p>
+          </div>
+        </details>
+      </article>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>

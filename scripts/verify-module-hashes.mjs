@@ -14,7 +14,8 @@ const expectedHashes = {
   "modulo_05_drogas_vasoativas.html": "177facdfba05bca28746d389445741ab2bc022052bcb71d6f4fa866966e68837",
   "modulo_06_disturbios_hidroeletroliticos.html": "e6e4733f0e3eebf5bba230099d11f7ed9e8718ac551ec2294af45e8ac8f4417e",
   "modulo_07_calculadoras_interativas.html": "5785ca54393583abe62fdc024321f616187ee43e2d53d9997c814c6ef801ae80",
-  "modulo_08_referencias.html": "004f57ecbf768edcc8ac56c3634c4d927537d06d2632f5598f93172ba72d81f9"
+  "modulo_08_caderno_questoes.html": "4bb35d346321084ac6b5267ac1de2f774eda481ff07565c009b7004bf3568ce8",
+  "modulo_09_referencias.html": "3bcccd888e3c51b6357b06456f0b14af3a975b8bd309d4b6665cbbe1687b8554"
 };
 
 let failures = 0;

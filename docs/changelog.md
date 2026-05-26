@@ -1,5 +1,74 @@
 # Changelog
 
+## 2026-05-26 — Novo Mod 8: Caderno de questões (70 questões, clínico-aplicado) + renomeação Refs → Mod 9
+
+### Tipo de alteração
+
+- **Conteúdo educacional novo**. **REQUER REVISAO MEDICA** das 70 questões (gabaritos
+  e justificativas) antes do lançamento comercial. Conteúdo deriva diretamente dos módulos
+  clínicos 1–7 já validados, mas o framing como questão objetiva exige aprovação médica.
+
+### Motivação
+
+Skill `quiz-generator` invocada pelo usuário ("faça um caderno de questões como módulo
+adicional"). Decisões alinhadas via AskUserQuestion:
+
+- **Posicionamento**: penúltimo (Mod 8), com Refs renumerado para Mod 9 — respeita a regra 4b
+  (Refs sempre último).
+- **Volume**: 10 questões × 7 módulos clínicos (1-6 + 7) = **70 questões**.
+- **Perfil cognitivo**: clínico-aplicado — 15% Lembrar, 20% Compreender, 35% Aplicar,
+  25% Analisar, 5% Avaliar (estilo TEM/residência).
+
+### O que mudou
+
+1. **Novo arquivo**: `src/data/modules/modulo_08_caderno_questoes.html` (70 questões em
+   7 seções de origem). Cada questão tem:
+   - Header com badge mono `Questão N.M` + tag Bloom colorida por nível (cyan/roxo/âmbar).
+   - Stem em font-display, alternativas A–D com letras counter-reset CSS, hover cyan.
+   - Gabarito recolhível via `<details>` com chevron cyan animado; resposta em chip verde
+     (`var(--stable)`), justificativa de 50–100 palavras e conceito testado em rodapé mono.
+   - Cobertura: Mod 1 (via aérea/IOT, MACOCHA, pré-oxigenação, INTUBE, awareness),
+     Mod 2 (capnografia, DOPE, profundidade, hipotensão pós-IOT, ajuste inicial),
+     Mod 3 (ventilação protetora, Pplat, driving pressure, PROSEVA, ACURASYS, auto-PEEP),
+     Mod 4 (RASS, PADIS, PRIS, CAM-ICU, BIC anticonvulsivante, ABCDEF),
+     Mod 5 (vasopressores, vasopressina adjunta, dobutamina, nitroprussiato em SG 5%),
+     Mod 6 (K refratário/Mg, Adrogué/hiponatremia, hipercalemia grave, eclâmpsia),
+     Mod 7 (cálculos: noradrenalina 250 mL, nitroprussiato 2 mL aspirados, propofol puro,
+     Adrogué-Madias, validação clínica pré-prescrição).
+
+2. **Renumeração Refs**: `modulo_08_referencias.html → modulo_09_referencias.html` via
+   `git mv` (preserva história). Atualizado eyebrow, h1 sidebar, title da página.
+
+3. **Wiring**:
+   - `src/types.ts`: `ModuleId` ganha `"modulo-09"`.
+   - `src/data/moduleSources.ts`: novo import de `modulo08` (caderno) + `modulo09` (refs);
+     novas entries com number 8 (Caderno) e 9 (Referências consolidadas).
+   - `src/utils/route.ts`: `MODULE_IDS` inclui `"modulo-09"`.
+   - `src/components/ModuleViewer.tsx`: `COLLAPSE_BY_MODULE` ganha `"modulo-09": undefined`
+     (caderno e refs já usam `<details>` nativo); comentário atualizado para refletir o
+     trio antepenúltimo/penúltimo/último.
+   - `src/components/ModuleHome.tsx`: novo ícone Mod 8 (prancheta com 2 checks) e ícone
+     Mod 9 (livro aberto, antigo Mod 8); `familyOf()` ganha caso `"quiz"` para Mod 8.
+   - `src/styles.css`: `.module-home__card--quiz` (rail roxo `#b09afc → #6d4ba6`); ícone
+     do card-quiz em lavanda `#c4b5fd`; stagger animation slot para 9 cards (delay 0.82s
+     no nono).
+
+4. **Regra 4b do CLAUDE.md** atualizada para refletir o trio ordenado: Calculadoras
+   (antepenúltimo) · Caderno (penúltimo) · Referências (último).
+
+5. **REVISAO_MODULOS.md**: nova seção "Módulo 8 — Caderno de questões" (marcado **P1
+   REQUER REVISAO MEDICA**); seção Referências movida para "Módulo 9".
+
+### Hashes (atualizados em `scripts/verify-module-hashes.mjs`)
+
+- Mod 8 (caderno): `4bb35d34…7565c009b7004bf3568ce8`
+- Mod 9 (refs): `3bcccd88…b6665cbbe1687b8554`
+
+### Verificação
+
+- `node scripts/verify-module-hashes.mjs` → 9/9 OK
+- `npx tsc --noEmit` → clean
+
 ## 2026-05-26 — Capa (ModuleHome) animada + Mod 8 Referências alinhado à identidade
 
 ### Tipo de alteração

@@ -3003,6 +3003,7 @@ body.landing-active {
 .module-home__card:nth-of-type(6) { animation-delay: 0.64s; }
 .module-home__card:nth-of-type(7) { animation-delay: 0.70s; }
 .module-home__card:nth-of-type(8) { animation-delay: 0.76s; }
+.module-home__card:nth-of-type(9) { animation-delay: 0.82s; }
 
 /* Tarja lateral colorida indica familia do modulo. */
 .module-home__card::before {
@@ -3018,6 +3019,7 @@ body.landing-active {
 
 .module-home__card--clinico::before { background: linear-gradient(180deg, #30f1e6, #12bed1); }
 .module-home__card--calc::before    { background: linear-gradient(180deg, #30f1e6, #0d8a99); }
+.module-home__card--quiz::before    { background: linear-gradient(180deg, #b09afc, #6d4ba6); }
 .module-home__card--ref::before     { background: linear-gradient(180deg, #a3b3c4, #5f6b7a); }
 
 .module-home__card:hover,
@@ -3043,6 +3045,7 @@ body.landing-active {
 
 .module-home__card--clinico .module-home__card-icon { color: #30f1e6; }
 .module-home__card--calc .module-home__card-icon    { color: #30f1e6; }
+.module-home__card--quiz .module-home__card-icon    { color: #c4b5fd; }
 .module-home__card--ref .module-home__card-icon     { color: #b8c4d1; }
 
 .module-home__card-icon svg {
