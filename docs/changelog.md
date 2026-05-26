@@ -1,5 +1,273 @@
 # Changelog
 
+## 2026-05-26 — Capa (ModuleHome) animada + Mod 8 Referências alinhado à identidade
+
+### Tipo de alteração
+
+- **Técnica/UX**. Não toca em conteúdo clínico (Mod 8 só estiliza referências bibliográficas existentes, todos os textos preservados).
+
+### O que mudou
+
+1. **Fontes globais** (`index.html`): adicionado `<link>` para Google Fonts (DM Sans 400-800 + JetBrains Mono 400-700). Antes nenhum módulo do shell carregava esses fonts globalmente — só os HTMLs internos via inline link. Agora a app inteira (capa + sidebar + landing) usa a tipografia do projeto.
+
+2. **`:root` em `src/styles.css`**: adicionadas variáveis `--font-display`, `--font-body`, `--font-mono`, `--brand-deep`, `--brand`, `--brand-mid`, `--cyan`, `--cyan-light` alinhadas com Mods 1-6 e Mod 7. Aliases legados (`--primary`, `--accent`, etc.) repontados para as novas. `body` ganhou `font-family: var(--font-body)` + font-smoothing.
+
+3. **ModuleHome — capa animada**:
+   - Hero (`.module-home__hero`) ganhou **mesh-gradient cyan flutuante** em `::before` (4 radial-gradients animados via `@keyframes moduleHomeMesh` 24s, alternando translação + scale).
+   - **Grade técnica** em `::after` (linhas cyan-soft 56×56px com máscara radial esmaecendo nos cantos).
+   - **Eyebrow chip**: pílula mono uppercase cyan-soft com ponto cyan pulsante (`@keyframes moduleHomeDot` ripple).
+   - **Título** com gradiente branco→cyan via background-clip:text + fade-up animado (delay 0.25s).
+   - **Logo / lead / CTA** com stagger fade-up (delays 0.05s / 0.38s / 0.5s).
+   - **CTA** em font-display, peso 700, letter-spacing -0.005em.
+   - **Grid eyebrow** (lado direito) virou pílula mono cyan-soft.
+   - **Cards (8)** com stagger fade-up (delays 0.34s a 0.76s); card-num em mono cyan-light uppercase letter-spaced; card-title em font-display peso 700.
+   - **`@media (prefers-reduced-motion: reduce)`**: desliga todas as animações decorativas mantendo opacity:1.
+
+4. **Mod 8 Referências — alinhado à identidade Mods 1-7**:
+   - **Paleta + fontes**: bloco `:root` reescrito com mesmas variáveis dos Mods 1-7 (DM Sans + JetBrains Mono + cyan). `body` font-family `Arial → var(--font-body)`.
+   - **Hero**: gradiente legado azul-teal → navy uniforme `#0d2438 → #123c69 → #1a4d80` com borda cyan-soft; eyebrow novo "Módulo 8 · Bibliografia primária"; título com background-clip:text branco→cyan-claro; +1 badge "DOI quando disponível"; badges com border cyan-soft + ponto emissivo.
+   - **Section h2**: font-display, bottom-border 2px cyan-light, `display:inline-block` (igual aos Mods 1-7).
+   - **`.section-eyebrow`** adicionado: pílula mono "Origem · Módulo N" antes de cada h2 (7 seções, uma por módulo de origem).
+   - **`<summary>`** das listas: mono uppercase cyan; chevron `▸` cyan rotacionado quando aberto; gradiente cyan-soft quando expandido.
+   - **`.module-tag`**: mono uppercase letter-spaced cyan-soft (era serif default).
+   - **`.footer-sign`**: mono uppercase cyan-medium em letter-spacing largo.
+   - **Tipografia dos h2 das seções**: hífens normais ("Módulo 1 - Via aérea") substituídos por em-dash ("Módulo 1 — Via aérea") em h2 e nav `<a>` para consistência tipográfica.
+
+### Hashes (atualizados em `scripts/verify-module-hashes.mjs`)
+
+- Mod 8: `004f57ec…f93172ba72d81f9`
+
+## 2026-05-26 — Mod 7: tratar "uso puro" (sem diluição) — volume da própria ampola
+
+### Tipo de alteração
+
+- **Técnica/UX**. Não altera valores, doses ou fórmulas; apenas o caminho de inferência de defaults e a renderização quando a droga não é diluída.
+
+### Motivação
+
+Usuário: *"Se a medicação é feita pura, sem diluir, a concentração e o volume total é o volume da própria ampola."*
+
+Após a correção que fixou o fallback em 250 mL, presets com "uso puro" (Propofol 10 mg/mL, Clevidipina 0,5 mg/mL) passaram a herdar 250 mL como volume final — errado. O volume deveria ser o da própria ampola/frasco (Propofol: 50 mL contém 500 mg; Clevidipina: 50 mL conforme fabricante).
+
+### O que mudou
+
+1. **`extractSolutionDefaultsFromPrep` — novo passo 4 "uso puro"** (entre o passo 3 "solução final Y mL" e o fallback 250 mL):
+   - Detecta `isPurePrep(prep)` (já existia: matcha "não diluir", "sem diluição", "uso usual puro", "pronta para uso", `\bpuro\b`).
+   - Procura no `prep.prep` o padrão `(frasco|ampola|seringa)\s+(de\s+)?(\d+) mL` e usa esse volume.
+   - Se não encontra, default razoável de **50 mL** (ampola/frasco padrão).
+   - Volume × `prep.conc` = massa; aplica `smartMass()` para normalizar (mcg ≥ 1000 mult-de-1000 → mg).
+   - Para Propofol: prep menciona "frasco 50 mL contém 500 mg" → vol=50, mass=500 mg. ✓
+   - Para Clevidipina: prep menciona "volume total do frasco conforme fabricante" (sem número específico) → fallback 50 mL, mass=25 mg. ✓
+
+2. **`infusionPrepLine` — caminho "uso puro"**: quando `c.volumeDiluente <= 0.5`, retorna *"Ampola pura **50 mL** contendo **500 mg** a **10 mg/mL** — sem diluição."* (em vez de *"aspirar 50 mL + 0 mL de diluente"*).
+
+3. **`buildInfusionOperationalLine` — caminho "uso puro"**: idem, frase no subtitle vira *"ampola pura **50 mL** (= **500 mg**) a **10 mg/mL**, sem diluição"*.
+
+4. **§3 DVA Bólus output**: quando `vDil <= 0.5`, substitui o `medKv("Volume do diluente", …)` por `medKv("Diluição", "**Ampola pura, sem diluente**")` — evita exibir "0,00 mL de SF 0,9%".
+
+### Hash
+
+- Mod 7: `5785ca54…ee43e2d53d9997c814c6ef801ae80` (atualizado em `scripts/verify-module-hashes.mjs`).
+
+## 2026-05-26 — Mod 7: preset como fonte de verdade + nitroprussiato 50 mg/2 mL + chip diluente
+
+### Tipo de alteração
+
+- **Técnica/UX + clínico parcial**. Preserva todas as doses e fórmulas. Atualiza a apresentação comercial cadastrada do nitroprussiato (50 mg/2 mL pós-reconstituição em SG 5%) — **REQUER REVISAO MEDICA** apenas no sentido de confirmar a bula institucional usada.
+
+### Motivação
+
+Usuário identificou três pontos:
+1. *"Se há uma solução final sugerida (padronizada), a solução deve seguir o volume total que ela sugere. Somente substituindo pelo preparo manual caso seja selecionada e preenchida essa opção."*
+2. *"Quando houver diluente preferencial ou exclusivo, deixar em negrito."*
+3. *"O nitroprussiato tem 50 mg/2 mL, a solução é para 250 mL de volume total (248 mL SG 5%). Está havendo um erro para apresentar a solução final e a vazão."*
+
+### O que mudou
+
+1. **Preset como fonte de verdade (§5 Infusão contínua)**:
+   - O `<details>` "Preparo manual da solução" recebeu `id="infManualPrep"`.
+   - `calcInfusion` e `addInfusionToSummary` agora verificam `infManualPrep.open` antes de usar `getEditableSolutionConc()`. Quando o painel **está fechado** (padrão), a calculadora usa direto:
+     - `conc = prep.conc`
+     - `concUnit = prep.unit`
+     - `bagVolume = extractSolutionDefaultsFromPrep(prep).volume` (do label/prep do preset; fallback 250 mL)
+   - Só sobrescreve quando o painel **está aberto** E `editableSol.conc` é finito (massa + volume preenchidos).
+   - Texto da nota interna do preparo manual reescrito: *"Por padrão, a solução final segue o preset selecionado acima. Abra este painel e edite massa/volume/diluente apenas se quiser sobrescrever."*
+   - Placeholder do `infFinalVolume` ajustado de "ex.: 50" para "ex.: 250" (padrão clínico brasileiro).
+   - Sincronização do hidden `infBagVolume` migrada para dentro de `calcInfusion`, refletindo o `bagVolume` efetivamente usado (preset ou manual).
+
+2. **Helper `diluentDisplay(volStr, name, drug)`** + CSS `.diluent-chip`:
+   - Retorna `<strong>X mL</strong> de <strong>NOME</strong> [chip "preferencial"|"exclusivo"]`.
+   - Chip "exclusivo" (cor crit/vermelha + border) quando `drug.allowedDiluents.length === 1` (ex: nitroprussiato restrito a SG 5%, fenitoína restrita a SF 0,9%).
+   - Chip "preferencial" (cyan suave) quando `drug.preferredDiluent === name`.
+   - Aplicado em `medKv("Volume do diluente", ...)` (§3 DVA bólus intermitente) e em `lines.push(medKv("Diluição", ...))` (§4 Eletrólitos não-Adrogué).
+
+3. **Nitroprussiato — apresentação comercial corrigida** (`ampouleInfoByName`):
+   - Antes: `{unit:"mcg", content:50000, volume:null, label:"frasco-ampola 50 mg; reconstituir conforme bula"}`
+   - Agora: `{unit:"mcg", content:50000, volume:2, label:"frasco-ampola 50 mg liofilizado; reconstituir em 2 mL de SG 5% → 25 mg/mL para então diluir em 250 mL"}`
+   - O preset prep string foi reescrito para refletir: "1 frasco-ampola liofilizado reconstituído em 2 mL de SG 5% (25 mg/mL) + 248 mL de SG 5% = solução final 250 mL → concentração 200 mcg/mL; proteger da luz e usar exclusivamente SG 5%".
+   - Cálculo verificado: 50 mg em 250 mL → 200 mcg/mL ✓ · ampola 50 mg/2 mL = 25 mg/mL ✓ · aspirar 2 mL + diluente 248 mL → 250 mL final ✓.
+
+### Hash
+
+- Mod 7: `beb160b0…ee8bb1fd3646b9b` (atualizado em `scripts/verify-module-hashes.mjs`).
+
+## 2026-05-26 — Mod 7: corrigir volume padrão de noradrenalina (50 mL → 250 mL)
+
+### Tipo de alteração
+
+- **Técnica/UX** com componente clínico (volume padrão de preparo). Doses, concentrações e fórmulas **não foram alteradas**. **REQUER REVISAO MEDICA** apenas no sentido de que o volume padrão clínico foi confirmado pelo usuário ("Costumamos diluir noradrenalina sempre para 250 mL").
+
+### Motivação
+
+Usuário reportou: a calculadora de infusão contínua estava sugerindo "50 mL a 64 mcg/mL" para noradrenalina, quando o padrão clínico brasileiro é diluir sempre em **250 mL** com as três bases de concentração já consagradas: **32 / 64 / 128 mcg/mL** (1 g, 2 g, 4 g de base em 250 mL respectivamente — ou seja, 2 / 4 / 8 ampolas de hemitartarato 8 mg/4 mL).
+
+### Causa raiz
+
+`extractSolutionDefaultsFromPrep(prep)` tentava extrair volume final do `label` via regex `/X (mcg|mg|g|UI) em Y mL/`. Os labels da noradrenalina dizem "4 ampolas hemitartarato 8 mg/4 mL **em 250 mL**" — o "em 250 mL" vem depois de "mL" (volume da ampola), não depois de uma unidade massa, então o regex falhava silenciosamente. O fallback "puro" lia `infBagVolume.value` (hidden input que reflete a droga selecionada anteriormente) — quando o usuário vinha de uma droga com 50 mL (ex: bloqueador neuromuscular), o volume herdado de 50 mL caía na noradrenalina.
+
+### O que mudou
+
+1. **`extractSolutionDefaultsFromPrep` refatorada** com 4 estratégias em ordem de precedência:
+   1. Campo explícito `prep.finalVolume` (quando o preset declara) — preparado para uso futuro;
+   2. Regex no `label`: `"X mcg|mg|g|UI em Y mL"` (mantém comportamento atual para dobutamina, milrinona, adrenalina, etc.);
+   3. **Novo**: regex na string `prep.prep` buscando `"solução final Y mL"` — captura noradrenalina, vasopressina, nitroglicerina e todos os presets que usam essa frase canônica nas suas instruções de preparo;
+   4. Fallback "puro": volume padrão clínico fixo em **250 mL** (era leitura do `infBagVolume` corrente, que vazava o volume da droga anterior).
+
+2. **Normalização automática para mg quando mcg ≥ 1000 e múltiplo inteiro de 1000**, via `smartMass()`. Ex: noradrenalina conc 64 mcg/mL × 250 mL = 16000 mcg → exibido como **16 mg em 250 mL**. Aplica-se também à dobutamina, adrenalina, milrinona, etc.
+
+### Impacto verificado
+
+- **Noradrenalina 32 mcg/mL** → 8 mg em **250 mL** (8 mL aspirados + 242 mL SF 0,9%)
+- **Noradrenalina 64 mcg/mL** → 16 mg em **250 mL** (16 mL aspirados + 234 mL SF 0,9%)
+- **Noradrenalina 128 mcg/mL** → 32 mg em **250 mL** (32 mL aspirados + 218 mL SF 0,9%)
+- Outras drogas com `prep.prep` mencionando "solução final X mL" também ganham o volume correto na primeira tentativa (adrenalina 250 mL, dopamina 250 mL, nitroglicerina 250 mL, nitroprussiato 250 mL, etc.).
+- Drogas com label "X mg em Y mL" (dobutamina, milrinona) continuam usando o caminho rápido (regex no label) — comportamento inalterado.
+
+### Hash
+
+- Mod 7: `96d7a996…d05992` (atualizado em `scripts/verify-module-hashes.mjs`).
+
+## 2026-05-26 — Mod 7: hero animada + contraste do Δ-panel de eletrólitos
+
+### Tipo de alteração
+
+- **Técnica/UX**. Não toca em cálculos, fórmulas ou lógica de eletrólitos.
+
+### O que mudou
+
+1. **Contraste do Δ-panel (`.compact-details`)** — usuário reportou "fonte com cor de difícil leitura no fundo branco" nos labels `Valor atual (mEq/L)`, `Valor alvo (mEq/L)`, `Tempo de reposição planejado`, `Δ calculado`. Causa: o painel está em fundo claro mas as labels herdavam cor sem styling específico. Corrigido:
+   - Background do panel: `#f8fafc` → `#f4f7fb` (paper do projeto); summary `#eef3f8` → `#dce9f6` (azul-claro com mais contraste); chip Editar/Recolher: cinza claro → `var(--brand)` navy com texto branco.
+   - **Labels**: agora em mono uppercase navy (`var(--brand)`), font-size 10px, letter-spacing 0.08em — análogo aos labels do `.calc-panel` (cyan em fundo dark) mas em alto contraste sobre o cinza-claro.
+   - **`.unit-inline`** (span "(mEq/L)") dentro da label: cor `var(--ink-2)` (cinza médio), font-body, normalcase — separa visualmente do nome do campo.
+   - **Inputs**: border `#c8d4e1`, focus cyan com box-shadow 3px (consistente com `.calc-panel input`). Placeholder `#7c8ba0` em vez de gray-200 default (passa WCAG AA).
+   - **Δ calculado readonly**: gradiente azul-claro, mono, navy bold, border cyan-soft — destaca como resultado computado, não input editável.
+
+2. **Hero animada do Mod 7**:
+   - **Mesh-gradient cyan flutuante** em `::before`: 4 radial-gradients de cyan/cyan-light com positions diferentes, animados via `@keyframes heroMesh` (22s ease-in-out alternate) — translação + scale sutis.
+   - **Grade técnica** em `::after`: linhas 1px cyan-soft em 52×52px com mask radial que esmaece nos cantos (mais visível no canto superior direito).
+   - **Eyebrow novo**: pílula mono `Módulo 7 · Ferramentas operacionais` com ponto cyan pulsante (ripple via `@keyframes heroDot`).
+   - **Título** com gradiente branco→cyan-claro via background-clip:text + fade-up animado (delay 0.15s).
+   - **Lead** reescrito mencionando explicitamente o foco em volume aspirado / volume do diluente / concentração final (ecoa o pedido anterior sobre clareza do preparo); fade-up com delay 0.28s.
+   - **Badges** das 5 calculadoras (IOT, Bólus, Eletrólitos, Infusão contínua, Cenário integrado) com border cyan-soft, backdrop-filter, ponto cyan emissivo + stagger fade-up (delays 0.38s / 0.46s / 0.54s / 0.62s / 0.70s) e hover lift.
+   - **`@media (prefers-reduced-motion: reduce)`**: desliga todas as animações e mantém opacity:1.
+
+### Hash
+
+- Mod 7: `70b03518…6617e18deeea4f2d5fa` (atualizado em `scripts/verify-module-hashes.mjs`).
+
+## 2026-05-26 — Mod 7: destaque automático de volumes (aspirado + diluente + final) nas instruções de preparo
+
+### Tipo de alteração
+
+- **Técnica/UX**. **Não toca em valores, cálculos, fórmulas, doses ou texto base** — apenas adiciona ênfase (`<strong>`) nos volumes (mL) das instruções de preparo já existentes.
+
+### Motivação
+
+Pedido do usuário: "Destaque sempre o volume aspirado + volume do diluente em negrito para facilitar a compreensão do preparo. A ferramenta deve dar instruções claras de como diluir para chegar àquela concentração e dose."
+
+O fluxo de preparo tem três volumes-chave que precisam estar em destaque: **volume a aspirar da ampola**, **volume do diluente** e **volume final da solução**. Em algumas saídas isso já estava em negrito (operational lines), mas as strings de preset estáticas e várias `medKv("Volume…", …)` ficavam em texto plano.
+
+### O que mudou
+
+1. **Novo helper `emphasizeVolumes(text)`** — wrapper regex que envolve em `<strong>` qualquer ocorrência de número (com vírgula ou ponto decimal) seguido de "mL", em strings de preparo já formatadas. Garante destaque visual consistente sem reescrever cada preset string.
+   - Regex: `/(\d+(?:[.,]\d+)?)\s*mL\b/g` → `<strong>$1 mL</strong>`
+   - Aplicado em **todas as exibições de `x.presentation.prep`** via `medKv("Preparo da solução", …)`: §3 DVA bólus intermitente, §3 DVA bólus padrão, §4 Eletrólitos.
+   - Aplicado também em `prepObj.preparo` e `prepObj.diluicao` no rendering da §5 Infusão contínua (linhas 4458-4459).
+
+2. **Bolds explícitos nos `medKv` de volume** (não dependem do helper, são valores calculados em tempo real):
+   - §2 IOT: `medKv("Volume a aspirar", …)` → valor agora em `<strong>`.
+   - §3 DVA bólus intermitente: `medKv("Volume a aspirar da ampola", …)`, `medKv("Volume final a ser administrado", …)` agora em `<strong>`.
+   - **Novo `medKv("Volume do diluente", …)`** inserido entre "Volume a aspirar" e "Volume final" na §3 intermitente — fecha o ciclo aspirar + diluir + total que estava implícito antes (calculado como `finalVolume − volumeAspirar` e mostrando o nome do diluente preferido). Resolve diretamente o pedido do usuário.
+   - §3 DVA bólus puro: `medKv("Volume a administrar", …)` agora em `<strong>`.
+   - §3 DVA bólus padrão (com diluição): `medKv("Volume a administrar", …)` agora em `<strong>`.
+
+3. **Operational lines (já estavam em negrito)**: `infusionPrepLine` (linha 1875), `buildInfusionOperationalLine` (linha 1898), `buildEletOperationalLine` (linhas 4124, 4138) — mantidos.
+
+### Hash
+
+- Mod 7: `b8e80fbd…23c438ac320ea187` (atualizado em `scripts/verify-module-hashes.mjs`).
+
+## 2026-05-26 — Mod 7: section headers (eyebrow + h2) + calc-panel refinado
+
+### Tipo de alteração
+
+- **Técnica/UX**. **Não toca em valores, cálculos, fórmulas, doses ou lógica JS.**
+
+### O que mudou
+
+1. **Section headers — eyebrow + h2 alinhados com Mods 1-6**:
+   - Nova classe `.section-eyebrow`: mono uppercase 10.5px, letter-spacing 0.14em, pílula cyan com borda translúcida (rgba(18,190,209,.24)) e fundo cyan-soft (rgba(18,190,209,.10)).
+   - `section h2` reescrito com font display, peso 700, clamp(20px, 2.4vw, 24px), letter-spacing -0.012em, cor `var(--brand)`, com **bottom border 2px solid var(--cyan-light)** e `display:inline-block` (igual ao Mod 1).
+   - `section h3` ganhou rail cyan 4px à esquerda + gradiente cyan-soft horizontal + border-radius 0/4/4/0, mantendo a hierarquia visual.
+   - `section:hover` ganha borda cyan sutil (rgba(18,190,209,.32)).
+   - Adicionados eyebrows nas 7 sections: "Paciente · base de cálculo" / "Calculadora · IOT" / "Calculadora · bólus" / "Calculadora · eletrólitos" / "Calculadora · infusão contínua" / "Cenário integrado · prescrição" / "Leitura sugerida · cenários".
+   - Pequeno ajuste textual: §5 título passou de "...preparo e administração." para "...preparo e administração" (sem ponto final, usando em-dash em vez de hífen).
+
+2. **Calc-panel refinado**:
+   - Fundo trocado de `#0d2438` flat para `linear-gradient(165deg,#0d2438→#0a1d2e→#081726)`, com borda cyan-soft `rgba(48,241,230,.18)` e shadow mais sutil.
+   - Adicionado **rail cyan no topo** via `::before` (degradê horizontal de cyan-light → transparente, 2px, sob a borda superior).
+   - **`.calc-panel h3`** agora em cyan-light (`#30f1e6`) com font-display 15px peso 700, override do rail/gradient do section h3 quando aninhado em calc-panel.
+   - **Labels** reformatadas: mono uppercase 10px, letter-spacing 0.10em, cor `rgba(48,241,230,.78)` — alinha com eyebrows e drug-card.
+   - **Inputs/selects/textarea**: mantêm fundo branco com texto navy (decisão UX, melhor leitura clínica). Adicionado **focus ring cyan**: border `var(--cyan)` + box-shadow externa `rgba(18,190,209,.28)` 3px. Hover ring cyan suave.
+   - Padding ligeiramente reduzido (10px → 9px 11px) e radius 10px → 8px.
+   - **`.calc-result`** background mudou de branco-translúcido para `rgba(255,255,255,.04)` (mais sutil sobre o fundo gradiente), borda cyan-soft, padding 14px 16px.
+
+### Hash
+
+- Mod 7: `3c7b3ec3…2acd2fa18c8d15d3` (atualizado em `scripts/verify-module-hashes.mjs`).
+
+## 2026-05-26 — Mod 7 calculadoras: paleta + fontes globais alinhadas com Mods 1-6
+
+### Tipo de alteração
+
+- **Técnica/UX**. **Não toca em valores, cálculos, fórmulas, doses ou lógica JS** — apenas paleta CSS e fontes.
+
+### O que mudou
+
+1. **Tipografia**: body `font-family` mudou de `Arial,Helvetica,sans-serif` para `var(--font-body)` = DM Sans (mesmas fontes dos Mods 1-6). Adicionado link Google Fonts no head com DM Sans (400/500/600/700) + JetBrains Mono (400/500/600). Adicionado `letter-spacing:-0.003em` + font-smoothing antialiased.
+
+2. **Paleta** — `:root` reescrito com as variáveis dos Mods 1-6 (`--brand-deep:#0d2438; --brand:#123c69; --brand-mid:#1a4d80; --cyan:#12bed1; --cyan-light:#30f1e6; --crit/--urgent/--stable`). Aliases legados (`--primary`, `--accent`, `--danger`, etc.) mantidos como ponteiros para as novas variáveis, então código pré-existente não quebra.
+   - `--accent` antes era `#0b6b5c` (verde-petróleo legado) → agora `var(--cyan)` (#12bed1).
+   - `--primary` mantido em `#123c69` (já era o `--brand` da nova paleta).
+
+3. **Substituição de hex hardcoded**: `#0b6b5c` → `#0a8a9a` (cyan-deep ligeiramente mais saturado, mantém contraste do teal antigo) em 10 lugares: med-card--primary, sva-flow, strategy-card--plan, planning-line-details, prep-rate, planning-line. Os pastéis-mint complementares (`#99f6e4`, `#f0fdfa`, `#e7f2ef`, `#e7f8f4`) permanecem — funcionam visualmente bem com cyan.
+
+4. **Hero** atualizado de `linear-gradient(135deg,#123c69,#0b6b5c)` (azul→teal) para `linear-gradient(135deg,#0d2438,#123c69,#1a4d80)` (gradiente navy uniforme dos Mods 1-6) + borda sutil cyan `rgba(48,241,230,.14)`.
+
+5. **Textarea de prontuário** (`#chartNoteOut`): font-family `Arial` → `var(--font-mono)` (JetBrains Mono), 13px → 12.5px, line-height 1.45 → 1.5. Saída em mono fica mais legível para copy-paste em prontuário.
+
+6. **Formula boxes em JS** (lines 1255 e 1375 — calculadora de bólus e eletrólitos): `'Courier New',monospace` → `'JetBrains Mono','IBM Plex Mono',ui-monospace,monospace`. Alinha com o resto.
+
+### Não tocado nesta passagem (escopo futuro)
+
+- Section headers (eyebrow mono + h2 maior).
+- Cards (`.med-card`, `.strategy-card`, `.prep-line`) — ainda usam padrão próprio que funciona; refactor para usar drug-card/scenario-card foi adiado.
+- `.calc-panel` (form input) — visual atual já é navy/cyan-consistente, pode ganhar inputs com focus cyan em passagem futura.
+
+### Hash
+
+- Mod 7: `f7cde915…78199d9c` (atualizado em `scripts/verify-module-hashes.mjs`).
+
 ## 2026-05-26 — Mod 2 §8.1 e §8.2: ajustes iniciais e triagem de auto-PEEP em scenario-cards
 
 ### Tipo de alteração

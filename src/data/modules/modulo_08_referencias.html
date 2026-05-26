@@ -4,8 +4,108 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Manual Interativo de Medicina Intensiva — Módulo 8: Referências</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap">
   <style>
-    :root{--bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;--primary:#123c69;--primary-soft:#dce9f6;--accent:#0b6b5c;--danger:#b42318;--warning:#b54708;--success:#067647;--border:#d8e0ea;--shadow:0 8px 24px rgba(16,24,40,.08);--radius:16px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}a{color:inherit;text-decoration:none}.app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d2438;color:#fff;padding:24px 18px}.brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}.brand h1{font-size:19px;margin:0 0 8px;line-height:1.25}.brand p{margin:0;font-size:13px;color:rgba(255,255,255,.75)}nav ul{list-style:none;padding:0;margin:0}nav li{margin:5px 0}nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88)}nav a:hover,nav a.module-nav-link--active{background:rgba(255,255,255,.14);color:#fff}main{padding:34px;max-width:1380px;width:100%}.hero{background:linear-gradient(135deg,#123c69,#0b6b5c);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);margin-bottom:28px}.hero h2{font-size:34px;margin:0 0 10px}.hero p{max-width:980px;color:rgba(255,255,255,.9);margin:0}.badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.14);font-size:12px}section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}section h2{margin:0 0 14px;color:var(--primary);font-size:25px}section h3{margin:22px 0 10px;color:#243b53;font-size:19px}details{border:1px solid var(--border);border-radius:14px;background:#fff;margin:12px 0;overflow:hidden}summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--primary);background:#eef3f8}summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}.refs-collapsible ol{padding-left:22px;margin:0;display:grid;gap:10px}.refs-collapsible ol li{line-height:1.55}.module-tag{display:inline-block;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;background:var(--primary-soft);color:var(--primary);margin-right:8px}.footer-sign{margin-top:40px;text-align:right;color:#344054}@media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}main{padding:18px}.hero h2{font-size:26px}}@media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}details:not([open]){border-color:#ccc}}
+    :root{
+      --font-display:'DM Sans',system-ui,-apple-system,sans-serif;
+      --font-body:'DM Sans',system-ui,-apple-system,sans-serif;
+      --font-mono:'JetBrains Mono','IBM Plex Mono',ui-monospace,monospace;
+      --brand-deep:#0d2438;--brand:#123c69;--brand-mid:#1a4d80;
+      --cyan:#12bed1;--cyan-light:#30f1e6;
+      --ink:#0d2438;--ink-2:#5f6b7a;
+      --paper:#f4f7fb;--surface:#fff;--surface-2:#eef3f8;--rule:#d8e2ea;
+      --crit:#b42318;--urgent:#b54708;--stable:#067647;
+      --bg:var(--paper);--surface-soft:var(--surface-2);--text:var(--ink);--muted:var(--ink-2);
+      --primary:var(--brand);--primary-soft:#dce9f6;--accent:var(--cyan);
+      --danger:var(--crit);--warning:var(--urgent);--success:var(--stable);
+      --border:var(--rule);
+      --shadow:0 1px 3px rgba(13,36,56,.05),0 4px 12px rgba(13,36,56,.06);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:var(--font-body);font-size:15px;background:var(--bg);color:var(--text);line-height:1.55;letter-spacing:-0.003em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    a{color:inherit;text-decoration:none}
+    .app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+    aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--brand-deep);color:#fff;padding:24px 18px}
+    .brand{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.18)}
+    .brand h1{font-family:var(--font-display);font-size:19px;margin:0 0 8px;line-height:1.25;letter-spacing:-0.01em}
+    .brand p{margin:0;font-size:13px;color:rgba(255,255,255,.78)}
+    nav ul{list-style:none;padding:0;margin:0}
+    nav li{margin:5px 0}
+    nav a{display:block;padding:9px 10px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.88);transition:background-color .15s ease,color .15s ease}
+    nav a:hover,nav a.module-nav-link--active{background:rgba(48,241,230,.14);color:#fff}
+    main{padding:34px;max-width:1380px;width:100%}
+    /* Hero — navy gradiente uniforme (idêntico aos Mods 1-6 e Mod 7),
+       com borda cyan-soft. */
+    .hero{
+      position:relative;overflow:hidden;
+      background:linear-gradient(135deg,#0d2438 0%,#123c69 60%,#1a4d80 100%);
+      color:#fff;border-radius:24px;padding:34px;
+      box-shadow:0 1px 3px rgba(13,36,56,.10),0 12px 32px rgba(13,36,56,.18);
+      margin-bottom:28px;border:1px solid rgba(48,241,230,.18);
+    }
+    .hero__eyebrow{
+      display:inline-block;font-family:var(--font-mono);font-size:10.5px;font-weight:700;
+      letter-spacing:.16em;text-transform:uppercase;color:var(--cyan-light);
+      padding:4px 12px;background:rgba(48,241,230,.10);border:1px solid rgba(48,241,230,.32);
+      border-radius:999px;margin-bottom:12px;
+    }
+    .hero h2{
+      font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:700;
+      letter-spacing:-0.014em;line-height:1.15;margin:0 0 12px;
+      background:linear-gradient(180deg,#fff 0%,#cfeef3 100%);
+      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .hero p{max-width:980px;color:rgba(255,255,255,.88);margin:0;font-size:15px;line-height:1.55}
+    .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .badge{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(48,241,230,.24);color:rgba(255,255,255,.92);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.04em}
+    .badge::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan-light);box-shadow:0 0 8px rgba(48,241,230,.6)}
+    /* Section — card cyan-borderable na hover, com h2 em display + rail cyan-light. */
+    section{
+      background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+      padding:24px 28px;margin-bottom:18px;box-shadow:var(--shadow);position:relative;
+      transition:box-shadow .2s ease,border-color .2s ease;
+    }
+    section:hover{border-color:rgba(18,190,209,.32)}
+    .section-eyebrow{
+      display:inline-block;margin:0 0 6px;
+      font-family:var(--font-mono);font-size:10.5px;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);
+      padding:3px 9px;background:rgba(18,190,209,.10);
+      border:1px solid rgba(18,190,209,.24);border-radius:999px;
+    }
+    section h2{
+      font-family:var(--font-display);font-weight:700;
+      font-size:clamp(19px,2.2vw,22px);line-height:1.2;letter-spacing:-0.012em;
+      color:var(--brand);margin:0 0 14px;padding-bottom:12px;
+      border-bottom:2px solid var(--cyan-light);display:inline-block;
+    }
+    section h3{margin:22px 0 10px;color:var(--brand-deep);font-size:18px;font-family:var(--font-display);font-weight:700;letter-spacing:-0.008em}
+    details{border:1px solid var(--border);border-radius:12px;background:#fff;margin:12px 0;overflow:hidden;transition:border-color .15s ease}
+    details:hover{border-color:rgba(18,190,209,.32)}
+    summary{
+      cursor:pointer;list-style:none;padding:12px 16px;
+      font-family:var(--font-mono);font-size:11.5px;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;
+      color:var(--brand);background:linear-gradient(90deg,#dce9f6 0%,#eef3f8 100%);
+      transition:background .15s ease;
+    }
+    summary::-webkit-details-marker{display:none}
+    summary::before{content:"▸";display:inline-block;margin-right:8px;transition:transform .15s ease;color:var(--cyan)}
+    details[open]>summary::before{transform:rotate(90deg)}
+    details[open]>summary{background:linear-gradient(90deg,rgba(48,241,230,.12) 0%,rgba(18,190,209,.06) 100%);color:var(--brand-deep)}
+    details .detail-body{padding:16px 20px}
+    .refs-collapsible ol{padding-left:22px;margin:0;display:grid;gap:10px}
+    .refs-collapsible ol li{line-height:1.55;font-size:13.5px}
+    .refs-collapsible ol li strong{color:var(--brand-deep)}
+    .refs-collapsible ol li em{color:var(--ink-2)}
+    .module-tag{display:inline-block;border-radius:999px;padding:4px 10px;font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(18,190,209,.12);color:var(--brand);margin-right:8px;border:1px solid rgba(18,190,209,.22)}
+    .footer-sign{margin-top:40px;text-align:right;color:var(--ink-2);font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+    @media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}main{padding:18px}.hero h2{font-size:24px}}
+    @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details:not([open]) .detail-body{display:block}details:not([open]){border-color:#ccc}}
   </style>
 </head>
 <body>
@@ -17,7 +117,7 @@
     </div>
     <nav aria-label="Referências por módulo">
       <ul id="moduleNav">
-        <li><a href="#refs-modulo-1"><span class="nav-label">1. Módulo 1 - Via aérea e intubação orotraqueal</span></a></li>
+        <li><a href="#refs-modulo-1"><span class="nav-label">1. Módulo 1 — Via aérea e intubação orotraqueal</span></a></li>
         <li><a href="#refs-modulo-2"><span class="nav-label">2. Módulo 2 - Pós-intubação e confirmação</span></a></li>
         <li><a href="#refs-modulo-3"><span class="nav-label">3. Módulo 3 - Ventilação mecânica invasiva</span></a></li>
         <li><a href="#refs-modulo-4"><span class="nav-label">4. Módulo 4 - Manutenção de sedoanalgesia em UTI</span></a></li>
@@ -30,16 +130,19 @@
 
   <main>
     <div class="hero">
+      <span class="hero__eyebrow">Módulo 8 · Bibliografia primária</span>
       <h2>Referências consolidadas</h2>
       <p>Bibliografia primária dos sete módulos clínicos do Manual reunida em um único local para consulta rápida. Cada subseção agrupa as fontes do módulo de origem na ordem original. As citações contextuais inline (blocos <em>Referencial</em>) permanecem nos módulos correspondentes para preservar o ancoramento direto ao raciocínio clínico.</p>
       <div class="badge-row">
-        <span class="badge">Organizado por módulo de origem</span>
+        <span class="badge">Organizado por módulo</span>
         <span class="badge">Listas recolhíveis</span>
+        <span class="badge">DOI quando disponível</span>
       </div>
     </div>
 
     <section id="refs-modulo-1">
-      <h2>1. Módulo 1 - Via aérea e intubação orotraqueal</h2>
+      <span class="section-eyebrow">Origem · Módulo 1</span>
+      <h2>1. Módulo 1 — Via aérea e intubação orotraqueal</h2>
       <details class="refs-collapsible" open>
         <summary>Mostrar/ocultar referências</summary>
         <div class="detail-body">
@@ -62,7 +165,8 @@
     </section>
 
     <section id="refs-modulo-2">
-      <h2>2. Módulo 2 - Pós-intubação e confirmação</h2>
+      <span class="section-eyebrow">Origem · Módulo 2</span>
+      <h2>2. Módulo 2 — Pós-intubação e confirmação</h2>
       <details class="refs-collapsible">
         <summary>Mostrar/ocultar referências</summary>
         <div class="detail-body">
@@ -93,7 +197,8 @@
     </section>
 
     <section id="refs-modulo-3">
-      <h2>3. Módulo 3 - Ventilação mecânica invasiva</h2>
+      <span class="section-eyebrow">Origem · Módulo 3</span>
+      <h2>3. Módulo 3 — Ventilação mecânica invasiva</h2>
       <details class="refs-collapsible">
         <summary>Mostrar/ocultar referências</summary>
         <div class="detail-body">
@@ -111,7 +216,8 @@
     </section>
 
     <section id="refs-modulo-4">
-      <h2>4. Módulo 4 - Manutenção de sedoanalgesia em UTI</h2>
+      <span class="section-eyebrow">Origem · Módulo 4</span>
+      <h2>4. Módulo 4 — Manutenção de sedoanalgesia em UTI</h2>
       <details class="refs-collapsible">
         <summary>Mostrar/ocultar referências</summary>
         <div class="detail-body">
@@ -128,7 +234,8 @@
     </section>
 
     <section id="refs-modulo-5">
-      <h2>5. Módulo 5 - Drogas vasoativas</h2>
+      <span class="section-eyebrow">Origem · Módulo 5</span>
+      <h2>5. Módulo 5 — Drogas vasoativas</h2>
       <details class="refs-collapsible">
         <summary>Mostrar/ocultar referências</summary>
         <div class="detail-body">
@@ -153,7 +260,8 @@
     </section>
 
     <section id="refs-modulo-6">
-      <h2>6. Módulo 6 - Distúrbios hidroeletrolíticos</h2>
+      <span class="section-eyebrow">Origem · Módulo 6</span>
+      <h2>6. Módulo 6 — Distúrbios hidroeletrolíticos</h2>
       <details class="refs-collapsible">
         <summary>Mostrar/ocultar referências</summary>
         <div class="detail-body">
@@ -183,7 +291,8 @@
     </section>
 
     <section id="refs-modulo-7">
-      <h2>7. Módulo 7 - Calculadoras interativas</h2>
+      <span class="section-eyebrow">Origem · Módulo 7</span>
+      <h2>7. Módulo 7 — Calculadoras interativas</h2>
       <details class="refs-collapsible">
         <summary>Mostrar/ocultar referências</summary>
         <div class="detail-body">

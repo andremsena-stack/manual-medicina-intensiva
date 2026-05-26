@@ -4,16 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Manual Interativo de Medicina Intensiva — Módulo 7: Calculadoras Interativas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap">
   <style>
     :root{
-      --bg:#f6f8fb;--surface:#fff;--surface-soft:#eef3f8;--text:#172033;--muted:#5f6b7a;
-      --primary:#123c69;--primary-soft:#dce9f6;--accent:#0b6b5c;--danger:#b42318;
-      --warning:#b54708;--success:#067647;--border:#d8e0ea;--shadow:0 8px 24px rgba(16,24,40,.08);
-      --radius:16px
+      /* Tipografia (alinhada com Mods 1-6) */
+      --font-display: 'DM Sans', system-ui, -apple-system, sans-serif;
+      --font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
+      --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+      /* Paleta — DNA do projeto (mesma da landing/home/Mods 1-6) */
+      --brand-deep: #0d2438;
+      --brand:      #123c69;
+      --brand-mid:  #1a4d80;
+      --cyan:       #12bed1;
+      --cyan-light: #30f1e6;
+      --ink:        #0d2438;
+      --ink-2:      #5f6b7a;
+      --paper:      #f4f7fb;
+      --surface-2:  #eef3f8;
+      --rule:       #d8e2ea;
+      /* Severidade clínica */
+      --crit:   #b42318;
+      --urgent: #b54708;
+      --stable: #067647;
+      --info:   var(--brand);
+      /* Aliases legados (mantém compat com código pré-existente do Mod 7) */
+      --bg: var(--paper);
+      --surface: #fff;
+      --surface-soft: var(--surface-2);
+      --text: var(--ink);
+      --muted: var(--ink-2);
+      --primary: var(--brand);
+      --primary-soft: #dce9f6;
+      --accent: var(--cyan);
+      --danger: var(--crit);
+      --warning: var(--urgent);
+      --success: var(--stable);
+      --border: var(--rule);
+      --shadow: 0 1px 3px rgba(13,36,56,.05), 0 4px 12px rgba(13,36,56,.06);
+      --shadow-hover: 0 4px 12px rgba(18,190,209,.12), 0 12px 28px rgba(13,36,56,.10);
+      --radius: 14px;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+    body{margin:0;font-family:var(--font-body);font-size:15px;background:var(--bg);color:var(--text);line-height:1.55;letter-spacing:-0.003em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     a{color:inherit;text-decoration:none}
     .app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
     aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d2438;color:#fff;padding:24px 18px}
@@ -40,13 +75,204 @@
     .app.nav-collapsed nav a .nav-label{clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}
     .app.nav-collapsed nav a::before{content:attr(data-short);font-size:12px;font-weight:800}
     main{padding:34px;max-width:1380px;width:100%}
-    .hero{background:linear-gradient(135deg,#123c69,#0b6b5c);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);margin-bottom:28px}
-    .hero h2{font-size:34px;margin:0 0 10px}.hero p{max-width:1080px;color:rgba(255,255,255,.9);margin:0}
-    .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.14);font-size:12px}
-    section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}
-    section h2{margin:0 0 14px;color:var(--primary);font-size:25px}
-    section h3{margin:22px 0 10px;color:#243b53;font-size:19px}
+    /* Hero — capa animada do Módulo 7. Gradiente navy com mesh cyan flutuante,
+       título com fade-in + scale suave, eyebrow mono, badges com stagger. */
+    .hero{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(135deg,#0d2438 0%,#123c69 60%,#1a4d80 100%);
+      color:#fff;
+      border-radius:24px;
+      padding:42px 38px 38px;
+      box-shadow:0 1px 3px rgba(13,36,56,.10),0 14px 40px rgba(13,36,56,.22);
+      margin-bottom:28px;
+      border:1px solid rgba(48,241,230,.18);
+      isolation:isolate;
+    }
+    /* Mesh-gradient cyan flutuante (blobs animados em camada de fundo). */
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      z-index:-2;
+      background:
+        radial-gradient(38% 50% at 22% 28%, rgba(48,241,230,.22), transparent 70%),
+        radial-gradient(32% 44% at 78% 22%, rgba(18,190,209,.18), transparent 65%),
+        radial-gradient(30% 40% at 65% 88%, rgba(48,241,230,.14), transparent 70%),
+        radial-gradient(28% 38% at 12% 82%, rgba(18,190,209,.12), transparent 70%);
+      animation:heroMesh 22s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+    /* Grade técnica sutil sobre o gradiente. */
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:
+        linear-gradient(90deg, rgba(48,241,230,.06) 1px, transparent 1px) 0 0/52px 52px,
+        linear-gradient(0deg,  rgba(48,241,230,.06) 1px, transparent 1px) 0 0/52px 52px;
+      mask-image:radial-gradient(ellipse at 70% 30%, black 0%, transparent 70%);
+      -webkit-mask-image:radial-gradient(ellipse at 70% 30%, black 0%, transparent 70%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    @keyframes heroMesh{
+      0%   {transform:translate3d(0,0,0) scale(1)}
+      50%  {transform:translate3d(2%,-3%,0) scale(1.06)}
+      100% {transform:translate3d(-2%,2%,0) scale(1.03)}
+    }
+    .hero__eyebrow{
+      display:inline-block;
+      font-family:var(--font-mono);
+      font-size:10.5px;
+      font-weight:700;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--cyan-light);
+      padding:4px 12px;
+      background:rgba(48,241,230,.10);
+      border:1px solid rgba(48,241,230,.34);
+      border-radius:999px;
+      margin-bottom:14px;
+      animation:heroFadeUp .7s cubic-bezier(.2,.7,.2,1) .05s both;
+    }
+    .hero__eyebrow::before{
+      content:"";
+      display:inline-block;
+      width:7px;height:7px;
+      border-radius:50%;
+      background:var(--cyan-light);
+      margin-right:8px;
+      vertical-align:middle;
+      box-shadow:0 0 0 0 rgba(48,241,230,.6);
+      animation:heroDot 2.2s ease-out infinite;
+    }
+    @keyframes heroDot{
+      0%   {box-shadow:0 0 0 0 rgba(48,241,230,.55)}
+      70%  {box-shadow:0 0 0 10px rgba(48,241,230,0)}
+      100% {box-shadow:0 0 0 0 rgba(48,241,230,0)}
+    }
+    .hero h2{
+      font-family:var(--font-display);
+      font-size:clamp(28px,3.6vw,38px);
+      font-weight:700;
+      line-height:1.12;
+      letter-spacing:-0.018em;
+      margin:0 0 12px;
+      background:linear-gradient(180deg,#fff 0%,#cfeef3 100%);
+      -webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:heroFadeUp .8s cubic-bezier(.2,.7,.2,1) .15s both;
+    }
+    .hero p{
+      max-width:1080px;
+      color:rgba(255,255,255,.88);
+      margin:0;
+      font-size:15px;
+      line-height:1.55;
+      animation:heroFadeUp .8s cubic-bezier(.2,.7,.2,1) .28s both;
+    }
+    @keyframes heroFadeUp{
+      from {opacity:0; transform:translateY(10px)}
+      to   {opacity:1; transform:translateY(0)}
+    }
+    .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+    .badge{
+      display:inline-flex;align-items:center;gap:7px;
+      border-radius:999px;
+      padding:7px 12px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(48,241,230,.22);
+      color:rgba(255,255,255,.92);
+      font-family:var(--font-mono);
+      font-size:11px;
+      font-weight:600;
+      letter-spacing:.04em;
+      backdrop-filter:blur(4px);
+      transition:transform .18s ease, background .18s ease, border-color .18s ease;
+      opacity:0;
+      animation:heroFadeUp .65s cubic-bezier(.2,.7,.2,1) both;
+    }
+    .badge:nth-of-type(1){animation-delay:.38s}
+    .badge:nth-of-type(2){animation-delay:.46s}
+    .badge:nth-of-type(3){animation-delay:.54s}
+    .badge:nth-of-type(4){animation-delay:.62s}
+    .badge:nth-of-type(5){animation-delay:.70s}
+    .badge:hover{transform:translateY(-1px);background:rgba(48,241,230,.14);border-color:rgba(48,241,230,.48)}
+    .badge::before{
+      content:"";
+      display:inline-block;
+      width:6px;height:6px;
+      border-radius:50%;
+      background:var(--cyan-light);
+      box-shadow:0 0 8px rgba(48,241,230,.6);
+    }
+    @media (prefers-reduced-motion: reduce){
+      .hero::before,.hero__eyebrow::before,.hero__eyebrow,.hero h2,.hero p,.badge{animation:none}
+      .hero__eyebrow,.hero h2,.hero p,.badge{opacity:1;transform:none}
+    }
+    /* Chip que sinaliza diluente preferencial ou exclusivo na linha de preparo. */
+    .diluent-chip{
+      display:inline-block;
+      font-family:var(--font-mono);
+      font-size:9.5px;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      padding:2px 7px;
+      border-radius:999px;
+      vertical-align:middle;
+      margin-left:4px;
+      line-height:1.3;
+    }
+    .diluent-chip--preferred{background:rgba(18,190,209,.14);color:var(--brand);border:1px solid rgba(18,190,209,.32)}
+    .diluent-chip--exclusive{background:rgba(180,35,24,.10);color:var(--crit);border:1px solid rgba(180,35,24,.30)}
+    section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px 28px;margin-bottom:18px;box-shadow:var(--shadow);position:relative;transition:box-shadow .2s ease,border-color .2s ease}
+    section:hover{border-color:rgba(18,190,209,.32)}
+    /* Eyebrow mono uppercase antes do h2 da section — alinha com a hierarquia
+       visual dos Mods 1-6, marcando claramente o tipo do bloco (CALCULADORA,
+       PACIENTE, CENÁRIO etc.). */
+    .section-eyebrow{
+      display:inline-block;
+      margin:0 0 6px;
+      font-family:var(--font-mono);
+      font-size:10.5px;
+      font-weight:700;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--cyan);
+      padding:3px 9px;
+      background:rgba(18,190,209,.10);
+      border:1px solid rgba(18,190,209,.24);
+      border-radius:999px;
+    }
+    section h2{
+      font-family:var(--font-display);
+      font-weight:700;
+      font-size:clamp(20px,2.4vw,24px);
+      line-height:1.2;
+      letter-spacing:-0.012em;
+      color:var(--brand);
+      margin:0 0 14px;
+      padding-bottom:12px;
+      border-bottom:2px solid var(--cyan-light);
+      display:inline-block;
+    }
+    section h3{
+      font-family:var(--font-display);
+      font-weight:700;
+      font-size:18px;
+      line-height:1.3;
+      letter-spacing:-0.008em;
+      color:var(--brand-deep);
+      margin:28px 0 12px;
+      padding:6px 0 6px 14px;
+      border-left:4px solid var(--cyan);
+      background:linear-gradient(90deg,rgba(48,241,230,.08) 0%,transparent 60%);
+      border-radius:0 4px 4px 0;
+    }
+    section > h3:first-of-type,section > p + h3,section > .grid + h3{margin-top:20px}
     .grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
     .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
     .card{background:var(--surface-soft);border:1px solid var(--border);border-radius:14px;padding:16px}
@@ -57,13 +283,77 @@
     table{width:100%;border-collapse:collapse;margin:14px 0;overflow:hidden;border-radius:12px}
     th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;font-size:14px}
     th{background:var(--primary);color:#fff}tbody tr:nth-child(even){background:#f8fafc}
-    .calc-panel{background:#0d2438;color:#fff;border-radius:18px;padding:18px;margin:18px 0;box-shadow:var(--shadow)}
-    .calc-panel h3{color:#fff;margin-top:0}.calc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-    .calc-panel label{display:block;font-size:12px;color:#cbd5e1;margin-bottom:5px}
-    .calc-panel input,.calc-panel select,.calc-panel textarea{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:#fff;color:#111827}
-    .calc-panel textarea{min-height:72px}
-    .calc-result{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px;margin-top:10px}
-    .calc-result strong{font-size:17px;color:#fff;display:block;line-height:1.25}
+    /* Painel de cálculo — bloco navy com cyan accent. Inputs com focus
+       cyan ring; labels em mono uppercase compacto pra alinhar com a
+       linguagem do resto do projeto (eyebrows, drug-card chips). */
+    .calc-panel{
+      background:linear-gradient(165deg,#0d2438 0%,#0a1d2e 70%,#081726 100%);
+      color:#fff;
+      border:1px solid rgba(48,241,230,.18);
+      border-radius:16px;
+      padding:18px 20px;
+      margin:18px 0;
+      box-shadow:0 1px 3px rgba(13,36,56,.10),0 8px 24px rgba(13,36,56,.18);
+      position:relative;
+    }
+    .calc-panel::before{
+      content:"";
+      position:absolute;
+      top:0;left:18px;right:18px;
+      height:2px;
+      background:linear-gradient(90deg,var(--cyan-light),rgba(48,241,230,0));
+      border-radius:0 0 2px 2px;
+    }
+    .calc-panel h3{
+      color:var(--cyan-light);
+      margin-top:0;
+      font-family:var(--font-display);
+      font-weight:700;
+      font-size:15px;
+      letter-spacing:-0.005em;
+      /* override do section h3 dentro de calc-panel (sem rail/gradient) */
+      border-left:0;background:none;padding:0;
+    }
+    .calc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .calc-panel label{
+      display:block;
+      font-family:var(--font-mono);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      color:rgba(48,241,230,.78);
+      margin-bottom:5px;
+    }
+    .calc-panel input,.calc-panel select,.calc-panel textarea{
+      width:100%;
+      padding:9px 11px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.20);
+      background:#fff;
+      color:#0d2438;
+      font-family:var(--font-body);
+      font-size:13.5px;
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    .calc-panel input::placeholder,.calc-panel textarea::placeholder{color:#94a3b8}
+    .calc-panel input:hover,.calc-panel select:hover,.calc-panel textarea:hover{
+      border-color:rgba(48,241,230,.55);
+    }
+    .calc-panel input:focus,.calc-panel select:focus,.calc-panel textarea:focus{
+      outline:0;
+      border-color:var(--cyan);
+      box-shadow:0 0 0 3px rgba(18,190,209,.28);
+    }
+    .calc-panel textarea{min-height:72px;line-height:1.4}
+    .calc-result{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(48,241,230,.18);
+      border-radius:12px;
+      padding:14px 16px;
+      margin-top:12px;
+    }
+    .calc-result strong{font-size:17px;color:#fff;display:block;line-height:1.25;letter-spacing:-0.008em}
     /* Resetar strong/b dentro dos containers de conteúdo (.med-kv, summary-table,
        prep-line-summary) — a regra acima foi pensada só para headlines em fundo
        escuro. Em conteúdo de cards/tabelas, strong precisa herdar cor + ser inline. */
@@ -103,7 +393,7 @@
     .med-card__title{color:#123c69;font-size:11px;font-weight:800;letter-spacing:.02em;margin-bottom:6px;text-transform:uppercase}
     .med-kv{font-size:12px;line-height:1.35;margin:4px 0}
     .med-card b{color:#123c69;display:inline;font-size:inherit}
-    .med-card--primary{border-left-color:#0b6b5c;background:#f0fdfa}
+    .med-card--primary{border-left-color:#0a8a9a;background:#f0fdfa}
     .med-card--pk{border-left-color:#2563eb;background:#eff6ff}
     .med-card--safety{border-left-color:#b42318;background:#fff7ed}
     .med-card--scenario-good{border-left-color:#067647;background:#ecfdf3}
@@ -120,11 +410,11 @@
     .strategy-card__title{color:#123c69;font-size:11px;font-weight:800;letter-spacing:.02em;margin-bottom:6px;text-transform:uppercase}
     .strategy-card div{font-size:12px;line-height:1.35;margin:4px 0}
     .sva-flow{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-    .sva-flow span{background:#e7f2ef;border:1px solid #99f6e4;border-radius:999px;color:#0b6b5c;font-size:10.5px;font-weight:800;line-height:1.1;padding:4px 7px}
+    .sva-flow span{background:#e7f2ef;border:1px solid #99f6e4;border-radius:999px;color:#0a8a9a;font-size:10.5px;font-weight:800;line-height:1.1;padding:4px 7px}
     .sva-flow span::after{content:"→";color:#64748b;margin-left:5px}
     .sva-flow span:last-child::after{content:""}
     .strategy-card--context{background:#eff6ff;border-left-color:#2563eb}
-    .strategy-card--plan{background:#f0fdfa;border-color:#99f6e4;border-left-color:#0b6b5c}
+    .strategy-card--plan{background:#f0fdfa;border-color:#99f6e4;border-left-color:#0a8a9a}
     .strategy-card--caution{background:#fff7ed;border-color:#fed7aa;border-left-color:#b54708}
     .strategy-card--caution .strategy-card__title{color:#9a3412}
     .refs-collapsible{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
@@ -159,8 +449,8 @@
     .prep-line-summary--header>span{color:#9bb0be;font-weight:800}
     .prep-line-summary--header .prep-line-summary__rate,.prep-line-summary--header>span:last-child{text-align:right}
     @media(max-width:720px){.prep-line-summary{grid-template-columns:1fr 1fr;gap:4px 12px}.prep-line-summary__rate{text-align:left}.prep-line-summary--header{display:none}}
-    .planning-line-details{border:1px solid #d8e0ea;border-left:5px solid #0b6b5c;border-radius:12px;background:#fff;margin:10px 0 4px;padding:0;overflow:hidden}
-    .planning-line-details > summary{background:#e7f8f4;color:#0b6b5c;cursor:pointer;font-size:12px;font-weight:800;letter-spacing:.02em;list-style:none;padding:10px 14px;text-transform:uppercase}
+    .planning-line-details{border:1px solid #d8e0ea;border-left:5px solid #0a8a9a;border-radius:12px;background:#fff;margin:10px 0 4px;padding:0;overflow:hidden}
+    .planning-line-details > summary{background:#e7f8f4;color:#0a8a9a;cursor:pointer;font-size:12px;font-weight:800;letter-spacing:.02em;list-style:none;padding:10px 14px;text-transform:uppercase}
     .planning-line-details > summary::-webkit-details-marker{display:none}
     .planning-line-details > summary::before{content:"▸";display:inline-block;margin-right:8px;transition:transform 160ms ease}
     .planning-line-details[open] > summary::before{transform:rotate(90deg)}
@@ -179,8 +469,8 @@
     .prep-structured .prep-line.prep-final b{color:#067647}
     .prep-structured .prep-line.prep-dose{background:#f5f3ff;border-color:#ddd6fe;border-left-color:#7c3aed}
     .prep-structured .prep-line.prep-dose b{color:#5b21b6}
-    .prep-structured .prep-line.prep-rate{background:#f0fdfa;border-color:#99f6e4;border-left-color:#0b6b5c}
-    .prep-structured .prep-line.prep-rate b{color:#0b6b5c}
+    .prep-structured .prep-line.prep-rate{background:#f0fdfa;border-color:#99f6e4;border-left-color:#0a8a9a}
+    .prep-structured .prep-line.prep-rate b{color:#0a8a9a}
     .prep-structured .prep-line.prep-need{background:#fffbeb;border-color:#fde68a;border-left-color:#b54708}
     .prep-structured .prep-line.prep-need b{color:#92400e}
     .prep-structured .prep-line.prep-result{background:#eff6ff;border-color:#bfdbfe;border-left-color:#2563eb}
@@ -210,11 +500,11 @@
       margin-top:8px;
       background:#f8fafc;
       border:1px solid #d8e0ea;
-      border-left:5px solid #0b6b5c;
+      border-left:5px solid #0a8a9a;
       border-radius:14px;
       padding:10px;
     }
-    .planning-line > strong{background:#e7f8f4;border:1px solid #99f6e4;border-radius:999px;color:#0b6b5c;display:inline-flex;font-size:11px;font-weight:800;margin-bottom:8px;padding:4px 9px;text-transform:uppercase}
+    .planning-line > strong{background:#e7f8f4;border:1px solid #99f6e4;border-radius:999px;color:#0a8a9a;display:inline-flex;font-size:11px;font-weight:800;margin-bottom:8px;padding:4px 9px;text-transform:uppercase}
     .summary-counter{align-items:center;background:#ecfdf3;border:1px solid #bbf7d0;border-left:5px solid #067647;border-radius:12px;color:#065f46;display:inline-flex;font-size:12px;font-weight:800;min-height:38px;padding:8px 10px}
     .summary-counter--active{background:#eef6ff;border-color:#bfdbfe;border-left-color:#123c69;color:#123c69}
     .summary-counter--pulse{animation:summaryPulse .55s ease-out}
@@ -234,15 +524,56 @@
     summary::-webkit-details-marker{display:none}details .detail-body{padding:16px}
     .footer-sign{margin-top:40px;text-align:right;color:#344054}
     @media(max-width:980px){.app,.app.nav-collapsed{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:10;height:auto;max-height:82vh}.app.nav-collapsed aside{height:52px!important;left:auto!important;position:fixed!important;right:0!important;top:46vh!important;width:54px!important}.app.nav-collapsed nav{display:none}.app.nav-collapsed .brand{border-bottom:0!important;margin:0!important;padding:0!important;text-align:center}.app.nav-collapsed .brand__row{display:block}.app.nav-collapsed .brand__content{display:none!important}.app.nav-collapsed .brand h1{font-size:16px}.app.nav-collapsed .brand p,.app.nav-collapsed .brand .small{display:none}.grid-2,.grid-3,.grid-4,.calc-grid{grid-template-columns:1fr}main{padding:18px}.hero h2{font-size:26px}}
-    .compact-details{background:#f8fafc;border-color:#d8e0ea;border-radius:12px;margin-top:8px!important}
-    .compact-details summary{align-items:center;background:#eef3f8;display:flex;font-size:13px;justify-content:space-between;padding:8px 10px}
-    .compact-details summary::after{background:#dce9f6;border-radius:999px;color:#123c69;content:"Editar";font-size:10px;font-weight:800;padding:3px 8px;text-transform:uppercase}
+    .compact-details{background:#f4f7fb;border-color:#cdd9e5;border-radius:12px;margin-top:8px!important;color:var(--brand-deep)}
+    .compact-details summary{align-items:center;background:#dce9f6;color:var(--brand-deep);display:flex;font-size:13px;font-weight:600;justify-content:space-between;padding:8px 10px}
+    .compact-details summary::after{background:var(--brand);border-radius:999px;color:#fff;content:"Editar";font-size:10px;font-weight:800;letter-spacing:.04em;padding:3px 10px;text-transform:uppercase}
     .compact-details[open] summary::after{content:"Recolher"}
-    .compact-details .detail-body{padding:8px 10px 10px}
-    .compact-details .calc-grid{gap:8px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
-    .compact-details label{font-size:10.5px;margin-bottom:3px}
-    .compact-details input,.compact-details select{border-radius:8px;font-size:13px;min-height:34px;padding:7px 8px}
-    .compact-details input[readonly]{background:#f8fafc;color:#123c69;font-weight:800}
+    .compact-details .detail-body{padding:10px 12px 12px}
+    .compact-details .calc-grid{gap:10px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+    /* Labels do compact-details (panel em fundo claro): mono uppercase navy
+       — análogo aos labels do calc-panel (cyan em fundo dark), mas com cor
+       de alto contraste sobre o cinza-claro do panel. */
+    .compact-details label{
+      display:block;
+      font-family:var(--font-mono);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--brand);
+      margin-bottom:4px;
+    }
+    .compact-details label .unit-inline{
+      font-family:var(--font-body);
+      font-size:11px;
+      font-weight:600;
+      letter-spacing:0;
+      text-transform:none;
+      color:var(--ink-2);
+      margin-left:3px;
+    }
+    .compact-details input,.compact-details select{
+      border:1px solid #c8d4e1;
+      border-radius:8px;
+      font-size:13.5px;
+      min-height:34px;
+      padding:7px 9px;
+      background:#fff;
+      color:var(--brand-deep);
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    .compact-details input::placeholder{color:#7c8ba0;opacity:1}
+    .compact-details input:hover,.compact-details select:hover{border-color:rgba(18,190,209,.55)}
+    .compact-details input:focus,.compact-details select:focus{outline:0;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(18,190,209,.22)}
+    .compact-details input[readonly]{
+      background:linear-gradient(135deg,#dce9f6 0%,#eef3f8 100%);
+      color:var(--brand-deep);
+      font-family:var(--font-mono);
+      font-weight:700;
+      border-color:rgba(18,190,209,.36);
+      cursor:default;
+    }
+    .compact-details input[readonly]:hover,.compact-details input[readonly]:focus{border-color:rgba(18,190,209,.36);box-shadow:none}
     @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}.calc-panel{background:#fff;color:#111;border:1px solid #ccc}.calc-panel h3{color:#111}.calc-result{background:#f8fafc;color:#111}.calc-panel label{color:#111}.btnrow{display:none}}
   </style>
 </head>
@@ -274,11 +605,20 @@
 
   <main>
     <div class="hero">
-      <h2>Módulo 7 — Calculadoras interativas</h2>
-      <p>Ferramentas práticas para preparo e cálculo operacional em cuidados intensivos: bólus para intubação orotraqueal; bólus / push-dose / dose intermitente em emergência; reposição de eletrólitos e medicações em infusão contínua.</p>
+      <span class="hero__eyebrow">Módulo 7 · Ferramentas operacionais</span>
+      <h2>Calculadoras interativas</h2>
+      <p>Preparo, diluição, vazão e prescrição à beira-leito. Cada calculadora entrega instruções claras de <strong>volume a aspirar</strong>, <strong>volume do diluente</strong> e <strong>concentração final</strong> para que a etapa de cálculo deixe de ser fonte de erro.</p>
+      <div class="badge-row">
+        <span class="badge">IOT</span>
+        <span class="badge">Bólus</span>
+        <span class="badge">Eletrólitos</span>
+        <span class="badge">Infusão contínua</span>
+        <span class="badge">Cenário integrado</span>
+      </div>
     </div>
 
     <section id="paciente">
+      <span class="section-eyebrow">Paciente · base de cálculo</span>
       <h2>1. Dados globais do paciente</h2>
       <p style="margin:0 0 8px 0;font-size:13px;color:#5f6b7a">Os dados abaixo alimentam todas as calculadoras do módulo.</p>
       <div class="calc-panel" style="padding:10px 14px;margin:8px 0">
@@ -305,6 +645,7 @@
     </section>
 
     <section id="iot">
+      <span class="section-eyebrow">Calculadora · IOT</span>
       <h2>2. Calculadora para Intubação</h2>
       <div class="calc-panel">
         <h3>Estratégia de intubação</h3>
@@ -364,6 +705,7 @@
     </section>
 
     <section id="dva">
+      <span class="section-eyebrow">Calculadora · bólus</span>
       <h2>3. Calculadora de bólus / dose intermitente</h2>
       <p>Drogas administradas em bólus único (push-dose) ou em infusão intermitente programada por tempo. Para drogas vasoativas em infusão contínua titulada (noradrenalina, adrenalina, dobutamina, etc.), use a calculadora <a href="#continua">Drogas em infusão contínua</a> com a categoria <strong>Droga vasoativa</strong>. Para reposição IV de eletrólitos (KCl, MgSO₄, gluconato/cloreto de cálcio, fosfato de potássio), use a seção dedicada <a href="#eletrolitos">Reposição de eletrólitos</a>.</p>
 
@@ -410,6 +752,7 @@
     </section>
 
     <section id="eletrolitos">
+      <span class="section-eyebrow">Calculadora · eletrólitos</span>
       <h2>4. Reposição de eletrólitos</h2>
       <p>Calculadora dedicada à reposição IV de distúrbios hidroeletrolíticos: KCl, sulfato de magnésio, gluconato/cloreto de cálcio e fosfato de potássio. Mantida em painel separado da calculadora de bólus para evitar mistura de cenários hemodinâmicos com reposição metabólica. Para os critérios clínicos (faixas, indicação, regras de delta/concentração/via), ver o Módulo 6 — Distúrbios hidroeletrolíticos.</p>
 
@@ -528,7 +871,8 @@
     </section>
 
     <section id="continua">
-      <h2>5. Drogas em infusão contínua - preparo e administração.</h2>
+      <span class="section-eyebrow">Calculadora · infusão contínua</span>
+      <h2>5. Drogas em infusão contínua — preparo e administração</h2>
       <div class="calc-panel">
         <h3>Infusão contínua</h3>
         <input id="infAutoMode" type="hidden" value="">
@@ -554,17 +898,17 @@
             <div class="compact-note">A concentração da ampola é calculada automaticamente (massa total ÷ volume total) e é usada para calcular o volume a aspirar.</div>
           </div>
         </details>
-        <details class="refs-collapsible compact-details" style="margin-top:10px">
+        <details class="refs-collapsible compact-details" id="infManualPrep" style="margin-top:10px">
           <summary>Preparo manual da solução (sobrescreve o preset)</summary>
           <div class="detail-body">
             <div class="calc-grid">
               <div><label for="infFinalMass">Massa do fármaco na solução</label><input id="infFinalMass" type="number" step="0.001" placeholder="ex.: 500"></div>
               <div><label for="infFinalMassUnit">Unidade da massa</label><select id="infFinalMassUnit"><option value="mcg">mcg</option><option value="mg" selected>mg</option><option value="g">g</option><option value="UI">UI</option></select></div>
               <div><label for="infDiluent">Diluente</label><select id="infDiluent"></select></div>
-              <div><label for="infFinalVolume">Volume final da solução (mL)</label><input id="infFinalVolume" type="number" step="1" min="1" placeholder="ex.: 50"></div>
+              <div><label for="infFinalVolume">Volume final da solução (mL)</label><input id="infFinalVolume" type="number" step="1" min="1" placeholder="ex.: 250"></div>
               <div><label>Concentração final calculada</label><input id="infFinalConcPreview" type="text" value="—" readonly></div>
             </div>
-            <div class="compact-note">Ao escolher uma solução pré-definida acima, os campos abaixo são auto-preenchidos. Edite massa, diluente ou volume para montar uma solução personalizada — a concentração final é recalculada automaticamente. O volume final da solução também define o tamanho do frasco/bolsa usado no planejamento de 12h.</div>
+            <div class="compact-note">Por padrão, a solução final segue o preset selecionado acima. Abra este painel e edite massa/volume/diluente apenas se quiser sobrescrever — a concentração final é recalculada automaticamente. O volume final aqui também define o tamanho do frasco/bolsa usado no planejamento de 12 h.</div>
           </div>
         </details>
         <!-- Mantido como hidden para retrocompat com planning24h; valor espelha infFinalVolume via JS -->
@@ -580,6 +924,7 @@
     </section>
 
     <section id="resumo">
+      <span class="section-eyebrow">Cenário integrado · prescrição</span>
       <h2>6. Cenário-resumo</h2>
       <p>O resumo organiza as drogas calculadas no atendimento, com dose, volume/vazão e solução preparada.</p>
       <div class="calc-panel">
@@ -592,12 +937,13 @@
           <span class="summary-counter" aria-live="polite">Itens adicionados: 0</span>
         </div>
         <div class="calc-result" id="summaryOut"><strong>Nenhum item adicionado.</strong><span>Use as calculadoras acima e clique em “Prescreva (adicionar ao cenário-resumo)”.</span></div>
-        <textarea id="chartNoteOut" style="width:100%;min-height:260px;margin-top:12px;border:1px solid #d8e0ea;border-radius:12px;padding:12px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.45" placeholder="Clique em “Gerar texto para prontuário” após adicionar as drogas ao cenário-resumo."></textarea>
+        <textarea id="chartNoteOut" style="width:100%;min-height:260px;margin-top:12px;border:1px solid #d8e0ea;border-radius:12px;padding:12px;font-family:var(--font-mono);font-size:12.5px;line-height:1.5" placeholder="Clique em “Gerar texto para prontuário” após adicionar as drogas ao cenário-resumo."></textarea>
       </div>
     </section>
 
 
     <section id="leituras">
+      <span class="section-eyebrow">Leitura sugerida · cenários</span>
       <h2>Sugestão de leitura por cenário</h2>
       <div class="calc-panel">
         <h3>Leitura orientada</h3>
@@ -790,7 +1136,7 @@ const dvaDrugs = {
     label:"Vasodilatador/anti-hipertensivo titulável",
     drugs:{
       nitroglicerina:{name:"Nitroglicerina", doseUnit:"mcg/min", defaultDose:20, range:"5–200 mcg/min", preps:[{label:"Nitroglicerina 50 mg em 250 mL = 200 mcg/mL (conferir frasco/ampola disponível)", conc:200, unit:"mcgml", prep:"Nitroglicerina 50 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por ampola/fr.) + diluente q.s.p. 250 mL = solução final 250 mL → concentração 200 mcg/mL"}], notes:"Predomínio venoso; útil em EAP hipertensivo/isquemia."},
-      nitroprussiato:{name:"Nitroprussiato", doseUnit:"mcg/kg/min", defaultDose:0.5, range:"0,3–10 mcg/kg/min", preps:[{label:"1 frasco-ampola nitroprussiato 50 mg em 250 mL = 200 mcg/mL", conc:200, unit:"mcgml", prep:"Nitroprussiato 50 mg = 1 frasco-ampola 50 mg liofilizado, reconstituído conforme bula (volume após reconstituição conforme fabricante) + SG 5% q.s.p. 250 mL = solução final 250 mL → concentração 200 mcg/mL; proteger da luz"}], notes:"Vasodilatador arterial/venoso potente; toxicidade cianeto/tiocianato."},
+      nitroprussiato:{name:"Nitroprussiato", doseUnit:"mcg/kg/min", defaultDose:0.5, range:"0,3–10 mcg/kg/min", preps:[{label:"1 frasco-ampola nitroprussiato 50 mg em 250 mL = 200 mcg/mL", conc:200, unit:"mcgml", prep:"Nitroprussiato 50 mg = 1 frasco-ampola liofilizado reconstituído em 2 mL de SG 5% (25 mg/mL) + 248 mL de SG 5% = solução final 250 mL → concentração 200 mcg/mL; proteger da luz e usar exclusivamente SG 5% (incompatível com SF 0,9% e RL)"}], notes:"Vasodilatador arterial/venoso potente; toxicidade cianeto/tiocianato."},
       nicardipina:{name:"Nicardipina", doseUnit:"mg/h", defaultDose:5, range:"5–15 mg/h", preps:[{label:"Nicardipina 25 mg em 250 mL = 0,1 mg/mL (conferir ampola disponível)", conc:0.1, unit:"mgml", prep:"Nicardipina 25 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por ampola/fr.) + diluente q.s.p. 250 mL = solução final 250 mL → concentração 0,1 mg/mL"}], notes:"Controle pressórico em neuroemergências quando disponível."},
       clevidipina:{name:"Clevidipina", doseUnit:"mg/h", defaultDose:2, range:"1–2 mg/h inicial; titular rapidamente; maioria ≤16 mg/h; limitar carga lipídica e duração conforme bula/protocolo", preps:[{label:"Clevidipina 0,5 mg/mL — emulsão pronta para uso", conc:0.5, unit:"mgml", prep:"Clevidipina 0,5 mg/mL = emulsão lipídica pronta para uso (volume total do frasco conforme fabricante). Não diluir. Usar equipo compatível e trocar conforme protocolo institucional"}], notes:"Bloqueador de canal de cálcio arterial ultracurto; útil em emergência hipertensiva/neuroemergências quando disponível. Contraindicada em alergia a soja/ovo conforme formulação e distúrbios do metabolismo lipídico."},
       esmolol:{name:"Esmolol", doseUnit:"mcg/kg/min", defaultDose:50, range:"25–200 mcg/kg/min", preps:[{label:"Esmolol 2500 mg em 250 mL = 10 mg/mL (conferir apresentação disponível)", conc:10, unit:"mgml", prep:"Esmolol 2500 mg = volume conforme apresentação comercial disponível (conferir concentração, volume total e conteúdo por frasco/ampola) + diluente q.s.p. 250 mL = solução final 250 mL → concentração 10 mg/mL"}], notes:"Controle de FC/dPdt; atenção à unidade mg/mL.", bolusInfo:"Dose de ataque usual quando indicada: 500 mcg/kg IV em 1 min antes da infusão, conforme PA/FC e protocolo. Para 70 kg: 35 mg; calcular pelo peso real do paciente."},
@@ -1217,7 +1563,7 @@ const dvaBolusDrugs = {
           deltaSemantic:"O Δ aqui representa o <strong>aumento esperado no exame de Na sérico do paciente</strong> (mEq por litro de plasma/sangue) — <strong>NÃO</strong> a quantidade de Na que será adicionada à solução. Valor vem do preset de tempo selecionado (limite seguro por janela).",
           formulaCitation: function(ctx){
             const { peso, sexo, atual, delta } = ctx || {};
-            const formulaBox = "font-family:'Courier New',monospace;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:6px;padding:12px;margin:8px 0;font-size:12px;line-height:1.7;text-align:center;color:#0f172a";
+            const formulaBox = "font-family:'JetBrains Mono','IBM Plex Mono',ui-monospace,monospace;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:6px;padding:12px;margin:8px 0;font-size:12px;line-height:1.7;text-align:center;color:#0f172a";
             const frac = (num, den) => `<span style="display:inline-block;text-align:center;vertical-align:middle"><span style="display:block;border-bottom:1px solid #0f172a;padding:0 8px">${num}</span><span style="display:block;padding:0 8px">${den}</span></span>`;
             const explanation = `
               <p style="margin:0 0 8px 0"><strong>Sobre o cálculo:</strong> a fórmula de <strong>Adrogué-Madias</strong> (NEJM 2000;342:1581–9) estima a variação esperada do sódio sérico após a infusão de uma solução, e a partir dela é possível calcular <strong>quantos mL de NaCl 3% são necessários para elevar em X mEq/L o sódio sérico deste paciente</strong> (e, portanto, a massa de Na⁺ que será administrada em mg e em mEq).</p>`;
@@ -1337,7 +1683,7 @@ const dvaBolusDrugs = {
           // Bech usa alvo P = 1,25 mmol/L (= 3,87 mg/dL). Generalizamos: dose = 0,5 × peso × (alvo − atual) em mmol/L.
           formulaCitation: function(ctx){
             const { peso, atual, delta } = ctx || {};
-            const formulaBox = "font-family:'Courier New',monospace;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:6px;padding:12px;margin:8px 0;font-size:12px;line-height:1.7;text-align:center;color:#0f172a";
+            const formulaBox = "font-family:'JetBrains Mono','IBM Plex Mono',ui-monospace,monospace;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:6px;padding:12px;margin:8px 0;font-size:12px;line-height:1.7;text-align:center;color:#0f172a";
             const indicationsBox = "background:#fff;border:1px solid #d8e0ea;border-radius:6px;padding:8px 12px;margin:8px 0;font-size:11px;line-height:1.55;color:#475569";
             const explanation = `
               <p style="margin:0 0 8px 0"><strong>Sobre o cálculo:</strong> a fórmula de <strong>Bech 2013</strong> (J Crit Care 28:838) calcula a dose individualizada de fosfato (em mmol) para corrigir a hipofosfatemia a partir do peso e da diferença entre P alvo e P atual.</p>`;
@@ -1510,6 +1856,43 @@ function fmt(x, d=2){
  * portanto fmtBR(10,1) → "10", fmtBR(0.010,3) → "0,01", fmtBR(7,2) → "7". */
 function fmtBR(x, d=2){
   return fmt(x, d).replace(".", ",");
+}
+/* Realça volumes (mL) em uma string de preparo, envolvendo cada ocorrência
+ * numérica seguida de "mL" em <strong>. Garante destaque visual consistente
+ * de volume aspirado + volume diluente + volume final em qualquer texto de
+ * preparo, mesmo quando vem de strings de preset não formatadas.
+ *
+ * Evita reaplicar caso o trecho já esteja dentro de uma tag (heurística
+ * simples: pula se a tag <strong> já abre antes do match e fecha depois).
+ * Para presets curtos isso não acontece, então a regex direta é suficiente. */
+function emphasizeVolumes(text){
+  if(!text || typeof text !== "string") return text;
+  // Padrão: número inteiro ou decimal (com vírgula ou ponto) + opcional espaço + "mL"
+  // Limita a palavra "mL" (case-insensitive) e evita capturar "mL/h" duas vezes:
+  // o "X mL" em "5 mL/h" também fica em negrito (vazão) — aceitável.
+  return text.replace(/(\d+(?:[.,]\d+)?)\s*mL\b/g, "<strong>$1 mL</strong>");
+}
+
+/* Formata a linha de diluente para a tela de resultado:
+ *   "<strong>X mL</strong> de <strong>SF 0,9%</strong> [exclusivo|preferencial]"
+ *
+ * Quando o fármaco tem `allowedDiluents.length === 1`, marca como exclusivo
+ * (chip vermelho/cyan). Quando tem `preferredDiluent`, marca como preferencial
+ * (chip cyan suave). Sem indicadores, apenas o nome em negrito.
+ *
+ * Usado em `medKv("Volume do diluente", diluentDisplay(...))` e onde mais
+ * couber. Volume sempre vem como string já formatada (ex: "234").
+ */
+function diluentDisplay(volStr, diluentName, drug){
+  const allowed = (drug && Array.isArray(drug.allowedDiluents)) ? drug.allowedDiluents : null;
+  const preferred = drug && drug.preferredDiluent;
+  let chip = "";
+  if(allowed && allowed.length === 1){
+    chip = ` <span class="diluent-chip diluent-chip--exclusive">exclusivo</span>`;
+  } else if(preferred && preferred === diluentName){
+    chip = ` <span class="diluent-chip diluent-chip--preferred">preferencial</span>`;
+  }
+  return `<strong>${volStr} mL</strong> de <strong>${diluentName}</strong>${chip}`;
 }
 /* Otimiza display de massa: mcg que seja múltiplo inteiro de 1000 vira mg
  *   500 mcg → {value:500, unit:"mcg"}    (sem conversão)
@@ -1708,6 +2091,10 @@ function infusionPrepLine(ampOverride, bagVolume, conc, concUnit, diluent){
   if(!c) return null;
   const dilName = diluent || "diluente";
   const massa = smartMass(c.massaAspirada, c.massaAspiradaUnit);
+  // Uso puro — volumeDiluente é zero (a ampola é o próprio volume final).
+  if(c.volumeDiluente <= 0.5){
+    return `Ampola pura <strong>${fmtBR(bagVolume, 1)} mL</strong> contendo <strong>${fmtBR(massa.value, 2)} ${massa.unit}</strong> a <strong>${fmtBR(conc, 3)} ${unitLabel(concUnit)}</strong> — sem diluição.`;
+  }
   return `Aspirar <strong>${fmtBR(c.volumeAspirar, 1)} mL</strong> da ampola (= <strong>${fmtBR(massa.value, 2)} ${massa.unit}</strong>) e adicionar a <strong>${fmtBR(c.volumeDiluente, 1)} mL</strong> de ${dilName} &rarr; volume final <strong>${bagVolume} mL</strong>.`;
 }
 
@@ -1731,7 +2118,12 @@ function buildInfusionOperationalLine(opts){
   let solucaoStr;
   if(c){
     const massa = smartMass(c.massaAspirada, c.massaAspiradaUnit);
-    solucaoStr = `aspirar <strong>${fmtBR(c.volumeAspirar, 1)} mL da ampola</strong> (= <strong>${fmtBR(massa.value, 2)} ${massa.unit}</strong>) + <strong>${fmtBR(c.volumeDiluente, 1)} mL de ${dilName}</strong> &rarr; <strong>${bagVolume} mL</strong> a <strong>${fmtBR(conc, 3)} ${unitLabel(concUnit)}</strong>`;
+    // Uso puro — ampola é o próprio volume final (sem diluente).
+    if(c.volumeDiluente <= 0.5){
+      solucaoStr = `ampola pura <strong>${bagVolume} mL</strong> (= <strong>${fmtBR(massa.value, 2)} ${massa.unit}</strong>) a <strong>${fmtBR(conc, 3)} ${unitLabel(concUnit)}</strong>, sem diluição`;
+    } else {
+      solucaoStr = `aspirar <strong>${fmtBR(c.volumeAspirar, 1)} mL da ampola</strong> (= <strong>${fmtBR(massa.value, 2)} ${massa.unit}</strong>) + <strong>${fmtBR(c.volumeDiluente, 1)} mL de ${dilName}</strong> &rarr; <strong>${bagVolume} mL</strong> a <strong>${fmtBR(conc, 3)} ${unitLabel(concUnit)}</strong>`;
+    }
   } else if(Number.isFinite(conc) && Number.isFinite(bagVolume)){
     solucaoStr = `<strong>${bagVolume} mL</strong> a <strong>${fmtBR(conc, 3)} ${unitLabel(concUnit)}</strong> (informe a apresentação da ampola para detalhar o preparo)`;
   } else {
@@ -1901,23 +2293,68 @@ function updateBolusManualConcPreview(){
   out.value = `${fmt(r.conc,3)} ${unitLabel(r.concUnit)} | ${fmt(r.massVal,2)} ${r.massUnit} em ${fmt(r.volMl,0)} mL${dil?` de ${dil}`:""}`;
 }
 
-/* Solução final editável — helpers */
+/* Solução final editável — helpers
+ *
+ * Tenta inferir massa-do-fármaco e volume-final da solução padrão a partir do
+ * preset selecionado. Em ordem de preferência:
+ *
+ *   1. Campo explícito `prep.finalVolume` (quando o preset declara o volume
+ *      padrão diretamente, ex: noradrenalina ou eletrólitos).
+ *   2. Regex no label: "X (mcg|mg|g|UI) em Y mL"
+ *      (cobre dobutamina/milrinona/adrenalina/etc).
+ *   3. Regex na string `prep.prep`: "solução final Y mL"
+ *      (cobre noradrenalina, cuja label diz "em 250 mL" mas a unidade no label
+ *      é mL/mL e a regex acima não casa).
+ *   4. **Uso puro (isPurePrep)**: medicação não é diluída — volume final é
+ *      o volume da própria ampola/frasco. Procura "frasco X mL" ou "ampola
+ *      X mL" no prep; se não achar, usa 50 mL como default razoável de
+ *      ampola/frasco padrão (propofol, etc).
+ *   5. Fallback geral: usa conc x volume padrão de 250 mL (padrão clínico
+ *      brasileiro de bolsa).
+ */
 function extractSolutionDefaultsFromPrep(prep){
   if(!prep) return {mass:NaN, massUnit:"mg", volume:NaN};
+
+  const concUnit = prep.unit || "mgml";
+  const massUnit = concUnit === "mcgml" ? "mcg" : concUnit === "uiml" ? "UI" : "mg";
+
+  // 1) Campo explícito `finalVolume` no preset
+  if(Number.isFinite(prep.finalVolume) && prep.finalVolume > 0 && Number.isFinite(prep.conc)){
+    return { mass: prep.conc * prep.finalVolume, massUnit, volume: prep.finalVolume };
+  }
+
+  // 2) Regex no label: "X mcg|mg|g|UI em Y mL"
   const label = prep.label || "";
-  // Padrão "X mcg|mg|g|UI em Y mL"
   let m = label.match(/(\d+(?:[.,]\d+)?)\s*(mcg|mg|g|UI)\s+em\s+(\d+(?:[.,]\d+)?)\s*mL/i);
   if(m) return {
     mass: parseFloat(m[1].replace(',','.')),
     massUnit: m[2].toLowerCase() === "ui" ? "UI" : m[2].toLowerCase(),
     volume: parseFloat(m[3].replace(',','.'))
   };
-  // Padrão "puro" — usa conc x volume padrão (frasco 50 mL ou bagVolume)
-  const volDefault = parseFloat(document.getElementById("infBagVolume")?.value || 50);
-  const concUnit = prep.unit || "mgml";
-  const massUnit = concUnit === "mcgml" ? "mcg" : concUnit === "uiml" ? "UI" : "mg";
+
+  // 3) Regex na string prep: "solução final Y mL"
+  const prepStr = prep.prep || "";
+  const mVol = prepStr.match(/solução\s+final\s+(\d+(?:[.,]\d+)?)\s*mL/i);
+  if(mVol && Number.isFinite(prep.conc)){
+    const vol = parseFloat(mVol[1].replace(',','.'));
+    const sm = smartMass(prep.conc * vol, massUnit);
+    return { mass: sm.value, massUnit: sm.unit, volume: vol };
+  }
+
+  // 4) Uso puro: volume da própria ampola/frasco. Procura "frasco X mL" ou
+  //    "ampola X mL" na string prep; se não achar, default 50 mL.
+  if(isPurePrep(prep) && Number.isFinite(prep.conc)){
+    const mAmp = prepStr.match(/(?:frasco|ampola|seringa)\s+(?:de\s+)?(\d+(?:[.,]\d+)?)\s*mL/i);
+    const vol = mAmp ? parseFloat(mAmp[1].replace(',','.')) : 50;
+    const sm = smartMass(prep.conc * vol, massUnit);
+    return { mass: sm.value, massUnit: sm.unit, volume: vol };
+  }
+
+  // 5) Fallback geral: volume padrão clínico 250 mL (bolsa padrão UTI BR).
+  const volDefault = 250;
   if(Number.isFinite(prep.conc)){
-    return { mass: prep.conc * volDefault, massUnit, volume: volDefault };
+    const sm = smartMass(prep.conc * volDefault, massUnit);
+    return { mass: sm.value, massUnit: sm.unit, volume: volDefault };
   }
   return {mass:NaN, massUnit:"mg", volume:NaN};
 }
@@ -2192,7 +2629,7 @@ function ampouleInfoByName(name){
   if(n.includes("milrinona")) return {unit:"mcg", content:10000, volume:10, label:"ampola 10 mg/10 mL"};
   if(n.includes("dopamina")) return {unit:"mcg", content:200000, volume:5, label:"ampola 200 mg/5 mL"};
   if(n.includes("nitroglicerina")) return {unit:"mcg", content:50000, volume:10, label:"ampola 50 mg/10 mL"};
-  if(n.includes("nitroprussiato")) return {unit:"mcg", content:50000, volume:null, label:"frasco-ampola 50 mg; reconstituir conforme bula"};
+  if(n.includes("nitroprussiato")) return {unit:"mcg", content:50000, volume:2, label:"frasco-ampola 50 mg liofilizado; reconstituir em 2 mL de SG 5% → 25 mg/mL para então diluir em 250 mL"};
   if(n.includes("nicardipina")) return {unit:"mg", content:25, volume:null, label:"25 mg conforme apresentação disponível"};
   if(n.includes("hidralazina")) return {unit:"mg", content:20, volume:1, label:"ampola 20 mg/1 mL (volume total 1 mL; 20 mg/mL)"};
   if(n.includes("amiodarona")) return {unit:"mg", content:150, volume:3, label:"ampola 150 mg/3 mL (volume total 3 mL; 50 mg/mL)"};
@@ -2975,7 +3412,7 @@ function calcIOT(){
         ${medCard("Solução preparada", [
           medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, iotAmpouleLine())),
           medKv("Diluente/uso", diluentGuidance(x.d.name, iotAmpouleLine(), "bolus")),
-          medKv("Volume a aspirar", `${fmt(x.volume,2)} mL`),
+          medKv("Volume a aspirar", `<strong>${fmt(x.volume,2)} mL</strong>`),
           medKv("Massa total", `${fmt(x.calc.amount,2)} ${x.calc.unit}`),
           medKv("Concentração da solução", `${fmt(x.conc,3)} ${x.concUnit==="mgml"?"mg/mL":(x.concUnit==="uiml"?"UI/mL":"mcg/mL")}`)
         ], "med-card--primary")}
@@ -3177,9 +3614,14 @@ function calcDVABolus(){
           ${medCard("Solução preparada", [
             medKv("Apresentação comercial", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
             medKv("Diluente/uso", diluentGuidance(x.d.name, x.presentation.prep, "intermittent")),
-            medKv("Preparo da solução", x.presentation.prep),
-            medKv("Volume a aspirar da ampola", `${fmt(x.volumeAspirar,2)} mL${ampLabel ? ` (${ampLabel})` : ""}`),
-            medKv("Volume final a ser administrado", `${fmt(x.finalVolume,0)} mL`),
+            medKv("Preparo da solução", emphasizeVolumes(x.presentation.prep)),
+            medKv("Volume a aspirar da ampola", `<strong>${fmt(x.volumeAspirar,2)} mL</strong>${ampLabel ? ` (${ampLabel})` : ""}`),
+            (function(){
+              const vDil = Math.max(0, x.finalVolume - x.volumeAspirar);
+              if(vDil <= 0.5) return medKv("Diluição", "<strong>Ampola pura, sem diluente</strong>");
+              return medKv("Volume do diluente", diluentDisplay(fmt(vDil,2), x.d.preferredDiluent || "diluente", x.d));
+            })(),
+            medKv("Volume final a ser administrado", `<strong>${fmt(x.finalVolume,0)} mL</strong>`),
             medKv("Massa total", `${fmt(x.rawDose,2)} ${x.selectedDoseUnit}${x.doseConvertedUnit && x.doseConvertedUnit !== x.selectedDoseUnit ? ` (= ${fmt(x.doseInMg,2)} ${x.doseConvertedUnit})` : ""}`),
             medKv("Concentração final calculada", `${fmt(x.concFinal,3)} ${x.concFinalUnitLabel || "mg/mL"}`)
           ], "med-card--primary")}
@@ -3213,17 +3655,17 @@ function calcDVABolus(){
           medKv("Solução final", `<strong>Ampola sem diluente (puro)</strong> — concentração ${fmt(x.conc,3)} ${unitLabel(x.concUnit)}`),
           (function(){
             const ampLabel = ampoulesNeededLabel(x.volume, x.ampoule);
-            return medKv("Volume a administrar", `${fmt(x.volume,2)} mL${ampLabel ? ` (${ampLabel})` : ""}`);
+            return medKv("Volume a administrar", `<strong>${fmt(x.volume,2)} mL</strong>${ampLabel ? ` (${ampLabel})` : ""}`);
           })(),
           medKv("Massa total", `${fmt(x.amount.amount,2)} ${x.amount.unit}`)
         ] : [
           // Diluicao padrao
           medKv("Apresentação", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
           medKv("Diluente/uso", diluentGuidance(x.d.name, x.presentation.prep, "bolus")),
-          medKv("Preparo da solução", x.presentation.prep),
+          medKv("Preparo da solução", emphasizeVolumes(x.presentation.prep)),
           (function(){
             const ampLabel = ampoulesNeededLabel(x.volume, x.ampoule);
-            return medKv("Volume a administrar", `${fmt(x.volume,2)} mL${ampLabel ? ` (${ampLabel})` : ""}`);
+            return medKv("Volume a administrar", `<strong>${fmt(x.volume,2)} mL</strong>${ampLabel ? ` (${ampLabel})` : ""}`);
           })(),
           medKv("Massa total", `${fmt(x.amount.amount,2)} ${x.amount.unit}`),
           medKv("Concentração da solução", `${fmt(x.conc,3)} ${unitLabel(x.concUnit)}`)
@@ -4090,7 +4532,7 @@ function calcElet(){
             medKv("Apresentação comercial", compactAmpouleLine(x.d.name, x.ampoule, bolusAmpouleLine(x.ampoule))),
             x.viaMeta ? medKv("Via de administração", `${x.viaMeta.label}${x.viaMeta.maxConcLabel ? ` <span class="small" style="color:#5f6b7a">(${x.viaMeta.maxConcLabel})</span>` : ""}`) : "",
             medKv("Diluente/uso", diluentGuidance(x.d.name, x.presentation.prep, "intermittent")),
-            medKv("Preparo da solução", x.presentation.prep)
+            medKv("Preparo da solução", emphasizeVolumes(x.presentation.prep))
           ];
           if(isAdrogue){
             const Vol = x.finalVolume;
@@ -4113,7 +4555,7 @@ function calcElet(){
             const volDil = Number.isFinite(volAsp) ? (x.finalVolume - volAsp) : x.finalVolume;
             const diluente = x.d.preferredDiluent || "diluente";
             const massaTotal = `${fmt(x.rawDose,2)} ${x.selectedDoseUnit}`;
-            lines.push(medKv("Diluição", `<strong>${fmt(volAsp,2)} mL</strong> de ${ampShort}${ampLabel ? ` (${ampLabel})` : ""} + <strong>${fmt(volDil,0)} mL</strong> de ${diluente} (= <strong>${massaTotal}</strong> em ${fmt(x.finalVolume,0)} mL)`));
+            lines.push(medKv("Diluição", `<strong>${fmt(volAsp,2)} mL</strong> de ${ampShort}${ampLabel ? ` (${ampLabel})` : ""} + ${diluentDisplay(fmt(volDil,0), diluente, x.d)} (= <strong>${massaTotal}</strong> em ${fmt(x.finalVolume,0)} mL)`));
             lines.push(medKv("Concentração final", `<strong>${massaTotal} em ${fmt(x.finalVolume,0)} mL</strong> = ${fmt(x.concFinal,3)} ${x.concFinalUnitLabel || "mg/mL"}`));
           }
           return medCard("Solução preparada", lines, "med-card--primary");
@@ -4291,8 +4733,8 @@ function calcDVA(){
         ${medCard("Solução preparada", [
           medKv("Apresentação", ampoulePresentationLine(d.name)),
           medKv("Diluente/uso", diluentGuidance(d.name, prep.prep, "infusion")),
-          medKv("Preparo de solução", prepObj.preparo),
-          prepObj.diluicao ? medKv("Diluição", prepObj.diluicao) : "",
+          medKv("Preparo de solução", emphasizeVolumes(prepObj.preparo)),
+          prepObj.diluicao ? medKv("Diluição", emphasizeVolumes(prepObj.diluicao)) : "",
           medKv("Concentração final", prepObj.concentracao),
           medKv("Dose utilizada", doseUsed),
           medKv("Vazão em bomba", rateUsed)
@@ -4410,14 +4852,23 @@ function calcInfusion(){
   const mode=getAutoMode("infDose","infRate");
   let dose=parseFloat(document.getElementById("infDose").value);
   const rate=parseFloat(document.getElementById("infRate").value);
-  // Solução final editável tem precedência; fallback para o preset
+  // Solução final: o preset sugerido é a fonte de verdade. O painel "Preparo
+  // manual" só sobrescreve se estiver aberto E com massa+volume preenchidos.
+  const manualOpen = !!document.getElementById("infManualPrep")?.open;
   const editableSol = getEditableSolutionConc();
-  const conc = Number.isFinite(editableSol.conc) ? editableSol.conc : prep.conc;
-  const concUnit = Number.isFinite(editableSol.conc) ? editableSol.concUnit : prep.unit;
+  const useManual = manualOpen && Number.isFinite(editableSol.conc);
+  const presetDefaults = extractSolutionDefaultsFromPrep(prep);
+  const conc = useManual ? editableSol.conc : prep.conc;
+  const concUnit = useManual ? editableSol.concUnit : prep.unit;
   updateFinalSolutionPreview();
   const hours=parseFloat(document.getElementById("infTargetHours")?.value || 12);
-  const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
-  const diluent=document.getElementById("infDiluent")?.value || "diluente";
+  // Volume final: preferir o manual (quando habilitado); senão, o do preset.
+  const presetBag = Number.isFinite(presetDefaults.volume) ? presetDefaults.volume : 250;
+  const bagVolume = useManual && Number.isFinite(editableSol.volMl) ? editableSol.volMl : presetBag;
+  // Sincroniza o hidden bagVolume com o valor efetivamente usado (planning24h depende).
+  const bagHidden = document.getElementById("infBagVolume");
+  if(bagHidden) bagHidden.value = String(bagVolume);
+  const diluent=document.getElementById("infDiluent")?.value || d.preferredDiluent || "diluente";
   const ampOverride=getInfAmpOverride();
   let result, detail, modeLabel, planning="", vazaoFinal=NaN;
   if(mode==="doseToRate"){
@@ -4511,12 +4962,18 @@ function addInfusionToSummary(){
   const {d,prep}=currentInf();
   {
   const mode=getAutoMode("infDose","infRate");
+  // Mesma lógica de calcInfusion: preset é a fonte de verdade. Manual só
+  // entra se o painel "Preparo manual" estiver aberto E preenchido.
+  const manualOpen = !!document.getElementById("infManualPrep")?.open;
   const editableSol = getEditableSolutionConc();
-  const conc = Number.isFinite(editableSol.conc) ? editableSol.conc : prep.conc;
-  const concUnit = Number.isFinite(editableSol.conc) ? editableSol.concUnit : prep.unit;
+  const useManual = manualOpen && Number.isFinite(editableSol.conc);
+  const presetDefaults = extractSolutionDefaultsFromPrep(prep);
+  const conc = useManual ? editableSol.conc : prep.conc;
+  const concUnit = useManual ? editableSol.concUnit : prep.unit;
   const hours=parseFloat(document.getElementById("infTargetHours")?.value || 12);
-  const bagVolume=parseFloat(document.getElementById("infBagVolume")?.value || 250);
-  const diluent=document.getElementById("infDiluent")?.value || "diluente";
+  const presetBag = Number.isFinite(presetDefaults.volume) ? presetDefaults.volume : 250;
+  const bagVolume = useManual && Number.isFinite(editableSol.volMl) ? editableSol.volMl : presetBag;
+  const diluent=document.getElementById("infDiluent")?.value || d.preferredDiluent || "diluente";
   const ampOverride=getInfAmpOverride();
   let doseVal=parseFloat(document.getElementById("infDose").value);
   let rateVal=parseFloat(document.getElementById("infRate").value);
