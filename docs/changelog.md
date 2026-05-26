@@ -1,5 +1,43 @@
 # Changelog
 
+## 2026-05-26 — iOS PWA navy persistente: fallback visível + SW network-first + cache-purge button (v62)
+
+### Tipo de alteração
+
+- **Técnica/UX**. Corrige tela navy persistente no PWA iOS (React não monta) com fallback visível e estratégia de cache mais robusta.
+
+### Motivação
+
+Após o fix anterior (pre-paint navy, SW v61), usuário reportou: a tela continua navy persistente — significa que o pre-paint funcionou (não fica mais branco), MAS o React não está montando nada além do body. Causa raiz mais provável: **SW antigo cacheou index.html que referencia hash JS antigo que não existe mais no deploy** → fetch de JS 404 → React não monta → navy puro fica visível.
+
+### O que mudou
+
+1. **Fallback visível em `#root`** (`index.html`):
+   - HTML pré-renderiza um placeholder com logo cyan pulsante + texto "Carregando…"
+   - Sentinela em JS aguarda 4 s. Se React não montar nesse tempo, troca para "Não consegui carregar o app" + botão **"Recarregar e limpar cache"**.
+   - Botão executa: `serviceWorker.unregister()` em todas as registrations + `caches.delete()` em todas as keys + `location.replace()` com cache-bust.
+   - MutationObserver no `#root` esconde o fallback automaticamente quando o React monta o primeiro filho.
+
+2. **SW v61 → v62, network-first universal**:
+   - Antes: HTML era network-first (correto), mas assets eram cache-first com fallback de rede → bundle JS com hash antigo no cache + hash novo no index → tela em branco.
+   - Agora: **toda requisição GET same-origin tenta network primeiro**. Cache é apenas fallback offline.
+   - Garante bundles JS sempre frescos (sem risco de hash mismatch entre index e assets).
+   - Mantém uso offline: se network falha, serve do cache (último bom valor); se navigate falha sem cache, serve `index.html` cacheado.
+   - Adicionado listener de message `SKIP_WAITING` para permitir página forçar ativação.
+
+3. **Pre-react fallback CSS** com animação de pulse, sem dependências externas — funciona mesmo se nenhum JS rodar.
+
+### Hash
+
+- Sem alteração em módulos clínicos. Apenas `public/sw.js`, `index.html`.
+
+### Comportamento esperado pelo usuário
+
+Mesmo cenário (instalar PWA iOS) agora deve:
+- Mostrar logo pulsante por ~1–2 s
+- Se React monta normalmente → some o fallback, mostra landing
+- Se algo trava → após 4 s aparece botão "Recarregar e limpar cache" — toque uma vez resolve
+
 ## 2026-05-26 — Fix iOS PWA white screen: start_url simples, pre-paint navy, SW v61
 
 ### Tipo de alteração
