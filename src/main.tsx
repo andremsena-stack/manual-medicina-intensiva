@@ -1,9 +1,39 @@
-import { StrictMode } from "react";
+import { StrictMode, Component, type ErrorInfo, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { ClerkProvider } from "@clerk/clerk-react";
 import App from "./App";
 import { AuthConfigurationMissing, AuthGate, SignedOutScreen } from "./components/AuthGate";
 import { registerServiceWorker } from "./registerServiceWorker";
+
+// ErrorBoundary que escreve o erro no fallback HTML — captura crashes de
+// render do React (que NÃO disparam window.onerror). Essencial para debug
+// remoto em iOS PWA standalone sem acesso a DevTools.
+class RootErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    if (typeof document === "undefined") return;
+    const fb = document.getElementById("preReactFallback");
+    const diag = document.getElementById("preReactDiag");
+    if (!fb || !diag) return;
+    const stackLines = (error.stack || "").split("\n").slice(0, 4).join("\n");
+    const compStack = (info.componentStack || "").split("\n").slice(0, 4).join("\n");
+    const msg = `[React render error] ${error.message}\n${stackLines}\n--- component stack ---${compStack}`;
+    const existing = diag.textContent ? diag.textContent + "\n\n" : "";
+    diag.textContent = existing + msg;
+    fb.classList.add("has-error", "is-stuck");
+    const title = document.getElementById("preReactTitle");
+    const sub = document.getElementById("preReactSub");
+    if (title) title.textContent = "Erro ao carregar o app";
+    if (sub) sub.textContent = "O React não conseguiu renderizar. Veja detalhes abaixo.";
+  }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
 // Self-hosted Inter Tight via @fontsource (latin subset, pesos usados na landing).
 // Substitui o <link> Google Fonts no index.html — evita FOUT e dependência externa.
 import "@fontsource/inter-tight/latin-400.css";
@@ -42,9 +72,9 @@ if (isPaywallPreview) {
   // sem precisar de Clerk autenticado nem de subscription. Eliminado do bundle prod.
   void import("./components/AuthGate").then(({ PaywallPreview }) => {
     root.render(
-      <StrictMode>
+      <StrictMode><RootErrorBoundary>
         <PaywallPreview />
-      </StrictMode>
+      </RootErrorBoundary></StrictMode>
     );
   });
 } else if (isAppPreview) {
@@ -52,35 +82,35 @@ if (isPaywallPreview) {
   // sidebar e busca sem precisar de login em produção. Eliminado do bundle prod
   // pelo gate import.meta.env.DEV combinado com o dynamic import.
   root.render(
-    <StrictMode>
+    <StrictMode><RootErrorBoundary>
       <App />
-    </StrictMode>
+    </RootErrorBoundary></StrictMode>
   );
 } else if (isModulesPreview) {
   // Dev-only: import dinâmico para que ReviewAllModules NÃO entre na build de produção
   // (combinado com import.meta.env.DEV gateado acima, o branch some inteiro do bundle prod).
   void import("./components/ReviewAllModules").then(({ ReviewAllModules }) => {
     root.render(
-      <StrictMode>
+      <StrictMode><RootErrorBoundary>
         <ReviewAllModules />
-      </StrictMode>
+      </RootErrorBoundary></StrictMode>
     );
   });
 } else if (isLandingPreview) {
   root.render(
-    <StrictMode>
+    <StrictMode><RootErrorBoundary>
       <SignedOutScreen previewMode />
-    </StrictMode>
+    </RootErrorBoundary></StrictMode>
   );
 } else if (!clerkPublishableKey) {
   root.render(
-    <StrictMode>
+    <StrictMode><RootErrorBoundary>
       <AuthConfigurationMissing />
-    </StrictMode>
+    </RootErrorBoundary></StrictMode>
   );
 } else {
   root.render(
-    <StrictMode>
+    <StrictMode><RootErrorBoundary>
       <ClerkProvider
         publishableKey={clerkPublishableKey}
         afterSignOutUrl="/"
@@ -92,7 +122,7 @@ if (isPaywallPreview) {
           <App />
         </AuthGate>
       </ClerkProvider>
-    </StrictMode>
+    </RootErrorBoundary></StrictMode>
   );
   registerServiceWorker();
 }
