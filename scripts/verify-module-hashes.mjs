@@ -13,7 +13,7 @@ const expectedHashes = {
   "modulo_04_manutencao_sedoanalgesia.html": "16aa3ad956ec40bf8f2210449f3b8da27fa658e8186267cfb1c8aceb41e9e9ce",
   "modulo_05_drogas_vasoativas.html": "f1aca64d33da7a0f1cb9fe82b0e4471f0169b237221ec08b357e9430aa85675a",
   "modulo_06_disturbios_hidroeletroliticos.html": "0d4e984122bcfe650ac2672b3ee0afdd3e2567aff4881d9198702dad137440db",
-  "modulo_07_calculadoras_interativas.html": "be689bfa78cb8a945a016f8aee8da18e5fed351b1b0f733b56da12c281a43af9",
+  "modulo_07_calculadoras_interativas.html": "b8da57601f948cbf7d8c8e559c453641c594ea555396c3bcea8f098a47f1b4bb",
   "modulo_08_referencias.html": "2b5ab7186a4ec7d2b3e3f2ee0034d2b68eee0b2ac0d4e56c5e99bd6631bbb532"
 };
 

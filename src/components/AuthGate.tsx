@@ -11,6 +11,14 @@ import {
   useUser
 } from "@clerk/clerk-react";
 import { useEffect, useRef, useState, type PropsWithChildren, type ReactNode } from "react";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+  type Variants
+} from "framer-motion";
 import App from "../App";
 import { useImageWithoutHalo } from "../utils/imageProcessing";
 import { moduleSources } from "../data/moduleSources";
@@ -120,33 +128,6 @@ const landingFeatures = [
     title: "Privacidade clínica",
     description:
       "Sem cadastro de paciente e sem armazenamento de dados sensíveis. Apenas o seu login e a sua assinatura ficam vinculados à conta."
-  }
-];
-
-const chapterHighlights = [
-  {
-    badge: "1",
-    title: "Vasoativos e perfusão",
-    body:
-      "Capítulo com discussão sobre escolha, titulação e diluição de noradrenalina, vasopressina e adrenalina, integrado à calculadora de dose e vazão por peso."
-  },
-  {
-    badge: "2",
-    title: "Sedoanalgesia e RASS",
-    body:
-      "Discussão clínica sobre fentanil, midazolam, propofol e dexmedetomidina, com calculadora de infusão contínua e meta de RASS individualizada."
-  },
-  {
-    badge: "3",
-    title: "Ventilação mecânica protetora",
-    body:
-      "Capítulos sobre peso predito, PEEP, pressão de platô e desmame, com calculadora interativa de parâmetros ventilatórios."
-  },
-  {
-    badge: "4",
-    title: "Reposição e bolus por peso",
-    body:
-      "Discussões sobre fluidos, eletrólitos e bolus por peso, com a calculadora de dose e volume associada a cada capítulo."
   }
 ];
 
@@ -266,151 +247,6 @@ function FeatureIcon({ name }: { name: string }) {
   );
 }
 
-function ProtocolDemo() {
-  return (
-    <div className="demo-card protocol-demo" role="figure" aria-label="Exemplos de capítulos com calculadoras associadas">
-      <div className="demo-header">
-        <span className="demo-tag demo-tag--info">Capítulos com calculadora</span>
-      </div>
-      <div className="demo-title">
-        <h3>Capítulos integrados às calculadoras</h3>
-        <p>Cada bloco apresenta a discussão clínica do tema e a calculadora associada do Manual.</p>
-      </div>
-      <ol className="protocol-steps">
-        {chapterHighlights.map((item) => (
-          <li key={item.badge}>
-            <span className="protocol-step-badge">{item.badge}</span>
-            <div>
-              <h4>{item.title}</h4>
-              <p>{item.body}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-      <div className="demo-footer">
-        <span className="demo-pill demo-pill--success">Calculadora integrada ao capítulo</span>
-        <span className="demo-pill demo-pill--warning">Unidades e diluições editáveis</span>
-      </div>
-    </div>
-  );
-}
-
-function CalculatorDemo() {
-  return (
-    <div className="demo-card calc-demo" role="figure" aria-label="Exemplo de calculadora de dose e vazão">
-      <div className="demo-header">
-        <span className="demo-tag demo-tag--info">Calculadora de infusão</span>
-      </div>
-      <div className="calc-grid">
-        <label className="calc-field">
-          <span>Peso</span>
-          <div className="calc-input">
-            <strong>70</strong>
-            <em>kg</em>
-          </div>
-        </label>
-        <label className="calc-field">
-          <span>Diluição</span>
-          <div className="calc-input">
-            <strong>4</strong>
-            <em>mg / 250 mL</em>
-          </div>
-        </label>
-        <label className="calc-field calc-field--active">
-          <span>Dose</span>
-          <div className="calc-input calc-input--active">
-            <strong>0,10</strong>
-            <em>mcg/kg/min</em>
-          </div>
-        </label>
-        <label className="calc-field calc-field--locked">
-          <span>Vazão calculada</span>
-          <div className="calc-input calc-input--locked">
-            <strong>26,3</strong>
-            <em>mL/h</em>
-          </div>
-        </label>
-      </div>
-    </div>
-  );
-}
-
-function ScreensShowcase() {
-  return (
-    <div className="screens-grid" role="list">
-      <article className="screen-card" role="listitem">
-        <div className="screen-card-frame" aria-hidden="true">
-          <div className="screen-mock screen-mock--noradrenalina">
-            <div className="screen-mock-bar" />
-            <div className="screen-mock-row">
-              <span>Noradrenalina</span>
-              <span className="screen-mock-chip">0,12 mcg/kg/min</span>
-            </div>
-            <div className="screen-mock-row">
-              <span>Vazão calculada</span>
-              <span className="screen-mock-value">31,5 mL/h</span>
-            </div>
-            <div className="screen-mock-row screen-mock-row--soft">
-              <span>Diluição</span>
-              <span>4 mg / 250 mL</span>
-            </div>
-          </div>
-        </div>
-        <h3>Calculadora de vasoativos por peso</h3>
-        <p>Dose, vazão e diluição em uma única tela. O bloqueio mútuo reduz o risco de erro de digitação.</p>
-      </article>
-
-      <article className="screen-card" role="listitem">
-        <div className="screen-card-frame" aria-hidden="true">
-          <div className="screen-mock screen-mock--sedacao">
-            <div className="screen-mock-bar" />
-            <div className="screen-mock-stack">
-              <span className="screen-mock-tag">Sedoanalgesia</span>
-              <strong>Fentanil + Midazolam</strong>
-              <span className="screen-mock-meta">RASS-alvo −2 — despertar diário</span>
-            </div>
-            <div className="screen-mock-grid">
-              <span>1,0 mcg/kg/h</span>
-              <span>0,05 mg/kg/h</span>
-            </div>
-          </div>
-        </div>
-        <h3>Calculadora de sedoanalgesia</h3>
-        <p>Cálculo de infusão contínua, com RASS-alvo e referência ao capítulo de sedação titulada.</p>
-      </article>
-
-      <article className="screen-card" role="listitem">
-        <div className="screen-card-frame" aria-hidden="true">
-          <div className="screen-mock screen-mock--vm">
-            <div className="screen-mock-bar" />
-            <div className="screen-mock-vm-grid">
-              <div>
-                <span>VT</span>
-                <strong>6 mL/kg PBW</strong>
-              </div>
-              <div>
-                <span>PEEP</span>
-                <strong>10 cmH2O</strong>
-              </div>
-              <div>
-                <span>FR</span>
-                <strong>22</strong>
-              </div>
-              <div>
-                <span>Pressão de platô</span>
-                <strong>27 cmH2O</strong>
-              </div>
-            </div>
-            <div className="screen-mock-bar screen-mock-bar--accent" />
-          </div>
-        </div>
-        <h3>Calculadora de ventilação protetora</h3>
-        <p>Apoio ao ajuste inicial por peso predito, com referência ao capítulo de pressão de platô e PEEP.</p>
-      </article>
-    </div>
-  );
-}
-
 function FooterBrand() {
   const cleaned = useImageWithoutHalo("/virtus-logo/virtus_icon_only_footer_30px.png");
   return (
@@ -426,11 +262,49 @@ function FooterBrand() {
   );
 }
 
-function LandingModuleCarousel() {
+// Variants compartilhados para reveal sequencial (Framer Motion).
+// Easing custom (cubic-bezier 0.16,1,0.3,1) = "expo-out" suave, mais cinemático
+// que ease-out padrão. Usado em headline split, phone reveal e meta entries.
+const HERO_EASE = [0.16, 1, 0.3, 1] as const;
+
+const heroWordVariants: Variants = {
+  hidden: { opacity: 0, y: 72, skewY: 4 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    skewY: 0,
+    transition: { delay: 0.2 + i * 0.12, duration: 0.9, ease: HERO_EASE }
+  })
+};
+
+const heroFadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (delay: number = 0.8) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay, duration: 0.7, ease: HERO_EASE }
+  })
+};
+
+function LandingHeroV2({ previewMode = false }: { previewMode?: boolean }) {
+  const reduceMotion = useReducedMotion();
+  const stageRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Parallax do phone (rotação 3D suave seguindo o mouse). Desligado quando
+  // o usuário pediu prefers-reduced-motion.
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 70, damping: 18 });
+  const springY = useSpring(mouseY, { stiffness: 70, damping: 18 });
+  const phoneRotateY = useTransform(springX, [-1, 1], [-7, 7]);
+  const phoneRotateX = useTransform(springY, [-1, 1], [4, -4]);
+  const phoneFloatY = useTransform(springY, [-1, 1], [-10, 10]);
+
+  // Estado do carousel (rotação automática dos 2 módulos visíveis).
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const total = landingModuleSources.length;
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     if (paused) {
@@ -461,115 +335,112 @@ function LandingModuleCarousel() {
     style.textContent = PREVIEW_BLOCK_CSS;
   };
 
+  const handleMouseMove = (event: React.MouseEvent) => {
+    if (reduceMotion || !stageRef.current) {
+      return;
+    }
+    const rect = stageRef.current.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+    setPaused(false);
+  };
+
   return (
-    <div
-      className="landing-carousel-split"
+    <section
+      className="hero-v2"
+      aria-labelledby="hero-v2-title"
+      ref={stageRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
     >
-      <div className="landing-section-copy landing-carousel-copy">
-        <p className="landing-eyebrow">Conteúdo real do Manual</p>
-        <h2 id="livepreview-title" className="landing-section-title">
-          O conteúdo real, exatamente como você vai usar no plantão.
-        </h2>
-        <p className="landing-section-lead">
-          Dois módulos do Manual entram em rotação no celular ao lado — um capítulo clínico e a
-          tela de calculadoras. A prévia é somente leitura; a interação completa é liberada após
-          a assinatura.
-        </p>
+      <LandingNav previewMode={previewMode} />
 
-        <div className="landing-carousel-meta">
-          <span className="landing-carousel-eyebrow">
-            Módulo {current.number} de {total}
-          </span>
-          <h3 className="landing-carousel-title">{current.title}</h3>
-        </div>
+      <div className="hero-v2-stage">
+        <motion.h1
+          id="hero-v2-title"
+          className="hero-v2-title hero-v2-title--top"
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.span className="hero-v2-word" custom={0} variants={heroWordVariants}>
+            Decisão
+          </motion.span>
+          <motion.span className="hero-v2-word" custom={1} variants={heroWordVariants}>
+            Rápida
+          </motion.span>
+        </motion.h1>
 
-        <div className="landing-carousel-controls">
-          <div className="landing-carousel-nav" role="group" aria-label="Navegar módulos">
-            <button
-              type="button"
-              className="landing-carousel-arrow"
-              onClick={goPrev}
-              aria-label="Módulo anterior"
+        <div className="hero-v2-phone-anchor">
+          <div className="hero-v2-phone-entrance">
+            <motion.div
+              className="hero-v2-phone-motion"
+              style={reduceMotion ? undefined : { rotateY: phoneRotateY, rotateX: phoneRotateX, y: phoneFloatY }}
             >
-              ‹
-            </button>
-            <button
-              type="button"
-              className="landing-carousel-arrow"
-              onClick={goNext}
-              aria-label="Próximo módulo"
+            <div
+              className="landing-phone hero-v2-phone"
+              role="figure"
+              aria-label={`Pré-visualização do módulo ${current.number}`}
             >
-              ›
-            </button>
-          </div>
-          <div className="landing-carousel-dots" role="tablist" aria-label="Módulo em destaque">
-            {landingModuleSources.map((mod, i) => (
-              <button
-                key={mod.id}
-                type="button"
-                role="tab"
-                aria-selected={i === index}
-                aria-label={`Ver módulo ${mod.number} — ${mod.title}`}
-                className={`landing-carousel-dot ${i === index ? "landing-carousel-dot--active" : ""}`}
-                onClick={() => setIndex(i)}
-              />
-            ))}
+              <span className="landing-phone-speaker" aria-hidden="true" />
+              <div className="landing-phone-screen">
+                <iframe
+                  key={current.id}
+                  ref={iframeRef}
+                  title={`Pré-visualização do módulo ${current.number} — ${current.title}`}
+                  srcDoc={current.html}
+                  className="landing-phone-iframe"
+                  sandbox="allow-same-origin allow-scripts"
+                  loading="lazy"
+                  onLoad={handleIframeLoad}
+                />
+              </div>
+            </div>
+            </motion.div>
           </div>
         </div>
-      </div>
 
-      <div className="landing-phone" role="figure" aria-label={`Pré-visualização do módulo ${current.number}`}>
-        <span className="landing-phone-speaker" aria-hidden="true" />
-        <div className="landing-phone-screen">
-          <iframe
-            key={current.id}
-            ref={iframeRef}
-            title={`Pré-visualização do módulo ${current.number} — ${current.title}`}
-            srcDoc={current.html}
-            className="landing-phone-iframe"
-            sandbox="allow-same-origin allow-scripts"
-            loading="lazy"
-            onLoad={handleIframeLoad}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
+        <motion.div
+          aria-hidden="true"
+          className="hero-v2-title hero-v2-title--bottom"
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.span className="hero-v2-word" custom={2} variants={heroWordVariants}>
+            Paciente
+          </motion.span>
+          <motion.span className="hero-v2-word" custom={3} variants={heroWordVariants}>
+            Seguro
+          </motion.span>
+        </motion.div>
 
-export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean } = {}) {
-  useEffect(() => {
-    document.body.classList.add("landing-active");
-    return () => document.body.classList.remove("landing-active");
-  }, []);
-
-  return (
-    <div className="landing-shell">
-      <main className="landing">
-        <LandingNav previewMode={previewMode} />
-
-        <section className="landing-hero" aria-labelledby="hero-title">
-          <span className="landing-badge">Manual de Medicina Intensiva</span>
-          <h1 id="hero-title">
-            A referência clínica de UTI <span className="text-glow">para o seu plantão</span>.
-          </h1>
-          <p className="landing-hero-subtitle">
-            Capítulos clínicos, calculadoras interativas e fluxos consolidados em uma única interface,
-            preparados para a consulta objetiva na emergência e na terapia intensiva.
+        <motion.div
+          className="hero-v2-meta"
+          variants={heroFadeUp}
+          initial="hidden"
+          animate="visible"
+          custom={0.85}
+        >
+          <p className="hero-v2-lead">
+            Capítulos clínicos, calculadoras de dose por peso e fluxos consolidados num único
+            app. Decisões rápidas no plantão — e mais segurança para o paciente.
           </p>
-          <div className="landing-cta">
+          <div className="hero-v2-cta">
             {previewMode ? (
               <button className="button button--cta button--lg" type="button" disabled>
-                Assinar agora
+                Quero meu acesso
               </button>
             ) : (
               <SignUpButton mode="modal">
                 <button className="button button--cta button--lg" type="button">
-                  Assinar agora
+                  Quero meu acesso
                 </button>
               </SignUpButton>
             )}
@@ -585,158 +456,225 @@ export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean
               </SignInButton>
             )}
           </div>
-          <ul className="landing-hero-meta" aria-label="Benefícios da assinatura">
-            <li><span className="dot dot--cyan" aria-hidden="true" /> A partir de R$ 25,99 por mês</li>
-            <li><span className="dot dot--cyan" aria-hidden="true" /> Seis módulos clínicos e calculadoras integradas</li>
-            <li><span className="dot dot--cyan" aria-hidden="true" /> Atualizações inclusas em todos os planos</li>
-          </ul>
-        </section>
+        </motion.div>
 
-        <section className="landing-section landing-section--preview" aria-labelledby="livepreview-title">
-          <LandingModuleCarousel />
-        </section>
+        <motion.div
+          className="hero-v2-carousel-meta"
+          variants={heroFadeUp}
+          initial="hidden"
+          animate="visible"
+          custom={1.05}
+        >
+          <span className="hero-v2-carousel-label">
+            Módulo {current.number} de {total} em rotação
+          </span>
+          <span className="hero-v2-carousel-title">{current.title}</span>
+          <div className="hero-v2-carousel-controls">
+            <button
+              type="button"
+              className="landing-carousel-arrow"
+              onClick={goPrev}
+              aria-label="Módulo anterior"
+            >
+              ‹
+            </button>
+            <div className="landing-carousel-dots" role="tablist" aria-label="Módulo em destaque">
+              {landingModuleSources.map((mod, i) => (
+                <button
+                  key={mod.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === index}
+                  aria-label={`Ver módulo ${mod.number} — ${mod.title}`}
+                  className={`landing-carousel-dot ${i === index ? "landing-carousel-dot--active" : ""}`}
+                  onClick={() => setIndex(i)}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              className="landing-carousel-arrow"
+              onClick={goNext}
+              aria-label="Próximo módulo"
+            >
+              ›
+            </button>
+          </div>
+        </motion.div>
 
-        <section className="landing-section" aria-labelledby="features-title">
-          <p className="landing-eyebrow">O que você ganha</p>
-          <h2 id="features-title" className="landing-section-title">
-            Tudo o que o cenário de cuidados intensivos exige.
-          </h2>
-          <div className="landing-grid landing-grid--features">
-            {landingFeatures.map((feature) => (
-              <article key={feature.title} className="landing-feature">
-                <span className="landing-feature-icon" aria-hidden="true">
-                  <FeatureIcon name={feature.icon} />
-                </span>
-                <h3>{feature.title}</h3>
-                <p>{feature.description}</p>
-              </article>
+      </div>
+    </section>
+  );
+}
+
+export function SignedOutScreen({ previewMode = false }: { previewMode?: boolean } = {}) {
+  useEffect(() => {
+    document.body.classList.add("landing-active");
+    return () => document.body.classList.remove("landing-active");
+  }, []);
+
+  return (
+    <div className="landing-shell">
+      <main className="landing">
+        <LandingHeroV2 previewMode={previewMode} />
+
+        <section className="features-v2" aria-labelledby="features-title">
+          <div className="features-v2-header">
+            <span className="features-v2-eyebrow">O que você ganha</span>
+            <h2 id="features-title" className="features-v2-title">
+              Tudo o que o cenário de cuidados intensivos exige.
+            </h2>
+          </div>
+          <div className="features-v2-grid">
+            {landingFeatures.map((feature, idx) => (
+              <motion.article
+                key={feature.title}
+                className="features-v2-card"
+                initial={{ opacity: 0, y: 36 }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.7, delay: idx * 0.08, ease: HERO_EASE }
+                }}
+                viewport={{ once: true, margin: "-60px" }}
+              >
+                <div className="features-v2-card-top">
+                  <span className="features-v2-card-number">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <span className="features-v2-card-icon" aria-hidden="true">
+                    <FeatureIcon name={feature.icon} />
+                  </span>
+                </div>
+                <h3 className="features-v2-card-title">{feature.title}</h3>
+                <p className="features-v2-card-body">{feature.description}</p>
+              </motion.article>
             ))}
           </div>
         </section>
 
-        <section className="landing-section landing-section--split" aria-labelledby="protocol-title">
-          <div className="landing-section-copy">
-            <p className="landing-eyebrow">Exemplo de conteúdo</p>
-            <h2 id="protocol-title" className="landing-section-title">
-              Capítulos com discussão clínica integrada à calculadora.
+        <section className="refs-v2" aria-labelledby="refs-title">
+          <div className="refs-v2-header">
+            <span className="refs-v2-eyebrow">Referências e credibilidade</span>
+            <h2 id="refs-title" className="refs-v2-title">
+              Conteúdo rastreável, sem improviso.
             </h2>
-            <p className="landing-section-lead">
-              Cada calculadora é introduzida por um capítulo que discute indicação, ajustes, limites e
-              armadilhas, sem encurtar o raciocínio clínico. A leitura passa diretamente do texto à
-              ferramenta utilizada à beira do leito.
-            </p>
-            <ul className="landing-bullets">
-              <li>Capítulos com discussão objetiva e referências organizadas.</li>
-              <li>Calculadoras com unidades editáveis e bloqueio mútuo dose/vazão.</li>
-              <li>Leitura otimizada para celular, busca global e armazenamento offline.</li>
-            </ul>
           </div>
-          <ProtocolDemo />
-        </section>
-
-        <section className="landing-section landing-section--split landing-section--reverse" aria-labelledby="calc-title">
-          <CalculatorDemo />
-          <div className="landing-section-copy">
-            <p className="landing-eyebrow">Exemplo de calculadora</p>
-            <h2 id="calc-title" className="landing-section-title">
-              Cálculo de dose e vazão sem espaço para ambiguidade.
-            </h2>
-            <p className="landing-section-lead">
-              As calculadoras seguem a regra dose-vazão com bloqueio mútuo: o campo ativo calcula o
-              outro automaticamente; ao limpar o campo ativo, o modo inverso volta a ficar disponível.
-              As unidades e a diluição podem ser editadas conforme o cenário clínico.
-            </p>
-            <ul className="landing-bullets">
-              <li>Constantes clínicas centralizadas e versionadas.</li>
-              <li>Saída sempre coerente com o par dose/vazão escolhido.</li>
-              <li>Compatibilidade com bolus, infusão contínua e ajustes por peso.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="landing-section" aria-labelledby="screens-title">
-          <p className="landing-eyebrow">Telas demonstrativas</p>
-          <h2 id="screens-title" className="landing-section-title">
-            Interface pensada para o cuidado intensivo.
-          </h2>
-          <ScreensShowcase />
-        </section>
-
-        <section className="landing-section" aria-labelledby="refs-title">
-          <p className="landing-eyebrow">Referências e credibilidade</p>
-          <h2 id="refs-title" className="landing-section-title">
-            Conteúdo rastreável, sem improviso.
-          </h2>
-          <div className="landing-grid landing-grid--refs">
-            {referenceSources.map((item) => (
-              <article key={item.title} className="landing-ref">
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </article>
+          <div className="refs-v2-grid">
+            {referenceSources.map((item, idx) => (
+              <motion.article
+                key={item.title}
+                className="refs-v2-card"
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.7, delay: idx * 0.09, ease: HERO_EASE }
+                }}
+                viewport={{ once: true, margin: "-60px" }}
+              >
+                <span className="refs-v2-card-number">{String(idx + 1).padStart(2, "0")}</span>
+                <h3 className="refs-v2-card-title">{item.title}</h3>
+                <p className="refs-v2-card-body">{item.description}</p>
+              </motion.article>
             ))}
           </div>
-          <p className="landing-disclaimer">
-            O Manual é uma ferramenta educacional de apoio clínico. Não substitui o julgamento médico
-            individualizado nem os protocolos institucionais.
+          <p className="refs-v2-disclaimer">
+            O Manual é uma ferramenta educacional de apoio clínico. Não substitui o julgamento
+            médico individualizado nem os protocolos institucionais.
           </p>
         </section>
 
-        <section className="landing-founder" aria-labelledby="pricing-title">
-          <div className="landing-pricing-header">
-            <span className="landing-badge landing-badge--solid">Planos de assinatura</span>
-            <h2 id="pricing-title">Acesso completo ao Manual</h2>
-            <p className="landing-pricing-lead">
-              Todos os planos incluem os seis módulos clínicos, calculadoras interativas,
-              modo offline e atualizações.
+        <section className="pricing-v2" aria-labelledby="pricing-title" id="planos">
+          <div className="pricing-v2-header">
+            <span className="pricing-v2-eyebrow">Planos de assinatura</span>
+            <h2 id="pricing-title" className="pricing-v2-title">
+              Escolha seu acesso
+            </h2>
+            <p className="pricing-v2-lead">
+              Todos os planos liberam os seis módulos clínicos, calculadoras interativas,
+              modo offline e atualizações inclusas. Sem fidelidade — cancele quando quiser.
             </p>
           </div>
-          <div className="landing-pricing-grid">
-            {PLANS.map((plan) => (
-              <div
+          <div className="pricing-v2-grid">
+            {PLANS.map((plan, idx) => (
+              <motion.div
                 key={plan.id}
-                className={`pricing-card${plan.highlight ? " pricing-card--featured" : ""}`}
+                className={`pricing-v2-card${plan.highlight ? " pricing-v2-card--featured" : ""}`}
+                initial={{ opacity: 0, y: 36 }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.7, delay: idx * 0.09, ease: HERO_EASE }
+                }}
+                viewport={{ once: true, margin: "-60px" }}
               >
-                {plan.badge && <span className="pricing-card-badge">{plan.badge}</span>}
-                <span className="pricing-card-label">{plan.label}</span>
-                <div className="pricing-card-amount">
-                  <span className="pricing-card-price">{plan.price}</span>
-                  <span className="pricing-card-period">{plan.period}</span>
+                {plan.badge && <span className="pricing-v2-card-badge">{plan.badge}</span>}
+                <span className="pricing-v2-card-label">{plan.label}</span>
+                <div className="pricing-v2-card-amount">
+                  <span className="pricing-v2-card-price">{plan.price}</span>
+                  <span className="pricing-v2-card-period">{plan.period}</span>
                 </div>
                 {plan.perMonth && (
-                  <span className="pricing-card-per-month">{plan.perMonth}</span>
+                  <span className="pricing-v2-card-per-month">equivale a {plan.perMonth}</span>
                 )}
+                <ul className="pricing-v2-card-list" aria-label="O que está incluso">
+                  <li>Seis módulos clínicos completos</li>
+                  <li>Calculadoras de dose, vazão e diluição</li>
+                  <li>Modo offline após primeiro acesso</li>
+                  <li>Atualizações inclusas, sem custo extra</li>
+                </ul>
                 {previewMode ? (
                   <button
-                    className={`button ${plan.highlight ? "button--cta" : "button--ghost"} button--full`}
+                    className={`pricing-v2-card-cta${plan.highlight ? " pricing-v2-card-cta--primary" : ""}`}
                     type="button"
                     disabled
                   >
-                    Assinar
+                    Assinar agora <span aria-hidden="true">→</span>
                   </button>
                 ) : (
                   <SignUpButton mode="modal">
                     <button
-                      className={`button ${plan.highlight ? "button--cta" : "button--ghost"} button--full`}
+                      className={`pricing-v2-card-cta${plan.highlight ? " pricing-v2-card-cta--primary" : ""}`}
                       type="button"
                     >
-                      Assinar
+                      Assinar agora <span aria-hidden="true">→</span>
                     </button>
                   </SignUpButton>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
-          <p className="founder-note">
-            Crie sua conta e escolha o plano para liberar o acesso completo ao Manual.
+          <p className="pricing-v2-note">
+            Crie a conta e escolha o plano para liberar o acesso completo ao Manual.
           </p>
         </section>
 
-        <footer className="landing-footer">
-          <FooterBrand />
-          <span className="landing-footer-meta">
-            Manual de Medicina Intensiva — produto digital educacional para estudo e apoio à prática
-            clínica.
-          </span>
+        <footer className="footer-v2">
+          <div className="footer-v2-top">
+            <FooterBrand />
+            <nav className="footer-v2-nav" aria-label="Rodapé">
+              <a href="#planos">Planos</a>
+              {previewMode ? (
+                <button className="footer-v2-nav-link" type="button" disabled>
+                  Entrar
+                </button>
+              ) : (
+                <SignInButton mode="modal">
+                  <button className="footer-v2-nav-link" type="button">
+                    Entrar
+                  </button>
+                </SignInButton>
+              )}
+            </nav>
+          </div>
+          <div className="footer-v2-meta">
+            <span>
+              Manual de Medicina Intensiva — produto digital educacional para estudo e apoio à
+              prática clínica.
+            </span>
+            <span className="footer-v2-meta-brand">© Virtus · Clinical Tools</span>
+          </div>
         </footer>
       </main>
     </div>

@@ -1506,6 +1506,39 @@ function fmt(x, d=2){
   const s = x.toFixed(d);
   return s.replace(/\.0+$/,"").replace(/(\.\d*?)0+$/,"$1");
 }
+/* Locale BR: vírgula como separador decimal. Herda o trim de zeros de fmt(),
+ * portanto fmtBR(10,1) → "10", fmtBR(0.010,3) → "0,01", fmtBR(7,2) → "7". */
+function fmtBR(x, d=2){
+  return fmt(x, d).replace(".", ",");
+}
+/* Otimiza display de massa: mcg que seja múltiplo inteiro de 1000 vira mg
+ *   500 mcg → {value:500, unit:"mcg"}    (sem conversão)
+ *  1000 mcg → {value:1, unit:"mg"}
+ *  5000 mcg → {value:5, unit:"mg"}
+ *  1500 mcg → {value:1500, unit:"mcg"}   (não é múltiplo inteiro)
+ * Aceita ε=0,001 (≈ 1 mcg) para tolerar imprecisão de ponto flutuante. */
+function smartMass(value, unit){
+  if(unit !== "mcg" || !Number.isFinite(value) || value === 0) return { value, unit };
+  if(Math.abs(value) < 1000) return { value, unit };
+  const inMg = value / 1000;
+  if(Math.abs(inMg - Math.round(inMg)) < 0.001){
+    return { value: Math.round(inMg), unit: "mg" };
+  }
+  return { value, unit };
+}
+/* Variante para unidades de dose composta (mcg/h, mcg/min, mcg/kg/min, etc).
+ * Aplica a mesma regra: se a parte inicial é "mcg" e o valor é múltiplo
+ * inteiro de 1000, troca para "mg" + restante da unidade. */
+function doseToSmartUnit(value, unit){
+  if(!unit || !Number.isFinite(value) || value === 0) return { value, unit };
+  if(unit.startsWith("mcg") && Math.abs(value) >= 1000){
+    const inMg = value / 1000;
+    if(Math.abs(inMg - Math.round(inMg)) < 0.001){
+      return { value: Math.round(inMg), unit: "mg" + unit.slice(3) };
+    }
+  }
+  return { value, unit };
+}
 function amountShort(text){
   if(!text) return "—";
   let m = text.match(/^(.*?)(?:\s*→|;|\|)/);
@@ -1674,7 +1707,8 @@ function infusionPrepLine(ampOverride, bagVolume, conc, concUnit, diluent){
   const c = infusionPrepCompute(ampOverride, bagVolume, conc, concUnit);
   if(!c) return null;
   const dilName = diluent || "diluente";
-  return `Aspirar <strong>${fmt(c.volumeAspirar, 1)} mL</strong> da ampola (= <strong>${fmt(c.massaAspirada, 2)} ${c.massaAspiradaUnit}</strong>) e adicionar a <strong>${fmt(c.volumeDiluente, 1)} mL</strong> de ${dilName} &rarr; volume final <strong>${bagVolume} mL</strong>.`;
+  const massa = smartMass(c.massaAspirada, c.massaAspiradaUnit);
+  return `Aspirar <strong>${fmtBR(c.volumeAspirar, 1)} mL</strong> da ampola (= <strong>${fmtBR(massa.value, 2)} ${massa.unit}</strong>) e adicionar a <strong>${fmtBR(c.volumeDiluente, 1)} mL</strong> de ${dilName} &rarr; volume final <strong>${bagVolume} mL</strong>.`;
 }
 
 /* Frase operacional da infusao continua (subtitle do headline), no padrao do
@@ -1696,15 +1730,21 @@ function buildInfusionOperationalLine(opts){
 
   let solucaoStr;
   if(c){
-    solucaoStr = `aspirar <strong>${fmt(c.volumeAspirar, 1)} mL da ampola</strong> (= <strong>${fmt(c.massaAspirada, 2)} ${c.massaAspiradaUnit}</strong>) + <strong>${fmt(c.volumeDiluente, 1)} mL de ${dilName}</strong> &rarr; <strong>${bagVolume} mL</strong> a <strong>${fmt(conc, 3)} ${unitLabel(concUnit)}</strong>`;
+    const massa = smartMass(c.massaAspirada, c.massaAspiradaUnit);
+    solucaoStr = `aspirar <strong>${fmtBR(c.volumeAspirar, 1)} mL da ampola</strong> (= <strong>${fmtBR(massa.value, 2)} ${massa.unit}</strong>) + <strong>${fmtBR(c.volumeDiluente, 1)} mL de ${dilName}</strong> &rarr; <strong>${bagVolume} mL</strong> a <strong>${fmtBR(conc, 3)} ${unitLabel(concUnit)}</strong>`;
   } else if(Number.isFinite(conc) && Number.isFinite(bagVolume)){
-    solucaoStr = `<strong>${bagVolume} mL</strong> a <strong>${fmt(conc, 3)} ${unitLabel(concUnit)}</strong> (informe a apresentação da ampola para detalhar o preparo)`;
+    solucaoStr = `<strong>${bagVolume} mL</strong> a <strong>${fmtBR(conc, 3)} ${unitLabel(concUnit)}</strong> (informe a apresentação da ampola para detalhar o preparo)`;
   } else {
     solucaoStr = "—";
   }
-  const vazaoStr = Number.isFinite(vazao) ? `<strong>${fmt(vazao, 2)} mL/h</strong>` : "—";
-  const doseStr = Number.isFinite(dose) ? `<strong>${fmt(dose, 4)} ${doseUnit}</strong>` : "—";
-
+  const vazaoStr = Number.isFinite(vazao) ? `<strong>${fmtBR(vazao, 2)} mL/h</strong>` : "—";
+  let doseStr;
+  if(Number.isFinite(dose)){
+    const dSmart = doseToSmartUnit(dose, doseUnit);
+    doseStr = `<strong>${fmtBR(dSmart.value, 4)} ${dSmart.unit}</strong>`;
+  } else {
+    doseStr = "—";
+  }
   return `Infusão de <strong>${d.name}</strong>${classeStr}. <strong>Solução:</strong> ${solucaoStr}. <strong>Bomba:</strong> ${vazaoStr} para entregar ${doseStr}.`;
 }
 
@@ -2450,28 +2490,79 @@ function iotScenarioFit(name, scenario){
   return {status:"neutral", title:"Cenário", text:notes.iot, suggestion:notes.sugestao};
 }
 function dvaScenarioMeta(name, scenario){
-  const notes = scenarioNotes[scenario] || scenarioNotes.geral;
+  // Para vasoativas: "Cenário" = comentário droga-específico face ao cenário
+  // selecionado (saída de dvaScenarioFit). "Sugestão" = situações onde a droga
+  // é preferível (drugPreferredSituations).
   const fitText = dvaScenarioFit(name, scenario);
   return {
     status: scenarioStatusFromText(fitText),
-    title: scenarioStatusFromText(fitText) === "good" ? "Cenário - adequado" : (scenarioStatusFromText(fitText) === "caution" ? "Cenário - atenção" : "Cenário"),
-    text: notes.dva,
-    fit: fitText,
-    suggestion: notes.sugestao
+    title: scenarioStatusFromText(fitText) === "good" ? "Cenário — adequado" : (scenarioStatusFromText(fitText) === "caution" ? "Cenário — atenção" : "Cenário"),
+    text: fitText,
+    suggestion: drugPreferredSituations(name)
   };
 }
 function infusionScenarioMeta(name, cat, scenario){
   if(cat === "vasoativa") return dvaScenarioMeta(name, scenario);
-  const notes = scenarioNotes[scenario] || scenarioNotes.geral;
-  return {status:"neutral", title:"Cenário", text:notes.iot, suggestion:notes.sugestao};
+  // Para sedoanalgesia/outros: comentário droga-específico curto + indicações
+  // preferenciais. dvaScenarioFit é genérico para essas classes; usar a sugestão
+  // droga-específica como fonte primária.
+  const fitText = dvaScenarioFit(name, scenario);
+  return {
+    status: "neutral",
+    title: "Cenário",
+    text: fitText,
+    suggestion: drugPreferredSituations(name)
+  };
 }
 function scenarioCard(meta){
   const cls = meta.status === "good" ? "med-card--scenario-good" : (meta.status === "caution" ? "med-card--scenario-caution" : "med-card--scenario-neutral");
   return medCard(meta.title, [
     medKv("Cenário", meta.text),
-    meta.fit ? medKv("Adequação ao cenário", meta.fit) : "",
-    meta.status === "caution" ? medKv("Sugestão/substituto", meta.suggestion) : medKv("Sugestão", meta.suggestion)
+    meta.status === "caution" ? medKv("Indicações preferenciais", meta.suggestion) : medKv("Indicações preferenciais", meta.suggestion)
   ], cls);
+}
+
+/* Indicações preferenciais por medicação (situações onde a droga é a escolha
+ * usual/preferível). REQUER REVISAO MEDICA — texto pedagógico baseado em
+ * literatura de UTI/emergência (Surviving Sepsis 2021, AHA/ACC, ESC).
+ * Faz lookup por substring case-insensitive no nome da droga. */
+function drugPreferredSituations(name){
+  const n = (name || "").toLowerCase();
+  // Vasopressores e inotrópicos
+  if(n.includes("noradrenalina")) return "Choque séptico (1ª linha), choque cardiogênico hipotenso, hipotensão pós-IOT, choque distributivo geral. Sustenta PAM e perfusão coronariana com efeito inotrópico modesto.";
+  if(n.includes("vasopressina")) return "Adjuvante em choque séptico com dose crescente de noradrenalina (≥ 0,25–0,5 mcg/kg/min) para reduzir dose de catecolamina; vasoplegia pós-CEC; choque distributivo refratário.";
+  if(n.includes("adrenalina")) return "Choque cardiogênico refratário, choque séptico com dose crescente de noradrenalina + vasopressina, anafilaxia, broncoespasmo grave, bradicardia sintomática refratária à atropina.";
+  if(n.includes("dobutamina")) return "Baixo débito cardíaco com PAM sustentada (ou com vasopressor associado), choque cardiogênico com perfusão tecidual ruim, IC descompensada com sinais de hipoperfusão.";
+  if(n.includes("milrinona")) return "Hipertensão pulmonar com falência de VD, IC descompensada em uso crônico de beta-bloqueador, baixo débito com pós-carga elevada. Evitar em DRC e hipotensão sustentada.";
+  if(n.includes("dopamina")) return "Uso restrito hoje (maior taxa de arritmia que noradrenalina). Considerar em bradicardia sintomática como ponte para marcapasso ou centros sem outros vasopressores.";
+  if(n.includes("isoproterenol") || n.includes("isoprenalina")) return "Bradicardia/bloqueios refratários sintomáticos como ponte para marcapasso transcutâneo/transvenoso; torsades induzida por bradicardia/QT longo.";
+  // Vasodilatadores e anti-hipertensivos
+  if(n.includes("nitroglicerina")) return "SCA com hipertensão/dor isquêmica, edema agudo de pulmão hipertensivo (SCAPE), controle de PA peri-procedimento cardíaco. Evitar em hipotensão, hipovolemia, IAM de VD, uso recente de inibidor da PDE5 (sildenafila etc.).";
+  if(n.includes("nitroprussiato")) return "Emergência hipertensiva grave que exige redução muito rápida (dissecção aórtica após beta-bloqueio, crise hipertensiva refratária). Evitar uso prolongado (toxicidade cianeto/tiocianato), em IRC/insuficiência hepática, gestação, e em neuroemergências (eleva PIC).";
+  if(n.includes("nicardipina")) return "Emergência hipertensiva neurológica (AVCi/AVCh, HSA, encefalopatia hipertensiva), pós-operatório cardíaco e neurocirúrgico. Vantagem: não eleva PIC e tem perfil seguro em coronariopatas.";
+  if(n.includes("clevidipina")) return "Emergência hipertensiva que exige titulação ultra-rápida (perioperatório cardíaco, controle pressórico para neurointervenção). Meia-vida ultracurta. Cautela em hipertrigliceridemia e alergia a soja/ovo (veículo lipídico).";
+  if(n.includes("hidralazina")) return "Hipertensão grave na gestação/pré-eclâmpsia quando outras drogas não disponíveis. Atenção: início mais lento, duração prolongada (até 12 h), taquicardia reflexa e hipotensão tardia imprevisível.";
+  if(n.includes("esmolol")) return "Controle agudo de FC e dP/dt em dissecção aórtica (sempre antes do vasodilatador), taquiarritmias supraventriculares peri-procedimento, tireotoxicose, isquemia miocárdica com taquicardia. Meia-vida ultracurta facilita titulação.";
+  if(n.includes("labetalol")) return "Emergência hipertensiva neurológica (AVCi peri-trombólise, HSA), pré-eclâmpsia grave, dissecção aórtica como alternativa ao esmolol. Vantagem: bloqueio α+β. Cautela em asma, ICC descompensada, bloqueios AV avançados.";
+  if(n.includes("metoprolol")) return "Controle de FC em dissecção aórtica quando esmolol indisponível, taquiarritmias supraventriculares estáveis. Beta-1 seletivo, mas menor titulabilidade (duração mais longa).";
+  // Sedação e analgesia
+  if(n.includes("fentanil")) return "Analgesia contínua peri-IOT em paciente crítico, controle da resposta simpática à laringoscopia/aspiração, base analgésica em ventilação mecânica prolongada. Boa estabilidade hemodinâmica.";
+  if(n.includes("sufentanil")) return "Analgesia profunda em pacientes opioide-tolerantes, peri-operatório cardiotorácico. Alta potência (≈ 10× fentanil) exige dupla checagem na bomba.";
+  if(n.includes("remifentanil")) return "Analgesia ultra-curta em ventilação por período breve, despertar previsível para neurocheck, transporte intra-hospitalar. Atenção a bradicardia/hipotensão em bólus e hiperalgesia pós-suspensão.";
+  if(n.includes("alfentanil")) return "Procedimentos curtos com necessidade de início rápido. Disponibilidade variável no BR.";
+  if(n.includes("midazolam")) return "Sedação contínua quando se busca amnésia, controle de crise epiléptica refratária (status), abstinência alcoólica/benzodiazepínica. Acumula em uso prolongado e em hepatopatia/IRC — usar com escalas de despertar diário.";
+  if(n.includes("propofol")) return "Sedação contínua em ventilação mecânica com necessidade de despertar previsível, controle de hipertensão intracraniana, status epilepticus refratário. Monitorar hipotensão, triglicerídeos, CK, lactato e dose cumulativa (PRIS).";
+  if(n.includes("cetamina") || n.includes("ketamina")) return "Sedoanalgesia em broncoespasmo grave (broncodilatadora), instabilidade hemodinâmica (preserva tônus simpático), intubação dissociativa (DSI), analgesia adjuvante em paciente opioide-tolerante.";
+  if(n.includes("dexmedetomidina")) return "Sedação leve a moderada sem depressão respiratória, transição no desmame ventilatório, prevenção/manejo de delirium, abstinência. Cuidado: bradi/hipotensão; não usar como única sedação em RASS muito negativo.";
+  // Diuréticos, eletrólitos, broncodilatadores e anticonvulsivantes
+  if(n.includes("furosemida")) return "Sobrecarga volêmica refratária ao bólus, IC com resistência diurética, edema agudo de pulmão, oligúria na lesão renal aguda. Titular pela resposta diurética; estratégia ataque + infusão escalonada (Mod 7 §5).";
+  if(n.includes("magnésio") || n.includes("magnesio") || n.includes("sulfato de magn")) return "Asma grave (2 g IV em 20 min), eclâmpsia/pré-eclâmpsia grave, torsade de pointes, hipomagnesemia sintomática, arritmias atriais refratárias selecionadas.";
+  if(n.includes("aminofilina")) return "Broncoespasmo refratário a beta-2 agonistas + corticoide + magnésio quando outras opções limitadas. Janela terapêutica estreita, exige monitorização de nível sérico e cuidado com arritmia.";
+  if(n.includes("fenitoína") || n.includes("fenitoina")) return "Crise convulsiva refratária a benzodiazepínico, profilaxia em TCE grave selecionado. Cuidado: extravasamento (síndrome da luva púrpura), bradicardia/hipotensão em infusão rápida — ≤ 50 mg/min e via segura.";
+  if(n.includes("fenobarbital")) return "Status epilepticus refratário a benzodiazepínico + fenitoína, abstinência alcoólica grave. Causa depressão respiratória e hipotensão dose-dependente — frequentemente requer IOT.";
+  if(n.includes("levetiracetam") || n.includes("keppra")) return "Status epilepticus como 2ª linha (perfil de segurança mais favorável que fenitoína), profilaxia em pós-operatório neurocirúrgico. Bem tolerado; sem interação com indutores hepáticos.";
+  // Default
+  return "Indicações específicas dependem do fenótipo clínico e do protocolo institucional; consultar Mod 4 (sedoanalgesia), Mod 5 (vasoativas) e Mod 6 (eletrólitos/broncoespasmo).";
 }
 
 function initIOT(){
@@ -4333,7 +4424,8 @@ function calcInfusion(){
     const amount=doseAmountPerHour(dose, d.doseUnit, getPeso());
     const vazao=rateFromAmount(amount.amount, amount.unit, conc, concUnit);
     vazaoFinal=vazao;
-    result=`${fmt(amount.amount,2)} ${amount.unit} → ${fmt(vazao,2)} mL/h`;
+    const amtSmart = doseToSmartUnit(amount.amount, amount.unit);
+    result=`${fmtBR(amtSmart.value,2)} ${amtSmart.unit} → ${fmtBR(vazao,2)} mL/h`;
     detail=`Dose ${dose} ${d.doseUnit}. Concentração final: ${conc} ${unitLabel(concUnit)}.`;
     planning=planning24h(d.name, dose, d.doseUnit, conc, concUnit, vazao, hours, bagVolume, diluent, ampOverride);
     modeLabel="Automático: dose → vazão";
@@ -4341,7 +4433,8 @@ function calcInfusion(){
     const calcDose=doseFromRate(rate, d.doseUnit, conc, concUnit, getPeso());
     dose=calcDose;
     vazaoFinal=rate;
-    result=`${fmt(rate,2)} mL/h → ${fmt(calcDose,4)} ${d.doseUnit}`;
+    const dSmart = doseToSmartUnit(calcDose, d.doseUnit);
+    result=`${fmtBR(rate,2)} mL/h → ${fmtBR(dSmart.value,4)} ${dSmart.unit}`;
     detail=`Vazão ${rate} mL/h. Concentração final: ${conc} ${unitLabel(concUnit)}.`;
     planning=planning24h(d.name, calcDose, d.doseUnit, conc, concUnit, rate, hours, bagVolume, diluent, ampOverride);
     modeLabel="Automático: vazão → dose";
@@ -4380,18 +4473,27 @@ function calcInfusion(){
             : medKv("Apresentação do fármaco", ampoulePresentationLine(d.name)),
           medKv("Diluente/uso", diluentGuidance(d.name, prep.prep, "infusion", diluent)),
           medKv("Volume total da solução", `${bagVolume} mL`),
-          (Number.isFinite(conc) ? medKv("Massa total na solução", `${fmt(conc*bagVolume,2)} ${unitLabel(concUnit).replace("/mL","")}`) : ""),
+          (function(){
+            if(!Number.isFinite(conc)) return "";
+            const baseUnit = unitLabel(concUnit).replace("/mL","");
+            const totalMass = smartMass(conc * bagVolume, baseUnit);
+            return medKv("Massa total na solução", `${fmtBR(totalMass.value, 2)} ${totalMass.unit}`);
+          })(),
           (function(){
             const prepLine = infusionPrepLine(ampOverride, bagVolume, conc, concUnit, diluent);
             return prepLine ? medKv("Preparo da solução", prepLine) : "";
           })(),
-          medKv("Concentração final", `${fmt(conc,3)} ${unitLabel(concUnit)}`)
+          medKv("Concentração final", `${fmtBR(conc,3)} ${unitLabel(concUnit)}`)
         ], "med-card--primary")}
         ${medCard("Posologia e farmacodinâmica", [
           medKv("Classe", infusionData[cat].label),
           medKv("Faixa terapêutica", d.range),
-          (Number.isFinite(dose) ? medKv("Dose utilizada", `${fmt(dose,4)} ${d.doseUnit}`) : ""),
-          (Number.isFinite(vazaoFinal) ? medKv("Vazão na bomba", `${fmt(vazaoFinal,2)} mL/h`) : ""),
+          (function(){
+            if(!Number.isFinite(dose)) return "";
+            const dSmart = doseToSmartUnit(dose, d.doseUnit);
+            return medKv("Dose utilizada", `${fmtBR(dSmart.value, 4)} ${dSmart.unit}`);
+          })(),
+          (Number.isFinite(vazaoFinal) ? medKv("Vazão na bomba", `${fmtBR(vazaoFinal,2)} mL/h`) : ""),
           d.phaseInfo ? medKv("Fases de administração", d.phaseInfo) : "",
           d.bolusInfo ? medKv("Bólus associado", d.bolusInfo) : "",
           d.maxInfusionTime ? medKv("Tempo máximo/limite", d.maxInfusionTime) : ""
