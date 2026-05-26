@@ -1,5 +1,47 @@
 # Changelog
 
+## 2026-05-26 — Fix iOS PWA white screen: start_url simples, pre-paint navy, SW v61
+
+### Tipo de alteração
+
+- **Técnica/UX**. Não toca em conteúdo clínico. Corrige tela branca no PWA iOS após instalação.
+
+### Motivação
+
+Usuário reportou: "O tutorial apareceu normalmente, o guia foi instalado na tela de início mas a tela fica em branco. Eu deixei marcado para abrir como app web."
+
+O fluxo está correto ("Abrir como app web" = standalone PWA). O white screen tinha 3 causas prováveis combinadas:
+
+### O que mudou
+
+1. **`start_url` simplificado**: `/?source=pwa` → `/`. O query param podia gerar:
+   - Mismatch com chave de cache do SW (que usava `"./"`)
+   - Routing/auth-redirect com state inconsistente no boot
+   - Bonus: `id` também passa a ser `/` para consistência com o `start_url` (W3C recomenda alinhamento)
+
+2. **Pre-paint navy** em `index.html`: bloco `<style>` mínimo no `<head>` define `html, body { background: #0d2438; }` ANTES de qualquer JS rodar. Evita o flash branco entre o launch screen iOS e o primeiro paint do React. Em standalone mode iOS, o "white screen" frequente é só o body com background default branco aguardando o CSS principal carregar.
+
+3. **`apple-touch-startup-image`**: link adicionado apontando para o `icon-512.png`. iOS usa isso como splash screen do PWA em standalone — sem ele, exibe fundo branco até o app montar.
+
+4. **SW cache bump** `v60 → v61`. Força usuários que já instalaram a buscar manifest novo + index.html com pre-paint. Importante porque o atalho instalado no iOS guarda referência ao snapshot do dia da instalação.
+
+### Como o usuário deve re-testar
+
+1. Long-press no ícone do app na tela inicial → **Remover Favorito**
+2. Abrir Safari → ir em `manualvirtus.com.br`
+3. Aguardar ~2–3 min após este commit (CF Pages buildar) ou recarregar
+4. Compartilhar → **Adicionar à Tela de Início** novamente
+5. Abrir pelo ícone fresh — não deve mais ficar branco
+
+### Diagnóstico se persistir
+
+Se ainda ficar branco após reinstalar:
+- Hipótese mais provável: **Clerk em modo standalone iOS** — cookies ITP podem bloquear sessão. Solução seria adicionar fallback para `<UnsignedScreen />` mais resiliente. Próxima rodada se necessário.
+
+### Hash
+
+- Sem mudança em módulos clínicos. Apenas `public/manifest.webmanifest`, `public/sw.js`, `index.html`.
+
 ## 2026-05-26 — Mod 8 Caderno interativo: radios, capítulos colapsáveis, caderno de respostas + erros
 
 ### Tipo de alteração

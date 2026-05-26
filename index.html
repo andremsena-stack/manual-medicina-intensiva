@@ -22,6 +22,20 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/pwa-icons/apple-touch-icon.png" />
     <link rel="mask-icon" href="/icon.svg" color="#0d2438" />
 
+    <!-- Tela de splash do PWA iOS — evita flash branco durante o launch.
+         Sem apple-touch-startup-image, iOS exibe fundo branco até o app
+         pintar o primeiro frame. Aqui usamos o próprio apple-touch-icon
+         como fallback universal; iOS escala/centraliza sobre fundo navy
+         definido em body / theme-color. -->
+    <link rel="apple-touch-startup-image" href="/pwa-icons/icon-512.png" />
+
+    <!-- Pré-pinta o fundo da página com a cor brand-deep para evitar flash
+         branco entre o launch screen iOS e o primeiro paint do React.
+         O bundle principal ainda carrega via <script type="module"> abaixo. -->
+    <style>
+      html, body { background: #0d2438; }
+    </style>
+
     <!-- Open Graph (Facebook, LinkedIn, WhatsApp, Slack) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Manual de Medicina Intensiva" />

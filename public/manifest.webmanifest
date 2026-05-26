@@ -1,11 +1,11 @@
 {
-  "id": "/?source=pwa",
+  "id": "/",
   "name": "Manual Interativo de Medicina Intensiva",
   "short_name": "Virtus Intensiva",
   "description": "Manual interativo com módulos clínicos, calculadoras de cabeceira e caderno de questões para cuidados intensivos. Funciona offline.",
   "lang": "pt-BR",
   "dir": "ltr",
-  "start_url": "/?source=pwa",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui", "browser"],

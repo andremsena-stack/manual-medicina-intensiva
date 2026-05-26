@@ -1,4 +1,4 @@
-const CACHE_NAME = "guia-intensiva-pwa-v60";
+const CACHE_NAME = "guia-intensiva-pwa-v61";
 const CORE_ASSETS = [
   "./",
   "./index.html",
