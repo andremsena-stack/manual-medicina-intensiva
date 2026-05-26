@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026-05-24 — Mod 7: preparo operacional na infusão contínua + padrão de headline uniforme
+
+### Tipo de alteração
+
+- **Técnica/UX** (apresentação dos cálculos). Não toca em doses, fórmulas ou limites clínicos.
+
+### O que mudou
+
+1. **Linha "Preparo da solução"** no card primário da infusão contínua — calcula automaticamente, a partir da apresentação da ampola informada:
+   - `volumeAspirar = (concFinal × volBolsa) ÷ concAmpola` (com normalização mcg ↔ mg)
+   - `volumeDiluente = volBolsa − volumeAspirar`
+   - Exemplo Nitroglicerina: ampola 50 mg/10 mL, alvo 250 mL @ 200 mcg/mL → "Aspirar **10 mL** da ampola (= **50 mg**) + **240 mL** de SF 0,9% → volume final **250 mL**". Linha não aparece quando a apresentação não foi informada, quando as unidades são incompatíveis (UI vs mcg) ou em modo "ampola pura".
+
+2. **Frase operacional do headline da infusão contínua** segue agora o mesmo padrão usado pela calculadora de eletrólitos (NaCl 3% — Adrogué). Antes o subtitle mostrava apenas metadados ("Classe · modo automático · faixa"). Agora mostra:
+   > Infusão de **[Droga]** ([classe]). **Solução:** aspirar X mL da ampola (= massa) + Y mL de [diluente] → Z mL a [concFinal]. **Bomba:** V mL/h para entregar [dose] [unit].
+
+   Implementado em nova função `buildInfusionOperationalLine({d, cat, ampOverride, bagVolume, conc, concUnit, diluent, vazao, dose, doseUnit})`. Refator extrai `infusionPrepCompute()` (puro, retorna `{volumeAspirar, massaAspirada, massaAspiradaUnit, volumeDiluente}`) para ser reutilizado tanto pela linha "Preparo da solução" quanto pelo headline.
+
+3. **Calculadora de eletrólitos**: campo `medKv("Volume final da solução", …)` renomeado para **"Volume final a ser administrado"** — terminologia mais clara para o leitor (é o volume que efetivamente vai para o paciente, não apenas o volume da bolsa).
+
+### Hash
+
+- Mod 7: `be689bfa…81a43af9` (atualizado em `scripts/verify-module-hashes.mjs`).
+
+---
+
 ## 2026-05-24 — Ciclo de revisão Mod 1/2/7: layout, fisiologia, UX (REQUER REVISAO MEDICA em 3 trechos)
 
 ### Resumo

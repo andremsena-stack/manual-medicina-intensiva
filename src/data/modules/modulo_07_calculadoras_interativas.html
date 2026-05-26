@@ -1637,6 +1637,77 @@ function updateAmpContentPreview(){
     : "—";
 }
 
+/* Calcula a quantidade de ampola a aspirar para obter a concentracao final
+ * desejada. Retorna {volumeAspirar, massaAspirada, volumeDiluente} ou null. */
+function infusionPrepCompute(ampOverride, bagVolume, conc, concUnit){
+  if(!ampOverride || !Number.isFinite(bagVolume) || bagVolume <= 0) return null;
+  if(!Number.isFinite(conc) || conc <= 0) return null;
+  if(!Number.isFinite(ampOverride.conc) || ampOverride.conc <= 0) return null;
+
+  const massaFinal = conc * bagVolume;
+  let volumeAspirar = NaN;
+  if(ampOverride.concUnit === concUnit){
+    volumeAspirar = massaFinal / ampOverride.conc;
+  } else if((ampOverride.concUnit === "mgml" || ampOverride.concUnit === "mcgml")
+         && (concUnit === "mgml" || concUnit === "mcgml")){
+    const ampMcg = ampOverride.concUnit === "mgml" ? ampOverride.conc * 1000 : ampOverride.conc;
+    const finalMcg = concUnit === "mgml" ? massaFinal * 1000 : massaFinal;
+    volumeAspirar = finalMcg / ampMcg;
+  } else {
+    return null;
+  }
+  if(!Number.isFinite(volumeAspirar) || volumeAspirar <= 0 || volumeAspirar > bagVolume) return null;
+  return {
+    volumeAspirar,
+    massaAspirada: volumeAspirar * ampOverride.conc, // na unidade da ampola
+    massaAspiradaUnit: ampOverride.unit,
+    volumeDiluente: bagVolume - volumeAspirar
+  };
+}
+
+/* Gera a linha de preparo operacional da infusao continua:
+ *   "Aspirar X mL da ampola + Y mL de [diluente] → volume final Z mL."
+ * Calcula a partir da apresentacao informada (ampOverride) e do alvo da solucao
+ * final (bagVolume + conc/concUnit). Retorna null quando faltam dados ou as
+ * unidades sao incompativeis (ex: ampola em UI e solucao em mcg). */
+function infusionPrepLine(ampOverride, bagVolume, conc, concUnit, diluent){
+  const c = infusionPrepCompute(ampOverride, bagVolume, conc, concUnit);
+  if(!c) return null;
+  const dilName = diluent || "diluente";
+  return `Aspirar <strong>${fmt(c.volumeAspirar, 1)} mL</strong> da ampola (= <strong>${fmt(c.massaAspirada, 2)} ${c.massaAspiradaUnit}</strong>) e adicionar a <strong>${fmt(c.volumeDiluente, 1)} mL</strong> de ${dilName} &rarr; volume final <strong>${bagVolume} mL</strong>.`;
+}
+
+/* Frase operacional da infusao continua (subtitle do headline), no padrao do
+ * eletrolito (buildEletOperationalLine):
+ *
+ * "Infusao de [Droga] ([classe]). Solucao: aspirar X mL da ampola (= massa) +
+ *  Y mL de [diluente] -> volume final Z mL com concentracao C, em bomba a
+ *  V mL/h para entregar dose D unidade."
+ *
+ * Quando ampOverride esta vazio, omite a parte de aspirar/diluir (fica so a
+ * solucao final + vazao + dose). */
+function buildInfusionOperationalLine(opts){
+  const { d, cat, ampOverride, bagVolume, conc, concUnit, diluent, vazao, dose, doseUnit } = opts;
+  if(!d) return "";
+  const classe = (cat && infusionData[cat] && infusionData[cat].label) || "";
+  const classeStr = classe ? ` (${classe.toLowerCase()})` : "";
+  const c = infusionPrepCompute(ampOverride, bagVolume, conc, concUnit);
+  const dilName = diluent || "diluente";
+
+  let solucaoStr;
+  if(c){
+    solucaoStr = `aspirar <strong>${fmt(c.volumeAspirar, 1)} mL da ampola</strong> (= <strong>${fmt(c.massaAspirada, 2)} ${c.massaAspiradaUnit}</strong>) + <strong>${fmt(c.volumeDiluente, 1)} mL de ${dilName}</strong> &rarr; <strong>${bagVolume} mL</strong> a <strong>${fmt(conc, 3)} ${unitLabel(concUnit)}</strong>`;
+  } else if(Number.isFinite(conc) && Number.isFinite(bagVolume)){
+    solucaoStr = `<strong>${bagVolume} mL</strong> a <strong>${fmt(conc, 3)} ${unitLabel(concUnit)}</strong> (informe a apresentação da ampola para detalhar o preparo)`;
+  } else {
+    solucaoStr = "—";
+  }
+  const vazaoStr = Number.isFinite(vazao) ? `<strong>${fmt(vazao, 2)} mL/h</strong>` : "—";
+  const doseStr = Number.isFinite(dose) ? `<strong>${fmt(dose, 4)} ${doseUnit}</strong>` : "—";
+
+  return `Infusão de <strong>${d.name}</strong>${classeStr}. <strong>Solução:</strong> ${solucaoStr}. <strong>Bomba:</strong> ${vazaoStr} para entregar ${doseStr}.`;
+}
+
 /* Diluentes — preferred + allowed por droga, com fallback razoável.
    Ordem de resolução:
    1) Campo `preferredDiluent`/`allowedDiluents` na própria droga (prioridade).
@@ -3017,7 +3088,7 @@ function calcDVABolus(){
             medKv("Diluente/uso", diluentGuidance(x.d.name, x.presentation.prep, "intermittent")),
             medKv("Preparo da solução", x.presentation.prep),
             medKv("Volume a aspirar da ampola", `${fmt(x.volumeAspirar,2)} mL${ampLabel ? ` (${ampLabel})` : ""}`),
-            medKv("Volume final da solução", `${fmt(x.finalVolume,0)} mL`),
+            medKv("Volume final a ser administrado", `${fmt(x.finalVolume,0)} mL`),
             medKv("Massa total", `${fmt(x.rawDose,2)} ${x.selectedDoseUnit}${x.doseConvertedUnit && x.doseConvertedUnit !== x.selectedDoseUnit ? ` (= ${fmt(x.doseInMg,2)} ${x.doseConvertedUnit})` : ""}`),
             medKv("Concentração final calculada", `${fmt(x.concFinal,3)} ${x.concFinalUnitLabel || "mg/mL"}`)
           ], "med-card--primary")}
@@ -4285,11 +4356,15 @@ function calcInfusion(){
   }
   const scenario=infusionScenarioMeta(d.name, cat, getCenario());
   document.getElementById("infAutoMode").value = modeLabel;
+  const operationalLine = buildInfusionOperationalLine({
+    d, cat, ampOverride, bagVolume, conc, concUnit, diluent,
+    vazao: vazaoFinal, dose, doseUnit: d.doseUnit
+  });
   document.getElementById("infOut").innerHTML =
     `<div class="med-result">
       <div class="med-result__headline">
         <strong>${d.name}: ${result}</strong>
-        <span>${infusionData[cat].label} · ${modeLabel} · faixa ${d.range}</span>
+        <span>${operationalLine}</span>
       </div>
       <div class="med-grid">
         ${medCard("Solução preparada", isPurePrep(prep) ? [
@@ -4306,6 +4381,10 @@ function calcInfusion(){
           medKv("Diluente/uso", diluentGuidance(d.name, prep.prep, "infusion", diluent)),
           medKv("Volume total da solução", `${bagVolume} mL`),
           (Number.isFinite(conc) ? medKv("Massa total na solução", `${fmt(conc*bagVolume,2)} ${unitLabel(concUnit).replace("/mL","")}`) : ""),
+          (function(){
+            const prepLine = infusionPrepLine(ampOverride, bagVolume, conc, concUnit, diluent);
+            return prepLine ? medKv("Preparo da solução", prepLine) : "";
+          })(),
           medKv("Concentração final", `${fmt(conc,3)} ${unitLabel(concUnit)}`)
         ], "med-card--primary")}
         ${medCard("Posologia e farmacodinâmica", [
