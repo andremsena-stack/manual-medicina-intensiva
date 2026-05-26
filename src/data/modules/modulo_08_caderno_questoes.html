@@ -171,8 +171,216 @@
       letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
     }
     .quiz-q__concept strong{color:var(--brand);font-weight:700}
-    @media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}main{padding:18px}.hero h2{font-size:24px}}
-    @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}.quiz-q__answer[open] .quiz-q__answer-body{display:block}}
+
+    /* ------------------------------------------------------------------
+       CADERNO INTERATIVO — radios, status, capítulo colapsável e resumo
+       ------------------------------------------------------------------ */
+    /* Capítulo: <section> + <details> + <summary>. Permite recolher cada
+       módulo de origem para focar na navegação entre as 7 áreas. */
+    .quiz-chapter-section{padding:0;overflow:hidden}
+    .quiz-chapter{border:0;background:none;margin:0;padding:0}
+    .quiz-chapter>summary{
+      list-style:none;cursor:pointer;
+      padding:24px 28px 18px;
+      background:var(--surface);
+      border-bottom:1px solid var(--rule);
+      display:grid;
+      grid-template-columns:1fr auto;
+      grid-template-areas:"eyebrow progress" "title progress";
+      column-gap:18px;row-gap:6px;align-items:center;
+      transition:background .15s ease;
+    }
+    .quiz-chapter>summary::-webkit-details-marker{display:none}
+    .quiz-chapter>summary:hover{background:linear-gradient(90deg,rgba(18,190,209,.04) 0%,transparent 60%)}
+    .quiz-chapter>summary .section-eyebrow{grid-area:eyebrow;margin:0}
+    .quiz-chapter>summary h2{grid-area:title;margin:0;display:inline-flex;align-items:center;gap:10px}
+    .quiz-chapter>summary h2::after{
+      content:"▸";color:var(--cyan);font-weight:700;font-size:14px;
+      transition:transform .15s ease;display:inline-block;
+    }
+    .quiz-chapter[open]>summary h2::after{transform:rotate(90deg)}
+    .quiz-chapter__progress{
+      grid-area:progress;
+      font-family:var(--font-mono);font-size:11px;font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);
+      padding:5px 12px;background:var(--surface-2);border:1px solid var(--rule);
+      border-radius:999px;white-space:nowrap;
+    }
+    .quiz-chapter__progress[data-complete="true"]{
+      color:var(--stable);background:rgba(6,118,71,.10);border-color:rgba(6,118,71,.30);
+    }
+    .quiz-chapter__body{padding:18px 28px 24px}
+
+    /* Forma interativa de alternativas: label + radio hidden. O estado
+       visual vem das classes .is-selected/.is-correct/.is-wrong. */
+    .quiz-q__form{display:grid;gap:8px;margin:0;padding:0;border:0}
+    .quiz-q__opt{
+      display:grid;
+      grid-template-columns:34px 1fr;
+      align-items:center;
+      gap:12px;
+      padding:10px 14px 10px 12px;
+      background:var(--surface-2);
+      border:1px solid var(--rule);
+      border-radius:8px;
+      cursor:pointer;
+      font-size:14px;line-height:1.5;
+      transition:background .15s ease,border-color .15s ease,box-shadow .15s ease;
+      position:relative;
+    }
+    .quiz-q__opt:hover{background:rgba(18,190,209,.06);border-color:rgba(18,190,209,.32)}
+    .quiz-q__opt input[type="radio"]{
+      position:absolute;opacity:0;width:0;height:0;pointer-events:none;
+    }
+    .quiz-q__opt:focus-within{outline:2px solid var(--cyan);outline-offset:2px}
+    .quiz-q__opt-letter{
+      display:flex;align-items:center;justify-content:center;
+      width:28px;height:28px;border-radius:6px;
+      background:var(--surface);border:1px solid var(--rule);
+      font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--brand);
+      transition:background .15s ease,color .15s ease,border-color .15s ease;
+    }
+    .quiz-q__opt-text{color:var(--ink)}
+    /* Selecionado (escolha do usuário, antes do gabarito) */
+    .quiz-q__opt.is-selected{background:rgba(18,190,209,.10);border-color:var(--cyan)}
+    .quiz-q__opt.is-selected .quiz-q__opt-letter{
+      background:linear-gradient(135deg,var(--cyan) 0%,var(--cyan-light) 100%);
+      color:var(--brand-deep);border-color:var(--cyan);
+    }
+    /* Após revelar gabarito: correct = verde; wrong = vermelho */
+    .quiz-q__opt.is-correct{background:rgba(6,118,71,.10);border-color:rgba(6,118,71,.50)}
+    .quiz-q__opt.is-correct .quiz-q__opt-letter{background:var(--stable);color:#fff;border-color:var(--stable)}
+    .quiz-q__opt.is-wrong{background:rgba(180,35,24,.08);border-color:rgba(180,35,24,.45)}
+    .quiz-q__opt.is-wrong .quiz-q__opt-letter{background:var(--crit);color:#fff;border-color:var(--crit)}
+    .quiz-q__opt.is-locked{cursor:default}
+
+    /* Status chip no header da questão */
+    .quiz-q__status{
+      flex-shrink:0;
+      font-family:var(--font-mono);font-size:9.5px;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+      padding:2px 8px;background:var(--surface-2);border:1px solid var(--rule);
+      border-radius:999px;
+    }
+    .quiz-q__status[data-status="answered"]{color:var(--brand);background:rgba(18,190,209,.10);border-color:rgba(18,190,209,.28)}
+    .quiz-q__status[data-status="correct"]{color:var(--stable);background:rgba(6,118,71,.10);border-color:rgba(6,118,71,.32)}
+    .quiz-q__status[data-status="wrong"]{color:var(--crit);background:rgba(180,35,24,.10);border-color:rgba(180,35,24,.32)}
+
+    /* ------------------------------------------------------------------
+       PAINEL FINAL: Caderno de respostas + Caderno de erros
+       ------------------------------------------------------------------ */
+    .summary-section{
+      position:relative;overflow:hidden;
+      background:linear-gradient(135deg,#0d2438 0%,#123c69 60%,#1a4d80 100%);
+      color:#fff;border-radius:18px;padding:28px 32px;
+      box-shadow:0 1px 3px rgba(13,36,56,.10),0 14px 36px rgba(13,36,56,.22);
+      margin-bottom:28px;border:1px solid rgba(48,241,230,.18);
+    }
+    .summary-section .section-eyebrow{
+      background:rgba(48,241,230,.10);border-color:rgba(48,241,230,.34);color:var(--cyan-light);
+    }
+    .summary-section h2{
+      color:#fff;border-bottom-color:rgba(48,241,230,.32);
+      background:linear-gradient(180deg,#fff 0%,#cfeef3 100%);
+      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .summary-stats{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+      gap:12px;margin:16px 0 20px;
+    }
+    .summary-stat{
+      background:rgba(255,255,255,.06);border:1px solid rgba(48,241,230,.22);
+      border-radius:10px;padding:12px 14px;
+    }
+    .summary-stat__label{
+      font-family:var(--font-mono);font-size:10px;font-weight:700;
+      letter-spacing:.10em;text-transform:uppercase;color:rgba(207,238,243,.78);
+      margin-bottom:4px;
+    }
+    .summary-stat__value{
+      font-family:var(--font-display);font-size:24px;font-weight:700;color:#fff;
+      letter-spacing:-0.018em;line-height:1.1;
+    }
+    .summary-stat__value strong{color:var(--cyan-light);font-weight:800}
+    .summary-stat--correct .summary-stat__value strong{color:#5ee9c0}
+    .summary-stat--wrong .summary-stat__value strong{color:#ffb38a}
+    .summary-controls{
+      display:flex;flex-wrap:wrap;gap:8px;
+      padding:12px 14px;margin-bottom:18px;
+      background:rgba(8,23,38,.45);border:1px solid rgba(48,241,230,.18);border-radius:12px;
+    }
+    .summary-controls__btn{
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);
+      color:rgba(241,246,251,.92);border-radius:999px;
+      padding:7px 14px;font:inherit;font-family:var(--font-mono);
+      font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+      cursor:pointer;
+      transition:background .15s ease,border-color .15s ease,color .15s ease;
+    }
+    .summary-controls__btn:hover{background:rgba(48,241,230,.10);border-color:rgba(48,241,230,.40);color:#fff}
+    .summary-controls__btn.is-active{
+      background:linear-gradient(135deg,var(--cyan-light) 0%,var(--cyan) 100%);
+      color:var(--brand-deep);border-color:transparent;
+    }
+    .summary-controls__btn--danger:hover{background:rgba(180,35,24,.20);border-color:rgba(180,35,24,.50);color:#ffb1a3}
+    .summary-list{display:grid;gap:10px}
+    .summary-item{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;padding:12px 14px;
+      display:grid;gap:8px;
+    }
+    .summary-item--correct{border-left:4px solid var(--stable);background:rgba(6,118,71,.08)}
+    .summary-item--wrong{border-left:4px solid var(--crit);background:rgba(180,35,24,.06)}
+    .summary-item--unanswered{border-left:4px solid var(--ink-2);background:rgba(95,107,122,.10)}
+    .summary-item__head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .summary-item__id{
+      font-family:var(--font-mono);font-size:10.5px;font-weight:700;
+      letter-spacing:.08em;color:rgba(207,238,243,.78);text-transform:uppercase;
+    }
+    .summary-item__id a{color:var(--cyan-light);text-decoration:underline dotted;text-underline-offset:3px}
+    .summary-item__id a:hover{color:#fff}
+    .summary-item__verdict{
+      font-family:var(--font-mono);font-size:10px;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;
+      padding:3px 10px;border-radius:999px;
+    }
+    .summary-item--correct .summary-item__verdict{background:rgba(6,118,71,.20);color:#5ee9c0;border:1px solid rgba(6,118,71,.40)}
+    .summary-item--wrong .summary-item__verdict{background:rgba(180,35,24,.18);color:#ffb38a;border:1px solid rgba(180,35,24,.40)}
+    .summary-item--unanswered .summary-item__verdict{background:rgba(95,107,122,.20);color:rgba(241,246,251,.78);border:1px solid rgba(95,107,122,.40)}
+    .summary-item__stem{font-size:13.5px;line-height:1.5;color:rgba(241,246,251,.92)}
+    .summary-item__detail{
+      display:grid;grid-template-columns:auto 1fr;gap:6px 12px;
+      font-size:12.5px;line-height:1.5;
+    }
+    .summary-item__detail dt{
+      font-family:var(--font-mono);font-size:10px;font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase;color:rgba(207,238,243,.72);
+    }
+    .summary-item__detail dd{margin:0;color:#fff}
+    .summary-item__detail dd strong{color:var(--cyan-light);font-weight:700}
+    .summary-item__error-chip{
+      display:inline-block;
+      font-family:var(--font-mono);font-size:9.5px;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;
+      padding:2px 8px;border-radius:999px;
+      background:rgba(109,75,166,.22);color:#d6c8ff;border:1px solid rgba(109,75,166,.50);
+    }
+    .summary-empty{
+      text-align:center;padding:24px;color:rgba(241,246,251,.72);
+      font-size:13.5px;line-height:1.5;
+    }
+    .summary-empty strong{color:var(--cyan-light)}
+
+    /* Recolher gabarito automaticamente quando "Mostrar gabarito global" estiver OFF */
+    .quiz-mode-hide-answers .quiz-q__answer{display:none}
+    /* No modo "apenas erros", esconder questões corretas e não respondidas */
+    .quiz-mode-only-wrong .quiz-q[data-result="correct"],
+    .quiz-mode-only-wrong .quiz-q[data-result="unanswered"]{display:none}
+    .quiz-mode-only-wrong .quiz-chapter[data-no-errors="true"]{display:none}
+
+    @media(max-width:980px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}main{padding:18px}.hero h2{font-size:24px}.quiz-chapter>summary{padding:18px 18px 14px}.quiz-chapter__body{padding:14px 16px 18px}.summary-section{padding:20px 18px}}
+    @media print{aside{display:none}.app{display:block}main{max-width:none;padding:0}section,.hero{box-shadow:none;break-inside:avoid}.quiz-q__answer[open] .quiz-q__answer-body{display:block}.summary-controls{display:none}}
   </style>
 </head>
 <body>
@@ -210,19 +418,23 @@
     <!-- ============================================================
          MÓDULO 1 — Via aérea e intubação orotraqueal (10 questões)
          ============================================================ -->
-    <section id="cad-mod-1">
-      <span class="section-eyebrow">Origem · Módulo 1</span>
-      <h2>1. Via aérea e intubação orotraqueal</h2>
-
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+    <section id="cad-mod-1" class="quiz-chapter-section">
+      <details open class="quiz-chapter" data-chapter="1">
+        <summary class="quiz-chapter__summary">
+          <span class="section-eyebrow">Origem · Módulo 1</span>
+          <h2>1. Via aérea e intubação orotraqueal</h2>
+          <span class="quiz-chapter__progress" data-chapter-progress="1" aria-live="polite">0 / 10 respondidas</span>
+        </summary>
+        <div class="quiz-chapter__body">
+          <article class="quiz-q" id="q-1-1" data-q-id="q-1-1" data-correct="C" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Qual é o componente do escore MACOCHA que reflete diretamente a anatomia da via aérea superior?</p>
-        <ol class="quiz-q__options">
-          <li>Saturação de O₂ &lt; 80%</li>
-          <li>Coma (Glasgow &lt; 8)</li>
-          <li>Mallampati III ou IV</li>
-          <li>Operador não-anestesista</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-1-1">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-1-1" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Saturação de O₂ &lt; 80%</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-1-1" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Coma (Glasgow &lt; 8)</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-1-1" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Mallampati III ou IV</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-1-1" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Operador não-anestesista</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -233,15 +445,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+      <article class="quiz-q" id="q-1-2" data-q-id="q-1-2" data-correct="B" data-error-type="fisiologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em paciente com hipoxemia refratária e shunt importante, qual estratégia de pré-oxigenação tende a oferecer maior benefício na denitrogenação alveolar?</p>
-        <ol class="quiz-q__options">
-          <li>Máscara não reinalante a 15 L/min isolada</li>
-          <li>VNI/CPAP com PEEP titulada</li>
-          <li>Oxigenação apneica isolada por cateter nasal</li>
-          <li>Bolsa-válvula-máscara sem PEEP</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-1-2">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-1-2" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Máscara não reinalante a 15 L/min isolada</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-1-2" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">VNI/CPAP com PEEP titulada</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-1-2" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Oxigenação apneica isolada por cateter nasal</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-1-2" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Bolsa-válvula-máscara sem PEEP</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -252,15 +464,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-1-3" data-q-id="q-1-3" data-correct="B" data-error-type="farmacologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente de 70 kg, séptico, PAM 58 mmHg, lactato 5,2 mmol/L, hipoxêmico. Necessária IOT urgente. Qual indutor é mais coerente com esse cenário?</p>
-        <ol class="quiz-q__options">
-          <li>Propofol 2 mg/kg em bolus rápido</li>
-          <li>Etomidato 0,2–0,3 mg/kg em bolus</li>
-          <li>Midazolam 0,3 mg/kg em bolus</li>
-          <li>Tiopental 4 mg/kg em bolus</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-1-3">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-1-3" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Propofol 2 mg/kg em bolus rápido</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-1-3" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Etomidato 0,2–0,3 mg/kg em bolus</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-1-3" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Midazolam 0,3 mg/kg em bolus</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-1-3" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Tiopental 4 mg/kg em bolus</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -271,15 +483,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-1-4" data-q-id="q-1-4" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Após IOT com rocurônio (bloqueio neuromuscular profundo), o paciente fica imóvel ao estímulo doloroso. Qual a conduta imediata mais segura quanto à sedoanalgesia?</p>
-        <ol class="quiz-q__options">
-          <li>Aguardar reversão do bloqueio para então iniciar sedativos</li>
-          <li>Iniciar sedação e analgesia contínuas imediatamente após confirmação do tubo</li>
-          <li>Iniciar apenas analgesia, pois o bloqueio já provê "sedação"</li>
-          <li>Reverter o rocurônio com sugamadex antes de qualquer outra droga</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-1-4">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-1-4" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Aguardar reversão do bloqueio para então iniciar sedativos</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-1-4" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Iniciar sedação e analgesia contínuas imediatamente após confirmação do tubo</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-1-4" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Iniciar apenas analgesia, pois o bloqueio já provê "sedação"</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-1-4" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Reverter o rocurônio com sugamadex antes de qualquer outra droga</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -290,15 +502,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-1-5" data-q-id="q-1-5" data-correct="B" data-error-type="fisiologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente com DPOC exacerbada em pré-IOT apresenta SpO₂ 86% sob VNI e acidose mista com pH 7,12 / pCO₂ 78. Qual achado deve ser <strong>antecipado</strong> com maior preocupação imediatamente após a IOT?</p>
-        <ol class="quiz-q__options">
-          <li>Hipertensão reativa pela laringoscopia</li>
-          <li>Hipotensão por auto-PEEP e queda do retorno venoso</li>
-          <li>Pneumotórax por barotrauma agudo</li>
-          <li>Broncoaspiração silenciosa por refluxo</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-1-5">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-1-5" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Hipertensão reativa pela laringoscopia</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-1-5" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Hipotensão por auto-PEEP e queda do retorno venoso</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-1-5" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Pneumotórax por barotrauma agudo</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-1-5" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Broncoaspiração silenciosa por refluxo</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -309,15 +521,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-1-6" data-q-id="q-1-6" data-correct="B" data-error-type="farmacologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em sequência rápida de intubação (RSI clássica) sem expectativa de via aérea difícil, qual bloqueador neuromuscular oferece <strong>maior duração</strong> com perfil de uso amplamente disseminado em UTI brasileira?</p>
-        <ol class="quiz-q__options">
-          <li>Succinilcolina 1,5 mg/kg</li>
-          <li>Rocurônio 1,0–1,2 mg/kg</li>
-          <li>Atracúrio 0,5 mg/kg</li>
-          <li>Cisatracúrio 0,2 mg/kg</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-1-6">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-1-6" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Succinilcolina 1,5 mg/kg</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-1-6" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Rocurônio 1,0–1,2 mg/kg</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-1-6" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Atracúrio 0,5 mg/kg</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-1-6" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Cisatracúrio 0,2 mg/kg</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -328,15 +540,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-1-7" data-q-id="q-1-7" data-correct="B" data-error-type="interpretativo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">No estudo INTUBE (Russotto, JAMA 2021), qual foi o desfecho composto mais frequente entre os eventos peri-intubação adversos em pacientes críticos?</p>
-        <ol class="quiz-q__options">
-          <li>Pneumonia associada à ventilação</li>
-          <li>Colapso/instabilidade cardiovascular</li>
-          <li>Dessaturação grave isolada</li>
-          <li>Falha de intubação requerendo via cirúrgica</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-1-7">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-1-7" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Pneumonia associada à ventilação</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-1-7" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Colapso/instabilidade cardiovascular</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-1-7" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Dessaturação grave isolada</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-1-7" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Falha de intubação requerendo via cirúrgica</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -347,15 +559,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-1-8" data-q-id="q-1-8" data-correct="B" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente com índice de choque 1,4, vasopressor em ascensão, indicação de IOT. Qual estratégia hemodinâmica adjuvante <strong>antes</strong> da indução é mais coerente com PrePARE e INTUBE?</p>
-        <ol class="quiz-q__options">
-          <li>Bolus cristaloide 30 mL/kg de rotina</li>
-          <li>Noradrenalina pronta/em curso, com plano de bólus push-dose, sem fluido automático</li>
-          <li>Aguardar PAM espontânea ≥ 90 mmHg antes de induzir</li>
-          <li>Iniciar dobutamina profilática para todos</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-1-8">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-1-8" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Bolus cristaloide 30 mL/kg de rotina</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-1-8" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Noradrenalina pronta/em curso, com plano de bólus push-dose, sem fluido automático</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-1-8" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Aguardar PAM espontânea ≥ 90 mmHg antes de induzir</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-1-8" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Iniciar dobutamina profilática para todos</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -366,15 +578,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.9</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+      <article class="quiz-q" id="q-1-9" data-q-id="q-1-9" data-correct="B" data-error-type="fisiologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.9</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Qual é a justificativa fisiológica para limitar o número de tentativas de laringoscopia em IOT difícil?</p>
-        <ol class="quiz-q__options">
-          <li>Cada tentativa adicional consome cerca de 20% da reserva de O₂ pré-oxigenado</li>
-          <li>Tentativas múltiplas aumentam edema, sangramento, trauma e risco de hipoxemia/PCR</li>
-          <li>O bloqueador neuromuscular perde efeito após 3 tentativas</li>
-          <li>A capnografia perde sensibilidade após múltiplas inserções</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-1-9">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-1-9" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Cada tentativa adicional consome cerca de 20% da reserva de O₂ pré-oxigenado</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-1-9" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Tentativas múltiplas aumentam edema, sangramento, trauma e risco de hipoxemia/PCR</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-1-9" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">O bloqueador neuromuscular perde efeito após 3 tentativas</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-1-9" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">A capnografia perde sensibilidade após múltiplas inserções</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -385,15 +597,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.10</span><span class="quiz-q__bloom" data-bloom="evaluate">Avaliar</span></header>
+      <article class="quiz-q" id="q-1-10" data-q-id="q-1-10" data-correct="B" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 1.10</span><span class="quiz-q__bloom" data-bloom="evaluate">Avaliar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Frente a um paciente com via aérea difícil prevista, ventilação difícil prevista <strong>e</strong> instabilidade hemodinâmica, qual abordagem maximiza segurança?</p>
-        <ol class="quiz-q__options">
-          <li>RSI clássica com rocurônio e propofol</li>
-          <li>Awake intubation com anestesia tópica, sedação leve titulada e operador experiente</li>
-          <li>Crash airway imediato sem otimização</li>
-          <li>VNI até melhora espontânea, adiando IOT por 6 h</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-1-10">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-1-10" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">RSI clássica com rocurônio e propofol</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-1-10" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Awake intubation com anestesia tópica, sedação leve titulada e operador experiente</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-1-10" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Crash airway imediato sem otimização</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-1-10" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">VNI até melhora espontânea, adiando IOT por 6 h</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -403,24 +615,30 @@
           </div>
         </details>
       </article>
+        </div>
+      </details>
     </section>
 
     <!-- ============================================================
          MÓDULO 2 — Pós-intubação e confirmação (10 questões)
          ============================================================ -->
-    <section id="cad-mod-2">
-      <span class="section-eyebrow">Origem · Módulo 2</span>
-      <h2>2. Pós-intubação e confirmação</h2>
-
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+    <section id="cad-mod-2" class="quiz-chapter-section">
+      <details open class="quiz-chapter" data-chapter="2">
+        <summary class="quiz-chapter__summary">
+          <span class="section-eyebrow">Origem · Módulo 2</span>
+          <h2>2. Pós-intubação e confirmação</h2>
+          <span class="quiz-chapter__progress" data-chapter-progress="2" aria-live="polite">0 / 10 respondidas</span>
+        </summary>
+        <div class="quiz-chapter__body">
+          <article class="quiz-q" id="q-2-1" data-q-id="q-2-1" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Qual é o método de confirmação <strong>primária</strong> mais sensível e específico de intubação traqueal segundo as diretrizes atuais?</p>
-        <ol class="quiz-q__options">
-          <li>Ausculta bilateral simétrica</li>
-          <li>Capnografia com onda persistente em 6+ ciclos</li>
-          <li>Visualização do tubo passando pelas cordas vocais</li>
-          <li>Elevação simétrica do tórax</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-2-1">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-2-1" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Ausculta bilateral simétrica</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-2-1" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Capnografia com onda persistente em 6+ ciclos</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-2-1" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Visualização do tubo passando pelas cordas vocais</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-2-1" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Elevação simétrica do tórax</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -431,15 +649,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+      <article class="quiz-q" id="q-2-2" data-q-id="q-2-2" data-correct="C" data-error-type="interpretativo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">A capnografia mostra plateau retangular subindo rapidamente e descendo até zero. Em paciente recém-intubado, esse padrão sugere:</p>
-        <ol class="quiz-q__options">
-          <li>Broncoespasmo grave (asma/DPOC)</li>
-          <li>Reinalação de CO₂</li>
-          <li>Padrão normal de ventilação efetiva</li>
-          <li>Desconexão intermitente do circuito</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-2-2">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-2-2" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Broncoespasmo grave (asma/DPOC)</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-2-2" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Reinalação de CO₂</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-2-2" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Padrão normal de ventilação efetiva</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-2-2" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Desconexão intermitente do circuito</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -450,15 +668,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-2-3" data-q-id="q-2-3" data-correct="B" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente intubado há 5 min apresenta queda súbita de SpO₂ de 98% para 82%, ETCO₂ caindo de 38 para 12 mmHg, pressão de pico subindo. Qual é o passo mais imediato dentro do algoritmo DOPE/DOPES?</p>
-        <ol class="quiz-q__options">
-          <li>Aumentar FiO₂ para 100% e aguardar 2 minutos</li>
-          <li>Desconectar do ventilador, ventilar com bolsa, aspirar e verificar tubo</li>
-          <li>Solicitar radiografia urgente antes de qualquer intervenção</li>
-          <li>Aprofundar sedação para "sincronizar" com o ventilador</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-2-3">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-2-3" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Aumentar FiO₂ para 100% e aguardar 2 minutos</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-2-3" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Desconectar do ventilador, ventilar com bolsa, aspirar e verificar tubo</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-2-3" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Solicitar radiografia urgente antes de qualquer intervenção</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-2-3" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Aprofundar sedação para "sincronizar" com o ventilador</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -469,15 +687,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-2-4" data-q-id="q-2-4" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Tubo orotraqueal n° 8.0 em adulto de 175 cm. Qual a profundidade aproximada esperada na rima labial?</p>
-        <ol class="quiz-q__options">
-          <li>17–19 cm</li>
-          <li>21–23 cm</li>
-          <li>25–27 cm</li>
-          <li>29–31 cm</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-2-4">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-2-4" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">17–19 cm</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-2-4" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">21–23 cm</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-2-4" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">25–27 cm</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-2-4" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">29–31 cm</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -488,15 +706,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-2-5" data-q-id="q-2-5" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Hipotensão pós-IOT em paciente séptico aparece tipicamente em janela de:</p>
-        <ol class="quiz-q__options">
-          <li>Primeiros 5 segundos após a indução</li>
-          <li>5–30 minutos após a passagem do tubo (até 60 min)</li>
-          <li>Somente após 6 horas (quando a sedação acumula)</li>
-          <li>Apenas no momento da extubação</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-2-5">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-2-5" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Primeiros 5 segundos após a indução</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-2-5" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">5–30 minutos após a passagem do tubo (até 60 min)</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-2-5" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Somente após 6 horas (quando a sedação acumula)</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-2-5" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Apenas no momento da extubação</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -507,15 +725,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-2-6" data-q-id="q-2-6" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Após confirmação da IOT em paciente adulto de 70 kg, qual ajuste inicial de ventilação é mais alinhado à estratégia protetora padrão?</p>
-        <ol class="quiz-q__options">
-          <li>Vt 10 mL/kg de peso real, FR 8, PEEP 0</li>
-          <li>Vt 6 mL/kg de peso predito, FR 12–20, PEEP 5</li>
-          <li>Vt 4 mL/kg de peso real, FR 30, PEEP 0</li>
-          <li>Vt 8 mL/kg de peso predito, FR 25, PEEP 15</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-2-6">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-2-6" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Vt 10 mL/kg de peso real, FR 8, PEEP 0</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-2-6" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Vt 6 mL/kg de peso predito, FR 12–20, PEEP 5</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-2-6" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Vt 4 mL/kg de peso real, FR 30, PEEP 0</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-2-6" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Vt 8 mL/kg de peso predito, FR 25, PEEP 15</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -526,15 +744,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-2-7" data-q-id="q-2-7" data-correct="B" data-error-type="interpretativo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente broncoespástico recém-intubado. Curva de capnografia mostra subida em "barbatana de tubarão" (slope expiratório). Esse achado reflete:</p>
-        <ol class="quiz-q__options">
-          <li>Hiperventilação alveolar</li>
-          <li>Obstrução de fluxo expiratório por broncoespasmo</li>
-          <li>Extubação acidental parcial</li>
-          <li>Calibração inadequada do sensor</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-2-7">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-2-7" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Hiperventilação alveolar</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-2-7" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Obstrução de fluxo expiratório por broncoespasmo</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-2-7" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Extubação acidental parcial</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-2-7" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Calibração inadequada do sensor</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -545,15 +763,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-2-8" data-q-id="q-2-8" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Pressão de cuff ideal em paciente intubado deve estar entre:</p>
-        <ol class="quiz-q__options">
-          <li>5–10 cmH₂O</li>
-          <li>20–30 cmH₂O</li>
-          <li>40–50 cmH₂O</li>
-          <li>50–60 cmH₂O</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-2-8">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-2-8" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">5–10 cmH₂O</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-2-8" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">20–30 cmH₂O</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-2-8" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">40–50 cmH₂O</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-2-8" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">50–60 cmH₂O</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -564,15 +782,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-2-9" data-q-id="q-2-9" data-correct="B" data-error-type="fisiologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em hipotensão pós-IOT em paciente com DPOC, antes de presumir "sedação", qual mecanismo deve ser <strong>sempre</strong> considerado?</p>
-        <ol class="quiz-q__options">
-          <li>Sangramento gastrointestinal oculto</li>
-          <li>Auto-PEEP por hiperinsuflação dinâmica</li>
-          <li>Insuficiência adrenal aguda</li>
-          <li>Tromboembolismo pulmonar agudo</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-2-9">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-2-9" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Sangramento gastrointestinal oculto</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-2-9" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Auto-PEEP por hiperinsuflação dinâmica</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-2-9" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Insuficiência adrenal aguda</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-2-9" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Tromboembolismo pulmonar agudo</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -583,15 +801,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-2-10" data-q-id="q-2-10" data-correct="D" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 2.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Imediatamente após confirmação da IOT, qual destas <strong>NÃO</strong> deve estar no checklist dos primeiros 5–10 minutos?</p>
-        <ol class="quiz-q__options">
-          <li>Capnografia com onda + ausculta bilateral</li>
-          <li>Início imediato de sedoanalgesia contínua com meta de RASS</li>
-          <li>Avaliação de PA/PAM e necessidade de ajuste do vasopressor</li>
-          <li>Realização de broncoscopia diagnóstica de rotina</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-2-10">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-2-10" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Capnografia com onda + ausculta bilateral</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-2-10" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Início imediato de sedoanalgesia contínua com meta de RASS</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-2-10" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Avaliação de PA/PAM e necessidade de ajuste do vasopressor</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-2-10" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Realização de broncoscopia diagnóstica de rotina</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -601,24 +819,30 @@
           </div>
         </details>
       </article>
+        </div>
+      </details>
     </section>
 
     <!-- ============================================================
          MÓDULO 3 — Ventilação mecânica invasiva (10 questões)
          ============================================================ -->
-    <section id="cad-mod-3">
-      <span class="section-eyebrow">Origem · Módulo 3</span>
-      <h2>3. Ventilação mecânica invasiva</h2>
-
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+    <section id="cad-mod-3" class="quiz-chapter-section">
+      <details open class="quiz-chapter" data-chapter="3">
+        <summary class="quiz-chapter__summary">
+          <span class="section-eyebrow">Origem · Módulo 3</span>
+          <h2>3. Ventilação mecânica invasiva</h2>
+          <span class="quiz-chapter__progress" data-chapter-progress="3" aria-live="polite">0 / 10 respondidas</span>
+        </summary>
+        <div class="quiz-chapter__body">
+          <article class="quiz-q" id="q-3-1" data-q-id="q-3-1" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Qual o alvo de pressão de platô (Pplat) na ventilação protetora em SDRA?</p>
-        <ol class="quiz-q__options">
-          <li>&lt; 20 cmH₂O</li>
-          <li>&lt; 30 cmH₂O</li>
-          <li>&lt; 40 cmH₂O</li>
-          <li>&lt; 50 cmH₂O</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-3-1">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-3-1" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">&lt; 20 cmH₂O</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-3-1" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">&lt; 30 cmH₂O</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-3-1" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">&lt; 40 cmH₂O</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-3-1" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">&lt; 50 cmH₂O</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -629,15 +853,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+      <article class="quiz-q" id="q-3-2" data-q-id="q-3-2" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Qual a definição correta de <strong>driving pressure</strong> em ventilação controlada?</p>
-        <ol class="quiz-q__options">
-          <li>Pressão de pico − pressão de platô</li>
-          <li>Pressão de platô − PEEP total</li>
-          <li>PEEP intrínseca − PEEP extrínseca</li>
-          <li>FiO₂ × Vt / peso predito</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-3-2">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-3-2" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Pressão de pico − pressão de platô</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-3-2" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Pressão de platô − PEEP total</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-3-2" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">PEEP intrínseca − PEEP extrínseca</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-3-2" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">FiO₂ × Vt / peso predito</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -648,15 +872,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-3-3" data-q-id="q-3-3" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Homem de 180 cm em SDRA grave. Qual o Vt ideal alvo na ventilação protetora?</p>
-        <ol class="quiz-q__options">
-          <li>~280 mL (4 mL/kg PBW)</li>
-          <li>~450 mL (6 mL/kg PBW)</li>
-          <li>~650 mL (peso real estimado)</li>
-          <li>~800 mL (8 mL/kg peso real)</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-3-3">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-3-3" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">~280 mL (4 mL/kg PBW)</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-3-3" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">~450 mL (6 mL/kg PBW)</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-3-3" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">~650 mL (peso real estimado)</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-3-3" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">~800 mL (8 mL/kg peso real)</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -667,15 +891,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-3-4" data-q-id="q-3-4" data-correct="A" data-error-type="interpretativo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente em VC, Vt 420 mL, PEEP 10, Pplat 28, pressão de pico 38. O que esse perfil sugere?</p>
-        <ol class="quiz-q__options">
-          <li>Resistência alta em vias aéreas (broncoespasmo, secreção)</li>
-          <li>Complacência muito reduzida do parênquima</li>
-          <li>Ajuste perfeito de ventilação protetora</li>
-          <li>Auto-PEEP grave subdiagnosticada</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-3-4">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-3-4" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Resistência alta em vias aéreas (broncoespasmo, secreção)</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-3-4" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Complacência muito reduzida do parênquima</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-3-4" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Ajuste perfeito de ventilação protetora</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-3-4" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Auto-PEEP grave subdiagnosticada</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -686,15 +910,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-3-5" data-q-id="q-3-5" data-correct="B" data-error-type="fisiologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em paciente com TEP maciço e disfunção de VD, qual ajuste ventilatório piora o desfecho hemodinâmico?</p>
-        <ol class="quiz-q__options">
-          <li>PEEP baixa (5 cmH₂O) com FiO₂ titulada</li>
-          <li>PEEP alta (15 cmH₂O) para recrutamento agressivo</li>
-          <li>FR baixa com tempo expiratório longo</li>
-          <li>Manter pCO₂ próximo do normal</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-3-5">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-3-5" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">PEEP baixa (5 cmH₂O) com FiO₂ titulada</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-3-5" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">PEEP alta (15 cmH₂O) para recrutamento agressivo</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-3-5" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">FR baixa com tempo expiratório longo</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-3-5" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Manter pCO₂ próximo do normal</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -705,15 +929,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-3-6" data-q-id="q-3-6" data-correct="B" data-error-type="fisiologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Assincronia de duplo-disparo (double-triggering) no ventilador sugere mais comumente:</p>
-        <ol class="quiz-q__options">
-          <li>PEEP muito alta</li>
-          <li>Vt ou tempo inspiratório insuficientes para a demanda</li>
-          <li>Sensibilidade do trigger desligada</li>
-          <li>FR muito baixa para o paciente</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-3-6">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-3-6" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">PEEP muito alta</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-3-6" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Vt ou tempo inspiratório insuficientes para a demanda</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-3-6" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Sensibilidade do trigger desligada</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-3-6" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">FR muito baixa para o paciente</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -724,15 +948,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-3-7" data-q-id="q-3-7" data-correct="B" data-error-type="farmacologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente em SDRA grave com PaO₂/FiO₂ &lt; 100 apesar de PEEP 14, prona 16h/dia já estabelecida. Qual estratégia adicional tem suporte de literatura sólido para reduzir mortalidade?</p>
-        <ol class="quiz-q__options">
-          <li>Aumentar FiO₂ para 100% por 24 h</li>
-          <li>Bloqueio neuromuscular contínuo nas primeiras 48 h (estudos ACURASYS)</li>
-          <li>Hiperventilação para pCO₂ 25 mmHg</li>
-          <li>Iniciar corticoide em alta dose universalmente</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-3-7">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-3-7" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Aumentar FiO₂ para 100% por 24 h</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-3-7" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Bloqueio neuromuscular contínuo nas primeiras 48 h (estudos ACURASYS)</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-3-7" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Hiperventilação para pCO₂ 25 mmHg</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-3-7" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Iniciar corticoide em alta dose universalmente</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -743,15 +967,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-3-8" data-q-id="q-3-8" data-correct="B" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em DPOC ventilada, qual ajuste reduz auto-PEEP de forma mais consistente?</p>
-        <ol class="quiz-q__options">
-          <li>Aumentar PEEP extrínseca para 15 cmH₂O</li>
-          <li>Reduzir FR e prolongar tempo expiratório</li>
-          <li>Aumentar Vt para 10 mL/kg</li>
-          <li>Reduzir FiO₂ para 40%</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-3-8">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-3-8" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Aumentar PEEP extrínseca para 15 cmH₂O</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-3-8" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Reduzir FR e prolongar tempo expiratório</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-3-8" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Aumentar Vt para 10 mL/kg</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-3-8" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Reduzir FiO₂ para 40%</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -762,15 +986,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-3-9" data-q-id="q-3-9" data-correct="A" data-error-type="fisiologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Hipoxemia em paciente ventilado que responde bem a PEEP indica predomínio de:</p>
-        <ol class="quiz-q__options">
-          <li>Alteração V/Q (low V/Q)</li>
-          <li>Shunt intrapulmonar puro</li>
-          <li>Hipoventilação alveolar</li>
-          <li>Difusão prejudicada isolada</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-3-9">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-3-9" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Alteração V/Q (low V/Q)</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-3-9" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Shunt intrapulmonar puro</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-3-9" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Hipoventilação alveolar</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-3-9" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Difusão prejudicada isolada</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -781,15 +1005,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-3-10" data-q-id="q-3-10" data-correct="A" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 3.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente em SDRA grave (PaO₂/FiO₂ 90), candidato à pronação. Qual condição é critério para iniciar pronação segundo PROSEVA?</p>
-        <ol class="quiz-q__options">
-          <li>PaO₂/FiO₂ &lt; 150 mantido após otimização de ventilação por &gt; 12 h</li>
-          <li>Apenas em pacientes &lt; 50 anos</li>
-          <li>Somente quando PEEP &lt; 5 cmH₂O</li>
-          <li>Somente após 48 h sem resposta a ECMO</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-3-10">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-3-10" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">PaO₂/FiO₂ &lt; 150 mantido após otimização de ventilação por &gt; 12 h</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-3-10" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Apenas em pacientes &lt; 50 anos</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-3-10" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Somente quando PEEP &lt; 5 cmH₂O</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-3-10" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Somente após 48 h sem resposta a ECMO</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -799,24 +1023,30 @@
           </div>
         </details>
       </article>
+        </div>
+      </details>
     </section>
 
     <!-- ============================================================
          MÓDULO 4 — Sedoanalgesia (10 questões)
          ============================================================ -->
-    <section id="cad-mod-4">
-      <span class="section-eyebrow">Origem · Módulo 4</span>
-      <h2>4. Manutenção de sedoanalgesia em UTI</h2>
-
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+    <section id="cad-mod-4" class="quiz-chapter-section">
+      <details open class="quiz-chapter" data-chapter="4">
+        <summary class="quiz-chapter__summary">
+          <span class="section-eyebrow">Origem · Módulo 4</span>
+          <h2>4. Manutenção de sedoanalgesia em UTI</h2>
+          <span class="quiz-chapter__progress" data-chapter-progress="4" aria-live="polite">0 / 10 respondidas</span>
+        </summary>
+        <div class="quiz-chapter__body">
+          <article class="quiz-q" id="q-4-1" data-q-id="q-4-1" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">No RASS, o valor RASS = −2 corresponde a:</p>
-        <ol class="quiz-q__options">
-          <li>Combativo</li>
-          <li>Sedação leve — desperta brevemente ao chamado verbal</li>
-          <li>Não responsivo a estímulo físico</li>
-          <li>Alerta e calmo</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-4-1">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-4-1" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Combativo</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-4-1" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Sedação leve — desperta brevemente ao chamado verbal</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-4-1" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Não responsivo a estímulo físico</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-4-1" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Alerta e calmo</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -827,15 +1057,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+      <article class="quiz-q" id="q-4-2" data-q-id="q-4-2" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">A regra "analgesia-first" preconizada pelo PADIS 2018 significa:</p>
-        <ol class="quiz-q__options">
-          <li>Iniciar todos os pacientes ventilados em propofol</li>
-          <li>Priorizar identificação e tratamento da dor antes de escalar sedativos hipnóticos</li>
-          <li>Usar opioides em monoterapia, sem hipnóticos</li>
-          <li>Aprofundar sedação para evitar dor secundária</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-4-2">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-4-2" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Iniciar todos os pacientes ventilados em propofol</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-4-2" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Priorizar identificação e tratamento da dor antes de escalar sedativos hipnóticos</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-4-2" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Usar opioides em monoterapia, sem hipnóticos</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-4-2" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Aprofundar sedação para evitar dor secundária</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -846,15 +1076,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-4-3" data-q-id="q-4-3" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente de 70 kg em SDRA com necessidade de BNM contínuo. Cisatracúrio em qual faixa de infusão é a referência inicial?</p>
-        <ol class="quiz-q__options">
-          <li>0,1–0,3 mcg/kg/min</li>
-          <li>1–3 mcg/kg/min</li>
-          <li>10–30 mcg/kg/min</li>
-          <li>100–300 mcg/kg/min</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-4-3">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-4-3" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">0,1–0,3 mcg/kg/min</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-4-3" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">1–3 mcg/kg/min</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-4-3" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">10–30 mcg/kg/min</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-4-3" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">100–300 mcg/kg/min</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -865,15 +1095,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-4-4" data-q-id="q-4-4" data-correct="B" data-error-type="farmacologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente em ventilação mecânica, choque séptico, vasopressor em ascensão, RASS −1 desejado. Qual escolha de sedação é mais coerente?</p>
-        <ol class="quiz-q__options">
-          <li>Propofol em dose plena (3 mg/kg/h)</li>
-          <li>Analgesia titulada (fentanil/remifentanil) + sedativo em dose reduzida; cetamina pode ser adjuvante</li>
-          <li>Midazolam contínuo prolongado em alta dose</li>
-          <li>Dexmedetomidina isolada para sedação profunda</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-4-4">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-4-4" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Propofol em dose plena (3 mg/kg/h)</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-4-4" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Analgesia titulada (fentanil/remifentanil) + sedativo em dose reduzida; cetamina pode ser adjuvante</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-4-4" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Midazolam contínuo prolongado em alta dose</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-4-4" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Dexmedetomidina isolada para sedação profunda</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -884,15 +1114,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-4-5" data-q-id="q-4-5" data-correct="B" data-error-type="interpretativo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente em uso de propofol &gt; 4 mg/kg/h por &gt; 48 h apresenta lactato 6, CK 4500, acidose metabólica e hipertrigliceridemia. Qual o diagnóstico mais provável?</p>
-        <ol class="quiz-q__options">
-          <li>Sepse oculta</li>
-          <li>Síndrome de infusão do propofol (PRIS)</li>
-          <li>Síndrome maligna neuroléptica</li>
-          <li>Hipertermia maligna</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-4-5">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-4-5" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Sepse oculta</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-4-5" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Síndrome de infusão do propofol (PRIS)</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-4-5" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Síndrome maligna neuroléptica</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-4-5" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Hipertermia maligna</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -903,15 +1133,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-4-6" data-q-id="q-4-6" data-correct="B" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">No despertar diário, qual o primeiro passo prático após verificar elegibilidade (hemodinâmica e ventilação estáveis)?</p>
-        <ol class="quiz-q__options">
-          <li>Suspender abruptamente todas as infusões e aguardar 30 min</li>
-          <li>Reduzir o hipnótico primeiro, mantendo analgesia adequada</li>
-          <li>Aumentar PEEP profilaticamente</li>
-          <li>Iniciar haloperidol em todos para evitar agitação</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-4-6">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-4-6" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Suspender abruptamente todas as infusões e aguardar 30 min</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-4-6" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Reduzir o hipnótico primeiro, mantendo analgesia adequada</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-4-6" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Aumentar PEEP profilaticamente</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-4-6" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Iniciar haloperidol em todos para evitar agitação</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -922,15 +1152,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-4-7" data-q-id="q-4-7" data-correct="A" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">CAM-ICU positivo exige presença de qual combinação de features?</p>
-        <ol class="quiz-q__options">
-          <li>F1 e F2 e (F3 ou F4)</li>
-          <li>F1 ou F2 ou F3 ou F4</li>
-          <li>Apenas F3 e F4</li>
-          <li>F1 e F4 obrigatoriamente</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-4-7">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-4-7" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">F1 e F2 e (F3 ou F4)</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-4-7" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">F1 ou F2 ou F3 ou F4</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-4-7" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Apenas F3 e F4</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-4-7" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">F1 e F4 obrigatoriamente</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -941,15 +1171,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-4-8" data-q-id="q-4-8" data-correct="A" data-error-type="farmacologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente em status epilepticus refratário a benzodiazepínico (fase 1) e fenitoína (fase 2). Qual sedativo anestésico em BIC é a primeira escolha quando hipotensão limita propofol e tiopental?</p>
-        <ol class="quiz-q__options">
-          <li>Midazolam contínuo 0,05–2 mg/kg/h</li>
-          <li>Cetamina isolada 1–7 mg/kg/h</li>
-          <li>Dexmedetomidina 0,7 mcg/kg/h</li>
-          <li>Haloperidol 10 mg IV</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-4-8">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-4-8" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Midazolam contínuo 0,05–2 mg/kg/h</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-4-8" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Cetamina isolada 1–7 mg/kg/h</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-4-8" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Dexmedetomidina 0,7 mcg/kg/h</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-4-8" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Haloperidol 10 mg IV</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -960,15 +1190,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.9</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-4-9" data-q-id="q-4-9" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.9</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Fentanil em infusão contínua: faixa terapêutica usual em UTI?</p>
-        <ol class="quiz-q__options">
-          <li>0,05–0,1 mcg/kg/h</li>
-          <li>0,5–2 mcg/kg/h</li>
-          <li>5–10 mcg/kg/h</li>
-          <li>50–100 mcg/kg/h</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-4-9">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-4-9" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">0,05–0,1 mcg/kg/h</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-4-9" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">0,5–2 mcg/kg/h</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-4-9" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">5–10 mcg/kg/h</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-4-9" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">50–100 mcg/kg/h</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -979,15 +1209,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.10</span><span class="quiz-q__bloom" data-bloom="evaluate">Avaliar</span></header>
+      <article class="quiz-q" id="q-4-10" data-q-id="q-4-10" data-correct="B" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 4.10</span><span class="quiz-q__bloom" data-bloom="evaluate">Avaliar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente em VM, delirium hiperativo, hemodinamicamente estável, sem necessidade de sedação profunda. Qual estratégia tem melhor evidência para reduzir delirium e tempo de VM?</p>
-        <ol class="quiz-q__options">
-          <li>Aumentar midazolam para sedação profunda</li>
-          <li>Dexmedetomidina, com correção de causas, sono, reorientação e mobilização precoce</li>
-          <li>Haloperidol em dose alta universalmente</li>
-          <li>Restrição mecânica e ambiente escuro 24 h</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-4-10">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-4-10" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Aumentar midazolam para sedação profunda</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-4-10" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Dexmedetomidina, com correção de causas, sono, reorientação e mobilização precoce</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-4-10" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Haloperidol em dose alta universalmente</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-4-10" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Restrição mecânica e ambiente escuro 24 h</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -997,24 +1227,30 @@
           </div>
         </details>
       </article>
+        </div>
+      </details>
     </section>
 
     <!-- ============================================================
          MÓDULO 5 — Drogas vasoativas (10 questões)
          ============================================================ -->
-    <section id="cad-mod-5">
-      <span class="section-eyebrow">Origem · Módulo 5</span>
-      <h2>5. Drogas vasoativas em medicina intensiva</h2>
-
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+    <section id="cad-mod-5" class="quiz-chapter-section">
+      <details open class="quiz-chapter" data-chapter="5">
+        <summary class="quiz-chapter__summary">
+          <span class="section-eyebrow">Origem · Módulo 5</span>
+          <h2>5. Drogas vasoativas em medicina intensiva</h2>
+          <span class="quiz-chapter__progress" data-chapter-progress="5" aria-live="polite">0 / 10 respondidas</span>
+        </summary>
+        <div class="quiz-chapter__body">
+          <article class="quiz-q" id="q-5-1" data-q-id="q-5-1" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">A noradrenalina em UTI atua predominantemente em qual receptor?</p>
-        <ol class="quiz-q__options">
-          <li>β₂ adrenérgico</li>
-          <li>α₁ adrenérgico (com efeito β₁ modesto)</li>
-          <li>V₁ₐ vascular</li>
-          <li>PDE3 miocárdico</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-5-1">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-5-1" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">β₂ adrenérgico</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-5-1" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">α₁ adrenérgico (com efeito β₁ modesto)</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-5-1" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">V₁ₐ vascular</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-5-1" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">PDE3 miocárdico</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1025,15 +1261,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+      <article class="quiz-q" id="q-5-2" data-q-id="q-5-2" data-correct="B" data-error-type="fisiologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Por que a vasopressina é considerada adjunta ("poupadora" de noradrenalina) em choque vasoplégico?</p>
-        <ol class="quiz-q__options">
-          <li>Aumenta inotropia diretamente</li>
-          <li>Atua em V₁ₐ vascular por via não adrenérgica, complementando a vasoconstrição</li>
-          <li>Tem efeito broncodilatador potente</li>
-          <li>Reduz a frequência cardíaca</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-5-2">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-5-2" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Aumenta inotropia diretamente</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-5-2" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Atua em V₁ₐ vascular por via não adrenérgica, complementando a vasoconstrição</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-5-2" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Tem efeito broncodilatador potente</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-5-2" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Reduz a frequência cardíaca</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1044,15 +1280,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-5-3" data-q-id="q-5-3" data-correct="A" data-error-type="farmacologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente 70 kg, choque cardiogênico, PAM 55, lactato 4, ECO com FE 20%, congestão. Qual combinação inicial é mais coerente?</p>
-        <ol class="quiz-q__options">
-          <li>Noradrenalina + dobutamina, conforme necessidade hemodinâmica</li>
-          <li>Vasopressina isolada</li>
-          <li>Nitroprussiato + furosemida</li>
-          <li>Dopamina em alta dose isolada</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-5-3">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-5-3" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Noradrenalina + dobutamina, conforme necessidade hemodinâmica</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-5-3" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Vasopressina isolada</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-5-3" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Nitroprussiato + furosemida</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-5-3" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Dopamina em alta dose isolada</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1063,15 +1299,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-5-4" data-q-id="q-5-4" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Preparo padrão de noradrenalina em UTI brasileira para concentração base 64 mcg/mL em 250 mL:</p>
-        <ol class="quiz-q__options">
-          <li>2 ampolas hemitartarato 8 mg/4 mL + 242 mL SF 0,9%</li>
-          <li>4 ampolas hemitartarato 8 mg/4 mL + 234 mL SF 0,9%</li>
-          <li>8 ampolas hemitartarato 8 mg/4 mL + 218 mL SF 0,9%</li>
-          <li>1 ampola hemitartarato 8 mg/4 mL + 246 mL SF 0,9%</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-5-4">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-5-4" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">2 ampolas hemitartarato 8 mg/4 mL + 242 mL SF 0,9%</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-5-4" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">4 ampolas hemitartarato 8 mg/4 mL + 234 mL SF 0,9%</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-5-4" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">8 ampolas hemitartarato 8 mg/4 mL + 218 mL SF 0,9%</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-5-4" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">1 ampola hemitartarato 8 mg/4 mL + 246 mL SF 0,9%</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1082,15 +1318,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-5-5" data-q-id="q-5-5" data-correct="B" data-error-type="fisiologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em paciente com TEP maciço e disfunção de VD, por que noradrenalina é a vasopressor preferencial?</p>
-        <ol class="quiz-q__options">
-          <li>Reduz resistência vascular pulmonar diretamente</li>
-          <li>Mantém pressão de perfusão coronariana direita sem aumentar muito a pós-carga de VD</li>
-          <li>Tem efeito broncodilatador acentuado</li>
-          <li>Inverte a hipertensão pulmonar aguda</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-5-5">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-5-5" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Reduz resistência vascular pulmonar diretamente</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-5-5" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Mantém pressão de perfusão coronariana direita sem aumentar muito a pós-carga de VD</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-5-5" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Tem efeito broncodilatador acentuado</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-5-5" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Inverte a hipertensão pulmonar aguda</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1101,15 +1337,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-5-6" data-q-id="q-5-6" data-correct="B" data-error-type="farmacologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Nitroprussiato deve ser diluído em qual diluente, exclusivamente?</p>
-        <ol class="quiz-q__options">
-          <li>SF 0,9%</li>
-          <li>SG 5%</li>
-          <li>Ringer lactato</li>
-          <li>Qualquer um deles, indiferente</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-5-6">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-5-6" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">SF 0,9%</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-5-6" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">SG 5%</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-5-6" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Ringer lactato</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-5-6" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Qualquer um deles, indiferente</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1120,15 +1356,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-5-7" data-q-id="q-5-7" data-correct="B" data-error-type="interpretativo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Por que a dopamina caiu em desuso como vasopressor de primeira linha em choque séptico?</p>
-        <ol class="quiz-q__options">
-          <li>Causa broncoespasmo grave</li>
-          <li>Tem maior risco de arritmia versus noradrenalina, sem benefício em desfechos</li>
-          <li>Não atravessa a barreira hematoencefálica</li>
-          <li>Tem ação exclusiva renal</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-5-7">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-5-7" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Causa broncoespasmo grave</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-5-7" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Tem maior risco de arritmia versus noradrenalina, sem benefício em desfechos</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-5-7" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Não atravessa a barreira hematoencefálica</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-5-7" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Tem ação exclusiva renal</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1139,15 +1375,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-5-8" data-q-id="q-5-8" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Dose usual de início da dobutamina em UTI:</p>
-        <ol class="quiz-q__options">
-          <li>0,1–0,5 mcg/kg/min</li>
-          <li>2,5–5 mcg/kg/min, titulando até 20 mcg/kg/min</li>
-          <li>30–50 mcg/kg/min</li>
-          <li>0,01–0,03 mcg/kg/min</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-5-8">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-5-8" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">0,1–0,5 mcg/kg/min</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-5-8" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">2,5–5 mcg/kg/min, titulando até 20 mcg/kg/min</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-5-8" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">30–50 mcg/kg/min</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-5-8" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">0,01–0,03 mcg/kg/min</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1158,15 +1394,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-5-9" data-q-id="q-5-9" data-correct="B" data-error-type="farmacologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em choque vasoplégico refratário a noradrenalina (≥ 0,25 mcg/kg/min), qual adjuvante tem evidência de redução de necessidade de catecolaminas?</p>
-        <ol class="quiz-q__options">
-          <li>Adrenalina em alta dose</li>
-          <li>Vasopressina 0,01–0,04 UI/min</li>
-          <li>Nitroprussiato como adjuvante</li>
-          <li>Esmolol para "modular" simpaticotonia</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-5-9">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-5-9" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Adrenalina em alta dose</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-5-9" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Vasopressina 0,01–0,04 UI/min</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-5-9" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Nitroprussiato como adjuvante</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-5-9" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Esmolol para "modular" simpaticotonia</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1177,15 +1413,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-5-10" data-q-id="q-5-10" data-correct="B" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 5.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em emergência hipertensiva com dissecção aórtica, qual é a sequência de drogas mais coerente?</p>
-        <ol class="quiz-q__options">
-          <li>Iniciar nitroprussiato isolado e titular agressivamente</li>
-          <li>Iniciar β-bloqueador (esmolol/labetalol) primeiro, e só então vasodilatador (nitroprussiato/nicardipina) se necessário</li>
-          <li>Iniciar furosemida e clonidina oral</li>
-          <li>Aguardar redução espontânea</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-5-10">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-5-10" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Iniciar nitroprussiato isolado e titular agressivamente</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-5-10" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Iniciar β-bloqueador (esmolol/labetalol) primeiro, e só então vasodilatador (nitroprussiato/nicardipina) se necessário</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-5-10" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Iniciar furosemida e clonidina oral</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-5-10" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Aguardar redução espontânea</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1195,24 +1431,30 @@
           </div>
         </details>
       </article>
+        </div>
+      </details>
     </section>
 
     <!-- ============================================================
          MÓDULO 6 — Distúrbios hidroeletrolíticos (10 questões)
          ============================================================ -->
-    <section id="cad-mod-6">
-      <span class="section-eyebrow">Origem · Módulo 6</span>
-      <h2>6. Distúrbios hidroeletrolíticos</h2>
-
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span></header>
+    <section id="cad-mod-6" class="quiz-chapter-section">
+      <details open class="quiz-chapter" data-chapter="6">
+        <summary class="quiz-chapter__summary">
+          <span class="section-eyebrow">Origem · Módulo 6</span>
+          <h2>6. Distúrbios hidroeletrolíticos</h2>
+          <span class="quiz-chapter__progress" data-chapter-progress="6" aria-live="polite">0 / 10 respondidas</span>
+        </summary>
+        <div class="quiz-chapter__body">
+          <article class="quiz-q" id="q-6-1" data-q-id="q-6-1" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.1</span><span class="quiz-q__bloom" data-bloom="remember">Lembrar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Faixa de referência de potássio sérico em adulto:</p>
-        <ol class="quiz-q__options">
-          <li>2,5–3,5 mEq/L</li>
-          <li>3,5–5,0 mEq/L</li>
-          <li>5,0–7,0 mEq/L</li>
-          <li>7,0–9,0 mEq/L</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-6-1">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-6-1" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">2,5–3,5 mEq/L</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-6-1" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">3,5–5,0 mEq/L</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-6-1" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">5,0–7,0 mEq/L</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-6-1" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">7,0–9,0 mEq/L</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1223,15 +1465,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span></header>
+      <article class="quiz-q" id="q-6-2" data-q-id="q-6-2" data-correct="C" data-error-type="fisiologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.2</span><span class="quiz-q__bloom" data-bloom="understand">Compreender</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em hipocalemia refratária, qual eletrólito deve ser investigado/corrigido <strong>antes</strong> para que a reposição de K seja efetiva?</p>
-        <ol class="quiz-q__options">
-          <li>Sódio</li>
-          <li>Cálcio</li>
-          <li>Magnésio</li>
-          <li>Fósforo</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-6-2">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-6-2" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Sódio</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-6-2" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Cálcio</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-6-2" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Magnésio</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-6-2" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Fósforo</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1242,15 +1484,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-6-3" data-q-id="q-6-3" data-correct="A" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">KCl em via periférica: taxa e concentração máximas recomendadas:</p>
-        <ol class="quiz-q__options">
-          <li>≤ 10 mEq/h e ≤ 40 mEq/L</li>
-          <li>≤ 20 mEq/h e ≤ 100 mEq/L</li>
-          <li>40 mEq/h e 400 mEq/L</li>
-          <li>Sem limite</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-6-3">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-6-3" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">≤ 10 mEq/h e ≤ 40 mEq/L</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-6-3" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">≤ 20 mEq/h e ≤ 100 mEq/L</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-6-3" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">40 mEq/h e 400 mEq/L</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-6-3" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Sem limite</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1261,15 +1503,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-6-4" data-q-id="q-6-4" data-correct="A" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Hiponatremia grave com Na 118 mEq/L em paciente com convulsão. Qual o alvo de correção nas primeiras horas e o limite para evitar mielinólise?</p>
-        <ol class="quiz-q__options">
-          <li>Subir 1–2 mEq/L em 1–2 h até cessar a crise; máximo 8–10 mEq/L em 24 h</li>
-          <li>Normalizar a 140 nas primeiras 6 h</li>
-          <li>Subir 30 mEq/L em 6 h</li>
-          <li>Restringir água isolada e aguardar correção espontânea</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-6-4">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-6-4" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Subir 1–2 mEq/L em 1–2 h até cessar a crise; máximo 8–10 mEq/L em 24 h</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-6-4" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Normalizar a 140 nas primeiras 6 h</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-6-4" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Subir 30 mEq/L em 6 h</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-6-4" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Restringir água isolada e aguardar correção espontânea</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1280,15 +1522,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-6-5" data-q-id="q-6-5" data-correct="A" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.5</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em hipercalemia grave (K 7,2) com alargamento de QRS, qual a sequência de drogas mais coerente?</p>
-        <ol class="quiz-q__options">
-          <li>Gluconato de cálcio IV → insulina+glicose → β2-agonista → diurético/hemodiálise se refratário</li>
-          <li>Apenas bicarbonato IV em bolus</li>
-          <li>Apenas furosemida em alta dose</li>
-          <li>Hidratar com SF 0,9% e aguardar 24 h</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-6-5">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-6-5" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Gluconato de cálcio IV → insulina+glicose → β2-agonista → diurético/hemodiálise se refratário</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-6-5" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Apenas bicarbonato IV em bolus</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-6-5" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Apenas furosemida em alta dose</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-6-5" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Hidratar com SF 0,9% e aguardar 24 h</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1299,15 +1541,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-6-6" data-q-id="q-6-6" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Sulfato de magnésio para eclâmpsia: dose de ataque IV em 15–20 min:</p>
-        <ol class="quiz-q__options">
-          <li>1 g</li>
-          <li>4–6 g</li>
-          <li>20 g</li>
-          <li>50 g</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-6-6">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-6-6" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">1 g</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-6-6" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">4–6 g</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-6-6" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">20 g</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-6-6" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">50 g</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1318,15 +1560,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-6-7" data-q-id="q-6-7" data-correct="A" data-error-type="farmacologico">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.7</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente com hipocalcemia sintomática (Chvostek+, parestesia, QT longo). Cálcio iônico 0,8 mmol/L. Qual a conduta inicial?</p>
-        <ol class="quiz-q__options">
-          <li>Gluconato de cálcio 10% — 1 a 2 g IV lento em 10 min</li>
-          <li>Cálcio oral isolado</li>
-          <li>Aguardar dosagem de PTH</li>
-          <li>Furosemida para baixar Ca rapidamente</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-6-7">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-6-7" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Gluconato de cálcio 10% — 1 a 2 g IV lento em 10 min</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-6-7" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Cálcio oral isolado</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-6-7" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Aguardar dosagem de PTH</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-6-7" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Furosemida para baixar Ca rapidamente</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1337,15 +1579,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-6-8" data-q-id="q-6-8" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Hipofosfatemia grave (P &lt; 1,0 mg/dL) sintomática. Qual a taxa máxima de infusão de fosfato IV?</p>
-        <ol class="quiz-q__options">
-          <li>1 mmol/h</li>
-          <li>7 mmol/h</li>
-          <li>30 mmol/h</li>
-          <li>60 mmol/h</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-6-8">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-6-8" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">1 mmol/h</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-6-8" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">7 mmol/h</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-6-8" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">30 mmol/h</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-6-8" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">60 mmol/h</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1356,15 +1598,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span></header>
+      <article class="quiz-q" id="q-6-9" data-q-id="q-6-9" data-correct="B" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.9</span><span class="quiz-q__bloom" data-bloom="analyze">Analisar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Após cessar reposição de NaCl 3% em hiponatremia, o Na do paciente subiu 14 mEq/L em 24 h. Qual a conduta correta?</p>
-        <ol class="quiz-q__options">
-          <li>Nada a fazer — está dentro do alvo</li>
-          <li>"Re-baixar" o sódio com água livre/desmopressina para evitar mielinólise</li>
-          <li>Aumentar a infusão de NaCl 3%</li>
-          <li>Iniciar furosemida</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-6-9">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-6-9" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Nada a fazer — está dentro do alvo</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-6-9" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">"Re-baixar" o sódio com água livre/desmopressina para evitar mielinólise</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-6-9" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Aumentar a infusão de NaCl 3%</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-6-9" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Iniciar furosemida</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1375,15 +1617,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-6-10" data-q-id="q-6-10" data-correct="A" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 6.10</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Em hipernatremia (Na 168), paciente desidratado, qual a conduta inicial?</p>
-        <ol class="quiz-q__options">
-          <li>Repor déficit de água livre lentamente; não baixar &gt; 10 mEq/L em 24 h</li>
-          <li>Bolus de NaCl 3% imediato</li>
-          <li>Furosemida IV em alta dose</li>
-          <li>Restrição completa de água por 24 h</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-6-10">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-6-10" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Repor déficit de água livre lentamente; não baixar &gt; 10 mEq/L em 24 h</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-6-10" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Bolus de NaCl 3% imediato</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-6-10" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Furosemida IV em alta dose</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-6-10" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Restrição completa de água por 24 h</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1393,24 +1635,30 @@
           </div>
         </details>
       </article>
+        </div>
+      </details>
     </section>
 
     <!-- ============================================================
          MÓDULO 7 — Calculadoras / preparo operacional (10 questões)
          ============================================================ -->
-    <section id="cad-mod-7">
-      <span class="section-eyebrow">Origem · Módulo 7</span>
-      <h2>7. Calculadoras e preparo operacional</h2>
-
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.1</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+    <section id="cad-mod-7" class="quiz-chapter-section">
+      <details open class="quiz-chapter" data-chapter="7">
+        <summary class="quiz-chapter__summary">
+          <span class="section-eyebrow">Origem · Módulo 7</span>
+          <h2>7. Calculadoras e preparo operacional</h2>
+          <span class="quiz-chapter__progress" data-chapter-progress="7" aria-live="polite">0 / 10 respondidas</span>
+        </summary>
+        <div class="quiz-chapter__body">
+          <article class="quiz-q" id="q-7-1" data-q-id="q-7-1" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.1</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Para preparar nora 64 mcg/mL em 250 mL com ampola hemitartarato 8 mg/4 mL, quantos mL devem ser aspirados da ampola?</p>
-        <ol class="quiz-q__options">
-          <li>8 mL (2 ampolas)</li>
-          <li>16 mL (4 ampolas)</li>
-          <li>32 mL (8 ampolas)</li>
-          <li>4 mL (1 ampola)</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-7-1">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-7-1" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">8 mL (2 ampolas)</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-7-1" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">16 mL (4 ampolas)</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-7-1" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">32 mL (8 ampolas)</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-7-1" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">4 mL (1 ampola)</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1421,15 +1669,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.2</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-7-2" data-q-id="q-7-2" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.2</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Paciente 70 kg, noradrenalina solução 64 mcg/mL, dose alvo 0,1 mcg/kg/min. Qual a vazão da bomba?</p>
-        <ol class="quiz-q__options">
-          <li>3,28 mL/h</li>
-          <li>6,56 mL/h</li>
-          <li>13,13 mL/h</li>
-          <li>21,88 mL/h</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-7-2">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-7-2" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">3,28 mL/h</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-7-2" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">6,56 mL/h</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-7-2" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">13,13 mL/h</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-7-2" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">21,88 mL/h</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1440,15 +1688,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-7-3" data-q-id="q-7-3" data-correct="C" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.3</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Nitroprussiato 50 mg em 250 mL de SG 5% — concentração final:</p>
-        <ol class="quiz-q__options">
-          <li>50 mcg/mL</li>
-          <li>100 mcg/mL</li>
-          <li>200 mcg/mL</li>
-          <li>500 mcg/mL</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-7-3">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-7-3" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">50 mcg/mL</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-7-3" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">100 mcg/mL</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-7-3" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">200 mcg/mL</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-7-3" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">500 mcg/mL</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1459,15 +1707,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-7-4" data-q-id="q-7-4" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.4</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Para administrar 2 g de sulfato de magnésio 50% (500 mg/mL) em broncoespasmo grave, quantos mL aspirar da ampola?</p>
-        <ol class="quiz-q__options">
-          <li>1 mL</li>
-          <li>4 mL</li>
-          <li>10 mL</li>
-          <li>20 mL</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-7-4">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-7-4" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">1 mL</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-7-4" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">4 mL</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-7-4" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">10 mL</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-7-4" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">20 mL</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1478,15 +1726,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.5</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-7-5" data-q-id="q-7-5" data-correct="C" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.5</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Fentanil 500 mcg em 50 mL → concentração 10 mcg/mL. Para 70 kg em dose 1 mcg/kg/h, qual a vazão?</p>
-        <ol class="quiz-q__options">
-          <li>0,7 mL/h</li>
-          <li>3,5 mL/h</li>
-          <li>7,0 mL/h</li>
-          <li>14,0 mL/h</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-7-5">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-7-5" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">0,7 mL/h</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-7-5" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">3,5 mL/h</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-7-5" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">7,0 mL/h</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-7-5" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">14,0 mL/h</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1497,15 +1745,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-7-6" data-q-id="q-7-6" data-correct="B" data-error-type="conceitual">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.6</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Propofol é uma das drogas que se usa <strong>puro</strong>. Em frasco 500 mg/50 mL, o volume final na bomba e a concentração são:</p>
-        <ol class="quiz-q__options">
-          <li>250 mL e 2 mg/mL (sempre diluído)</li>
-          <li>50 mL e 10 mg/mL (ampola pura)</li>
-          <li>100 mL e 5 mg/mL (sempre diluído)</li>
-          <li>500 mL e 1 mg/mL (sempre diluído)</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-7-6">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-7-6" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">250 mL e 2 mg/mL (sempre diluído)</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-7-6" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">50 mL e 10 mg/mL (ampola pura)</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-7-6" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">100 mL e 5 mg/mL (sempre diluído)</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-7-6" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">500 mL e 1 mg/mL (sempre diluído)</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1516,15 +1764,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.7</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-7-7" data-q-id="q-7-7" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.7</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">KCl 19,1% — ampola de 10 mL contém quantos mEq de K⁺?</p>
-        <ol class="quiz-q__options">
-          <li>13,4 mEq</li>
-          <li>25,6 mEq</li>
-          <li>50 mEq</li>
-          <li>100 mEq</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-7-7">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-7-7" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">13,4 mEq</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-7-7" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">25,6 mEq</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-7-7" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">50 mEq</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-7-7" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">100 mEq</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1535,15 +1783,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-7-8" data-q-id="q-7-8" data-correct="B" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.8</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Cisatracúrio 100 mg em 50 mL → concentração de 2 mg/mL. Em paciente 70 kg, dose 1,5 mcg/kg/min, qual a vazão?</p>
-        <ol class="quiz-q__options">
-          <li>1,05 mL/h</li>
-          <li>3,15 mL/h</li>
-          <li>6,30 mL/h</li>
-          <li>12,60 mL/h</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-7-8">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-7-8" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">1,05 mL/h</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-7-8" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">3,15 mL/h</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-7-8" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">6,30 mL/h</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-7-8" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">12,60 mL/h</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1554,15 +1802,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.9</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span></header>
+      <article class="quiz-q" id="q-7-9" data-q-id="q-7-9" data-correct="C" data-error-type="calculo">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.9</span><span class="quiz-q__bloom" data-bloom="apply">Aplicar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Adrogué-Madias: estimar variação de Na sérico em adulto 70 kg após infusão de 1 L de NaCl 3% (513 mEq Na/L). Na atual = 120, K = 4. Variação prevista:</p>
-        <ol class="quiz-q__options">
-          <li>~0,5 mEq/L</li>
-          <li>~5 mEq/L</li>
-          <li>~10 mEq/L</li>
-          <li>~30 mEq/L</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-7-9">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-7-9" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">~0,5 mEq/L</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-7-9" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">~5 mEq/L</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-7-9" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">~10 mEq/L</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-7-9" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">~30 mEq/L</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1573,15 +1821,15 @@
         </details>
       </article>
 
-      <article class="quiz-q">
-        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.10</span><span class="quiz-q__bloom" data-bloom="evaluate">Avaliar</span></header>
+      <article class="quiz-q" id="q-7-10" data-q-id="q-7-10" data-correct="B" data-error-type="procedural">
+        <header class="quiz-q__head"><span class="quiz-q__num">Questão 7.10</span><span class="quiz-q__bloom" data-bloom="evaluate">Avaliar</span><span class="quiz-q__status" data-status="unanswered">nao respondida</span></header>
         <p class="quiz-q__stem">Calculadora exibe "aspirar 16 mL + 234 mL de SF 0,9% → 250 mL @ 64 mcg/mL". Antes de prescrever, o intensivista deve confirmar criticamente:</p>
-        <ol class="quiz-q__options">
-          <li>Apenas a vazão calculada</li>
-          <li>Apresentação real da ampola, compatibilidade do diluente, alvo de PAM e via de infusão (central/periférica)</li>
-          <li>Somente o peso do paciente</li>
-          <li>Apenas o sódio sérico</li>
-        </ol>
+        <form class="quiz-q__form" data-q-id="q-7-10">
+          <label class="quiz-q__opt" data-letter="A"><input type="radio" name="q-7-10" value="A" aria-label="Alternativa A"><span class="quiz-q__opt-letter" aria-hidden="true">A</span><span class="quiz-q__opt-text">Apenas a vazão calculada</span></label>
+          <label class="quiz-q__opt" data-letter="B"><input type="radio" name="q-7-10" value="B" aria-label="Alternativa B"><span class="quiz-q__opt-letter" aria-hidden="true">B</span><span class="quiz-q__opt-text">Apresentação real da ampola, compatibilidade do diluente, alvo de PAM e via de infusão (central/periférica)</span></label>
+          <label class="quiz-q__opt" data-letter="C"><input type="radio" name="q-7-10" value="C" aria-label="Alternativa C"><span class="quiz-q__opt-letter" aria-hidden="true">C</span><span class="quiz-q__opt-text">Somente o peso do paciente</span></label>
+          <label class="quiz-q__opt" data-letter="D"><input type="radio" name="q-7-10" value="D" aria-label="Alternativa D"><span class="quiz-q__opt-letter" aria-hidden="true">D</span><span class="quiz-q__opt-text">Apenas o sódio sérico</span></label>
+        </form>
         <details class="quiz-q__answer">
           <summary>Mostrar gabarito</summary>
           <div class="quiz-q__answer-body">
@@ -1591,9 +1839,361 @@
           </div>
         </details>
       </article>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================================
+         PAINEL FINAL: Caderno de respostas + Caderno de erros
+         ============================================================ -->
+    <section id="caderno-resumo" class="summary-section">
+      <span class="section-eyebrow">Resumo · Caderno de respostas</span>
+      <h2>Seu desempenho</h2>
+      <p style="color:rgba(241,246,251,.85);font-size:14px;line-height:1.55;margin:0 0 4px">
+        Responda às questões acima — seu progresso é salvo automaticamente no navegador.
+        Use os controles abaixo para revelar todos os gabaritos ou filtrar apenas seus erros
+        (com tipo de erro, resposta correta e justificativa).
+      </p>
+
+      <div class="summary-stats" id="summaryStats">
+        <div class="summary-stat">
+          <div class="summary-stat__label">Respondidas</div>
+          <div class="summary-stat__value"><strong id="statAnswered">0</strong> / 70</div>
+        </div>
+        <div class="summary-stat summary-stat--correct">
+          <div class="summary-stat__label">Acertos</div>
+          <div class="summary-stat__value"><strong id="statCorrect">0</strong></div>
+        </div>
+        <div class="summary-stat summary-stat--wrong">
+          <div class="summary-stat__label">Erros</div>
+          <div class="summary-stat__value"><strong id="statWrong">0</strong></div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-stat__label">Aproveitamento</div>
+          <div class="summary-stat__value"><strong id="statRate">—</strong></div>
+        </div>
+      </div>
+
+      <div class="summary-controls" role="group" aria-label="Controles do caderno">
+        <button type="button" class="summary-controls__btn is-active" data-view="all">Todas</button>
+        <button type="button" class="summary-controls__btn" data-view="wrong">Caderno de erros</button>
+        <button type="button" class="summary-controls__btn" data-view="correct">Apenas acertos</button>
+        <button type="button" class="summary-controls__btn" data-action="reveal" id="btnReveal">Mostrar gabarito de todas</button>
+        <button type="button" class="summary-controls__btn summary-controls__btn--danger" data-action="reset">Limpar respostas</button>
+      </div>
+
+      <div class="summary-list" id="summaryList">
+        <div class="summary-empty">
+          Nenhuma questão respondida ainda. <strong>Comece pela Questão 1.1</strong> acima — o estado
+          é salvo automaticamente e você pode retomar a qualquer momento.
+        </div>
+      </div>
     </section>
 
   </main>
 </div>
+
+<script>
+/* ============================================================================
+   Caderno interativo do Mod 8 — estado em localStorage, gabarito recolhível,
+   filtros (todas / erros / acertos) e reset. Sem dependências externas.
+   ============================================================================ */
+(function() {
+  "use strict";
+
+  var STORAGE_KEY = "virtus_mod8_quiz_answers_v1";
+  var REVEAL_KEY = "virtus_mod8_quiz_reveal_v1";
+
+  // ------- Helpers de persistência ------------------------------------------
+  function loadAnswers() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function saveAnswers(map) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(map)); } catch (e) {}
+  }
+  function getReveal() {
+    try { return localStorage.getItem(REVEAL_KEY) === "1"; } catch (e) { return false; }
+  }
+  function setReveal(v) {
+    try { localStorage.setItem(REVEAL_KEY, v ? "1" : "0"); } catch (e) {}
+  }
+
+  // ------- Catálogo de questões (lê do DOM uma vez) -------------------------
+  var questions = [];
+  document.querySelectorAll('article.quiz-q[data-q-id]').forEach(function(art) {
+    var qId = art.getAttribute('data-q-id');
+    var correct = art.getAttribute('data-correct');
+    var errorType = art.getAttribute('data-error-type');
+    var chapter = art.closest('.quiz-chapter-section');
+    var chapterNum = chapter ? chapter.id.replace('cad-mod-', '') : '';
+    var stemEl = art.querySelector('.quiz-q__stem');
+    var stem = stemEl ? stemEl.textContent.trim() : '';
+    var numEl = art.querySelector('.quiz-q__num');
+    var label = numEl ? numEl.textContent.trim() : qId;
+    var rationaleEl = art.querySelector('.quiz-q__rationale');
+    var rationale = rationaleEl ? rationaleEl.innerHTML : '';
+    var conceptEl = art.querySelector('.quiz-q__concept');
+    var concept = conceptEl ? conceptEl.textContent.replace(/^Conceito:\s*/, '').trim() : '';
+    var opts = {};
+    art.querySelectorAll('.quiz-q__opt').forEach(function(opt) {
+      var letter = opt.getAttribute('data-letter');
+      var textEl = opt.querySelector('.quiz-q__opt-text');
+      opts[letter] = textEl ? textEl.textContent.trim() : '';
+    });
+    questions.push({
+      qId: qId, correct: correct, errorType: errorType, chapter: chapterNum,
+      label: label, stem: stem, options: opts, rationale: rationale, concept: concept,
+      element: art
+    });
+  });
+
+  // ------- Estado em memória + sincronização --------------------------------
+  var answers = loadAnswers();    // { "q-1-1": "C", ... }
+  var revealed = getReveal();     // true = gabarito visível em todas as questões
+
+  // Marca a classe global no body quando revelado vs hidden
+  function applyRevealMode() {
+    document.body.classList.toggle('quiz-mode-hide-answers', !revealed);
+    document.querySelectorAll('details.quiz-q__answer').forEach(function(det) {
+      det.open = revealed;
+    });
+  }
+
+  // Aplica estado visual a uma questão (selected/correct/wrong + status chip)
+  function paintQuestion(q) {
+    var userChoice = answers[q.qId];
+    var statusEl = q.element.querySelector('.quiz-q__status');
+    // Reset visuals
+    q.element.querySelectorAll('.quiz-q__opt').forEach(function(opt) {
+      opt.classList.remove('is-selected', 'is-correct', 'is-wrong');
+    });
+    if (!userChoice) {
+      if (statusEl) {
+        statusEl.setAttribute('data-status', 'unanswered');
+        statusEl.textContent = 'não respondida';
+      }
+      q.element.setAttribute('data-result', 'unanswered');
+      return;
+    }
+    // Marca a seleção do usuário
+    var selOpt = q.element.querySelector('.quiz-q__opt[data-letter="' + userChoice + '"]');
+    if (selOpt) selOpt.classList.add('is-selected');
+    // Sincroniza o radio (caso o estado venha do storage)
+    var radio = q.element.querySelector('input[type="radio"][value="' + userChoice + '"]');
+    if (radio && !radio.checked) radio.checked = true;
+
+    var isCorrect = userChoice === q.correct;
+    q.element.setAttribute('data-result', isCorrect ? 'correct' : 'wrong');
+    if (statusEl) {
+      if (isCorrect) {
+        statusEl.setAttribute('data-status', 'correct');
+        statusEl.textContent = 'acertou';
+      } else {
+        statusEl.setAttribute('data-status', 'wrong');
+        statusEl.textContent = 'errou';
+      }
+    }
+    // Se o gabarito está revelado globalmente OU o details está aberto, pinta verde/vermelho
+    var det = q.element.querySelector('details.quiz-q__answer');
+    var detOpen = det && det.open;
+    if (revealed || detOpen) {
+      var correctOpt = q.element.querySelector('.quiz-q__opt[data-letter="' + q.correct + '"]');
+      if (correctOpt) correctOpt.classList.add('is-correct');
+      if (!isCorrect && selOpt) {
+        selOpt.classList.remove('is-selected');
+        selOpt.classList.add('is-wrong');
+      }
+    }
+  }
+
+  // Recalcula progresso por capítulo + estatísticas globais
+  function recalcStats() {
+    var totalAnswered = 0, totalCorrect = 0, totalWrong = 0;
+    var byChapter = {};
+    questions.forEach(function(q) {
+      var ans = answers[q.qId];
+      if (!ans) return;
+      totalAnswered++;
+      if (ans === q.correct) totalCorrect++; else totalWrong++;
+      if (!byChapter[q.chapter]) byChapter[q.chapter] = { answered: 0, wrong: 0 };
+      byChapter[q.chapter].answered++;
+      if (ans !== q.correct) byChapter[q.chapter].wrong++;
+    });
+    // Header: stats globais
+    var $ = function(id) { return document.getElementById(id); };
+    if ($('statAnswered')) $('statAnswered').textContent = totalAnswered;
+    if ($('statCorrect')) $('statCorrect').textContent = totalCorrect;
+    if ($('statWrong')) $('statWrong').textContent = totalWrong;
+    if ($('statRate')) {
+      $('statRate').textContent = totalAnswered > 0
+        ? Math.round((totalCorrect / totalAnswered) * 100) + '%'
+        : '—';
+    }
+    // Por capítulo
+    document.querySelectorAll('.quiz-chapter__progress').forEach(function(el) {
+      var ch = el.getAttribute('data-chapter-progress');
+      var info = byChapter[ch] || { answered: 0, wrong: 0 };
+      el.textContent = info.answered + ' / 10 respondidas';
+      el.setAttribute('data-complete', info.answered === 10 ? 'true' : 'false');
+      // Marca capítulo sem erros (para esconder no modo "only-wrong")
+      var chSection = document.querySelector('.quiz-chapter[data-chapter="' + ch + '"]');
+      if (chSection) {
+        chSection.setAttribute('data-no-errors', info.wrong === 0 ? 'true' : 'false');
+      }
+    });
+  }
+
+  // Renderiza a lista do painel resumo conforme view atual
+  var currentView = 'all'; // 'all' | 'wrong' | 'correct'
+  function renderSummaryList() {
+    var listEl = document.getElementById('summaryList');
+    if (!listEl) return;
+    var items = questions.filter(function(q) {
+      var ans = answers[q.qId];
+      if (currentView === 'all') return ans !== undefined;
+      if (currentView === 'wrong') return ans !== undefined && ans !== q.correct;
+      if (currentView === 'correct') return ans !== undefined && ans === q.correct;
+      return false;
+    });
+
+    if (items.length === 0) {
+      var msgs = {
+        all: 'Nenhuma questão respondida ainda. <strong>Comece pela Questão 1.1</strong> acima — o estado é salvo automaticamente.',
+        wrong: '<strong>Nenhum erro registrado.</strong> Quando errar alguma, ela aparecerá aqui com tipo de erro e resposta correta.',
+        correct: 'Nenhum acerto ainda. Comece a responder pelas questões acima.'
+      };
+      listEl.innerHTML = '<div class="summary-empty">' + msgs[currentView] + '</div>';
+      return;
+    }
+
+    var html = items.map(function(q) {
+      var ans = answers[q.qId];
+      var isCorrect = ans === q.correct;
+      var modifier = isCorrect ? 'correct' : 'wrong';
+      var verdict = isCorrect ? 'Acertou' : 'Errou';
+      var userOpt = q.options[ans] || '—';
+      var correctOpt = q.options[q.correct] || '—';
+      var detail = '';
+      if (!isCorrect) {
+        detail =
+          '<dl class="summary-item__detail">' +
+            '<dt>Sua resposta</dt><dd><strong>' + ans + ')</strong> ' + escapeHtml(userOpt) + '</dd>' +
+            '<dt>Correta</dt><dd><strong>' + q.correct + ')</strong> ' + escapeHtml(correctOpt) + '</dd>' +
+            '<dt>Tipo de erro</dt><dd><span class="summary-item__error-chip">' + q.errorType + '</span></dd>' +
+            (q.rationale ? '<dt>Por que</dt><dd>' + q.rationale + '</dd>' : '') +
+            (q.concept ? '<dt>Conceito</dt><dd>' + escapeHtml(q.concept) + '</dd>' : '') +
+          '</dl>';
+      } else {
+        detail =
+          '<dl class="summary-item__detail">' +
+            '<dt>Resposta</dt><dd><strong>' + q.correct + ')</strong> ' + escapeHtml(correctOpt) + '</dd>' +
+            (q.concept ? '<dt>Conceito</dt><dd>' + escapeHtml(q.concept) + '</dd>' : '') +
+          '</dl>';
+      }
+      return (
+        '<article class="summary-item summary-item--' + modifier + '">' +
+          '<header class="summary-item__head">' +
+            '<span class="summary-item__id"><a href="#' + q.qId + '">' + escapeHtml(q.label) + '</a></span>' +
+            '<span class="summary-item__verdict">' + verdict + '</span>' +
+          '</header>' +
+          '<p class="summary-item__stem">' + escapeHtml(q.stem) + '</p>' +
+          detail +
+        '</article>'
+      );
+    }).join('');
+    listEl.innerHTML = html;
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // ------- Wire-up de eventos ----------------------------------------------
+  // Mudança em qualquer radio
+  document.addEventListener('change', function(ev) {
+    var t = ev.target;
+    if (!t || t.tagName !== 'INPUT' || t.type !== 'radio') return;
+    if (!t.name || t.name.indexOf('q-') !== 0) return;
+    var qId = t.name;
+    answers[qId] = t.value;
+    saveAnswers(answers);
+    var q = questions.find(function(x) { return x.qId === qId; });
+    if (q) paintQuestion(q);
+    recalcStats();
+    renderSummaryList();
+  });
+
+  // Quando o usuário abre/fecha o gabarito local, repinta para mostrar/ocultar verde/vermelho
+  document.addEventListener('toggle', function(ev) {
+    var t = ev.target;
+    if (!t || !t.classList || !t.classList.contains('quiz-q__answer')) return;
+    var art = t.closest('article.quiz-q');
+    if (!art) return;
+    var q = questions.find(function(x) { return x.qId === art.getAttribute('data-q-id'); });
+    if (q) paintQuestion(q);
+  }, true);
+
+  // Controles do painel resumo
+  document.addEventListener('click', function(ev) {
+    var btn = ev.target.closest && ev.target.closest('.summary-controls__btn');
+    if (!btn) return;
+
+    var view = btn.getAttribute('data-view');
+    var action = btn.getAttribute('data-action');
+
+    if (view) {
+      currentView = view;
+      document.querySelectorAll('.summary-controls__btn[data-view]').forEach(function(b) {
+        b.classList.toggle('is-active', b.getAttribute('data-view') === view);
+      });
+      document.body.classList.toggle('quiz-mode-only-wrong', view === 'wrong');
+      renderSummaryList();
+      // Quando vai para "wrong", scroll para o topo do painel
+      var summary = document.getElementById('caderno-resumo');
+      if (view === 'wrong' && summary) summary.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
+    if (action === 'reveal') {
+      revealed = !revealed;
+      setReveal(revealed);
+      btn.textContent = revealed ? 'Ocultar gabarito' : 'Mostrar gabarito de todas';
+      applyRevealMode();
+      questions.forEach(paintQuestion);
+      return;
+    }
+
+    if (action === 'reset') {
+      if (!confirm('Limpar todas as respostas registradas? Esta ação não pode ser desfeita.')) return;
+      answers = {};
+      saveAnswers(answers);
+      revealed = false;
+      setReveal(false);
+      var revBtn = document.getElementById('btnReveal');
+      if (revBtn) revBtn.textContent = 'Mostrar gabarito de todas';
+      // Desmarca todos os radios
+      document.querySelectorAll('.quiz-q__form input[type="radio"]').forEach(function(r) { r.checked = false; });
+      applyRevealMode();
+      questions.forEach(paintQuestion);
+      recalcStats();
+      renderSummaryList();
+    }
+  });
+
+  // ------- Hidratação inicial -----------------------------------------------
+  // Sincroniza o estado do botão reveal com a flag persistida
+  var btnReveal = document.getElementById('btnReveal');
+  if (btnReveal) btnReveal.textContent = revealed ? 'Ocultar gabarito' : 'Mostrar gabarito de todas';
+  applyRevealMode();
+  questions.forEach(paintQuestion);
+  recalcStats();
+  renderSummaryList();
+})();
+</script>
 </body>
 </html>

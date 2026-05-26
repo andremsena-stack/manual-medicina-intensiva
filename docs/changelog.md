@@ -1,5 +1,61 @@
 # Changelog
 
+## 2026-05-26 — Mod 8 Caderno interativo: radios, capítulos colapsáveis, caderno de respostas + erros
+
+### Tipo de alteração
+
+- **Técnica/UX educacional**. Não altera o conteúdo clínico das questões (gabaritos e justificativas preservados); adiciona estado interativo persistente, agrupamento e analytics de erro por categoria.
+
+### Motivação
+
+Feedback do usuário:
+- "Mod 8. Caderno - tudo correto. Mas dá pra agrupar por capítulos para facilitar navegação."
+- "Dá para salvar as escolhas gerando um caderno de respostas ao final com a opção de gabarito - caderno de erros."
+- "No caderno de erros, ele aponta o motivo do erro 'conceitual', de cálculo, fisiológico, etc., e aponta a resposta correta com comentários."
+
+### O que mudou
+
+1. **Capítulos colapsáveis** — cada `<section id="cad-mod-N">` agora envelopa um `<details open class="quiz-chapter">` com `<summary>` contendo eyebrow + h2 + chip de progresso "X/10 respondidas". Clicar no h2 (chevron cyan) recolhe o capítulo inteiro, mantendo o `id` para âncora.
+
+2. **Questões interativas** — cada `<ol class="quiz-q__options">` virou `<form class="quiz-q__form">` com `<label class="quiz-q__opt">` + radio + letterbox (A–D) + texto. Estados visuais:
+   - `.is-selected` (cyan) — escolha do usuário
+   - `.is-correct` (verde) — quando gabarito revelado
+   - `.is-wrong` (vermelho) — escolha errada após reveal
+   - Chip de status no header: "não respondida" / "acertou" / "errou"
+
+3. **Classificação de erro** — cada `<article>` ganhou `data-error-type` mapeado para uma das 6 categorias: `conceitual`, `cálculo`, `fisiológico`, `farmacológico`, `procedural`, `interpretativo`. Mapeamento explícito por questão (70 entradas) em `scripts/upgrade-mod8-quiz-interactive.py`.
+
+4. **Painel "Caderno de respostas"** (nova `<section id="caderno-resumo">` ao final):
+   - **4 stats** no topo: Respondidas (X/70), Acertos, Erros, Aproveitamento (%).
+   - **5 controles**: Todas · **Caderno de erros** · Apenas acertos · Mostrar gabarito de todas · Limpar respostas (com confirm).
+   - **Lista** dinâmica que renderiza apenas as questões filtradas. Cada item mostra:
+     - Acerto: resposta correta + conceito testado.
+     - Erro: sua resposta · resposta correta · **chip do tipo de erro** (roxo) · justificativa + conceito.
+   - Cada item linka de volta à questão original via `#q-N-M`.
+
+5. **Persistência em `localStorage`** (chaves `virtus_mod8_quiz_answers_v1` e `virtus_mod8_quiz_reveal_v1`):
+   - Salva automaticamente cada radio change.
+   - Restaura ao recarregar a página.
+   - "Limpar respostas" pede confirmação antes de zerar.
+
+6. **Modo "apenas erros"** filtra via CSS classes no body (`.quiz-mode-only-wrong`): esconde questões corretas/não respondidas + capítulos sem erros (`data-no-errors="true"`).
+
+7. **Toggle global "Mostrar gabarito"** (`.quiz-mode-hide-answers` no body): por padrão os `<details>` por questão permanecem fechados; o botão revela todos de uma vez (ou recolhe). Estado persistido.
+
+### Arquivos
+
+- **Novo**: `scripts/upgrade-mod8-quiz-interactive.py` — script idempotente que transforma o HTML do Mod 8 (regex-based; aborta se já convertido). Contém o mapa `ERROR_TYPES` com todas as 70 classificações.
+- **Modificado**: `src/data/modules/modulo_08_caderno_questoes.html` — `<style>` ganhou ~180 linhas (componentes interativos + painel resumo), `<body>` ganhou a section `#caderno-resumo` e `<script>` inline (~250 linhas) com toda a lógica vanilla JS.
+
+### Hash
+
+- Mod 8: `469eaf99…b50846257feba857cdbfd4`
+
+### Verificação
+
+- `node scripts/verify-module-hashes.mjs` → 9/9 OK
+- `npx tsc --noEmit` → clean (não há mudanças em TS)
+
 ## 2026-05-26 — PWA instalável (iOS · Android · desktop) com prompt nativo + tutorial iOS
 
 ### Tipo de alteração
