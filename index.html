@@ -75,6 +75,26 @@
         font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
         color: rgba(48,241,230,0.8); margin: 0;
       }
+      .pre-react-fallback__diag {
+        margin: 14px 16px 0;
+        padding: 10px 12px;
+        background: rgba(180,35,24,0.10);
+        border: 1px solid rgba(180,35,24,0.42);
+        border-radius: 8px;
+        max-width: 540px;
+        max-height: 220px;
+        overflow: auto;
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 11px;
+        line-height: 1.45;
+        text-align: left;
+        color: #ffb38a;
+        word-break: break-word;
+        white-space: pre-wrap;
+        display: none;
+      }
+      .pre-react-fallback.has-error .pre-react-fallback__diag { display: block; }
+      .pre-react-fallback__diag strong { color: #ffd6c4; }
     </style>
 
     <!-- Open Graph (Facebook, LinkedIn, WhatsApp, Slack) -->
@@ -124,20 +144,46 @@
         <button type="button" class="pre-react-fallback__retry" id="preReactRetry">
           Recarregar e limpar cache
         </button>
+        <pre class="pre-react-fallback__diag" id="preReactDiag" aria-live="polite"></pre>
       </div>
     </div>
     <script>
       // Sentinela: se o React não tiver montado em 4 s, troca a mensagem
       // para "ficou preso" + mostra botão para forçar reload + unregister SW.
+      // Também captura erros globais e os exibe na tela (debug à distância
+      // em iOS PWA standalone, onde não há acesso ao console).
       (function () {
         var fb = document.getElementById('preReactFallback');
         if (!fb) return;
+        var diag = document.getElementById('preReactDiag');
+        var errors = [];
+        function appendError(label, info) {
+          errors.push('[' + label + '] ' + info);
+          if (diag) {
+            diag.textContent = errors.join('\n\n');
+            fb.classList.add('has-error');
+          }
+        }
+        window.addEventListener('error', function (ev) {
+          var src = ev.filename ? ev.filename.split('/').pop() : '?';
+          var msg = (ev.message || 'unknown error') + '  @ ' + src + ':' + (ev.lineno || 0);
+          if (ev.error && ev.error.stack) msg += '\n' + ev.error.stack.split('\n').slice(0, 4).join('\n');
+          appendError('JS error', msg);
+        });
+        window.addEventListener('unhandledrejection', function (ev) {
+          var reason = ev.reason;
+          var msg = reason && reason.message ? reason.message : String(reason);
+          if (reason && reason.stack) msg += '\n' + reason.stack.split('\n').slice(0, 4).join('\n');
+          appendError('Promise rejection', msg);
+        });
         var stuckTimer = setTimeout(function () {
           fb.classList.add('is-stuck');
           var t = document.getElementById('preReactTitle');
           var s = document.getElementById('preReactSub');
           if (t) t.textContent = 'Não consegui carregar o app';
-          if (s) s.textContent = 'Pode ser cache desatualizado. Toque para limpar e tentar de novo.';
+          if (s) s.textContent = errors.length
+            ? 'Detectei erro de JS (detalhes abaixo). Toque para limpar cache e tentar de novo.'
+            : 'Pode ser cache desatualizado ou bloqueio do navegador. Toque para limpar e tentar de novo.';
         }, 4000);
         // Observa o #root: quando o React criar conteúdo dentro, esconde o fallback.
         var root = document.getElementById('root');
