@@ -79,13 +79,27 @@ o melhor caminho é commitar e deixar o CI buildar; deploy direto via
 
 ## 4. Stripe — fluxo atual
 
-- Landing usa o **Payment Link** `https://buy.stripe.com/14AeVc0vS66vgVKeJB3gk01` (one-time
-  R$ 29,99 da fase fundadora) para os botões "Acesso fundador" / "Garantir acesso fundador"
-  / "Quero meu acesso fundador".
-- A Function `/api/create-checkout-session` continua existindo (modo subscription com
-  `STRIPE_PRICE_ID`) para uso por usuários já logados sem assinatura ativa, via `AuthGate`.
+Cobrança 100% por **assinatura recorrente**. A fase fundadora one-time
+(R$ 29,99 vitalício, Payment Link `14AeVc0vS66vgVKeJB3gk01`) foi descontinuada — não
+referenciar mais em copy, CTAs, anúncios ou documentação.
+
+Planos ativos (price IDs públicos do Stripe, seguros no bundle do frontend; ver
+`PLANS` em `src/components/AuthGate.tsx`):
+
+| Plano | Preço | Price ID |
+|-------|-------|----------|
+| Mensal | R$ 25,99/mês | `price_1Taz9MAnI7zzun0R92AYw0ld` |
+| Trimestral | R$ 63,99 / 3 meses (≈ R$ 21,33/mês) | `price_1Taz9eAnI7zzun0RCHhB5NOg` |
+| Anual | R$ 199,99/ano (≈ R$ 16,67/mês) — destacado como "Melhor valor" | `price_1TazAEAnI7zzun0R5wGrD2ol` |
+
+- Fluxo de checkout: usuário (logado ou deslogado) escolhe um plano →
+  Function `/api/create-checkout-session` cria a sessão Stripe em modo `subscription` →
+  retorna a URL hospedada do Checkout.
 - Webhook em `https://manualvirtus.com.br/api/stripe-webhook` atualiza
-  `publicMetadata.subscriptionStatus` no Clerk.
+  `publicMetadata.subscriptionStatus` no Clerk (valores em `STRIPE_ALLOWED_STATUSES`,
+  tipicamente `active,trialing`).
+- A variável `STRIPE_PRICE_ID` continua exigida nas Functions como **price ID default**
+  (fallback) caso a sessão seja criada sem `priceId` explícito vindo do frontend.
 
 ## 4b. Regra de ordenação dos módulos
 

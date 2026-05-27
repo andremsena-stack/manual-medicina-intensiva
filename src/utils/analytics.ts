@@ -5,10 +5,15 @@
 //   3. Encaminha para `window.posthog?.capture()` se PostHog estiver carregado
 //      (snippet injetado por env var em <head>, opcional).
 //   4. Encaminha para `window.mixpanel?.track()` se Mixpanel estiver presente.
+//   5. Encaminha para Meta Pixel (window.fbq) se o pixel estiver inicializado
+//      e o evento estiver no META_EVENT_MAP de src/utils/metaPixel.ts.
 //
 // Para ativar PostHog/Mixpanel em produção, basta carregar o SDK via snippet
 // no `index.html` ou via Cloudflare Pages Functions — esta função detecta
 // e despacha automaticamente. Não há dependência npm adicional.
+//
+// Meta Pixel: inicializado por initMetaPixel() em main.tsx (no-op enquanto
+// VITE_META_PIXEL_ID nao estiver setado — conta BM bloqueada por enquanto).
 
 declare global {
   interface Window {
@@ -17,6 +22,8 @@ declare global {
     mixpanel?: { track: (event: string, props?: Record<string, unknown>) => void };
   }
 }
+
+import { forwardToMetaPixel } from "./metaPixel";
 
 const isDev = import.meta.env.DEV;
 
@@ -65,4 +72,7 @@ export function track(
   } catch {
     // Mixpanel não carregado — ok.
   }
+
+  // Meta Pixel: forwarder e silencioso se window.fbq nao existir (pixel desativado).
+  forwardToMetaPixel(event, props);
 }

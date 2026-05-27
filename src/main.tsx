@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import App from "./App";
 import { AuthConfigurationMissing, AuthGate, SignedOutScreen } from "./components/AuthGate";
 import { registerServiceWorker } from "./registerServiceWorker";
+import { initMetaPixel, handleCheckoutCallback } from "./utils/metaPixel";
 
 // ErrorBoundary que escreve o erro no fallback HTML — captura crashes de
 // render do React (que NÃO disparam window.onerror). Essencial para debug
@@ -44,6 +45,13 @@ import "@fontsource/inter-tight/latin-900.css";
 import "./styles.css";
 
 const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+// Meta Pixel — no-op se VITE_META_PIXEL_ID nao estiver setado (conta BM bloqueada).
+// Quando a env var for definida no painel Cloudflare, dispara PageView + processa
+// callback de checkout (Purchase) automaticamente.
+initMetaPixel();
+handleCheckoutCallback();
+
 const root = createRoot(document.getElementById("root") as HTMLElement);
 const previewMode =
   typeof window !== "undefined"
