@@ -1,106 +1,109 @@
 # Clerk Auth + Stripe Billing
 
-## Objetivo
+Detalhes operacionais de Clerk e Stripe. Conceito geral e fluxo
+end-to-end estão em [`../AGENTS.md`](../AGENTS.md) §5 (fluxo auth + paywall)
+e §6 (Functions).
 
-Adicionar controle comercial ao Manual Interativo de Medicina Intensiva:
+## Modelo comercial atual
 
-- login por Clerk;
-- assinatura mensal por Stripe Checkout;
-- liberacao de acesso por status de assinatura salvo no `public_metadata` do usuario Clerk;
-- portal Stripe para o assinante gerenciar cartao, faturas e cancelamento;
-- webhook Stripe para sincronizar criacao, atualizacao e cancelamento de assinatura.
+- **Assinatura recorrente** em três planos: Mensal · Trimestral · Anual.
+- **Acesso fundador vitalício** (legado de lançamento, registrado no
+  `public_metadata` de quem comprou na fase one-time R$ 29,99).
+- Liberação por `user.publicMetadata.subscriptionStatus = "active"`
+  (ou `"trialing"`) — gate em [`src/components/AuthGate.tsx`](../src/components/AuthGate.tsx).
 
-## Variaveis de ambiente
+## Variáveis de ambiente
 
-Configure no Cloudflare Pages em `Settings > Environment variables`.
+Configurar no Cloudflare Pages em `Settings → Variables and Secrets`.
 
-### Frontend (publicas)
+### Frontend (Plaintext, expostas no bundle do browser)
 
 ```env
 VITE_CLERK_PUBLISHABLE_KEY=pk_live_...
 VITE_CLERK_BILLING_REQUIRED=true
 ```
 
-`VITE_STRIPE_CHECKOUT_URL` permanece apenas como fallback opcional de desenvolvimento; em producao o botao `Assinar agora` chama `POST /api/create-checkout-session`.
-
-### Backend / Functions (secrets)
+### Backend (Secret / Encrypted, lidas pelas Functions)
 
 ```env
 CLERK_SECRET_KEY=sk_live_...
 STRIPE_SECRET_KEY=sk_live_...
-STRIPE_PRICE_ID=price_1TZf0zAIon1Sw6HssZDB0ZPO
 STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_PRICE_ID=price_...          # default fallback; o frontend envia o priceId do plano escolhido
 STRIPE_ALLOWED_STATUSES=active,trialing
 APP_URL=https://manualvirtus.com.br
 ```
 
-Nunca exponha `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` ou `STRIPE_PRICE_ID` com prefixo `VITE_`.
+**Nunca prefixar com `VITE_`** as secrets backend — `VITE_*` vai pro bundle público.
 
-## Configuracao no Clerk
+Os `priceId`s dos planos atuais (Mensal/Trimestral/Anual) ficam no frontend
+em `src/components/AuthGate.tsx` (constante `PLANS`) — são públicos por design.
 
-1. Criar uma aplicacao no Clerk.
-2. Ativar os metodos de login desejados.
-3. Copiar a publishable key para `VITE_CLERK_PUBLISHABLE_KEY`.
-4. Copiar a secret key para `CLERK_SECRET_KEY`.
-5. Conferir o dominio de producao em URLs permitidas.
+## Setup no Clerk
 
-## Configuracao no Stripe
+1. Aplicação no Clerk Dashboard.
+2. Métodos de login: email + senha (verificação por código **desligada**
+   em prod — decisão de conversão).
+3. `VITE_CLERK_PUBLISHABLE_KEY` ← publishable key live.
+4. `CLERK_SECRET_KEY` ← secret key live.
+5. Domínio de produção: `manualvirtus.com.br` em Domains/Origins.
 
-1. Criar um produto para a assinatura do manual.
-2. Criar um preco recorrente mensal.
-3. Copiar o `price_...` para `STRIPE_PRICE_ID` (atualmente `price_1TZf0zAIon1Sw6HssZDB0ZPO`).
-4. Ativar o Customer Portal em Billing.
-5. Criar um endpoint de webhook:
+## Setup no Stripe
 
-```text
-https://manual-medicina-intensiva.pages.dev/api/stripe-webhook
-```
+1. Produtos:
+   - "Manual de Medicina Intensiva — Mensal" (preço recorrente mensal)
+   - "Manual de Medicina Intensiva — Trimestral" (preço recorrente trimestral)
+   - "Manual de Medicina Intensiva — Anual" (preço recorrente anual)
+2. Copiar cada `price_...` pra constante `PLANS` em `AuthGate.tsx`.
+3. **Customer Portal**: ativar em Billing → Customer portal.
+4. **Webhook endpoint**:
 
-Eventos recomendados:
+   ```text
+   https://manualvirtus.com.br/api/stripe-webhook
+   ```
 
-- `checkout.session.completed`
-- `customer.subscription.created`
-- `customer.subscription.updated`
-- `customer.subscription.deleted`
+   Eventos:
+   - `checkout.session.completed`
+   - `customer.subscription.updated`
+   - `customer.subscription.deleted`
 
-6. Copiar o signing secret `whsec_...` para `STRIPE_WEBHOOK_SECRET`.
+5. Copiar o signing secret `whsec_...` do endpoint para `STRIPE_WEBHOOK_SECRET`.
 
-## Como o app libera acesso
+## Como o app libera acesso (resumo)
 
-1. `src/main.tsx` inicializa `ClerkProvider`.
-2. `src/components/AuthGate.tsx` exige login.
-3. Depois do login, o frontend le `user.publicMetadata.subscriptionStatus` e `user.publicMetadata.stripeSubscriptionStatus`.
-4. Se qualquer um estiver como `active`, o manual e liberado.
-5. Sem assinatura ativa, o usuario ve o botao `Assinar agora`.
-6. O botao chama `POST /api/create-checkout-session`, que cria a sessao Stripe usando `STRIPE_PRICE_ID`, `client_reference_id = clerkUserId`, `metadata.clerkUserId` e o email do usuario, e redireciona para o Checkout retornado.
-7. O Stripe chama `/api/stripe-webhook`, que atualiza o `public_metadata`.
-8. O usuario pode abrir o Portal Stripe por `/api/create-portal-session`, quando houver `stripeCustomerId`.
+Fluxo completo com diagrama em [`../AGENTS.md`](../AGENTS.md) §5. Em uma linha:
 
-## Rotas criadas
+cadastro Clerk → SignedInAccessGate → checa `publicMetadata.subscriptionStatus`
+→ se inativo, paywall com Stripe Checkout do plano → webhook escreve
+`active` no Clerk → paywall destrava (polling com `user.reload()`).
 
-- `GET /api/subscription-status`: valida token Clerk e retorna status de assinatura.
-- `POST /api/create-checkout-session`: cria assinatura mensal no Stripe Checkout.
-- `POST /api/create-portal-session`: abre Portal do Cliente Stripe para uma conta ja vinculada.
-- `POST /api/stripe-webhook`: valida assinatura do Stripe e sincroniza status no Clerk.
+## Endpoints Cloudflare Functions
 
-## Protecao real do conteudo
+Documentados em [`../AGENTS.md`](../AGENTS.md) §6.
 
-Esta camada restringe a experiencia de uso e o acesso normal ao PWA. Como os HTMLs ainda sao empacotados no bundle estatico, um usuario tecnico poderia inspecionar os arquivos publicados.
+Resumo:
+- `GET /api/subscription-status` — status atual do user logado
+- `POST /api/create-checkout-session` — cria Stripe Checkout (mode=subscription)
+- `POST /api/create-portal-session` — Customer Portal (precisa `stripeCustomerId`)
+- `POST /api/stripe-webhook` — recebe eventos, atualiza Clerk metadata
 
-Antes do lancamento comercial definitivo, a protecao forte deve mover os modulos para entrega por backend protegido:
+## Proteção real do conteúdo (pendente de melhoria)
 
-- armazenar HTMLs fora do bundle publico;
+Esta camada restringe a experiência de uso. Como os HTMLs clínicos
+ainda são empacotados no bundle estático, um usuário técnico pode
+inspecionar os arquivos publicados.
+
+Antes da expansão comercial, a proteção forte deve mover os módulos
+para entrega por backend protegido:
+
+- armazenar HTMLs fora do bundle público;
 - validar token Clerk em Function/Worker;
-- checar assinatura no backend antes de entregar o modulo;
-- rever a estrategia offline para cache autorizado por usuario.
+- checar assinatura no backend antes de entregar o módulo;
+- rever a estratégia offline para cache autorizado por usuário.
 
-## Restricao de um dispositivo/sessao
+## Restrição de um dispositivo/sessão (pendente)
 
-A restricao de uma conexao simultanea nao deve ficar no frontend. A etapa robusta exige backend com `CLERK_SECRET_KEY` para:
-
-1. identificar sessao e usuario atuais;
-2. registrar dispositivo/sessao ativa;
-3. revogar ou bloquear sessoes excedentes;
-4. exibir aviso quando a conta ja estiver ativa em outro dispositivo.
-
-Essa regra deve ser implementada antes do lancamento comercial se o contrato de assinatura exigir uso individual estrito.
+Restrição de uma conexão simultânea precisa de backend com
+`CLERK_SECRET_KEY` para identificar sessão, registrar dispositivo,
+revogar excedentes. Implementar antes do lançamento comercial se o
+contrato de assinatura exigir uso individual estrito.

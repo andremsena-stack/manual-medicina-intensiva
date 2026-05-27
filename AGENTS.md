@@ -284,19 +284,20 @@ curl -s https://manualvirtus.com.br/ | grep -oE 'index-[A-Za-z0-9_-]+\.(js|css)'
 ## 9. Índice de docs
 
 > Cada item lista a fonte de verdade do tópico. Se houver conflito entre docs,
-> o item desta lista vence — atualizar os outros docs no próximo passe.
+> o item desta lista vence — atualizar o doc no próximo passe.
 
-| Tópico | Doc canônico | Status |
-|---|---|---|
-| Regras operacionais Claude Code | [`CLAUDE.md`](CLAUDE.md) | ✅ atualizado |
-| Overview humano | [`README.md`](README.md) | ⚠️ lista de módulos legada (1-6); migrar pra 1-9 quando der |
-| Workflow revisão dos módulos | [`docs/REVISAO_MODULOS.md`](docs/REVISAO_MODULOS.md) | ✅ atualizado (módulos 1-9) |
-| Histórico de mudanças (REQUER REVISAO MEDICA) | [`docs/changelog.md`](docs/changelog.md) | ✅ append-only |
-| Setup Clerk + Stripe | [`docs/clerk-auth-billing.md`](docs/clerk-auth-billing.md) | ⚠️ modelo single-price legado; recorrente é fonte no código |
-| Setup domínio + DNS + env vars prod | [`docs/DEPLOY_MANUALVIRTUS.md`](docs/DEPLOY_MANUALVIRTUS.md) | ✅ atualizado |
-| Fontes clínicas (refs primárias) | [`docs/clinical-sources.md`](docs/clinical-sources.md) | ✅ |
-| Auditoria clínica histórica | `docs/auditoria/` | 📚 arquivo |
-| Notas técnicas | `docs/developer_notes.md`, `docs/implementation-notes.md` | 📚 arquivo |
+| Tópico | Doc canônico |
+|---|---|
+| Regras operacionais Claude Code | [`CLAUDE.md`](CLAUDE.md) |
+| Overview humano (entry point) | [`README.md`](README.md) |
+| Workflow revisão dos módulos | [`docs/REVISAO_MODULOS.md`](docs/REVISAO_MODULOS.md) |
+| Histórico de mudanças (REQUER REVISAO MEDICA) | [`docs/changelog.md`](docs/changelog.md) — append-only |
+| Setup Clerk + Stripe | [`docs/clerk-auth-billing.md`](docs/clerk-auth-billing.md) |
+| Setup domínio + DNS + env vars prod | [`docs/DEPLOY_MANUALVIRTUS.md`](docs/DEPLOY_MANUALVIRTUS.md) |
+| Fontes clínicas (refs primárias) | [`docs/clinical-sources.md`](docs/clinical-sources.md) |
+| Decisões de arquitetura | [`docs/developer_notes.md`](docs/developer_notes.md) |
+| Convenções de build/PWA/iframe | [`docs/implementation-notes.md`](docs/implementation-notes.md) |
+| Auditoria clínica histórica | `docs/auditoria/` (arquivo) |
 
 ---
 

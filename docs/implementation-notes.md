@@ -1,39 +1,64 @@
-# Notas de implementacao
+# Notas de implementação
 
-## Decisoes tecnicas
+Convenções técnicas estabelecidas. Visão geral arquitetural em
+[`../AGENTS.md`](../AGENTS.md); workflows clínicos em
+[`./REVISAO_MODULOS.md`](./REVISAO_MODULOS.md).
 
-- A PWA foi criada na propria pasta `MÓDULO 1-6`.
-- O build usa `base: './'` para funcionar em hospedagem estatica com subpasta.
-- Os HTMLs clinicos permanecem como fonte canonica em `src/data/modules/`.
-- O React importa esses HTMLs como texto bruto com `?raw`.
-- O `ModuleViewer` usa `iframe srcDoc`, preservando scripts, estilos e calculadoras legadas dos modulos.
-- A busca global usa `DOMParser` no navegador para extrair secoes e texto indexavel.
-- O service worker usa cache local dos assets visitados e nao depende de CDN.
+## Convenções de build e empacotamento
 
-## Conteudo clinico
+- PWA reside na própria pasta do projeto (raiz do repositório).
+- `vite.config.mjs` usa `base: './'` para o build funcionar em
+  hospedagem estática com subpasta ou em domínio próprio.
+- Os HTMLs clínicos canônicos ficam em `src/data/modules/` e são
+  importados como texto bruto via `?raw` em
+  `src/data/moduleSources.ts`.
+- `ModuleViewer` usa `<iframe srcDoc>`, preservando scripts, estilos
+  e calculadoras legadas dos módulos.
+- Busca global usa `DOMParser` no navegador para extrair seções e
+  texto indexável a partir dos HTMLs carregados.
+- Service worker (`public/sw.js`, registrado por
+  `src/registerServiceWorker.ts`) faz cache local dos assets visitados
+  e não depende de CDN.
 
-- Nenhum HTML clinico foi reescrito.
-- Nao houve alteracao de dose, diluicao, formula, limite, alerta ou recomendacao.
-- A politica obrigatoria foi documentada em `README.md`, `docs/clinical-sources.md` e `docs/changelog.md`.
-- Fontes locais foram referenciadas em vez de copiadas para `/Source`, conforme o plano.
-- Em 2026-05-18, o pacote `MÓDULO 1-6_REVISAO_AUTOR` foi integrado como revisao autoral dos modulos 1, 3, 4, 5 e 6, mantendo a PWA React/Vite.
-- A revisao autoral foi registrada no changelog como `REQUER REVISAO MEDICA`.
-- Em 2026-05-19, o pacote `MÓDULO 1-6_REVISAO_2026-05-19` foi integrado como v33 com referencias recolhiveis em todos os modulos, mantendo a PWA React/Vite.
+## Política clínica
+
+- Nenhum HTML clínico foi reescrito sem registro em
+  [`changelog.md`](changelog.md).
+- Alterações de doses, diluições, fórmulas, limites, alertas ou
+  recomendações exigem solicitação explícita e marcação
+  `REQUER REVISAO MEDICA` no changelog.
+- Fontes clínicas locais ficam referenciadas em
+  [`clinical-sources.md`](clinical-sources.md), não copiadas para o repo.
 
 ## Calculadoras
 
-- Calculadoras legadas continuam dentro dos HTMLs.
-- A camada `src/utils/iframeSafety.ts` identifica pares conhecidos de dose/vazao e bloqueia o campo oposto quando um modo esta ativo.
-- Essa camada nao altera constantes, textos clinicos nem formulas; atua apenas no DOM carregado pelo iframe.
-- Futuras calculadoras React devem morar em `src/features/calculators/`.
+- Calculadoras legadas continuam dentro do HTML do **Módulo 7 —
+  Calculadoras interativas**. Módulo 7 também concentra cálculos de
+  reposição de eletrólitos (transferidos do Mod 6 atual Distúrbios).
+- A camada [`src/utils/iframeSafety.ts`](../src/utils/iframeSafety.ts)
+  identifica pares conhecidos de dose/vazão e bloqueia o campo oposto
+  quando um modo está ativo.
+- Essa camada **não altera** constantes, textos clínicos ou fórmulas;
+  atua apenas no DOM carregado pelo iframe.
+- Futuras calculadoras React devem morar em
+  `src/features/calculators/` com testes mínimos em
+  `scripts/calculator-tests.mjs`.
 
 ## Rastreabilidade
 
-- `scripts/verify-module-hashes.mjs` guarda os hashes SHA-256 esperados dos seis HTMLs canonicos.
-- Qualquer alteracao nos HTMLs fonte fara a verificacao falhar.
-- `scripts/calculator-tests.mjs` cobre funcoes genericas usadas como regressao minima de calculadoras.
+- `scripts/verify-module-hashes.mjs` guarda os hashes SHA-256
+  esperados dos 9 HTMLs canônicos.
+- Qualquer alteração nos HTMLs fonte fará a verificação falhar — force
+  atualização explícita do hash e registro em
+  [`changelog.md`](changelog.md).
 
-## Limitacoes conhecidas
+## Limitações conhecidas
 
-- A verificacao visual completa depende de instalar dependencias e rodar o servidor Vite.
-- O service worker funciona em `localhost` ou hospedagem HTTPS; navegadores nao registram service worker em `file://`.
+- Verificação visual completa depende de instalar dependências e rodar
+  o Vite dev (`npm run dev`) com os modos de preview ([`../AGENTS.md`](../AGENTS.md) §8).
+- Service worker requer `localhost` ou hospedagem HTTPS; navegadores
+  não registram service worker em `file://`.
+- Conteúdo clínico ainda viaja no bundle estático — proteção forte
+  requer migração futura para entrega via Function/Worker. Detalhe em
+  [`clerk-auth-billing.md`](clerk-auth-billing.md) (seção "Proteção
+  real do conteúdo").
