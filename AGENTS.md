@@ -222,6 +222,14 @@ Todas em `functions/api/`. Compartilham helpers em `functions/_shared.ts`
 5. **Verificação Clerk por código de email está DESLIGADA em prod** (decisão de
    conversão). Cadastro vai direto pro paywall. Mudança no painel Clerk Live,
    sem alterar código.
+6. **NÃO mexer em `publicMetadata.founderAccess: true`**. Esse flag concede acesso
+   vitalício a quem comprou na fase fundadora (R$ 29,99 one-time). É lido em
+   [`src/components/AuthGate.tsx`](src/components/AuthGate.tsx) (`subscriptionStatusFromPublicMetadata`)
+   e tem precedência sobre qualquer status Stripe. O webhook em
+   [`functions/_shared.ts`](functions/_shared.ts) preserva o campo via `...current`
+   no PATCH do metadata — qualquer refator dessa função **deve manter o spread**.
+   Só o script [`scripts/set-founder-access.mjs`](scripts/set-founder-access.mjs)
+   liga o flag (a partir de CSV de pagamentos), nunca desliga.
 
 ---
 
