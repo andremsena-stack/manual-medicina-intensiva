@@ -1,0 +1,159 @@
+"""
+Meta Ads — Angulo B (Anti-PDF / Curiosity) — Lancamento Assinatura.
+Renderiza 3 formatos: 1080x1080, 1080x1350, 1080x1920.
+
+Conceito: split visual — pilha cacatica de PDFs a esquerda colapsando
+em um celular limpo a direita com marca V brilhando. Headline
+'6 PDFs ou 1 app.' + chip 'A PARTIR DE R$ 25,99/MES' + CTA
+'CONHECER O VIRTUS'.
+"""
+from PIL import ImageDraw
+import os
+
+from _common import (
+    F,
+    INK,
+    INK_SOFT,
+    INK_MUTED,
+    INK_DIM,
+    CYAN,
+    CYAN_2,
+    LINE_FAINT,
+    gradient_canvas,
+    draw_frame,
+    draw_pill_outline,
+    draw_price_chip,
+    draw_cta_pill,
+    render_pdf_stack,
+    render_phone_outline,
+    text_centered,
+    text_left,
+)
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def render(W, H, out_name):
+    img = gradient_canvas(W, H)
+    d = ImageDraw.Draw(img)
+    cx = W // 2
+
+    # ---- proporcoes por formato ----
+    # Layout split horizontal funciona bem em 1:1 e 4:5; em 9:16 vira
+    # vertical (PDFs em cima, celular embaixo) pra nao espremer.
+    # Headline Gloock 64pt x 2 linhas ocupa ~170px (head_y .. head_y+170).
+    # Body precisa comecar >= head_y + 200 pra ter respiro real.
+    if W == H:  # 1:1 (1080x1080)
+        y_ribbon = 110
+        # split horizontal
+        pdf_x, pdf_y = 170, 200
+        phone_xc, phone_y = int(W * 0.72), 200
+        phone_w, phone_h = 200, 320
+        y_head = 580
+        y_body = 800
+        y_chip = 890
+        y_cta = 970
+        vertical = False
+    elif H > W and (H / W) < 1.4:  # 4:5 (1080x1350)
+        y_ribbon = 130
+        pdf_x, pdf_y = 170, 230
+        phone_xc, phone_y = int(W * 0.72), 230
+        phone_w, phone_h = 220, 370
+        y_head = 720
+        y_body = 960
+        y_chip = 1060
+        y_cta = 1180
+        vertical = False
+    else:  # 9:16 (1080x1920) — empilhado verticalmente
+        y_ribbon = 180
+        pdf_x, pdf_y = 240, 280
+        phone_xc, phone_y = cx, 760
+        phone_w, phone_h = 260, 440
+        y_head = 1280
+        y_body = 1500
+        y_chip = 1600
+        y_cta = 1740
+        vertical = True
+
+    # ---- ribbon eyebrow ----
+    f_rib = F("JetBrainsMono-Bold.ttf", 14)
+    draw_pill_outline(d, cx, y_ribbon, "MENOS ABAS  ·  MAIS PLANTAO", f_rib, CYAN)
+
+    # ---- visual: PDFs caoticos ----
+    if vertical:
+        # 9:16 — PDFs espalhados em arco horizontal no terco superior
+        render_pdf_stack(img, pdf_x, pdf_y, count=6, w=180, h=220, color=INK_DIM)
+    else:
+        render_pdf_stack(img, pdf_x, pdf_y, count=6, w=130, h=160, color=INK_DIM)
+
+    # ---- seta/arrow indicando colapso ----
+    if not vertical:
+        # seta horizontal entre PDFs e celular
+        ay = pdf_y + 140
+        ax_start = pdf_x + 220
+        ax_end = phone_xc - phone_w // 2 - 20
+        d.line([(ax_start, ay), (ax_end, ay)], fill=CYAN_2, width=2)
+        # cabeca da seta
+        d.polygon(
+            [(ax_end, ay), (ax_end - 14, ay - 8), (ax_end - 14, ay + 8)],
+            fill=CYAN_2,
+        )
+        # label sobre a seta
+        f_lbl = F("JetBrainsMono-Bold.ttf", 12)
+        text_centered(d, "VIRA", f_lbl, ay - 26, CYAN, (ax_start + ax_end) // 2)
+    else:
+        # seta vertical apontando pra baixo
+        ay_start = pdf_y + 240
+        ay_end = phone_y - 30
+        d.line([(cx, ay_start), (cx, ay_end)], fill=CYAN_2, width=2)
+        d.polygon(
+            [(cx, ay_end), (cx - 10, ay_end - 16), (cx + 10, ay_end - 16)],
+            fill=CYAN_2,
+        )
+        f_lbl = F("JetBrainsMono-Bold.ttf", 12)
+        text_centered(d, "VIRA", f_lbl, (ay_start + ay_end) // 2 - 8, CYAN, cx + 40)
+
+    # ---- visual: celular com V ----
+    render_phone_outline(img, phone_xc, phone_y, w=phone_w, h=phone_h, color=CYAN_2)
+
+    # ---- headline ----
+    d = ImageDraw.Draw(img)
+    f_h = F("Gloock-Regular.ttf", 64)
+    text_centered(d, "6 PDFs abertos.", f_h, y_head, INK_MUTED, cx)
+    text_centered(d, "Ou 1 app.", f_h, y_head + 78, INK, cx)
+
+    # ---- body ----
+    f_b = F("InstrumentSans-Regular.ttf", 20)
+    text_centered(
+        d,
+        "Substitui o caderninho, os screenshots",
+        f_b, y_body, INK_MUTED, cx,
+    )
+    text_centered(
+        d,
+        "e a pasta URGENTE_UTI do drive.",
+        f_b, y_body + 30, INK_SOFT, cx,
+    )
+
+    # ---- chip preco ----
+    draw_price_chip(d, cx, y_chip, "A PARTIR DE R$ 25,99 / MES")
+
+    # ---- CTA ----
+    draw_cta_pill(img, cx, y_cta, "CONHECER O VIRTUS", w=560, h=72)
+
+    # ---- chrome ----
+    draw_frame(img, "AD  ·  ANTI-PDF / META")
+
+    out_path = os.path.join(HERE, out_name)
+    img.save(out_path, "PNG", optimize=True)
+    print(f"{out_name} pronto.")
+
+
+def main():
+    render(1080, 1080, "ad_b_antipdf_1x1.png")
+    render(1080, 1350, "ad_b_antipdf_4x5.png")
+    render(1080, 1920, "ad_b_antipdf_9x16.png")
+
+
+if __name__ == "__main__":
+    main()

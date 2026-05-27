@@ -1,0 +1,178 @@
+================================================================
+META ADS — LANCAMENTO ASSINATURA
+Pacote de 6 criativos (2 angulos x 3 formatos)
+================================================================
+
+OBJETIVO DA CAMPANHA: Conversoes (cadastro + checkout)
+POSICIONAMENTOS:      Feed FB/IG, Stories IG, Reels IG (estaticos), Explore
+PERIODO SUGERIDO:     4 dias de teste antes de CBO
+VERBA MINIMA:         R$ 30-50/dia por adset
+
+----------------------------------------------------------------
+ANGULO A — DOR / PLANTAO 03:47
+----------------------------------------------------------------
+
+Texto principal (corpo do anuncio):
+---
+Plantao noturno nao espera voce lembrar.
+
+O Manual Virtus reune os 9 modulos que voce precisa abrir entre
+uma admissao e outra: vias aereas, ventilacao, hemodinamica,
+sepse, calculadoras de dose, caderno de questoes e referencias
+consolidadas.
+
+Tudo offline. Tudo dark mode. Tudo no celular.
+
+▸ A partir de R$ 25,99/mes
+▸ R$ 16,67/mes no plano anual
+▸ Cancela quando quiser
+---
+
+Titulo (headline curta — campo Meta):
+  Plantao noturno nao espera voce lembrar.
+
+Descricao (campo Meta):
+  9 modulos. Offline. Assinatura a partir de R$ 25,99/mes.
+
+Botao CTA (Meta):
+  Saiba mais
+
+Arquivos:
+  ad_a_dor_1x1.png    (1080x1080) — Feed FB/IG, Explore
+  ad_a_dor_4x5.png    (1080x1350) — Feed IG mobile dominante
+  ad_a_dor_9x16.png   (1080x1920) — Stories IG, Reels estatico
+
+----------------------------------------------------------------
+ANGULO B — ANTI-PDF / CURIOSITY
+----------------------------------------------------------------
+
+Texto principal (corpo do anuncio):
+---
+Por que abrir varios pdfs se so uma ferramenta ja serve?
+
+Voce abre o protocolo de sepse num PDF, a tabela de noradrenalina
+noutro, o calculo de creatinina-clearance num terceiro, e a
+referencia da Surviving Sepsis num quarto. Cada plantao.
+
+O Manual Virtus consolida os 9 modulos em uma unica interface,
+com calculadoras interativas e referencias por capitulo. Funciona
+offline.
+
+▸ A partir de R$ 25,99/mes
+▸ Cancela quando quiser
+---
+
+Titulo (headline curta — campo Meta):
+  6 PDFs ou 1 app. Voce decide.
+
+Descricao (campo Meta):
+  Manual clinico completo. Offline. Assinatura a partir de R$ 25,99/mes.
+
+Botao CTA (Meta):
+  Ver demonstracao
+
+Arquivos:
+  ad_b_antipdf_1x1.png    (1080x1080) — Feed FB/IG, Explore
+  ad_b_antipdf_4x5.png    (1080x1350) — Feed IG mobile dominante
+  ad_b_antipdf_9x16.png   (1080x1920) — Stories IG, Reels estatico
+
+----------------------------------------------------------------
+NAMING CONVENTION (Meta Ads Manager)
+----------------------------------------------------------------
+
+Campanha:
+  [Virtus] [Conversao] [Lancamento-Assinatura] [2026-05]
+
+Adsets:
+  [Adset-Dor-3am]      — intencao: pain trigger plantao noturno
+  [Adset-AntiPDF]      — intencao: curiosity / comparativo workflow
+
+Anuncios:
+  [Crv-A-1x1] [v1]
+  [Crv-A-4x5] [v1]
+  [Crv-A-9x16] [v1]
+  [Crv-B-1x1] [v1]
+  [Crv-B-4x5] [v1]
+  [Crv-B-9x16] [v1]
+
+Exemplo full:
+  [Virtus] [Conversao] [Lancamento-Assinatura] [2026-05] [Adset-Dor-3am] [Crv-A-1x1] [v1]
+
+----------------------------------------------------------------
+UTMs (link final no botao)
+----------------------------------------------------------------
+
+URL destino: https://manualvirtus.com.br/
+
+Angulo A — 1:1:
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=dor_3am_1x1
+
+Angulo A — 4:5:
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=dor_3am_4x5
+
+Angulo A — 9:16:
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=dor_3am_9x16
+
+Angulo B — 1:1:
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=antipdf_1x1
+
+Angulo B — 4:5:
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=antipdf_4x5
+
+Angulo B — 9:16:
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=antipdf_9x16
+
+----------------------------------------------------------------
+SEGMENTACAO SUGERIDA (publico)
+----------------------------------------------------------------
+
+Publico 1 — Interesses medicos especificos:
+  - Medicina intensiva
+  - UTI / Cuidados intensivos
+  - Residencia medica
+  - Sociedade Brasileira de Terapia Intensiva (SBTI)
+  - Emergencia medica
+  Idade: 26-50  ·  Brasil  ·  Portugues
+
+Publico 2 — Profissoes (Meta detailed targeting):
+  - Medico
+  - Residente medico
+  - Enfermeiro de UTI (publico ampliado)
+  Excluir: estudantes de medicina pre-internato
+
+Publico 3 — Lookalike (apos coletar primeiros eventos):
+  - LAL 1% Brasil baseado em quem completou checkout
+  - LAL 3% Brasil baseado em quem visitou /modulos
+
+----------------------------------------------------------------
+PRE-FLIGHT CHECKLIST (antes de publicar)
+----------------------------------------------------------------
+
+[ ] Pixel da Meta instalado no site (confirmar evento PageView)
+[ ] Evento "InitiateCheckout" disparando em /api/create-checkout-session
+[ ] Evento "Purchase" disparando no callback /sucesso
+[ ] Conta Meta Business Manager verificada
+[ ] Dominio manualvirtus.com.br verificado no Business Manager
+[ ] Politica de privacidade acessivel via rodape
+[ ] UTMs nos links de cada criativo
+[ ] Naming convention seguida em campanha/adset/criativo
+[ ] Verba diaria definida com teto de seguranca
+
+----------------------------------------------------------------
+COMO RE-GERAR OS PNGs
+----------------------------------------------------------------
+
+Diretorio: marketing/meta-ads/lancamento-assinatura/
+
+Renderizar tudo:
+  python render_all.py
+
+Renderizar so um angulo:
+  python ad_a_dor.py
+  python ad_b_antipdf.py
+
+Para iterar copy: editar a string no script, rodar de novo,
+o PNG e sobrescrito.
+
+Fontes: lidas de canvas-design/canvas-fonts (skill canvas-design).
+Se mover o projeto, atualizar FONT_DIR em _common.py.
