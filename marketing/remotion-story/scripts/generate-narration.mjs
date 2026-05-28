@@ -44,8 +44,14 @@ const SPECS = [
     slug: "antes-depois",
     voiceId: "pNInz6obpgDQGcFmaJgB",
     modelId: "eleven_multilingual_v2",
+    // Texto cobre as 4 cenas do reel (20s):
+    //   - Cena 1 (iPhone girando + 9 apps): "Antes: nove apps no plantão..."
+    //   - Cena 2 (icones voando): "Calculadora, antibiótico, eletrólitos."
+    //   - Cena 3 (reveal Manual Virtus): "Agora, um só. Manual Virtus."
+    //   - Cena 4 (calc noradrenalina): "Choque séptico, paciente setenta..."
+    //   - Outro: "...No bolso."
     text:
-      "Nove apps abertos no plantão. Calculadora, antibiótico, sedação, AHA, diluição. Agora chega. Manual Virtus. Tudo num lugar só. No bolso.",
+      "Antes: nove apps abertos no plantão. Calculadora, antibiótico, sedação, eletrólitos. Agora, um só. Manual Virtus. Choque séptico, paciente setenta quilos, bomba a seis vírgula seis. Dose: zero vírgula um mcg por quilo por minuto. Em segundos. No bolso.",
     voiceSettings: {
       stability: 0.55,
       similarity_boost: 0.75,
