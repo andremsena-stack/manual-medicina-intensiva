@@ -540,21 +540,26 @@ function injectMobileResponsiveStyles(doc: Document): void {
       body  {
         font-size: 15px !important;
         line-height: 1.65 !important;
-        /* Sem mais triggers laterais no mobile: padding lateral confortável e
-           reserva inferior pra pill flutuante (40px altura + 10px margem do
-           edge + safe-area do iPhone + ~8px folga). Pill é centralizada e
-           NÃO cobre 100% width — sem necessidade de compensação lateral. */
-        padding-left: 16px !important;
-        padding-right: 16px !important;
+        /* Mobile: maximiza largura util de leitura.
+           - Lateral 12px (era 16): respiro suficiente em iPhone com tela curva,
+             ganha 8px de texto efetivo.
+           - Bottom: reserva pra pill flutuante (40px altura + 10px margem do
+             edge + safe-area do iPhone + ~8px folga).
+           Em conjunto com reducoes em main/section/.hero abaixo, a coluna
+           de texto efetivo (<p>) sai de ~74% pra ~83% da viewport. */
+        padding-left: 12px !important;
+        padding-right: 12px !important;
         padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)) !important;
       }
-      main  { padding: 14px 14px !important; }
+      main  { padding: 10px !important; }
 
-      /* Hero e sections do modulo: padding e fontes reduzidos no mobile */
-      .hero { padding: 18px !important; border-radius: 14px !important; }
+      /* Hero e sections do modulo: padding lateral reduzido pra ganhar
+         largura de leitura. Padding vertical mantido pra preservar respiro
+         entre blocos. As fontes ja sao responsivas via clamp() abaixo. */
+      .hero { padding: 18px 12px !important; border-radius: 14px !important; }
       .hero h2 { font-size: clamp(19px, 5vw, 26px) !important; line-height: 1.25 !important; }
       .hero p  { font-size: 14px !important; }
-      section  { padding: 14px 16px !important; border-radius: 12px !important; }
+      section  { padding: 14px 8px !important; border-radius: 12px !important; }
       section h2 { font-size: clamp(17px, 4.5vw, 22px) !important; line-height: 1.3 !important; }
       section h3 { font-size: clamp(15px, 4vw, 18px) !important; }
 
