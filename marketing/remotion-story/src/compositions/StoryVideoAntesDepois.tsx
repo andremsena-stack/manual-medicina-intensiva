@@ -127,7 +127,7 @@ const ICONS: AppIconSpec[] = [
     symbol: <SymDrop />,
   },
   {
-    label: "AHA",
+    label: "Distúrbios hidroeletroliticos",
     bg: "#3a1418",
     bgEnd: "#5a1c22",
     symbolColor: "#ff8a8a",
@@ -204,10 +204,13 @@ const AppIcon: React.FC<AppIconProps> = ({ spec, enterFrame, exitFrame, fps }) =
       <div
         style={{
           fontFamily: fontStack,
-          fontSize: 22,
+          fontSize: spec.label.length > 12 ? 16 : 22,
           fontWeight: 600,
           color: palette.white,
           letterSpacing: 0.3,
+          textAlign: "center",
+          lineHeight: 1.15,
+          maxWidth: ICON_SIZE + 8,
         }}
       >
         {spec.label}
