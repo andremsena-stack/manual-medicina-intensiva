@@ -13,7 +13,10 @@ import {
   quizSerioBeats,
   quizLeveBeats,
 } from "./variants";
-import { StoryVideoAntesDepois } from "./compositions/StoryVideoAntesDepois";
+import {
+  StoryVideoAntesDepois,
+  TOTAL_FRAMES as AntesDepoisFrames,
+} from "./compositions/StoryVideoAntesDepois";
 
 const FPS = 30;
 
@@ -40,11 +43,13 @@ export const RemotionRoot: React.FC = () => {
         })}
       />
 
-      {/* 9:16 — reel "Antes/Depois": 9 apps clínicos -> Manual Virtus (15s, alinhado com narração ElevenLabs ~14.5s) */}
+      {/* 9:16 — reel "Antes/Depois": iPhone 3D girando + 9 apps clínicos ->
+          Manual Virtus -> calculadora noradrenalina demo (20s, alinhado com
+          narração ElevenLabs regenerada na fase 8) */}
       <Composition
         id="StoryVideo-AntesDepois"
         component={StoryVideoAntesDepois}
-        durationInFrames={450}
+        durationInFrames={AntesDepoisFrames}
         fps={FPS}
         {...STORY}
       />
