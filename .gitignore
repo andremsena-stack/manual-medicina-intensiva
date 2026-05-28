@@ -6,3 +6,5 @@ dist/
 .DS_Store
 .wrangler/
 .dev.vars
+.claude/settings.local.json
+*.tsbuildinfo
