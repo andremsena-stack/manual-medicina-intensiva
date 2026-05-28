@@ -1,14 +1,23 @@
 // Gera os MP3s de narração via API do ElevenLabs.
 //
-// Uso:
-//   $env:ELEVENLABS_API_KEY = "sua_key"
+// Uso (3 formas de fornecer a API key, em ordem de prioridade):
+//   1. Variável de ambiente já setada (sessão atual ou setx/.bashrc):
+//        $env:ELEVENLABS_API_KEY = "sk_..."        # PowerShell
+//        export ELEVENLABS_API_KEY="sk_..."        # Bash/Git Bash
+//   2. Arquivo .env na pasta marketing/remotion-story/ (persistente,
+//      por projeto, já coberto pelo .gitignore raiz). Formato:
+//        ELEVENLABS_API_KEY=sk_...
+//      Veja .env.example pra template.
+//   3. Inline na linha: ELEVENLABS_API_KEY="sk_..." npm run narrate
+//
 //   npm run narrate                       # gera todos os specs
 //   npm run narrate -- antes-depois       # gera apenas o slug passado
 //
 // Saída: marketing/remotion-story/public/audio/<slug>.mp3
 //        marketing/remotion-story/public/audio/<slug>.json  (metadata)
 
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -16,12 +25,41 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(__dirname, "..");
 const outDir = join(projectRoot, "public", "audio");
 
+// Carrega .env local ANTES de checar process.env. Variaveis ja setadas
+// no env real tem prioridade (nao sobrescreve). Parser minimalista, sem
+// dep nova: suporta `KEY=value`, `KEY="value"`, `KEY='value'`, comentarios
+// com `#` no inicio da linha, e linhas em branco.
+const envPath = join(projectRoot, ".env");
+if (existsSync(envPath)) {
+  const envText = await readFile(envPath, "utf8");
+  for (const rawLine of envText.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
+    const m = line.match(/^([A-Z_][A-Z0-9_]*)\s*=\s*(.*)$/);
+    if (!m) continue;
+    const key = m[1];
+    let value = m[2];
+    // Remove aspas envolventes (simples ou duplas)
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    if (!process.env[key]) process.env[key] = value;
+  }
+}
+
 const apiKey = process.env.ELEVENLABS_API_KEY;
 if (!apiKey) {
   console.error(
     "[narrate] ELEVENLABS_API_KEY não está setado.\n" +
-      '  PowerShell: $env:ELEVENLABS_API_KEY = "sua_key"\n' +
-      '  Bash:        export ELEVENLABS_API_KEY="sua_key"',
+      "  Opção 1 — variável de sessão:\n" +
+      '    PowerShell: $env:ELEVENLABS_API_KEY = "sk_..."\n' +
+      '    Bash:       export ELEVENLABS_API_KEY="sk_..."\n' +
+      "  Opção 2 — arquivo .env persistente (recomendado):\n" +
+      "    crie marketing/remotion-story/.env com a linha\n" +
+      "    ELEVENLABS_API_KEY=sk_...",
   );
   process.exit(1);
 }
