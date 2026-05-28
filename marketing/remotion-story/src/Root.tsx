@@ -40,11 +40,11 @@ export const RemotionRoot: React.FC = () => {
         })}
       />
 
-      {/* 9:16 — reel "Antes/Depois": 9 apps clínicos -> Manual Virtus (10s) */}
+      {/* 9:16 — reel "Antes/Depois": 9 apps clínicos -> Manual Virtus (15s, alinhado com narração ElevenLabs ~14.5s) */}
       <Composition
         id="StoryVideo-AntesDepois"
         component={StoryVideoAntesDepois}
-        durationInFrames={300}
+        durationInFrames={450}
         fps={FPS}
         {...STORY}
       />

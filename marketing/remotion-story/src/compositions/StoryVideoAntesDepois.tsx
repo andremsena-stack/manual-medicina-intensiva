@@ -1,6 +1,7 @@
 import React from "react";
 import {
   AbsoluteFill,
+  Audio,
   Img,
   interpolate,
   spring,
@@ -9,6 +10,11 @@ import {
   useVideoConfig,
 } from "remotion";
 import { fontStack, palette } from "../theme";
+
+// Narração ElevenLabs gerada por `npm run narrate` (script
+// scripts/generate-narration.mjs). Se o arquivo ainda não existir,
+// o Remotion mostra 404 no preview mas o resto da composition renderiza.
+const NARRATION_SRC = staticFile("audio/antes-depois.mp3");
 
 interface AppIconSpec {
   label: string;
@@ -265,8 +271,8 @@ export const StoryVideoAntesDepois: React.FC = () => {
     extrapolate: "clamp",
   });
 
-  // Fade out global no fim
-  const globalFadeOut = interpolate(frame, [285, 300], [1, 0], {
+  // Fade out global no fim — alinhado com 450f (15s), narração termina ~f 435
+  const globalFadeOut = interpolate(frame, [435, 450], [1, 0], {
     extrapolate: "clamp",
   });
 
@@ -281,6 +287,9 @@ export const StoryVideoAntesDepois: React.FC = () => {
         opacity: globalFadeOut,
       }}
     >
+      {/* Narração ElevenLabs — fade-in suave nos primeiros frames pra não estourar */}
+      <Audio src={NARRATION_SRC} volume={(f) => interpolate(f, [0, 6, 435, 450], [0, 1, 1, 0], { extrapolate: "clamp" })} />
+
       {/* Grid 3x3 de ícones */}
       <AbsoluteFill>
         {ICONS.map((spec, i) => {

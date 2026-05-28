@@ -11,10 +11,12 @@
     "render:vertical": "node scripts/render-all.mjs vertical",
     "render:square": "node scripts/render-all.mjs square",
     "render:tall": "node scripts/render-all.mjs tall",
+    "narrate": "node scripts/generate-narration.mjs",
     "build": "remotion bundle src/index.ts"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.0",
+    "@remotion/elevenlabs": "4.0.467",
     "@remotion/transitions": "^4.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
