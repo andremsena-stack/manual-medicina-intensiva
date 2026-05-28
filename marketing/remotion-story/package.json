@@ -1,0 +1,28 @@
+{
+  "name": "manual-virtus-remotion-story",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Composicao Remotion StoryVideo (9:16 Instagram Stories/Ads) para o Manual de Medicina Intensiva.",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts StoryVideo out/story.mp4",
+    "render:gif": "remotion render src/index.ts StoryVideo out/story.gif --codec=gif",
+    "render:all": "node scripts/render-all.mjs",
+    "render:vertical": "node scripts/render-all.mjs vertical",
+    "render:square": "node scripts/render-all.mjs square",
+    "render:tall": "node scripts/render-all.mjs tall",
+    "build": "remotion bundle src/index.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/transitions": "^4.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.6.0"
+  }
+}
