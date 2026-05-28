@@ -3,7 +3,7 @@
 // Cache funciona apenas como fallback offline. Evita o problema clássico
 // de bundle JS com hash novo + index.html novo mas cache servindo hash
 // antigo que não existe mais no deploy → tela em branco no PWA iOS.
-const CACHE_NAME = "guia-intensiva-pwa-v64";
+const CACHE_NAME = "guia-intensiva-pwa-v65";
 const CORE_ASSETS = [
   "./",
   "./index.html",
