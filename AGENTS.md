@@ -330,7 +330,18 @@ curl -s https://manualvirtus.com.br/ | grep -oE 'index-[A-Za-z0-9_-]+\.(js|css)'
 - **Logos deprecados** em `public/virtus-*.png` (root, sem subfolder): não voltar
   a usar. Os oficiais estão em `public/virtus-logo/`.
 - **`marketing/`** é diretório local de ativos visuais (Instagram, meta-ads).
-  Não vai pro repo.
+  Assets (PNGs, vídeos, generate.py) ficam **fora** do repo via `.gitignore`.
+  **Exceção**: `marketing/_briefs/*.md` são versionados — são briefs textuais
+  decisórios (cada peça preenche um antes de virar asset). Convenção e
+  template em [`marketing/_briefs/README.md`](marketing/_briefs/README.md).
+  Regra anti-repetição: cada peça escolhe um **recurso primário** (Spline,
+  Sketchfab, vídeo real, IA, GSAP, screenshot do app, etc.), e não pode usar
+  o mesmo recurso das duas últimas peças sem justificativa explícita no brief.
+- **Componentes 3D opcionais no hero**: `src/components/HeroSpline3D.tsx`
+  (cena Spline, lazy-loaded, ~200kb runtime) e `src/components/HeroSketchfab3D.tsx`
+  (modelo Sketchfab via iframe, zero JS extra). Configurar via env
+  `VITE_SPLINE_SCENE_URL` ou `VITE_SKETCHFAB_MODEL_URL` (mutuamente exclusivos,
+  Sketchfab tem precedência). Sem env, hero usa só o canvas leve.
 
 ---
 

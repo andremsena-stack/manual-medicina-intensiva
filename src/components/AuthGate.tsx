@@ -25,6 +25,18 @@ import App from "../App";
 import { useImageWithoutHalo } from "../utils/imageProcessing";
 import { moduleSources } from "../data/moduleSources";
 import { track } from "../utils/analytics";
+import { HeroSpline3D } from "./HeroSpline3D";
+import { HeroSketchfab3D } from "./HeroSketchfab3D";
+
+// URL da cena Spline (opcional). Defina em .env.local pra ativar a cena 3D
+// no fundo do hero. Sem URL, cai pro canvas animado leve. Detalhes:
+// src/components/HeroSpline3D.tsx
+const splineSceneUrl = import.meta.env.VITE_SPLINE_SCENE_URL as string | undefined;
+// URL de embed do Sketchfab. Alternativa ao Spline (e mutuamente exclusiva
+// no hero — só renderiza um por vez, com Sketchfab tendo precedência).
+// Pra variar entre páginas/peças, usar componentes diretamente em vez de
+// env. Detalhes: src/components/HeroSketchfab3D.tsx
+const sketchfabModelUrl = import.meta.env.VITE_SKETCHFAB_MODEL_URL as string | undefined;
 
 // Registra plugin uma vez no módulo. ScrollTrigger é free no GSAP.
 if (typeof window !== "undefined") {
@@ -511,7 +523,16 @@ function LandingHeroV2({ previewMode = false }: { previewMode?: boolean }) {
       onMouseLeave={handleMouseLeave}
       onMouseEnter={() => setPaused(true)}
     >
+      {/* Cena 3D opcional. Ordem de precedência: Sketchfab > Spline > só canvas.
+          Sketchfab (iframe, zero JS extra) é melhor pra modelos realistas;
+          Spline (200kb de runtime) pra cenas custom. Configurar via env:
+          VITE_SKETCHFAB_MODEL_URL ou VITE_SPLINE_SCENE_URL. */}
       <HeroCanvasBg />
+      {sketchfabModelUrl ? (
+        <HeroSketchfab3D modelUrl={sketchfabModelUrl} />
+      ) : splineSceneUrl ? (
+        <HeroSpline3D sceneUrl={splineSceneUrl} />
+      ) : null}
       <LandingNav previewMode={previewMode} />
 
       <div className="hero-v2-stage">

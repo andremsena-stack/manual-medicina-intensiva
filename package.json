@@ -17,6 +17,8 @@
     "@clerk/react": "^6.7.0",
     "@clerk/ui": "^1.13.0",
     "@fontsource/inter-tight": "^5.2.7",
+    "@splinetool/react-spline": "^4.1.0",
+    "@splinetool/runtime": "^1.12.95",
     "@vitejs/plugin-react": "^5.0.0",
     "framer-motion": "^11.18.2",
     "gsap": "^3.15.0",

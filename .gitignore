@@ -8,3 +8,11 @@ dist/
 .dev.vars
 .claude/settings.local.json
 *.tsbuildinfo
+
+# Ativos de marketing (PNGs, vídeos, generate.py) ficam fora do repo —
+# pesados e gerados. Só os briefs textuais (decisórios) sao versionados.
+marketing/*
+!marketing/_briefs/
+
+# Docs de trabalho local (sufixo .local) — análogo a .env.local.
+*.md.local
