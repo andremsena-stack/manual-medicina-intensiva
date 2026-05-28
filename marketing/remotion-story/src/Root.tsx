@@ -13,6 +13,7 @@ import {
   quizSerioBeats,
   quizLeveBeats,
 } from "./variants";
+import { StoryVideoAntesDepois } from "./compositions/StoryVideoAntesDepois";
 
 const FPS = 30;
 
@@ -37,6 +38,15 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={({ props }) => ({
           durationInFrames: computeStoryDuration(props.beats),
         })}
+      />
+
+      {/* 9:16 — reel "Antes/Depois": 9 apps clínicos -> Manual Virtus (10s) */}
+      <Composition
+        id="StoryVideo-AntesDepois"
+        component={StoryVideoAntesDepois}
+        durationInFrames={300}
+        fps={FPS}
+        {...STORY}
       />
 
       {/* 9:16 — foco Modulo 5 (drogas vasoativas) */}
