@@ -1,3 +1,25 @@
+/**
+ * Service Worker do Manual Virtus PWA.
+ *
+ * Estrategia: NETWORK-FIRST para tudo same-origin.
+ * - Tenta rede primeiro. Em caso de falha de rede (offline ou 5xx), serve
+ *   o cache. Navegacao offline devolve index.html cacheado como fallback.
+ * - Evita o problema classico de bundle-hash-mismatch (cache servir asset
+ *   antigo enquanto index.html ja referencia novo) que acontecia com a
+ *   estrategia stale-while-revalidate anterior (v57).
+ *
+ * Bump de CACHE_NAME:
+ * - Bumpe SEMPRE que mexer em vite.config (base, build options) ou na
+ *   propria estrategia do SW. Bump forca todos os clientes a reinstalarem
+ *   o SW e baixarem assets atualizados no proximo register/activate.
+ * - Formato: guia-intensiva-pwa-vNN. Incrementar NN.
+ *
+ * Historico:
+ * - v57: estrategia stale-while-revalidate (causou bundle-hash-mismatch).
+ * - v62-v63: refinos.
+ * - v64: trocou para NETWORK-FIRST (commit bf31ec1).
+ * - v65: bump apos fix do vite base path (./ -> /), commit c3cdd26.
+ */
 // Service Worker — Manual Virtus Intensiva
 // Estratégia: NETWORK-FIRST para tudo (HTML, JS, CSS, assets).
 // Cache funciona apenas como fallback offline. Evita o problema clássico
