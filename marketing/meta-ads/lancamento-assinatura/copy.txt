@@ -9,19 +9,16 @@ PERIODO SUGERIDO:     4 dias de teste antes de CBO
 VERBA MINIMA:         R$ 30-50/dia por adset
 
 ----------------------------------------------------------------
-ANGULO A — DOR / PLANTAO 03:47
+ANGULO A — REFERENCIA CONSOLIDADA
 ----------------------------------------------------------------
 
 Texto principal (corpo do anuncio):
 ---
-Plantao noturno nao espera voce lembrar.
+O Manual Virtus reune os 9 modulos que voce consulta no dia a dia: vias aereas, ventilacao, hemodinamica, drogas vasoativas, disturbios hidroeletroliticos, sedoanalgesia, calculadoras de dose, caderno de questoes e referencias.
 
-O Manual Virtus reune os 9 modulos que voce precisa abrir entre
-uma admissao e outra: vias aereas, ventilacao, hemodinamica,
-sepse, calculadoras de dose, caderno de questoes e referencias
-consolidadas.
+Util do pronto-socorro a UTI: residentes, intensivistas e quem atende paciente grave em UPA ou enfermaria.
 
-Tudo offline. Tudo dark mode. Tudo no celular.
+Offline. No celular. Dark mode.
 
 ▸ A partir de R$ 25,99/mes
 ▸ R$ 16,67/mes no plano anual
@@ -29,7 +26,7 @@ Tudo offline. Tudo dark mode. Tudo no celular.
 ---
 
 Titulo (headline curta — campo Meta):
-  Plantao noturno nao espera voce lembrar.
+  Referencia clinica completa, offline, no celular.
 
 Descricao (campo Meta):
   9 modulos. Offline. Assinatura a partir de R$ 25,99/mes.
@@ -43,20 +40,18 @@ Arquivos:
   ad_a_dor_9x16.png   (1080x1920) — Stories IG, Reels estatico
 
 ----------------------------------------------------------------
-ANGULO B — ANTI-PDF / CURIOSITY
+ANGULO B — UMA FERRAMENTA NO LUGAR DE VARIAS
 ----------------------------------------------------------------
 
 Texto principal (corpo do anuncio):
 ---
-Por que abrir varios pdfs se so uma ferramenta ja serve?
+Por que abrir varios pdfs se uma so ferramenta ja serve?
 
-Voce abre o protocolo de sepse num PDF, a tabela de noradrenalina
-noutro, o calculo de creatinina-clearance num terceiro, e a
-referencia da Surviving Sepsis num quarto. Cada plantao.
+Voce abre o protocolo num pdf, a calculadora de dose noutro, a tabela de diluicao num terceiro e a referencia da diretriz num quarto. A cada turno.
 
-O Manual Virtus consolida os 9 modulos em uma unica interface,
-com calculadoras interativas e referencias por capitulo. Funciona
-offline.
+O Manual Virtus consolida 9 modulos numa unica interface, com calculadoras interativas e referencias por capitulo. Funciona offline e roda no celular.
+
+Util pra residente, plantonista de PS/UPA e intensivista.
 
 ▸ A partir de R$ 25,99/mes
 ▸ Cancela quando quiser
@@ -84,8 +79,8 @@ Campanha:
   [Virtus] [Conversao] [Lancamento-Assinatura] [2026-05]
 
 Adsets:
-  [Adset-Dor-3am]      — intencao: pain trigger plantao noturno
-  [Adset-AntiPDF]      — intencao: curiosity / comparativo workflow
+  [Adset-Referencia]      — intencao: posicionamento positivo / referencia consolidada
+  [Adset-Uma-Ferramenta]  — intencao: curiosity / comparativo workflow
 
 Anuncios:
   [Crv-A-1x1] [v1]
@@ -96,7 +91,7 @@ Anuncios:
   [Crv-B-9x16] [v1]
 
 Exemplo full:
-  [Virtus] [Conversao] [Lancamento-Assinatura] [2026-05] [Adset-Dor-3am] [Crv-A-1x1] [v1]
+  [Virtus] [Conversao] [Lancamento-Assinatura] [2026-05] [Adset-Referencia] [Crv-A-1x1] [v1]
 
 ----------------------------------------------------------------
 UTMs (link final no botao)
@@ -105,39 +100,40 @@ UTMs (link final no botao)
 URL destino: https://manualvirtus.com.br/
 
 Angulo A — 1:1:
-  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=dor_3am_1x1
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=referencia_1x1
 
 Angulo A — 4:5:
-  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=dor_3am_4x5
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=referencia_4x5
 
 Angulo A — 9:16:
-  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=dor_3am_9x16
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=referencia_9x16
 
 Angulo B — 1:1:
-  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=antipdf_1x1
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=uma_ferramenta_1x1
 
 Angulo B — 4:5:
-  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=antipdf_4x5
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=uma_ferramenta_4x5
 
 Angulo B — 9:16:
-  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=antipdf_9x16
+  https://manualvirtus.com.br/?utm_source=meta&utm_medium=paid_social&utm_campaign=lancamento_assinatura&utm_content=uma_ferramenta_9x16
 
 ----------------------------------------------------------------
 SEGMENTACAO SUGERIDA (publico)
 ----------------------------------------------------------------
 
-Publico 1 — Interesses medicos especificos:
-  - Medicina intensiva
-  - UTI / Cuidados intensivos
+Publico 1 — Interesses medicos amplos:
+  - Medicina (geral)
+  - Medicina de emergencia
   - Residencia medica
-  - Sociedade Brasileira de Terapia Intensiva (SBTI)
-  - Emergencia medica
-  Idade: 26-50  ·  Brasil  ·  Portugues
+  - Plantao medico
+  - Pronto-socorro
+  - Cuidados intensivos (UTI)
+  Idade: 25-55  ·  Brasil  ·  Portugues
 
 Publico 2 — Profissoes (Meta detailed targeting):
   - Medico
   - Residente medico
-  - Enfermeiro de UTI (publico ampliado)
+  - Medico de emergencia / plantonista
   Excluir: estudantes de medicina pre-internato
 
 Publico 3 — Lookalike (apos coletar primeiros eventos):
@@ -164,15 +160,15 @@ COMO RE-GERAR OS PNGs
 
 Diretorio: marketing/meta-ads/lancamento-assinatura/
 
-Renderizar tudo:
+Renderizar tudo (PNGs + copy.txt):
   python render_all.py
 
 Renderizar so um angulo:
   python ad_a_dor.py
   python ad_b_antipdf.py
 
-Para iterar copy: editar a string no script, rodar de novo,
-o PNG e sobrescrito.
+Para iterar copy: editar copy.py (fonte unica), rodar render_all.py
+de novo. PNGs sao sobrescritos e copy.txt e regenerado.
 
 Fontes: lidas de canvas-design/canvas-fonts (skill canvas-design).
 Se mover o projeto, atualizar FONT_DIR em _common.py.

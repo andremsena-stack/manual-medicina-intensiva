@@ -1,11 +1,13 @@
 """
-Meta Ads — Angulo A (Dor / Plantao 03:47) — Lancamento Assinatura.
+Meta Ads — Angulo A (Referencia consolidada) — Lancamento Assinatura.
 Renderiza 3 formatos: 1080x1080, 1080x1350, 1080x1920.
 
-Conceito: relogio gigante 03:47 + headline 'Dose certa, agora.' +
-chip de preco 'A PARTIR DE R$ 25,99/MES' + CTA 'VER PLANOS'.
+Conceito: numero gigante '9' (modulos no bolso) + headline
+'Tudo num lugar so.' + chip de preco 'A PARTIR DE R$ 25,99/MES' +
+CTA 'VER PLANOS'.
 
-Para uso em Meta Ads Manager, posicionamentos Feed + Stories + Reels.
+Copy lida de copy.py (fonte unica). Nome do arquivo preservado por
+compat com render_all.py e historico dos PNGs.
 """
 from PIL import ImageDraw
 import os
@@ -26,6 +28,7 @@ from _common import (
     draw_cta_pill,
     text_centered,
 )
+from copy import ANGULO_A as A
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -63,15 +66,18 @@ def render(W, H, out_name):
 
     # ---- ribbon eyebrow ----
     f_rib = F("JetBrainsMono-Bold.ttf", 14)
-    draw_pill_outline(d, cx, y_ribbon, "PLANTAO  ·  03h47", f_rib, CYAN)
+    draw_pill_outline(d, cx, y_ribbon, A["eyebrow"], f_rib, CYAN)
 
-    # ---- relogio gigante 03:47 ----
+    # ---- numero gigante (clock_text) ----
     f_clock = F("Gloock-Regular.ttf", clock_size)
-    text_centered(d, "03:47", f_clock, y_clock, INK, cx)
+    text_centered(d, A["clock_text"], f_clock, y_clock, INK, cx)
 
-    # ---- regua sutil abaixo do relogio (separador visual) ----
-    # Gloock tem descent generoso — usa y_clock + clock_size como bottom seguro
+    # ---- label sob o numero ----
     clock_bottom = y_clock + clock_size + 10
+    f_clock_label = F("JetBrainsMono-Bold.ttf", 18)
+    text_centered(d, A["clock_label"], f_clock_label, clock_bottom - 30, CYAN, cx)
+
+    # ---- regua sutil abaixo do numero (separador visual) ----
     rule_w = int(W * 0.18)
     d.line(
         [(cx - rule_w // 2, clock_bottom),
@@ -81,37 +87,25 @@ def render(W, H, out_name):
 
     # ---- headline ----
     f_h = F("Gloock-Regular.ttf", 58)
-    text_centered(d, "Dose certa, agora.", f_h, y_head, INK, cx)
+    text_centered(d, A["headline"], f_h, y_head, INK, cx)
 
     # ---- body ----
     f_b = F("InstrumentSans-Regular.ttf", 22)
-    text_centered(
-        d,
-        "Calculos, drogas e protocolos validados.",
-        f_b, y_body, INK_MUTED, cx,
-    )
-    text_centered(
-        d,
-        "Offline. No bolso. Dark mode.",
-        f_b, y_body + 36, INK_SOFT, cx,
-    )
+    text_centered(d, A["body"][0], f_b, y_body, INK_MUTED, cx)
+    text_centered(d, A["body"][1], f_b, y_body + 36, INK_SOFT, cx)
 
     # ---- chip preco ----
-    draw_price_chip(d, cx, y_chip, "A PARTIR DE R$ 25,99 / MES")
+    draw_price_chip(d, cx, y_chip, A["price_chip"])
 
     # ---- nota secundaria sobre anual ----
     f_note = F("JetBrainsMono-Regular.ttf", 13)
-    text_centered(
-        d,
-        "R$ 16,67/mes no plano anual  ·  cancela quando quiser",
-        f_note, y_chip + 50, INK_MUTED, cx,
-    )
+    text_centered(d, A["price_note"], f_note, y_chip + 50, INK_MUTED, cx)
 
     # ---- CTA ----
-    draw_cta_pill(img, cx, y_cta, "VER PLANOS", w=520, h=72)
+    draw_cta_pill(img, cx, y_cta, A["cta"], w=520, h=72)
 
     # ---- chrome ----
-    draw_frame(img, "AD  ·  DOR-3AM / META")
+    draw_frame(img, A["frame_label"])
 
     out_path = os.path.join(HERE, out_name)
     img.save(out_path, "PNG", optimize=True)

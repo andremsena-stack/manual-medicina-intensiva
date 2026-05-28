@@ -1,13 +1,16 @@
 """
-Meta Ads — Angulo B (Anti-PDF / Curiosity) — Lancamento Assinatura.
+Meta Ads — Angulo B (Uma ferramenta no lugar de varias) — Lancamento Assinatura.
 Renderiza 3 formatos: 1080x1080, 1080x1350, 1080x1920.
 
 Conceito: split visual — pilha cacatica de PDFs a esquerda colapsando
 em um celular limpo a direita com marca V brilhando. Headline
-'6 PDFs ou 1 app.' + chip 'A PARTIR DE R$ 25,99/MES' + CTA
+'6 PDFs abertos. / Ou 1 app.' + chip 'A PARTIR DE R$ 25,99/MES' + CTA
 'CONHECER O VIRTUS'.
+
+Copy lida de copy.py (fonte unica). Nome do arquivo preservado por
+compat com render_all.py e historico dos PNGs.
 """
-from PIL import ImageDraw
+from PIL import Image, ImageDraw
 import os
 
 from _common import (
@@ -29,8 +32,27 @@ from _common import (
     text_centered,
     text_left,
 )
+from copy import ANGULO_B as B
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+
+# Mockup realista de iPhone (PNG transparente, gerado via Higgsfield).
+# Cropado pro bbox do conteudo nao-transparente pra escalonamento preciso.
+_IPHONE_PATH = os.path.join(HERE, "assets", "iphone_mockup.png")
+_IPHONE_SRC = Image.open(_IPHONE_PATH).convert("RGBA")
+_IPHONE_SRC = _IPHONE_SRC.crop(_IPHONE_SRC.getbbox())  # ~593x1215, ratio ~1:2.05
+
+
+def paste_iphone(img, x_center, y_center, max_w, max_h):
+    """Composita o mockup do iPhone centrado em (x_center, y_center), contido em (max_w, max_h)."""
+    src_w, src_h = _IPHONE_SRC.size
+    scale = min(max_w / src_w, max_h / src_h)
+    new_w = int(src_w * scale)
+    new_h = int(src_h * scale)
+    resized = _IPHONE_SRC.resize((new_w, new_h), Image.LANCZOS)
+    x = x_center - new_w // 2
+    y = y_center - new_h // 2
+    img.paste(resized, (x, y), resized)
 
 
 def render(W, H, out_name):
@@ -77,7 +99,7 @@ def render(W, H, out_name):
 
     # ---- ribbon eyebrow ----
     f_rib = F("JetBrainsMono-Bold.ttf", 14)
-    draw_pill_outline(d, cx, y_ribbon, "MENOS ABAS  ·  MAIS PLANTAO", f_rib, CYAN)
+    draw_pill_outline(d, cx, y_ribbon, B["eyebrow"], f_rib, CYAN)
 
     # ---- visual: PDFs caoticos ----
     if vertical:
@@ -100,7 +122,7 @@ def render(W, H, out_name):
         )
         # label sobre a seta
         f_lbl = F("JetBrainsMono-Bold.ttf", 12)
-        text_centered(d, "VIRA", f_lbl, ay - 26, CYAN, (ax_start + ax_end) // 2)
+        text_centered(d, B["arrow_label"], f_lbl, ay - 26, CYAN, (ax_start + ax_end) // 2)
     else:
         # seta vertical apontando pra baixo
         ay_start = pdf_y + 240
@@ -111,38 +133,32 @@ def render(W, H, out_name):
             fill=CYAN_2,
         )
         f_lbl = F("JetBrainsMono-Bold.ttf", 12)
-        text_centered(d, "VIRA", f_lbl, (ay_start + ay_end) // 2 - 8, CYAN, cx + 40)
+        text_centered(d, B["arrow_label"], f_lbl, (ay_start + ay_end) // 2 - 8, CYAN, cx + 40)
 
     # ---- visual: celular com V ----
-    render_phone_outline(img, phone_xc, phone_y, w=phone_w, h=phone_h, color=CYAN_2)
+    # substituido por mockup PNG — ver assets/iphone_mockup.png
+    # render_phone_outline(img, phone_xc, phone_y, w=phone_w, h=phone_h, color=CYAN_2)
+    paste_iphone(img, phone_xc, phone_y + phone_h // 2, phone_w, phone_h)
 
     # ---- headline ----
     d = ImageDraw.Draw(img)
     f_h = F("Gloock-Regular.ttf", 64)
-    text_centered(d, "6 PDFs abertos.", f_h, y_head, INK_MUTED, cx)
-    text_centered(d, "Ou 1 app.", f_h, y_head + 78, INK, cx)
+    text_centered(d, B["headline_top"], f_h, y_head, INK_MUTED, cx)
+    text_centered(d, B["headline_bot"], f_h, y_head + 78, INK, cx)
 
     # ---- body ----
     f_b = F("InstrumentSans-Regular.ttf", 20)
-    text_centered(
-        d,
-        "Substitui o caderninho, os screenshots",
-        f_b, y_body, INK_MUTED, cx,
-    )
-    text_centered(
-        d,
-        "e a pasta URGENTE_UTI do drive.",
-        f_b, y_body + 30, INK_SOFT, cx,
-    )
+    text_centered(d, B["body"][0], f_b, y_body, INK_MUTED, cx)
+    text_centered(d, B["body"][1], f_b, y_body + 30, INK_SOFT, cx)
 
     # ---- chip preco ----
-    draw_price_chip(d, cx, y_chip, "A PARTIR DE R$ 25,99 / MES")
+    draw_price_chip(d, cx, y_chip, B["price_chip"])
 
     # ---- CTA ----
-    draw_cta_pill(img, cx, y_cta, "CONHECER O VIRTUS", w=560, h=72)
+    draw_cta_pill(img, cx, y_cta, B["cta"], w=560, h=72)
 
     # ---- chrome ----
-    draw_frame(img, "AD  ·  ANTI-PDF / META")
+    draw_frame(img, B["frame_label"])
 
     out_path = os.path.join(HERE, out_name)
     img.save(out_path, "PNG", optimize=True)
