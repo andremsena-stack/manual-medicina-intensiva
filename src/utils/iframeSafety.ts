@@ -540,11 +540,15 @@ function injectMobileResponsiveStyles(doc: Document): void {
       body  {
         font-size: 15px !important;
         line-height: 1.65 !important;
-        /* Reserva espaço para os triggers fixos do shell parent: TOC à esquerda (32px) + folga 4px = 36px; busca à direita (38px) + folga 12px = 50px */
-        padding-left: 36px !important;
-        padding-right: 50px !important;
+        /* Sem mais triggers laterais no mobile: padding lateral confortável e
+           reserva inferior pra pill flutuante (40px altura + 10px margem do
+           edge + safe-area do iPhone + ~8px folga). Pill é centralizada e
+           NÃO cobre 100% width — sem necessidade de compensação lateral. */
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)) !important;
       }
-      main  { padding: 14px 10px !important; }
+      main  { padding: 14px 14px !important; }
 
       /* Hero e sections do modulo: padding e fontes reduzidos no mobile */
       .hero { padding: 18px !important; border-radius: 14px !important; }
@@ -937,9 +941,15 @@ function injectReadabilityCompactionStyles(doc: Document): void {
         line-height: 1.5;
       }
 
-      main {
+      /* Seletor com .app pra ganhar specificity 0,0,1,1 — selector simples
+         "main" perde a cascade por motivo nao mapeado (possivelmente layout
+         engine do iframe srcDoc com style elementos misturados). Com .app
+         no encadeamento, a regra aplica em screen >=768px conforme esperado.
+         Mod 7 (calculadoras) NAO recebe compactReading, mantem largura
+         propria de calc-grid. */
+      .app main {
         padding: 22px 26px;
-        max-width: 1180px;
+        max-width: 900px !important;
       }
 
       .hero {

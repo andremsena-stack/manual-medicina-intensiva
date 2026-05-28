@@ -1583,10 +1583,9 @@ function SignedInAccessGate({ children }: PropsWithChildren) {
   }
 
   const isBlocked = accessState === "blocked" || accessState === "error";
-  // Stripe Customer Portal só faz sentido para assinaturas recorrentes.
-  // No modelo atual (Payment Link one-time R$ 29,99 fundador), o webhook
-  // não recebe customerId — não há subscription para gerenciar. Esconde o
-  // botão "Assinatura" quando não houver stripeCustomerId no metadata.
+  // Stripe Customer Portal só faz sentido quando há um Stripe Customer
+  // vinculado à conta. Sem `stripeCustomerId` no metadata, não há nada
+  // para gerenciar via portal — esconde o botão "Assinatura".
   const stripeCustomerId =
     typeof user?.publicMetadata?.stripeCustomerId === "string"
       ? user.publicMetadata.stripeCustomerId

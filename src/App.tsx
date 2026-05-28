@@ -155,6 +155,35 @@ function App() {
             setIsSidebarOpen(false);
           }}
         />
+
+        <nav className="mobile-action-bar" aria-label="Acoes do modulo">
+          <button
+            className="mobile-action-bar__btn"
+            type="button"
+            onClick={openSidebar}
+            aria-label="Abrir sumario de modulos"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <circle cx="5" cy="6.5" r="1.2" fill="currentColor" />
+              <line x1="9" y1="6.5" x2="19" y2="6.5" />
+              <circle cx="5" cy="12" r="1.2" fill="currentColor" />
+              <line x1="9" y1="12" x2="19" y2="12" />
+              <circle cx="5" cy="17.5" r="1.2" fill="currentColor" />
+              <line x1="9" y1="17.5" x2="19" y2="17.5" />
+            </svg>
+          </button>
+          <button
+            className="mobile-action-bar__btn"
+            type="button"
+            onClick={() => setSearchPanelOpen(true)}
+            aria-label="Abrir busca global"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m16.5 16.5 4 4" />
+            </svg>
+          </button>
+        </nav>
       </div>
       <InstallPrompt />
     </div>
