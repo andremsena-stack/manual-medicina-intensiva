@@ -2,14 +2,14 @@
   "slug": "antes-depois",
   "voiceId": "pNInz6obpgDQGcFmaJgB",
   "modelId": "eleven_multilingual_v2",
-  "text": "Nove apps abertos no plantão. Calculadora, antibiótico, sedação, AHA, diluição. Agora chega. Manual Virtus. Tudo num lugar só. No bolso.",
+  "text": "Antes: nove apps abertos no plantão. Calculadora, antibiótico, sedação, eletrólitos. Agora, um só. Manual Virtus. Choque séptico, paciente setenta quilos, bomba a seis vírgula seis. Dose: zero vírgula um mcg por quilo por minuto. Em segundos. No bolso.",
   "voiceSettings": {
     "stability": 0.55,
     "similarity_boost": 0.75,
     "style": 0.15,
     "use_speaker_boost": true
   },
-  "bytes": 232847,
-  "generatedAt": "2026-05-28T20:54:59.843Z",
-  "elapsedMs": 2796
+  "bytes": 379968,
+  "generatedAt": "2026-05-28T22:45:50.178Z",
+  "elapsedMs": 4305
 }
