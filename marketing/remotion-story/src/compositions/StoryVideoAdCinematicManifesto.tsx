@@ -170,7 +170,7 @@ export const StoryVideoAdCinematicManifesto: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Eyebrow "MEDICINA INTENSIVA" — fade-in/slide f30-50, hold, fade-out f105-120
+  // Eyebrow "DA EMERGÊNCIA À UTI" — fade-in/slide f30-50, hold, fade-out f105-120
   const eyebrowIn = interpolate(frame, [30, 50], [0, 1], {
     extrapolate: "clamp",
   });
@@ -243,7 +243,7 @@ export const StoryVideoAdCinematicManifesto: React.FC = () => {
 
       <GrainOverlay />
 
-      {/* Camada 3 — Eyebrow "MEDICINA INTENSIVA" */}
+      {/* Camada 3 — Eyebrow "DA EMERGÊNCIA À UTI" */}
       <div
         style={{
           position: "absolute",
@@ -261,7 +261,7 @@ export const StoryVideoAdCinematicManifesto: React.FC = () => {
           textTransform: "uppercase",
         }}
       >
-        Medicina Intensiva
+        Da Emergência à UTI
       </div>
 
       {/* Camada 4 — Headline gigante "Manual Virtus" */}
