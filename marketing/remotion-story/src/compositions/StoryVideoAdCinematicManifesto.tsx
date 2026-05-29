@@ -33,7 +33,6 @@ const WaveRings: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
-  // 3 ondas concentricas que "respiram" devagar (radius pulsa via sin)
   const rings = [
     { baseR: 520, phase: 0, opacity: 0.22 },
     { baseR: 760, phase: 0.9, opacity: 0.16 },
@@ -136,16 +135,15 @@ const GhostShot: React.FC<GhostShotProps> = ({
   const { fps } = useVideoConfig();
   const t = frame / fps;
 
-  // Fade-in 90-150, hold ate 240, fade-out 240-300
-  const fadeIn = interpolate(frame, [90, 150], [0, 0.18], {
+  // Phone shots agora aparecem so no finale (f280-390) pra nao competir com calculadora
+  const fadeIn = interpolate(frame, [280, 330], [0, 0.18], {
     extrapolate: "clamp",
   });
-  const fadeOut = interpolate(frame, [240, 300], [1, 0], {
+  const fadeOut = interpolate(frame, [365, 390], [1, 0], {
     extrapolate: "clamp",
   });
   const opacity = fadeIn * fadeOut;
 
-  // Drift Y muito devagar (sin wave de baixa frequencia)
   const driftY = Math.sin(t * 0.4 + driftSeed) * 24;
   const driftX = Math.cos(t * 0.3 + driftSeed * 1.3) * 14;
 
@@ -175,46 +173,292 @@ const GhostShot: React.FC<GhostShotProps> = ({
   );
 };
 
+// ---------- Calculadora de droga vasoativa (Noradrenalina) ----------
+//
+// Formula: mL/h = (dose mcg/kg/min * peso kg * 60 min) / (concentracao mcg/mL)
+// Concentracao padrao noradrenalina: 8 mg em 50 mL = 0.16 mg/mL = 160 mcg/mL
+// Demo: peso 70 kg, concentracao fixa, dose anima de 0.10 -> 0.30 mcg/kg/min
+
+interface RowProps {
+  label: string;
+  value: string;
+  unit?: string;
+  accent?: boolean;
+  big?: boolean;
+}
+
+const Row: React.FC<RowProps> = ({ label, value, unit, accent, big }) => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "baseline",
+      padding: "20px 32px",
+      borderBottom: big
+        ? "none"
+        : `1px solid rgba(48, 241, 230, 0.12)`,
+      gap: 16,
+    }}
+  >
+    <span
+      style={{
+        fontFamily: monoStack,
+        fontSize: big ? 22 : 22,
+        fontWeight: 500,
+        color: big ? palette.cyanBright : "rgba(245,249,252,0.55)",
+        letterSpacing: big ? 3 : 2,
+        textTransform: "uppercase",
+      }}
+    >
+      {label}
+    </span>
+    <span
+      style={{
+        fontFamily: fontStack,
+        fontSize: big ? 130 : 44,
+        fontWeight: big ? 800 : 600,
+        color: accent ? palette.cyanBright : palette.white,
+        letterSpacing: big ? -2 : -0.5,
+        lineHeight: 1,
+        fontVariantNumeric: "tabular-nums",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {value}
+      {unit && (
+        <span
+          style={{
+            fontSize: big ? 42 : 22,
+            fontWeight: 500,
+            color: "rgba(245,249,252,0.55)",
+            marginLeft: 12,
+            letterSpacing: 0,
+          }}
+        >
+          {unit}
+        </span>
+      )}
+    </span>
+  </div>
+);
+
+const CalculadoraVasoativa: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  // Aparece f90-130 (spring), hold ate f240, fade-out f240-280
+  const enterSpring = spring({
+    fps,
+    frame: frame - 90,
+    config: { damping: 18, stiffness: 110, mass: 0.9 },
+  });
+  const enterOpacity = interpolate(enterSpring, [0, 1], [0, 1]);
+  const enterScale = interpolate(enterSpring, [0, 1], [0.9, 1]);
+  const enterY = interpolate(enterSpring, [0, 1], [60, 0]);
+
+  const exitOpacity = interpolate(frame, [240, 280], [1, 0], {
+    extrapolate: "clamp",
+  });
+  const exitScale = interpolate(frame, [240, 280], [1, 0.94], {
+    extrapolate: "clamp",
+  });
+
+  const opacity = enterOpacity * exitOpacity;
+  const scale = enterScale * exitScale;
+
+  // Dose anima de 0.10 -> 0.30 entre f140 e f230 (3s de movimento smooth)
+  const dose = interpolate(
+    frame,
+    [140, 170, 190, 220, 230],
+    [0.1, 0.18, 0.22, 0.28, 0.3],
+    { extrapolate: "clamp" }
+  );
+
+  // Output velocidade mL/h baseado na formula
+  const peso = 70;
+  const concentracao_mcg_per_ml = 160; // 8mg em 50mL
+  const velocidade = (dose * peso * 60) / concentracao_mcg_per_ml;
+
+  // Subtle pulse na borda durante o reveal do output
+  const pulse = 0.5 + 0.5 * Math.sin((frame - 90) / 10);
+  const borderGlow = interpolate(pulse, [0, 1], [0.25, 0.45]);
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: STAGE_H / 2 - 540,
+        left: (STAGE_W - 820) / 2,
+        width: 820,
+        opacity,
+        transform: `translateY(${enterY}px) scale(${scale})`,
+        transformOrigin: "center center",
+      }}
+    >
+      {/* Container card */}
+      <div
+        style={{
+          background: `linear-gradient(180deg, ${palette.navy2} 0%, ${palette.navy} 100%)`,
+          borderRadius: 36,
+          border: `1px solid rgba(48, 241, 230, ${borderGlow})`,
+          boxShadow: `0 40px 80px rgba(0,0,0,0.55), 0 0 60px rgba(48,241,230,0.15)`,
+          overflow: "hidden",
+        }}
+      >
+        {/* Header */}
+        <div
+          style={{
+            padding: "28px 32px 20px 32px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderBottom: `1px solid rgba(48, 241, 230, 0.15)`,
+            background: `linear-gradient(180deg, rgba(48,241,230,0.06), rgba(48,241,230,0))`,
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <span
+              style={{
+                fontFamily: monoStack,
+                fontSize: 16,
+                fontWeight: 500,
+                color: palette.cyanBright,
+                letterSpacing: 4,
+                textTransform: "uppercase",
+              }}
+            >
+              Calculadora
+            </span>
+            <span
+              style={{
+                fontFamily: fontStack,
+                fontSize: 36,
+                fontWeight: 700,
+                color: palette.white,
+                letterSpacing: -0.5,
+              }}
+            >
+              Noradrenalina
+            </span>
+          </div>
+          {/* Live indicator */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+            }}
+          >
+            <div
+              style={{
+                width: 12,
+                height: 12,
+                borderRadius: "50%",
+                background: palette.cyanBright,
+                boxShadow: `0 0 14px ${palette.cyanBright}`,
+                opacity: 0.6 + 0.4 * pulse,
+              }}
+            />
+            <span
+              style={{
+                fontFamily: monoStack,
+                fontSize: 16,
+                fontWeight: 500,
+                color: "rgba(245,249,252,0.55)",
+                letterSpacing: 2,
+                textTransform: "uppercase",
+              }}
+            >
+              Live
+            </span>
+          </div>
+        </div>
+
+        {/* Inputs */}
+        <Row label="Peso" value="70" unit="kg" />
+        <Row label="Diluição" value="8mg/50mL" />
+        <Row label="Dose alvo" value={dose.toFixed(2)} unit="mcg/kg/min" accent />
+
+        {/* Output destacado */}
+        <div
+          style={{
+            background: `linear-gradient(180deg, rgba(48,241,230,0.08), rgba(48,241,230,0.02))`,
+            padding: "24px 0 32px 0",
+            borderTop: `1px solid rgba(48, 241, 230, 0.18)`,
+          }}
+        >
+          <Row
+            label="Vazão"
+            value={velocidade.toFixed(1)}
+            unit="mL/h"
+            accent
+            big
+          />
+        </div>
+      </div>
+
+      {/* Caption ancora abaixo */}
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: 24,
+          fontFamily: monoStack,
+          fontSize: 18,
+          fontWeight: 500,
+          color: "rgba(245,249,252,0.42)",
+          letterSpacing: 3,
+          textTransform: "uppercase",
+        }}
+      >
+        Bomba ajustada em 1 toque
+      </div>
+    </div>
+  );
+};
+
 // ---------- Componente principal ----------
 
 export const StoryVideoAdCinematicManifesto: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Eyebrow "DA EMERGÊNCIA À UTI" — fade-in/slide f30-50, hold, fade-out f105-120
+  // Eyebrow "DA EMERGÊNCIA À UTI" — fade-in f30-50, hold, fade-out f100-120
   const eyebrowIn = interpolate(frame, [30, 50], [0, 1], {
     extrapolate: "clamp",
   });
-  const eyebrowOut = interpolate(frame, [105, 120], [1, 0], {
+  const eyebrowOut = interpolate(frame, [100, 120], [1, 0], {
     extrapolate: "clamp",
   });
   const eyebrowOpacity = eyebrowIn * eyebrowOut;
   const eyebrowY = interpolate(eyebrowIn, [0, 1], [-30, 0]);
 
-  // Headline "Manual Virtus" — spring f90-150, slow zoom continuo, fade-out f245-260
+  // Headline "Manual Virtus" — spring f260-330, slow zoom, fade-out f370-390
   const headlineSpring = spring({
     fps,
-    frame: frame - 90,
+    frame: frame - 260,
     config: { damping: 14, stiffness: 100, mass: 0.9 },
   });
   const headlineScaleIn = interpolate(headlineSpring, [0, 1], [0.85, 1]);
   const headlineOpacityIn = interpolate(headlineSpring, [0, 1], [0, 1]);
-  const slowZoom = 1 + Math.max(0, frame - 90) / 5000;
-  const headlineFadeOut = interpolate(frame, [245, 260], [1, 0], {
+  const slowZoom = 1 + Math.max(0, frame - 260) / 6000;
+  const headlineFadeOut = interpolate(frame, [370, 390], [1, 0], {
     extrapolate: "clamp",
   });
   const headlineOpacity = headlineOpacityIn * headlineFadeOut;
   const headlineScale = headlineScaleIn * slowZoom;
 
-  // Subtitulo + handle — fade-in/slide f210-240, fade-out f280-300
-  const subtitleIn = interpolate(frame, [210, 240], [0, 1], {
+  // Subtitulo + handle — fade-in f320-350, fade-out f375-390
+  const subtitleIn = interpolate(frame, [320, 350], [0, 1], {
     extrapolate: "clamp",
   });
-  const subtitleOut = interpolate(frame, [280, 300], [1, 0], {
+  const subtitleOut = interpolate(frame, [375, 390], [1, 0], {
     extrapolate: "clamp",
   });
   const subtitleOpacity = subtitleIn * subtitleOut;
   const subtitleY = interpolate(subtitleIn, [0, 1], [20, 0]);
+
+  // Calculadora ativa entre f90 e f280 — esconde ao começar headline pra liberar palco
+  const calcVisible = frame >= 90 && frame <= 280;
 
   // Background gradient radial naval com bias no topo
   const bgStyle: React.CSSProperties = {
@@ -223,10 +467,10 @@ export const StoryVideoAdCinematicManifesto: React.FC = () => {
 
   return (
     <AbsoluteFill style={bgStyle}>
-      {/* Camada 1 — Background com ondas + grain */}
+      {/* Camada 1 — Background com ondas */}
       <WaveRings />
 
-      {/* Camada 2 — Phone screenshots fantasma (parallax) */}
+      {/* Camada 2 — Phone screenshots fantasma (so no finale) */}
       <GhostShot
         src={staticFile("app-shots/screen-1.png")}
         x={80}
@@ -275,7 +519,10 @@ export const StoryVideoAdCinematicManifesto: React.FC = () => {
         Da Emergência à UTI
       </div>
 
-      {/* Camada 4 — Headline gigante "Manual Virtus" */}
+      {/* Camada 4 — Calculadora vasoativa (Noradrenalina) */}
+      {calcVisible && <CalculadoraVasoativa />}
+
+      {/* Camada 5 — Headline gigante "Manual Virtus" */}
       <div
         style={{
           position: "absolute",
@@ -311,7 +558,7 @@ export const StoryVideoAdCinematicManifesto: React.FC = () => {
         </div>
       </div>
 
-      {/* Camada 5 — Subtitulo "Decisoes a beira do leito" */}
+      {/* Camada 6 — Subtitulo "Decisoes a beira do leito" */}
       <div
         style={{
           position: "absolute",
@@ -331,7 +578,7 @@ export const StoryVideoAdCinematicManifesto: React.FC = () => {
         Decisões à beira do leito
       </div>
 
-      {/* Logo Virtus pequeno + handle */}
+      {/* Logo Virtus + handle */}
       <div
         style={{
           position: "absolute",
@@ -368,7 +615,7 @@ export const StoryVideoAdCinematicManifesto: React.FC = () => {
         </div>
       </div>
 
-      {/* Camada 6 — Vignette */}
+      {/* Camada 7 — Vignette */}
       <Vignette />
     </AbsoluteFill>
   );

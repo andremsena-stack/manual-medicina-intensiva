@@ -50,11 +50,11 @@ export const RemotionRoot: React.FC = () => {
         {...STORY}
       />
 
-      {/* 9:16 — reel manifesto cinematografico (tipografia gigante, 10s) */}
+      {/* 9:16 — reel manifesto cinematografico com beat de calculadora vasoativa (13s) */}
       <Composition
         id="StoryVideo-AdCinematicManifesto"
         component={StoryVideoAdCinematicManifesto}
-        durationInFrames={300}
+        durationInFrames={390}
         fps={FPS}
         {...STORY}
       />
