@@ -8,13 +8,24 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { fontStack, palette } from "../theme";
+import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
+import { loadFont as loadJetBrains } from "@remotion/google-fonts/JetBrainsMono";
+import { palette } from "../theme";
 
 const STAGE_W = 1080;
 const STAGE_H = 1920;
 
-const monoStack =
-  "'JetBrains Mono', 'SF Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace";
+// Carrega fontes via @remotion/google-fonts pra garantir consistencia
+// em qualquer host de render — independente do que estiver instalado.
+const { fontFamily: sansFamily } = loadInter("normal", {
+  weights: ["400", "500", "600", "700", "800", "900"],
+});
+const { fontFamily: monoFamily } = loadJetBrains("normal", {
+  weights: ["400", "500", "600", "700"],
+});
+
+const fontStack = `'${sansFamily}', 'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif`;
+const monoStack = `'${monoFamily}', 'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, monospace`;
 
 // ---------- Background ----------
 
