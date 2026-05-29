@@ -14,6 +14,7 @@ import {
   quizLeveBeats,
 } from "./variants";
 import { StoryVideoAntesDepois } from "./compositions/StoryVideoAntesDepois";
+import { StoryVideoAdCinematicManifesto } from "./compositions/StoryVideoAdCinematicManifesto";
 
 const FPS = 30;
 
@@ -44,6 +45,15 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="StoryVideo-AntesDepois"
         component={StoryVideoAntesDepois}
+        durationInFrames={300}
+        fps={FPS}
+        {...STORY}
+      />
+
+      {/* 9:16 — reel manifesto cinematografico (tipografia gigante, 10s) */}
+      <Composition
+        id="StoryVideo-AdCinematicManifesto"
+        component={StoryVideoAdCinematicManifesto}
         durationInFrames={300}
         fps={FPS}
         {...STORY}
